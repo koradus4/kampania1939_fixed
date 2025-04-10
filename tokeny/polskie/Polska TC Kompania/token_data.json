@@ -1,0 +1,16 @@
+{
+  "shape": "Prostokąt",
+  "nation": "Polska",
+  "unit_type": "TC",
+  "unit_size": "Kompania",
+  "movement_points": "18",
+  "attack_range": "3",
+  "attack_value": "10",
+  "combat_value": "10",
+  "unit_maintenance": "10",
+  "purchase_value": "48",
+  "sight_range": "2",
+  "png_file": "Polska TC Kompania.png",
+  "width": 240,
+  "height": 240
+}

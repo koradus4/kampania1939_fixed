@@ -1,0 +1,16 @@
+{
+  "shape": "Prostokąt",
+  "nation": "Polska",
+  "unit_type": "AC",
+  "unit_size": "Pluton",
+  "movement_points": "12",
+  "attack_range": "6",
+  "attack_value": "6",
+  "combat_value": "3",
+  "unit_maintenance": "3",
+  "purchase_value": "22",
+  "sight_range": "3",
+  "png_file": "Polska AC Pluton.png",
+  "width": 240,
+  "height": 240
+}

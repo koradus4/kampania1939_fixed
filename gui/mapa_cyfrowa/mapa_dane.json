@@ -1,0 +1,10 @@
+{
+  "terrain": {},
+  "key_points": {},
+  "config": {
+    "map_image_path": "C:/Users/klif/OneDrive/Pulpit/mapy/Bzura-1939-mapa-bitwy.jpg",
+    "hex_size": 30,
+    "grid_cols": 56,
+    "grid_rows": 40
+  }
+}

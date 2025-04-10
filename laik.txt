@@ -1,0 +1,1 @@
+zalozenia : jestem laikiem w tworzeniu gier , jezeli cos robimy to robimy krok po kroku ( nie kilka kroczkow na raz) z potwierdzeniem wykonania . dawaj instrukcje  ktore naniosa zmiany z zaznaczeniem do którego pliku się odnosza a ja je sprawdze pod wzgledem funkcjonalności.dawaj tylko instrukcje do zmiany ewentualnie krótkie opisy
