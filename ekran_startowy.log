@@ -1,12 +1,18 @@
-2025-04-15 01:30:23,636 - INFO - Inicjalizacja ekranu startowego.
-2025-04-15 01:30:23,636 - INFO - Tworzenie wid¿etów ekranu startowego.
-2025-04-15 01:30:26,719 - DEBUG - Gracz 1 wybra³ nacjê: Polska
-2025-04-15 01:30:26,720 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Polska
-2025-04-15 01:30:27,608 - DEBUG - Gracz 2 wybra³ nacjê: Polska
-2025-04-15 01:30:27,608 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Polska
-2025-04-15 01:30:28,694 - DEBUG - Gracz 3 wybra³ nacjê: Niemcy
-2025-04-15 01:30:28,694 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-15 01:30:29,725 - DEBUG - Gracz 4 wybra³ nacjê: Niemcy
-2025-04-15 01:30:29,725 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-15 01:30:30,114 - INFO - Próba rozpoczêcia gry.
-2025-04-15 01:30:30,114 - INFO - Gra siê rozpoczyna.
+2025-04-15 01:34:56,047 - INFO - Inicjalizacja ekranu startowego.
+2025-04-15 01:34:56,047 - INFO - Tworzenie wid¿etów ekranu startowego.
+2025-04-15 01:34:58,303 - DEBUG - Gracz 1 wybra³ nacjê: Polska
+2025-04-15 01:34:58,304 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Polska
+2025-04-15 01:34:59,254 - DEBUG - Gracz 2 wybra³ nacjê: Polska
+2025-04-15 01:34:59,254 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Polska
+2025-04-15 01:35:00,175 - DEBUG - Gracz 3 wybra³ nacjê: Polska
+2025-04-15 01:35:00,176 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Polska
+2025-04-15 01:35:00,176 - ERROR - Gracz 1 i Gracz 3 maj¹ tê sam¹ nacjê, co jest niezgodne z zasadami.
+2025-04-15 01:35:03,191 - DEBUG - Gracz 3 wybra³ nacjê: Niemcy
+2025-04-15 01:35:03,192 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-15 01:35:04,307 - DEBUG - Gracz 4 wybra³ nacjê: Polska
+2025-04-15 01:35:04,308 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Polska
+2025-04-15 01:35:04,308 - ERROR - Gracz 3 i Gracz 4 maj¹ ró¿ne nacje, co jest niezgodne z zasadami.
+2025-04-15 01:35:07,282 - DEBUG - Gracz 4 wybra³ nacjê: Niemcy
+2025-04-15 01:35:07,282 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-15 01:35:08,017 - INFO - Próba rozpoczêcia gry.
+2025-04-15 01:35:08,018 - INFO - Gra siê rozpoczyna.

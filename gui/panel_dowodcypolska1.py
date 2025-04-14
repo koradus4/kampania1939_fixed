@@ -2,10 +2,14 @@ import tkinter as tk
 from PIL import Image, ImageTk  # Obsługa obrazów
 
 class PanelDowodcyPolska1(tk.Tk):
-    def __init__(self):
+    def __init__(self, turn_number):
         super().__init__()
         self.title("Panel Dowódcy Polska 1")
         self.state("zoomed")  # Maksymalizacja okna
+
+        # Wyświetlanie numeru tury
+        self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
+        self.turn_label.pack(pady=5)
 
         # Główna ramka podziału
         self.main_frame = tk.Frame(self)
@@ -95,5 +99,5 @@ class PanelDowodcyPolska1(tk.Tk):
         self.destroy()
 
 if __name__ == "__main__":
-    app = PanelDowodcyPolska1()
+    app = PanelDowodcyPolska1(turn_number=1)
     app.mainloop()

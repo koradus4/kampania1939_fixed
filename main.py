@@ -33,15 +33,15 @@ if __name__ == "__main__":
         # Pobranie aktualnego gracza
         current_player = turn_manager.get_current_player()
 
-        # Otwieranie odpowiedniego panelu
+        # Otwieranie odpowiedniego panelu z numerem tury
         if current_player.rola == "Generał" and current_player.nacja == "Polska":
-            app = PanelGeneralaPolska()
+            app = PanelGeneralaPolska(turn_number=turn_manager.current_turn)
         elif current_player.rola == "Generał" and current_player.nacja == "Niemcy":
-            app = PanelGeneralaNiemcy()
+            app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn)
         elif current_player.rola == "Dowódca" and current_player.nacja == "Polska":
-            app = PanelDowodcyPolska1()
+            app = PanelDowodcyPolska1(turn_number=turn_manager.current_turn)
         elif current_player.rola == "Dowódca" and current_player.nacja == "Niemcy":
-            app = PanelDowodcyNiemcy1()
+            app = PanelDowodcyNiemcy1(turn_number=turn_manager.current_turn)
 
         app.mainloop()  # Uruchomienie panelu
 
