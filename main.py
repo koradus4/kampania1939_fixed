@@ -55,7 +55,7 @@ if __name__ == "__main__":
         if turn_manager.next_turn():
             print("Zakończono pełną turę.")
 
-        # Sprawdzenie warunków zwycięstwa (do zaimplementowania)
-        # if victory_conditions.check_game_over():
-        #     print("Gra zakończona!")
-        #     break
+        # Sprawdzenie warunku zakończenia gry
+        if turn_manager.is_game_over():
+            print("Gra zakończona! Osiągnięto maksymalną liczbę tur.")
+            break

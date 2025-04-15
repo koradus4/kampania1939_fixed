@@ -41,3 +41,11 @@ class TurnManager:
             "nation": current_player.nacja,
             "role": current_player.rola,
         }
+
+    def is_game_over(self, max_turns=10):
+        """
+        Sprawdza, czy gra powinna się zakończyć po osiągnięciu maksymalnej liczby tur.
+        :param max_turns: Maksymalna liczba tur.
+        :return: True, jeśli gra się zakończyła, False w przeciwnym razie.
+        """
+        return self.current_turn > max_turns
