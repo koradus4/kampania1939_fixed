@@ -1,5 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk  # Obsługa obrazów
+from gui.panel_pogodowy import PanelPogodowy
 
 class PanelDowodcyNiemcy1(tk.Tk):
     def __init__(self, turn_number):
@@ -32,8 +33,9 @@ class PanelDowodcyNiemcy1(tk.Tk):
         self.end_turn_button.pack(pady=20)
 
         # Sekcja raportu pogodowego
-        self.weather_label = tk.Label(self.left_frame, text="=== Pogoda ===\nBrak danych", font=("Arial", 12), bg="lightgray", justify=tk.LEFT)
-        self.weather_label.pack(pady=10, side=tk.BOTTOM)
+        # Inicjalizacja panelu pogodowego
+        self.weather_panel = PanelPogodowy(self.left_frame)
+        self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
@@ -111,7 +113,7 @@ class PanelDowodcyNiemcy1(tk.Tk):
 
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
-        self.weather_label.config(text=weather_report)
+        self.weather_panel.update_weather(weather_report)
 
 if __name__ == "__main__":
     app = PanelDowodcyNiemcy1(turn_number=1)
