@@ -62,7 +62,12 @@ class PanelDowodcyNiemcy1(tk.Tk):
 
         # Inicjalizacja licznika czasu
         self.remaining_time = 180
-        self.after(1000, self.update_timer)
+
+        # Inicjalizacja identyfikatora after
+        self.timer_id = None
+
+        # Wywołanie timera
+        self.timer_id = self.after(1000, self.update_timer)
 
     def load_map(self, map_path):
         """Wczytuje mapę i wyświetla ją na canvasie."""
@@ -86,7 +91,7 @@ class PanelDowodcyNiemcy1(tk.Tk):
         if self.remaining_time > 0:
             self.remaining_time -= 1
             self.timer_label.config(text=f"Pozostały czas: {self.remaining_time} sekund")
-            self.after(1000, self.update_timer)
+            self.timer_id = self.after(1000, self.update_timer)
         else:
             self.end_turn()
 
@@ -96,6 +101,8 @@ class PanelDowodcyNiemcy1(tk.Tk):
 
     def end_turn(self):
         """Kończy podturę."""
+        if self.timer_id:
+            self.after_cancel(self.timer_id)  # Anulowanie zaplanowanego wywołania
         self.destroy()
 
 if __name__ == "__main__":

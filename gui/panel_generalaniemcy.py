@@ -6,6 +6,10 @@ class PanelGeneralaNiemcy(tk.Tk):
         super().__init__()
         self.title("Panel Generała Niemcy")
         self.state("zoomed")  # Maksymalizacja okna
+        self.remaining_time = 180
+
+        # Inicjalizacja identyfikatora after
+        self.timer_id = None
 
         # Wyświetlanie numeru tury
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
@@ -60,9 +64,8 @@ class PanelGeneralaNiemcy(tk.Tk):
         self.map_canvas.bind("<ButtonPress-1>", self.start_pan)
         self.map_canvas.bind("<B1-Motion>", self.do_pan)
 
-        # Inicjalizacja licznika czasu
-        self.remaining_time = 180
-        self.after(1000, self.update_timer)
+        # Wywołanie timera
+        self.timer_id = self.after(1000, self.update_timer)
 
     def load_map(self, map_path):
         """Wczytuje mapę i wyświetla ją na canvasie."""
@@ -86,7 +89,7 @@ class PanelGeneralaNiemcy(tk.Tk):
         if self.remaining_time > 0:
             self.remaining_time -= 1
             self.timer_label.config(text=f"Pozostały czas: {self.remaining_time} sekund")
-            self.after(1000, self.update_timer)
+            self.timer_id = self.after(1000, self.update_timer)
         else:
             self.end_turn()
 
@@ -96,6 +99,8 @@ class PanelGeneralaNiemcy(tk.Tk):
 
     def end_turn(self):
         """Kończy podturę."""
+        if self.timer_id:
+            self.after_cancel(self.timer_id)  # Anulowanie zaplanowanego wywołania
         self.destroy()
 
 if __name__ == "__main__":
