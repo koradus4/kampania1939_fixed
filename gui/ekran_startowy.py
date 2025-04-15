@@ -24,12 +24,12 @@ class EkranStartowy:
         logging.info("Inicjalizacja ekranu startowego.")
         self.root = root
         self.root.title("Ekran Startowy")
-        self.root.geometry("600x400")
+        self.root.geometry("600x600")  # Zwiększenie wysokości okna
         self.root.configure(bg="#d3d3d3")
 
         self.nacje = ["Polska", "Niemcy"]
-        self.miejsca = [None, None, None, None]  # Gracze 1-4
-        self.stanowiska = ["Generał", "Dowódca", "Generał", "Dowódca"]
+        self.miejsca = [None] * 6  # Gracze 1-6
+        self.stanowiska = ["Generał", "Dowódca 1", "Dowódca 2", "Generał", "Dowódca 1", "Dowódca 2"]
 
         self.create_widgets()
 
@@ -38,7 +38,7 @@ class EkranStartowy:
         tk.Label(self.root, text="Wybór nacji i miejsc w grze", bg="#d3d3d3", font=("Arial", 16)).pack(pady=10)
 
         self.comboboxes = []
-        for i in range(4):
+        for i in range(6):  # Dodanie pól dla 6 graczy
             frame = tk.Frame(self.root, bg="#d3d3d3")
             frame.pack(pady=5)
 
@@ -60,19 +60,24 @@ class EkranStartowy:
 
     def sprawdz_wszystkie_wybory(self):
         """Weryfikuje wszystkie wybory graczy po każdej zmianie."""
-        for idx, nacja in enumerate(self.miejsca):
-            if idx == 0 and self.miejsca[2] and self.miejsca[0] == self.miejsca[2]:
-                logging.error("Gracz 1 i Gracz 3 mają tę samą nację, co jest niezgodne z zasadami.")
-                messagebox.showerror("Błąd", "Gracz 1 i Gracz 3 muszą mieć różne nacje!")
+        # Sprawdzenie, czy drużyny mają spójne nacje
+        if self.miejsca[0] and self.miejsca[3] and self.miejsca[0] == self.miejsca[3]:
+            logging.error("Generałowie obu drużyn mają tę samą nację, co jest niezgodne z zasadami.")
+            messagebox.showerror("Błąd", "Generałowie obu drużyn muszą mieć różne nacje!")
+            return False
+
+        for i in range(3):
+            if self.miejsca[0] and self.miejsca[i] and self.miejsca[0] != self.miejsca[i]:
+                logging.error(f"Gracz {i + 1} w Team 1 ma inną nację niż Generał Team 1.")
+                messagebox.showerror("Błąd", "Wszyscy gracze w Team 1 muszą mieć tę samą nację!")
                 return False
-            if idx == 1 and self.miejsca[0] and self.miejsca[1] and self.miejsca[0] != self.miejsca[1]:
-                logging.error("Gracz 1 i Gracz 2 mają różne nacje, co jest niezgodne z zasadami.")
-                messagebox.showerror("Błąd", "Gracz 1 i Gracz 2 muszą mieć tę samą nację!")
+
+        for i in range(3, 6):
+            if self.miejsca[3] and self.miejsca[i] and self.miejsca[3] != self.miejsca[i]:
+                logging.error(f"Gracz {i + 1} w Team 2 ma inną nację niż Generał Team 2.")
+                messagebox.showerror("Błąd", "Wszyscy gracze w Team 2 muszą mieć tę samą nację!")
                 return False
-            if idx == 3 and self.miejsca[2] and self.miejsca[3] and self.miejsca[2] != self.miejsca[3]:
-                logging.error("Gracz 3 i Gracz 4 mają różne nacje, co jest niezgodne z zasadami.")
-                messagebox.showerror("Błąd", "Gracz 3 i Gracz 4 muszą mieć tę samą nację!")
-                return False
+
         return True
 
     def wybierz_nacje(self, idx, wybor):
@@ -105,19 +110,7 @@ class EkranStartowy:
                 return
 
         # Dodatkowa weryfikacja logiki wyborów
-        if self.miejsca[0] == self.miejsca[2]:
-            logging.error("Gracz 1 i Gracz 3 mają tę samą nację, co jest niezgodne z zasadami.")
-            messagebox.showerror("Błąd", "Gracz 1 i Gracz 3 muszą mieć różne nacje!")
-            return
-
-        if self.miejsca[0] != self.miejsca[1]:
-            logging.error("Gracz 1 i Gracz 2 mają różne nacje, co jest niezgodne z zasadami.")
-            messagebox.showerror("Błąd", "Gracz 1 i Gracz 2 muszą mieć tę samą nację!")
-            return
-
-        if self.miejsca[2] != self.miejsca[3]:
-            logging.error("Gracz 3 i Gracz 4 mają różne nacje, co jest niezgodne z zasadami.")
-            messagebox.showerror("Błąd", "Gracz 3 i Gracz 4 muszą mieć tę samą nację!")
+        if not self.sprawdz_wszystkie_wybory():
             return
 
         logging.info("Gra się rozpoczyna.")
