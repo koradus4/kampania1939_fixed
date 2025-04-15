@@ -28,8 +28,8 @@ class Pogoda:
         else:
             self.opady = random.choice(["Bezdeszczowo", "Lekkie opady", "Intensywne opady"])
 
-        # Dodanie opadów śniegu, jeśli temperatura poniżej zera
-        if self.temperatura < 0:
+        # Dodanie opadów śniegu, jeśli temperatura poniżej zera i nie jest bezdeszczowo
+        if self.temperatura < 0 and self.opady != "Bezdeszczowo":
             self.opady += " (opady śniegu)"
 
     def wypisz_pogode(self):
@@ -37,6 +37,15 @@ class Pogoda:
         print(f"Temperatura: {self.temperatura}°C")
         print(f"Zachmurzenie: {self.zachmurzenie}")
         print(f"Opady: {self.opady}")
+
+    def generuj_raport_pogodowy(self):
+        """Generuje raport pogodowy w formacie tekstowym."""
+        return (
+            f"=== Pogoda ===\n"
+            f"Temperatura: {self.temperatura}°C\n"
+            f"Zachmurzenie: {self.zachmurzenie}\n"
+            f"Opady: {self.opady}\n"
+        )
 
 if __name__ == "__main__":
     pogoda = Pogoda()

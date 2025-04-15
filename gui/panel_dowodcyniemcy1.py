@@ -31,6 +31,10 @@ class PanelDowodcyNiemcy1(tk.Tk):
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
         self.end_turn_button.pack(pady=20)
 
+        # Sekcja raportu pogodowego
+        self.weather_label = tk.Label(self.left_frame, text="=== Pogoda ===\nBrak danych", font=("Arial", 12), bg="lightgray", justify=tk.LEFT)
+        self.weather_label.pack(pady=10, side=tk.BOTTOM)
+
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
@@ -104,6 +108,10 @@ class PanelDowodcyNiemcy1(tk.Tk):
         if self.timer_id:
             self.after_cancel(self.timer_id)  # Anulowanie zaplanowanego wywołania
         self.destroy()
+
+    def update_weather(self, weather_report):
+        """Aktualizuje sekcję raportu pogodowego w panelu."""
+        self.weather_label.config(text=weather_report)
 
 if __name__ == "__main__":
     app = PanelDowodcyNiemcy1(turn_number=1)

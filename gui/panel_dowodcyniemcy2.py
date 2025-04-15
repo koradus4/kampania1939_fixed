@@ -35,6 +35,10 @@ class PanelDowodcyNiemcy2(tk.Tk):
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
         self.end_turn_button.pack(pady=20)
 
+        # Sekcja raportu pogodowego
+        self.weather_label = tk.Label(self.left_frame, text="=== Pogoda ===\nBrak danych", font=("Arial", 12), bg="lightgray", justify=tk.LEFT)
+        self.weather_label.pack(pady=10, side=tk.BOTTOM)
+
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
@@ -96,6 +100,10 @@ class PanelDowodcyNiemcy2(tk.Tk):
     def update_scrollregion(self, event):
         """Aktualizuje obszar przewijania mapy."""
         self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
+
+    def update_weather(self, weather_report):
+        """Aktualizuje sekcję raportu pogodowego w panelu."""
+        self.weather_label.config(text=weather_report)
 
     def end_turn(self):
         """Kończy podturę."""

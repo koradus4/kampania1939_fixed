@@ -8,6 +8,12 @@ class TurnManager:
         self.current_turn = 1
         self.current_player_index = 0
 
+        # Inicjalizacja raportu pogodowego na początku gry
+        from core.pogoda import Pogoda
+        pogoda = Pogoda()
+        pogoda.generuj_pogode()
+        self.current_weather = pogoda.generuj_raport_pogodowy()
+
     def next_turn(self):
         """
         Przechodzi do następnego gracza w kolejności.
@@ -18,6 +24,13 @@ class TurnManager:
         if self.current_player_index >= len(self.players):
             self.current_player_index = 0
             self.current_turn += 1
+
+            if self.current_turn % 6 == 0:  # Co 6 tur generujemy nowy raport pogodowy
+                from core.pogoda import Pogoda
+                pogoda = Pogoda()
+                pogoda.generuj_pogode()
+                self.current_weather = pogoda.generuj_raport_pogodowy()
+
             return True  # Zakończono pełną turę
 
         return False

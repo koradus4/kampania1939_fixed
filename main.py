@@ -49,6 +49,9 @@ if __name__ == "__main__":
             if current_player.numer in [5, 6]:
                 app = PanelDowodcyNiemcy1(turn_number=turn_manager.current_turn) if current_player.numer == 5 else PanelDowodcyNiemcy2(turn_number=turn_manager.current_turn)
 
+        # Zawsze przekazuj ostatni dostępny raport pogodowy
+        app.update_weather(turn_manager.current_weather)
+
         app.mainloop()  # Uruchomienie panelu
 
         # Przejście do następnej tury/podtury
