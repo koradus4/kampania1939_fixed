@@ -12,6 +12,9 @@ class PanelGeneralaNiemcy(tk.Tk):
         # Inicjalizacja identyfikatora after
         self.timer_id = None
 
+        # Flaga wskazująca, czy panel jest aktywny
+        self.is_active = True
+
         # Wyświetlanie numeru tury
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
         self.turn_label.pack(pady=5)
@@ -108,8 +111,14 @@ class PanelGeneralaNiemcy(tk.Tk):
             self.after_cancel(self.timer_id)  # Anulowanie zaplanowanego wywołania
         self.destroy()
 
+    def destroy(self):
+        self.is_active = False  # Ustawienie flagi na False przy niszczeniu panelu
+        print("[DEBUG] PanelGeneralaNiemcy: destroy() called")
+        super().destroy()
+
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
+        print(f"[DEBUG] Aktualizacja pogody w PanelGeneralaNiemcy: {weather_report}")
         self.weather_panel.update_weather(weather_report)
 
 if __name__ == "__main__":

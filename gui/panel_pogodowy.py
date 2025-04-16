@@ -19,6 +19,7 @@ class PanelPogodowy(tk.Frame):
 
     def update_weather(self, weather_report):
         """Aktualizuje zawartość raportu pogodowego."""
+        print(f"[DEBUG] Aktualizacja raportu pogodowego: {weather_report}")
         if not hasattr(self, 'text_area') or not self.text_area.winfo_exists():
             print("Błąd: Panel pogodowy nie istnieje lub został zniszczony.")
             return

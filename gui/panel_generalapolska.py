@@ -110,8 +110,13 @@ class PanelGeneralaPolska(tk.Tk):
             self.after_cancel(self.timer_id)  # Anulowanie zaplanowanego wywołania
         self.destroy()
 
+    def destroy(self):
+        print("[DEBUG] PanelGeneralaPolska: destroy() called")
+        super().destroy()
+
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
+        print(f"[DEBUG] Aktualizacja pogody w PanelGeneralaPolska: {weather_report}")
         self.weather_panel.update_weather(weather_report)
 
 if __name__ == "__main__":

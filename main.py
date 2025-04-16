@@ -37,20 +37,41 @@ if __name__ == "__main__":
         # Pobranie aktualnego gracza
         current_player = turn_manager.get_current_player()
 
+        # Logowanie przed otwarciem panelu
+        print(f"[DEBUG] Próba otwarcia panelu dla gracza: {current_player}")
+
         # Otwieranie odpowiedniego panelu z numerem tury
         if current_player.rola == "Generał" and current_player.nacja == "Polska":
+            print(f"[DEBUG] Przypisano PanelGeneralaPolska dla gracza {current_player.numer}")
             app = PanelGeneralaPolska(turn_number=turn_manager.current_turn)
         elif current_player.rola == "Generał" and current_player.nacja == "Niemcy":
+            print(f"[DEBUG] Przypisano PanelGeneralaNiemcy dla gracza {current_player.numer}")
             app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn)
         elif current_player.rola == "Dowódca" and current_player.nacja == "Polska":
-            if current_player.numer in [2, 3]:
-                app = PanelDowodcyPolska1(turn_number=turn_manager.current_turn) if current_player.numer == 2 else PanelDowodcyPolska2(turn_number=turn_manager.current_turn)
+            if current_player.numer in [2, 5]:
+                print(f"[DEBUG] Przypisano PanelDowodcyPolska1 dla gracza {current_player.numer}")
+                app = PanelDowodcyPolska1(turn_number=turn_manager.current_turn)
+            elif current_player.numer in [3, 6]:
+                print(f"[DEBUG] Przypisano PanelDowodcyPolska2 dla gracza {current_player.numer}")
+                app = PanelDowodcyPolska2(turn_number=turn_manager.current_turn)
         elif current_player.rola == "Dowódca" and current_player.nacja == "Niemcy":
-            if current_player.numer in [5, 6]:
-                app = PanelDowodcyNiemcy1(turn_number=turn_manager.current_turn) if current_player.numer == 5 else PanelDowodcyNiemcy2(turn_number=turn_manager.current_turn)
+            if current_player.numer in [2, 5]:
+                print(f"[DEBUG] Przypisano PanelDowodcyNiemcy1 dla gracza {current_player.numer}")
+                app = PanelDowodcyNiemcy1(turn_number=turn_manager.current_turn)
+            elif current_player.numer in [3, 6]:
+                print(f"[DEBUG] Przypisano PanelDowodcyNiemcy2 dla gracza {current_player.numer}")
+                app = PanelDowodcyNiemcy2(turn_number=turn_manager.current_turn)
+        else:
+            print(f"[ERROR] Nie znaleziono odpowiedniego panelu dla gracza: {current_player}")
+            continue
 
-        # Zawsze przekazuj ostatni dostępny raport pogodowy
-        app.update_weather(turn_manager.current_weather)
+        # Logowanie po otwarciu panelu
+        print(f"[DEBUG] Otworzono panel: {type(app).__name__} dla gracza: {current_player}")
+
+        # Bezpieczne sprawdzenie, czy panel istnieje przed aktualizacją
+        if app is not None and hasattr(app, 'is_active') and app.is_active:
+            print(f"[DEBUG] Aktualizacja pogody dla panelu: {app}")
+            app.update_weather(turn_manager.current_weather)
 
         app.mainloop()  # Uruchomienie panelu
 
