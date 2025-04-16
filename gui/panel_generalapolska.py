@@ -116,7 +116,7 @@ class PanelGeneralaPolska(tk.Tk):
 
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
-        print(f"[DEBUG] Aktualizacja pogody w PanelGeneralaPolska: {weather_report}")
+        print(f"[DEBUG] PanelGeneralaPolska: Otrzymano raport pogodowy: {weather_report}")
         self.weather_panel.update_weather(weather_report)
 
 if __name__ == "__main__":

@@ -14,6 +14,16 @@ class TurnManager:
         pogoda.generuj_pogode()
         self.current_weather = pogoda.generuj_raport_pogodowy()
 
+    def rozpocznij_nowa_ture(self):
+        """Rozpoczyna nową turę i generuje pogodę raz na dzień."""
+        if self.current_turn % 6 == 1:  # Generowanie pogody raz na dzień (co 6 tur)
+            print(f"[DEBUG] Rozpoczęcie nowego dnia: Tura {self.current_turn}")
+            self.weather.generuj_pogode()
+
+        # Inkrementacja tury
+        self.current_turn += 1
+        print(f"[DEBUG] Rozpoczęcie nowej tury: {self.current_turn}")
+
     def next_turn(self):
         """
         Przechodzi do następnego gracza w kolejności.

@@ -8,13 +8,22 @@ class Pogoda:
         self.poprzednia_temperatura = None  # Przechowuje temperaturę z poprzedniego dnia
 
     def generuj_pogode(self):
-        # Generowanie temperatury z ograniczeniem różnicy do 2 stopni
+        """Generuje pogodę raz na dzień z ograniczeniem zmiany temperatury do 2 stopni."""
+        min_temp = None
+        max_temp = None
+
         if self.poprzednia_temperatura is None:
             self.temperatura = random.randint(-5, 25)  # Pierwszy dzień bez ograniczeń
         else:
             min_temp = max(-5, self.poprzednia_temperatura - 2)
             max_temp = min(25, self.poprzednia_temperatura + 2)
             self.temperatura = random.randint(min_temp, max_temp)
+
+        # Logowanie szczegółów generowania temperatury
+        print(f"[DEBUG] Poprzednia temperatura: {self.poprzednia_temperatura}")
+        if min_temp is not None and max_temp is not None:
+            print(f"[DEBUG] Zakres temperatury: {min_temp} - {max_temp}")
+        print(f"[DEBUG] Nowa temperatura: {self.temperatura}")
 
         # Zapisanie obecnej temperatury jako poprzedniej na przyszłość
         self.poprzednia_temperatura = self.temperatura
@@ -33,6 +42,9 @@ class Pogoda:
         # Dodanie opadów śniegu, jeśli temperatura poniżej zera i nie jest bezdeszczowo
         if self.temperatura < 0 and self.opady != "Bezdeszczowo":
             self.opady += " (opady śniegu)"
+
+        # Logowanie wygenerowanej pogody
+        print(f"[DEBUG] Wygenerowano pogodę: Temperatura: {self.temperatura}°C, Zachmurzenie: {self.zachmurzenie}, Opady: {self.opady}")
 
     def wypisz_pogode(self):
         print("=== Pogoda na dziś ===")

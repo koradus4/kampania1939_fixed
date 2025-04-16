@@ -73,6 +73,11 @@ if __name__ == "__main__":
             print(f"[DEBUG] Aktualizacja pogody dla panelu: {app}")
             app.update_weather(turn_manager.current_weather)
 
+        # Aktualizacja pogody dla panelu
+        if hasattr(app, 'update_weather'):
+            print(f"[DEBUG] Wywołanie update_weather dla panelu: {type(app).__name__}")
+            app.update_weather(turn_manager.current_weather)
+
         app.mainloop()  # Uruchomienie panelu
 
         # Przejście do następnej tury/podtury
