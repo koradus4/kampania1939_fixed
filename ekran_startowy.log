@@ -1,16 +1,30 @@
-2025-04-16 21:52:18,973 - INFO - Inicjalizacja ekranu startowego.
-2025-04-16 21:52:18,974 - INFO - Tworzenie wid¿etów ekranu startowego.
-2025-04-16 21:52:20,497 - DEBUG - Gracz 1 wybra³ nacjê: Niemcy
-2025-04-16 21:52:20,498 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-16 21:52:21,415 - DEBUG - Gracz 2 wybra³ nacjê: Niemcy
-2025-04-16 21:52:21,415 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-16 21:52:22,345 - DEBUG - Gracz 3 wybra³ nacjê: Niemcy
-2025-04-16 21:52:22,346 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-16 21:52:23,083 - DEBUG - Gracz 4 wybra³ nacjê: Polska
-2025-04-16 21:52:23,083 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Polska
-2025-04-16 21:52:23,897 - DEBUG - Gracz 5 wybra³ nacjê: Polska
-2025-04-16 21:52:23,897 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Polska
-2025-04-16 21:52:24,673 - DEBUG - Gracz 6 wybra³ nacjê: Polska
-2025-04-16 21:52:24,673 - INFO - Gracz 6 pomyœlnie wybra³ nacjê: Polska
-2025-04-16 21:52:25,034 - INFO - Próba rozpoczêcia gry.
-2025-04-16 21:52:25,034 - INFO - Gra siê rozpoczyna.
+2025-04-17 20:21:51,983 - INFO - Inicjalizacja ekranu startowego.
+2025-04-17 20:21:51,984 - INFO - Tworzenie wid¿etów ekranu startowego.
+2025-04-17 20:21:53,858 - DEBUG - Gracz 1 wybra³ nacjê: Polska
+2025-04-17 20:21:53,859 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Polska
+2025-04-17 20:21:54,743 - DEBUG - Gracz 2 wybra³ nacjê: Niemcy
+2025-04-17 20:21:54,743 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-17 20:21:54,744 - ERROR - Gracz 2 w Team 1 ma inn¹ nacjê ni¿ Genera³ Team 1.
+2025-04-17 20:21:57,143 - DEBUG - Gracz 2 wybra³ nacjê: Polska
+2025-04-17 20:21:57,143 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Polska
+2025-04-17 20:21:57,868 - DEBUG - Gracz 3 wybra³ nacjê: Polska
+2025-04-17 20:21:57,869 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Polska
+2025-04-17 20:21:58,608 - DEBUG - Gracz 4 wybra³ nacjê: Niemcy
+2025-04-17 20:21:58,608 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-17 20:21:59,572 - DEBUG - Gracz 5 wybra³ nacjê: Polska
+2025-04-17 20:21:59,572 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Polska
+2025-04-17 20:21:59,572 - ERROR - Gracz 5 w Team 2 ma inn¹ nacjê ni¿ Genera³ Team 2.
+2025-04-17 20:22:02,338 - DEBUG - Gracz 5 wybra³ nacjê: Niemcy
+2025-04-17 20:22:02,338 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-17 20:22:03,151 - DEBUG - Gracz 6 wybra³ nacjê: Niemcy
+2025-04-17 20:22:03,152 - INFO - Gracz 6 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-17 20:22:17,584 - ERROR - Czas dla Team 2 przekracza 15 minut.
+2025-04-17 20:22:27,003 - ERROR - Czas dla Team 2 przekracza 15 minut.
+2025-04-17 20:22:30,856 - INFO - Próba rozpoczêcia gry.
+2025-04-17 20:22:30,857 - INFO - Gracz 1 - Genera³: 3 minut
+2025-04-17 20:22:30,857 - INFO - Gracz 2 - Dowódca 1: 4 minut
+2025-04-17 20:22:30,857 - INFO - Gracz 3 - Dowódca 2: 8 minut
+2025-04-17 20:22:30,858 - INFO - Gracz 4 - Genera³: 3 minut
+2025-04-17 20:22:30,858 - INFO - Gracz 5 - Dowódca 1: 5 minut
+2025-04-17 20:22:30,858 - INFO - Gracz 6 - Dowódca 2: 7 minut
+2025-04-17 20:22:30,858 - INFO - Gra siê rozpoczyna.

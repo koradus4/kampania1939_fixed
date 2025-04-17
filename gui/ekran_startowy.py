@@ -38,6 +38,8 @@ class EkranStartowy:
         tk.Label(self.root, text="Wybór nacji i miejsc w grze", bg="#d3d3d3", font=("Arial", 16)).pack(pady=10)
 
         self.comboboxes = []
+        self.czas_comboboxes = []  # Dodanie listy do przechowywania wyborów czasu
+
         for i in range(6):  # Dodanie pól dla 6 graczy
             frame = tk.Frame(self.root, bg="#d3d3d3")
             frame.pack(pady=5)
@@ -50,12 +52,23 @@ class EkranStartowy:
             combobox.pack(side=tk.LEFT)
             self.comboboxes.append(combobox)
 
+            czas_combobox = ttk.Combobox(frame, values=list(range(1, 11)), state="readonly")
+            czas_combobox.set(5)  # Domyślnie ustawione na 5 minut
+            czas_combobox.bind("<<ComboboxSelected>>", self.create_czas_callback(i))
+            czas_combobox.pack(side=tk.LEFT, padx=10)
+            self.czas_comboboxes.append(czas_combobox)
+
         tk.Button(self.root, text="Rozpocznij grę", command=self.rozpocznij_gre, bg="#4CAF50", fg="white").pack(pady=20)
 
     def create_callback(self, idx):
         def callback(event):
             wybor = self.comboboxes[idx].get()
             self.wybierz_nacje(idx, wybor)
+        return callback
+
+    def create_czas_callback(self, idx):
+        def callback(event):
+            self.sprawdz_czas(idx)
         return callback
 
     def sprawdz_wszystkie_wybory(self):
@@ -79,6 +92,32 @@ class EkranStartowy:
                 return False
 
         return True
+
+    def sprawdz_czas(self, idx):
+        """Weryfikuje, czy suma czasu dla jednej nacji nie przekracza 15 minut i dostosowuje czas ostatniego gracza."""
+        team_1_czas = sum(int(self.czas_comboboxes[i].get()) for i in range(3) if self.czas_comboboxes[i].get().isdigit())
+        team_2_czas = sum(int(self.czas_comboboxes[i].get()) for i in range(3, 6) if self.czas_comboboxes[i].get().isdigit())
+
+        # Dostosowanie czasu dla ostatniego gracza w Team 1
+        if team_1_czas < 15:
+            pozostaly_czas = 15 - sum(int(self.czas_comboboxes[i].get()) for i in range(2))
+            self.czas_comboboxes[2].set(pozostaly_czas)
+
+        # Dostosowanie czasu dla ostatniego gracza w Team 2
+        if team_2_czas < 15:
+            pozostaly_czas = 15 - sum(int(self.czas_comboboxes[i].get()) for i in range(3, 5))
+            self.czas_comboboxes[5].set(pozostaly_czas)
+
+        # Walidacja przekroczenia czasu
+        if team_1_czas > 15:
+            logging.error("Czas dla Team 1 przekracza 15 minut.")
+            messagebox.showerror("Błąd", "Czas dla Team 1 nie może przekraczać 15 minut!")
+            self.czas_comboboxes[idx].set(5)
+
+        if team_2_czas > 15:
+            logging.error("Czas dla Team 2 przekracza 15 minut.")
+            messagebox.showerror("Błąd", "Czas dla Team 2 nie może przekraczać 15 minut!")
+            self.czas_comboboxes[idx].set(5)
 
     def wybierz_nacje(self, idx, wybor):
         logging.debug(f"Gracz {idx + 1} wybrał nację: {wybor}")
@@ -112,6 +151,11 @@ class EkranStartowy:
         # Dodatkowa weryfikacja logiki wyborów
         if not self.sprawdz_wszystkie_wybory():
             return
+
+        # Zapisanie czasów do logów
+        for i in range(6):
+            czas = self.czas_comboboxes[i].get()
+            logging.info(f"Gracz {i + 1} - {self.stanowiska[i]}: {czas} minut")
 
         logging.info("Gra się rozpoczyna.")
         messagebox.showinfo("Start", "Gra się rozpoczyna!")
