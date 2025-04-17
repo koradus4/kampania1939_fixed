@@ -1,5 +1,7 @@
 # Plik do dalszej implementacji
 
+from core.ekonomia import EconomySystem
+
 class Gracz:
     def __init__(self, numer, nacja, rola, czas=5):
         """
@@ -13,6 +15,7 @@ class Gracz:
         self.nacja = nacja
         self.rola = rola
         self.czas = czas  # Czas na podturę
+        self.economy = EconomySystem()  # Indywidualny system ekonomii dla gracza
 
     def __str__(self):
         return f"Gracz {self.numer}: {self.nacja} - {self.rola} - {self.czas} minut"

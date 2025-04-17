@@ -1,13 +1,15 @@
 import tkinter as tk
 from PIL import Image, ImageTk  # Obsługa obrazów
 from gui.panel_pogodowy import PanelPogodowy
+from gui.panel_ekonomiczny import PanelEkonomiczny
 
 class PanelGeneralaNiemcy(tk.Tk):
-    def __init__(self, turn_number):
+    def __init__(self, turn_number, ekonomia):
         super().__init__()
         self.title("Panel Generała Niemcy")
         self.state("zoomed")  # Maksymalizacja okna
         self.remaining_time = 180
+        self.ekonomia = ekonomia  # Przechowywanie obiektu ekonomii
 
         # Inicjalizacja identyfikatora after
         self.timer_id = None
@@ -42,6 +44,10 @@ class PanelGeneralaNiemcy(tk.Tk):
         # Sekcja raportu pogodowego
         self.weather_panel = PanelPogodowy(self.left_frame)
         self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
+
+        # Dodanie sekcji raportu ekonomicznego
+        self.economy_panel = PanelEkonomiczny(self.left_frame)
+        self.economy_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
@@ -121,6 +127,12 @@ class PanelGeneralaNiemcy(tk.Tk):
         print(f"[DEBUG] PanelGeneralaNiemcy: Otrzymano raport pogodowy: {weather_report}")
         self.weather_panel.update_weather(weather_report)
 
+    def update_economy(self):
+        """Aktualizuje sekcję raportu ekonomicznego w panelu."""
+        print(f"[DEBUG] PanelGeneralaNiemcy: Aktualizacja raportu ekonomicznego: Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}, Punkty specjalne: {self.ekonomia.get_points()['special_points']}")
+        economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
+        self.economy_panel.update_economy(economy_report)
+
 if __name__ == "__main__":
-    app = PanelGeneralaNiemcy(turn_number=1)
+    app = PanelGeneralaNiemcy(turn_number=1, ekonomia=None)  # Przekazanie obiektu ekonomii
     app.mainloop()

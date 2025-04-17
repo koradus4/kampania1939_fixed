@@ -1,16 +1,35 @@
 import tkinter as tk
 from PIL import Image, ImageTk  # Obsługa obrazów
 from gui.panel_pogodowy import PanelPogodowy
+from gui.panel_ekonomiczny import PanelEkonomiczny
 
 class PanelGeneralaPolska(tk.Tk):
-    def __init__(self, turn_number):
+    def __init__(self, turn_number, ekonomia):
         super().__init__()
         self.title("Panel Generała Polska")
         self.state("zoomed")  # Maksymalizacja okna
+        self.remaining_time = 180
+        self.ekonomia = ekonomia  # Przechowywanie obiektu ekonomii
 
         # Wyświetlanie numeru tury
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
         self.turn_label.pack(pady=5)
+
+        # Ramka z czasem
+        self.time_frame = tk.Frame(self, bg="lightgray", padx=10, pady=10)
+        self.time_frame.pack(pady=10, fill=tk.X)
+        self.time_label = tk.Label(self.time_frame, text="Pozostały czas: 5:00", font=("Arial", 14))
+        self.time_label.pack()
+
+        # Ramka z punktami ekonomicznymi
+        self.economy_frame = tk.Frame(self, bg="lightgray", padx=10, pady=10)
+        self.economy_frame.pack(pady=10, fill=tk.X)
+        self.economy_label = tk.Label(self.economy_frame, text=f"Punkty ekonomiczne: {ekonomia.get_points()['economic_points']}", font=("Arial", 14))
+        self.economy_label.pack()
+
+        # Przycisk kupowania czasu
+        self.buy_time_button = tk.Button(self.economy_frame, text="Kup dodatkowy czas", command=self.buy_time)
+        self.buy_time_button.pack(pady=5)
 
         # Główna ramka podziału
         self.main_frame = tk.Frame(self)
@@ -32,9 +51,12 @@ class PanelGeneralaPolska(tk.Tk):
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
         self.end_turn_button.pack(pady=20)
 
-        # Sekcja raportu pogodowego
+        # Przeniesienie ramki dla raportu ekonomicznego bezpośrednio nad raport pogodowy
         self.weather_panel = PanelPogodowy(self.left_frame)
         self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
+
+        self.economy_panel = PanelEkonomiczny(self.left_frame)
+        self.economy_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
@@ -64,9 +86,6 @@ class PanelGeneralaPolska(tk.Tk):
         # Obsługa przesuwania myszką
         self.map_canvas.bind("<ButtonPress-1>", self.start_pan)
         self.map_canvas.bind("<B1-Motion>", self.do_pan)
-
-        # Inicjalizacja licznika czasu
-        self.remaining_time = 180
 
         # Inicjalizacja identyfikatora after
         self.timer_id = None
@@ -119,6 +138,21 @@ class PanelGeneralaPolska(tk.Tk):
         print(f"[DEBUG] PanelGeneralaPolska: Otrzymano raport pogodowy: {weather_report}")
         self.weather_panel.update_weather(weather_report)
 
+    def update_economy(self):
+        """Aktualizuje sekcję raportu ekonomicznego w panelu."""
+        print(f"[DEBUG] PanelGeneralaPolska: Aktualizacja raportu ekonomicznego: Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}, Punkty specjalne: {self.ekonomia.get_points()['special_points']}")
+        economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
+        self.economy_panel.update_economy(economy_report)
+
+    def buy_time(self):
+        """Logika kupowania dodatkowego czasu."""
+        print("Kupiono dodatkowy czas!")
+
 if __name__ == "__main__":
-    app = PanelGeneralaPolska(turn_number=1)
+    class MockEkonomia:
+        def get_points(self, nation=None):
+            return {"economic_points": 100, "special_points": 50}
+
+    ekonomia = MockEkonomia()
+    app = PanelGeneralaPolska(turn_number=1, ekonomia=ekonomia)
     app.mainloop()

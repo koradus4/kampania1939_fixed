@@ -8,6 +8,14 @@ from gui.panel_dowodcypolska2 import PanelDowodcyPolska2
 from gui.panel_dowodcyniemcy1 import PanelDowodcyNiemcy1
 from gui.panel_dowodcyniemcy2 import PanelDowodcyNiemcy2
 import tkinter as tk
+import logging
+
+# Dodanie debugowania do terminala
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
+console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(console_formatter)
+logging.getLogger().addHandler(console_handler)
 
 # Funkcja główna
 if __name__ == "__main__":
@@ -43,10 +51,10 @@ if __name__ == "__main__":
         # Otwieranie odpowiedniego panelu z numerem tury
         if current_player.rola == "Generał" and current_player.nacja == "Polska":
             print(f"[DEBUG] Przypisano PanelGeneralaPolska dla gracza {current_player.numer}")
-            app = PanelGeneralaPolska(turn_number=turn_manager.current_turn)
+            app = PanelGeneralaPolska(turn_number=turn_manager.current_turn, ekonomia=current_player.economy)
         elif current_player.rola == "Generał" and current_player.nacja == "Niemcy":
             print(f"[DEBUG] Przypisano PanelGeneralaNiemcy dla gracza {current_player.numer}")
-            app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn)
+            app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn, ekonomia=current_player.economy)
         elif current_player.rola == "Dowódca" and current_player.nacja == "Polska":
             if current_player.numer in [2, 5]:
                 print(f"[DEBUG] Przypisano PanelDowodcyPolska1 dla gracza {current_player.numer}")
@@ -78,7 +86,21 @@ if __name__ == "__main__":
             print(f"[DEBUG] Wywołanie update_weather dla panelu: {type(app).__name__}")
             app.update_weather(turn_manager.current_weather)
 
+        # Aktualizacja raportu ekonomicznego tylko dla paneli generałów
+        if isinstance(app, (PanelGeneralaPolska, PanelGeneralaNiemcy)):
+            current_player.economy.generate_economic_points()
+            current_player.economy.add_special_points()
+            app.update_economy()
+
         app.mainloop()  # Uruchomienie panelu
+
+        # Logowanie szczegółów po każdej turze do terminala
+        logging.info("=== Szczegóły tury ===")
+        logging.info(f"Aktualny gracz: {current_player}")
+        logging.info(f"Numer tury: {turn_manager.current_turn}")
+        logging.info(f"Pogoda: {turn_manager.current_weather}")
+        logging.info(f"Punkty ekonomiczne: {current_player.economy.get_points()['economic_points']}")
+        logging.info(f"Punkty specjalne: {current_player.economy.get_points()['special_points']}")
 
         # Przejście do następnej tury/podtury
         if turn_manager.next_turn():
