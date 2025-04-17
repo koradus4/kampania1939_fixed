@@ -15,22 +15,6 @@ class PanelGeneralaPolska(tk.Tk):
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
         self.turn_label.pack(pady=5)
 
-        # Ramka z czasem
-        self.time_frame = tk.Frame(self, bg="lightgray", padx=10, pady=10)
-        self.time_frame.pack(pady=10, fill=tk.X)
-        self.time_label = tk.Label(self.time_frame, text="Pozostały czas: 5:00", font=("Arial", 14))
-        self.time_label.pack()
-
-        # Ramka z punktami ekonomicznymi
-        self.economy_frame = tk.Frame(self, bg="lightgray", padx=10, pady=10)
-        self.economy_frame.pack(pady=10, fill=tk.X)
-        self.economy_label = tk.Label(self.economy_frame, text=f"Punkty ekonomiczne: {ekonomia.get_points()['economic_points']}", font=("Arial", 14))
-        self.economy_label.pack()
-
-        # Przycisk kupowania czasu
-        self.buy_time_button = tk.Button(self.economy_frame, text="Kup dodatkowy czas", command=self.buy_time)
-        self.buy_time_button.pack(pady=5)
-
         # Główna ramka podziału
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
@@ -50,6 +34,10 @@ class PanelGeneralaPolska(tk.Tk):
         # Przycisk zakończenia podtury
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
         self.end_turn_button.pack(pady=20)
+
+        # Przeniesienie przycisku "Kup dodatkowy czas" do lewej sekcji
+        self.buy_time_button = tk.Button(self.left_frame, text="Kup dodatkowy czas", command=self.buy_time)
+        self.buy_time_button.pack(pady=10)
 
         # Przeniesienie ramki dla raportu ekonomicznego bezpośrednio nad raport pogodowy
         self.weather_panel = PanelPogodowy(self.left_frame)

@@ -41,6 +41,10 @@ class PanelGeneralaNiemcy(tk.Tk):
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
         self.end_turn_button.pack(pady=20)
 
+        # Dodanie przycisku "Kup dodatkowy czas" do lewej sekcji
+        self.buy_time_button = tk.Button(self.left_frame, text="Kup dodatkowy czas", command=self.buy_time)
+        self.buy_time_button.pack(pady=10)
+
         # Sekcja raportu pogodowego
         self.weather_panel = PanelPogodowy(self.left_frame)
         self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
@@ -132,6 +136,12 @@ class PanelGeneralaNiemcy(tk.Tk):
         print(f"[DEBUG] PanelGeneralaNiemcy: Aktualizacja raportu ekonomicznego: Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}, Punkty specjalne: {self.ekonomia.get_points()['special_points']}")
         economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
         self.economy_panel.update_economy(economy_report)
+
+    def buy_time(self):
+        """Kupuje dodatkowy czas."""
+        print("[DEBUG] PanelGeneralaNiemcy: Kupiono dodatkowy czas")
+        self.remaining_time += 30
+        self.timer_label.config(text=f"Pozostały czas: {self.remaining_time} sekund")
 
 if __name__ == "__main__":
     app = PanelGeneralaNiemcy(turn_number=1, ekonomia=None)  # Przekazanie obiektu ekonomii
