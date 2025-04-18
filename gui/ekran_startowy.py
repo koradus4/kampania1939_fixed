@@ -4,6 +4,9 @@ import tkinter.simpledialog as simpledialog
 from tkinter import ttk
 import logging
 
+# Dodanie importu klasy Gracz
+from model.gracz import Gracz
+
 # Konfiguracja loggera
 logging.basicConfig(
     level=logging.DEBUG,
@@ -138,6 +141,12 @@ class EkranStartowy:
             self.miejsca[idx] = None
             self.comboboxes[idx].set("")
 
+    def get_czas_na_ture(self, idx):
+        """Pobiera czas na podturę dla danego gracza."""
+        czas = self.czas_comboboxes[idx].get()
+        logging.debug(f"Czas na turę dla gracza {idx + 1}: {czas}")
+        return int(czas) if czas.isdigit() else 5
+
     def rozpocznij_gre(self):
         logging.info("Próba rozpoczęcia gry.")
 
@@ -152,14 +161,19 @@ class EkranStartowy:
         if not self.sprawdz_wszystkie_wybory():
             return
 
-        # Zapisanie czasów do logów
-        for i in range(6):
-            czas = self.czas_comboboxes[i].get()
-            logging.info(f"Gracz {i + 1} - {self.stanowiska[i]}: {czas} minut")
+        # Zapisanie danych w atrybutach klasy przed zniszczeniem GUI
+        self.game_data = {
+            "miejsca": self.miejsca,
+            "czasy": [self.get_czas_na_ture(i) for i in range(6)]
+        }
 
         logging.info("Gra się rozpoczyna.")
         messagebox.showinfo("Start", "Gra się rozpoczyna!")
         self.root.destroy()
+
+    def get_game_data(self):
+        """Zwraca zapisane dane gry."""
+        return self.game_data
 
 if __name__ == "__main__":
     root = tk.Tk()

@@ -3,14 +3,18 @@ from PIL import Image, ImageTk  # Obsługa obrazów
 from gui.panel_pogodowy import PanelPogodowy
 
 class PanelDowodcyNiemcy1(tk.Tk):
-    def __init__(self, turn_number):
+    def __init__(self, turn_number, remaining_time):
         super().__init__()
+        self.remaining_time = remaining_time
         self.title("Panel Dowódcy Niemcy 1")
         self.state("zoomed")  # Maksymalizacja okna
 
         # Wyświetlanie numeru tury
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
         self.turn_label.pack(pady=5)
+
+        # Debugowanie pozostałego czasu na turę
+        print(f"[DEBUG] Pozostały czas na turę: {self.remaining_time}")
 
         # Główna ramka podziału
         self.main_frame = tk.Frame(self)
@@ -27,6 +31,16 @@ class PanelDowodcyNiemcy1(tk.Tk):
         # Przycisk zakończenia podtury
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
         self.end_turn_button.pack(pady=20)
+
+        # Sekcja odliczania czasu
+        self.timer_frame = tk.Frame(self.left_frame, bg="white", relief=tk.SUNKEN, borderwidth=2)
+        self.timer_frame.pack(pady=10, fill=tk.BOTH, expand=False)
+
+        self.timer_label = tk.Label(self.timer_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14), bg="white")
+        self.timer_label.pack(pady=5)
+
+        # Uruchomienie timera
+        self.update_timer()
 
         # Sekcja raportu pogodowego
         # Inicjalizacja panelu pogodowego
@@ -87,11 +101,23 @@ class PanelDowodcyNiemcy1(tk.Tk):
         """Kończy podturę."""
         self.destroy()
 
+    def destroy(self):
+        if hasattr(self, 'timer_id'):
+            self.after_cancel(self.timer_id)
+        super().destroy()
+
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
         print(f"[DEBUG] PanelDowodcyNiemcy1: Otrzymano raport pogodowy: {weather_report}")
         self.weather_panel.update_weather(weather_report)
 
+    def update_timer(self):
+        if self.winfo_exists():
+            if self.remaining_time > 0:
+                self.remaining_time -= 1
+                self.timer_label.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
+                self.timer_id = self.after(1000, self.update_timer)
+
 if __name__ == "__main__":
-    app = PanelDowodcyNiemcy1(turn_number=1)
+    app = PanelDowodcyNiemcy1(turn_number=1, remaining_time=60)
     app.mainloop()

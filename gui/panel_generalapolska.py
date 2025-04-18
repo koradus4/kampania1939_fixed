@@ -4,11 +4,15 @@ from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_ekonomiczny import PanelEkonomiczny
 
 class PanelGeneralaPolska(tk.Tk):
-    def __init__(self, turn_number, ekonomia):
+    def __init__(self, turn_number, ekonomia, gracz):
         super().__init__()
         self.title("Panel Generała Polska")
         self.state("zoomed")  # Maksymalizacja okna
         self.ekonomia = ekonomia  # Przechowywanie obiektu ekonomii
+
+        # Pobranie czasu na podturę z obiektu Gracz
+        self.remaining_time = gracz.czas * 60  # Czas na podturę w sekundach
+        print(f"[DEBUG] Pozostały czas na turę: {self.remaining_time}")
 
         # Wyświetlanie numeru tury
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
@@ -25,6 +29,16 @@ class PanelGeneralaPolska(tk.Tk):
         # Nagłówek
         self.label = tk.Label(self.left_frame, text="Panel Generała Polska", font=("Arial", 16), bg="lightgray")
         self.label.pack(pady=10)
+
+        # Sekcja odliczania czasu
+        self.timer_frame = tk.Frame(self.left_frame, bg="white", relief=tk.SUNKEN, borderwidth=2)
+        self.timer_frame.pack(pady=10, fill=tk.BOTH, expand=False)
+
+        self.timer_label = tk.Label(self.timer_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14), bg="white")
+        self.timer_label.pack(pady=5)
+
+        # Uruchomienie timera
+        self.update_timer()
 
         # Przycisk zakończenia podtury
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
@@ -91,6 +105,15 @@ class PanelGeneralaPolska(tk.Tk):
         """Aktualizuje obszar przewijania mapy."""
         self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
 
+    def update_timer(self):
+        """Odlicza czas i aktualizuje etykietę."""
+        if self.remaining_time > 0:
+            self.remaining_time -= 1
+            self.timer_label.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
+            self.after(1000, self.update_timer)
+        else:
+            self.end_turn()
+
     def end_turn(self):
         """Kończy podturę."""
         self.destroy()
@@ -119,6 +142,11 @@ if __name__ == "__main__":
         def get_points(self, nation=None):
             return {"economic_points": 100, "special_points": 50}
 
+    class MockGracz:
+        def __init__(self):
+            self.czas = 5
+
     ekonomia = MockEkonomia()
-    app = PanelGeneralaPolska(turn_number=1, ekonomia=ekonomia)
+    gracz = MockGracz()
+    app = PanelGeneralaPolska(turn_number=1, ekonomia=ekonomia, gracz=gracz)
     app.mainloop()

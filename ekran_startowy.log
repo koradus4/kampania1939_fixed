@@ -1,332 +1,85 @@
-2025-04-18 12:42:54,892 - INFO - Inicjalizacja ekranu startowego.
-2025-04-18 12:42:54,892 - INFO - Tworzenie wid¿etów ekranu startowego.
-2025-04-18 12:42:57,249 - DEBUG - Gracz 1 wybra³ nacjê: Niemcy
-2025-04-18 12:42:57,249 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 12:42:58,080 - DEBUG - Gracz 2 wybra³ nacjê: Niemcy
-2025-04-18 12:42:58,080 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 12:42:58,989 - DEBUG - Gracz 3 wybra³ nacjê: Niemcy
-2025-04-18 12:42:58,990 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 12:43:00,239 - DEBUG - Gracz 4 wybra³ nacjê: Polska
-2025-04-18 12:43:00,239 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 12:43:01,030 - DEBUG - Gracz 5 wybra³ nacjê: Polska
-2025-04-18 12:43:01,031 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 12:43:01,839 - DEBUG - Gracz 6 wybra³ nacjê: Polska
-2025-04-18 12:43:01,840 - INFO - Gracz 6 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 12:43:02,274 - INFO - Próba rozpoczêcia gry.
-2025-04-18 12:43:02,275 - INFO - Gracz 1 - Genera³: 5 minut
-2025-04-18 12:43:02,275 - INFO - Gracz 2 - Dowódca 1: 5 minut
-2025-04-18 12:43:02,276 - INFO - Gracz 3 - Dowódca 2: 5 minut
-2025-04-18 12:43:02,276 - INFO - Gracz 4 - Genera³: 5 minut
-2025-04-18 12:43:02,277 - INFO - Gracz 5 - Dowódca 1: 5 minut
-2025-04-18 12:43:02,277 - INFO - Gracz 6 - Dowódca 2: 5 minut
-2025-04-18 12:43:02,278 - INFO - Gra siê rozpoczyna.
-2025-04-18 12:43:07,055 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:07,056 - INFO - Aktualny gracz: Gracz 1: Niemcy - Genera³ - 5 minut
-2025-04-18 12:43:07,060 - INFO - Numer tury: 1
-2025-04-18 12:43:07,072 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
+2025-04-18 21:19:26,237 - INFO - Inicjalizacja ekranu startowego.
+2025-04-18 21:19:26,238 - INFO - Tworzenie wid¿etów ekranu startowego.
+2025-04-18 21:19:28,078 - DEBUG - Gracz 1 wybra³ nacjê: Niemcy
+2025-04-18 21:19:28,078 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-18 21:19:29,179 - DEBUG - Gracz 2 wybra³ nacjê: Polska
+2025-04-18 21:19:29,180 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Polska
+2025-04-18 21:19:29,180 - ERROR - Gracz 2 w Team 1 ma inn¹ nacjê ni¿ Genera³ Team 1.
+2025-04-18 21:19:32,031 - DEBUG - Gracz 2 wybra³ nacjê: Niemcy
+2025-04-18 21:19:32,032 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-18 21:19:33,041 - DEBUG - Gracz 3 wybra³ nacjê: Niemcy
+2025-04-18 21:19:33,042 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-18 21:19:34,275 - DEBUG - Gracz 4 wybra³ nacjê: Polska
+2025-04-18 21:19:34,276 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Polska
+2025-04-18 21:19:35,163 - DEBUG - Gracz 5 wybra³ nacjê: Polska
+2025-04-18 21:19:35,163 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Polska
+2025-04-18 21:19:36,099 - DEBUG - Gracz 6 wybra³ nacjê: Polska
+2025-04-18 21:19:36,100 - INFO - Gracz 6 pomyœlnie wybra³ nacjê: Polska
+2025-04-18 21:19:40,561 - INFO - Próba rozpoczêcia gry.
+2025-04-18 21:19:40,561 - DEBUG - Czas na turê dla gracza 1: 2
+2025-04-18 21:19:40,562 - DEBUG - Czas na turê dla gracza 2: 5
+2025-04-18 21:19:40,562 - DEBUG - Czas na turê dla gracza 3: 8
+2025-04-18 21:19:40,563 - DEBUG - Czas na turê dla gracza 4: 3
+2025-04-18 21:19:40,563 - DEBUG - Czas na turê dla gracza 5: 5
+2025-04-18 21:19:40,564 - DEBUG - Czas na turê dla gracza 6: 7
+2025-04-18 21:19:40,565 - INFO - Gra siê rozpoczyna.
+2025-04-18 21:19:44,357 - INFO - === Szczegó³y tury ===
+2025-04-18 21:19:44,391 - INFO - Aktualny gracz: Gracz 1: Niemcy - Genera³ - 2 minut
+2025-04-18 21:19:44,398 - INFO - Numer tury: 1
+2025-04-18 21:19:44,405 - INFO - Pogoda: === Pogoda ===
+Temperatura: 13°C
+Zachmurzenie: Du¿e zachmurzenie
+Opady: Intensywne opady
 
-2025-04-18 12:43:07,073 - INFO - Punkty ekonomiczne: 49
-2025-04-18 12:43:07,073 - INFO - Punkty specjalne: 1
-2025-04-18 12:43:08,358 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:08,367 - INFO - Aktualny gracz: Gracz 2: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:08,375 - INFO - Numer tury: 1
-2025-04-18 12:43:08,377 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
+2025-04-18 21:19:44,407 - INFO - Punkty ekonomiczne: 94
+2025-04-18 21:19:44,408 - INFO - Punkty specjalne: 1
+2025-04-18 21:19:47,427 - INFO - === Szczegó³y tury ===
+2025-04-18 21:19:47,449 - INFO - Aktualny gracz: Gracz 2: Niemcy - Dowódca - 5 minut
+2025-04-18 21:19:47,450 - INFO - Numer tury: 1
+2025-04-18 21:19:47,451 - INFO - Pogoda: === Pogoda ===
+Temperatura: 13°C
+Zachmurzenie: Du¿e zachmurzenie
+Opady: Intensywne opady
 
-2025-04-18 12:43:08,378 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:08,379 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:09,345 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:09,368 - INFO - Aktualny gracz: Gracz 3: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:09,385 - INFO - Numer tury: 1
-2025-04-18 12:43:09,387 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
+2025-04-18 21:19:47,453 - INFO - Punkty ekonomiczne: 0
+2025-04-18 21:19:47,457 - INFO - Punkty specjalne: 0
+2025-04-18 21:19:48,935 - INFO - === Szczegó³y tury ===
+2025-04-18 21:19:48,949 - INFO - Aktualny gracz: Gracz 3: Niemcy - Dowódca - 8 minut
+2025-04-18 21:19:48,955 - INFO - Numer tury: 1
+2025-04-18 21:19:48,959 - INFO - Pogoda: === Pogoda ===
+Temperatura: 13°C
+Zachmurzenie: Du¿e zachmurzenie
+Opady: Intensywne opady
 
-2025-04-18 12:43:09,390 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:09,391 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:10,496 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:10,525 - INFO - Aktualny gracz: Gracz 4: Polska - Genera³ - 5 minut
-2025-04-18 12:43:10,527 - INFO - Numer tury: 1
-2025-04-18 12:43:10,528 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
+2025-04-18 21:19:48,960 - INFO - Punkty ekonomiczne: 0
+2025-04-18 21:19:48,961 - INFO - Punkty specjalne: 0
+2025-04-18 21:19:50,817 - INFO - === Szczegó³y tury ===
+2025-04-18 21:19:50,837 - INFO - Aktualny gracz: Gracz 4: Polska - Genera³ - 3 minut
+2025-04-18 21:19:50,839 - INFO - Numer tury: 1
+2025-04-18 21:19:50,840 - INFO - Pogoda: === Pogoda ===
+Temperatura: 13°C
+Zachmurzenie: Du¿e zachmurzenie
+Opady: Intensywne opady
 
-2025-04-18 12:43:10,529 - INFO - Punkty ekonomiczne: 76
-2025-04-18 12:43:10,530 - INFO - Punkty specjalne: 1
-2025-04-18 12:43:12,466 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:12,474 - INFO - Aktualny gracz: Gracz 5: Polska - Dowódca - 5 minut
-2025-04-18 12:43:12,482 - INFO - Numer tury: 1
-2025-04-18 12:43:12,486 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
+2025-04-18 21:19:50,848 - INFO - Punkty ekonomiczne: 60
+2025-04-18 21:19:50,848 - INFO - Punkty specjalne: 1
+2025-04-18 21:19:52,351 - INFO - === Szczegó³y tury ===
+2025-04-18 21:19:52,371 - INFO - Aktualny gracz: Gracz 5: Polska - Dowódca - 5 minut
+2025-04-18 21:19:52,374 - INFO - Numer tury: 1
+2025-04-18 21:19:52,378 - INFO - Pogoda: === Pogoda ===
+Temperatura: 13°C
+Zachmurzenie: Du¿e zachmurzenie
+Opady: Intensywne opady
 
-2025-04-18 12:43:12,487 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:12,487 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:13,198 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:13,199 - INFO - Aktualny gracz: Gracz 6: Polska - Dowódca - 5 minut
-2025-04-18 12:43:13,221 - INFO - Numer tury: 1
-2025-04-18 12:43:13,224 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
+2025-04-18 21:19:52,381 - INFO - Punkty ekonomiczne: 0
+2025-04-18 21:19:52,382 - INFO - Punkty specjalne: 0
+2025-04-18 21:19:54,137 - INFO - === Szczegó³y tury ===
+2025-04-18 21:19:54,150 - INFO - Aktualny gracz: Gracz 6: Polska - Dowódca - 7 minut
+2025-04-18 21:19:54,152 - INFO - Numer tury: 1
+2025-04-18 21:19:54,157 - INFO - Pogoda: === Pogoda ===
+Temperatura: 13°C
+Zachmurzenie: Du¿e zachmurzenie
+Opady: Intensywne opady
 
-2025-04-18 12:43:13,226 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:13,228 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:14,373 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:14,377 - INFO - Aktualny gracz: Gracz 1: Niemcy - Genera³ - 5 minut
-2025-04-18 12:43:14,377 - INFO - Numer tury: 2
-2025-04-18 12:43:14,383 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:14,389 - INFO - Punkty ekonomiczne: 136
-2025-04-18 12:43:14,391 - INFO - Punkty specjalne: 2
-2025-04-18 12:43:15,400 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:15,413 - INFO - Aktualny gracz: Gracz 2: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:15,418 - INFO - Numer tury: 2
-2025-04-18 12:43:15,419 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:15,426 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:15,427 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:17,318 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:17,334 - INFO - Aktualny gracz: Gracz 3: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:17,343 - INFO - Numer tury: 2
-2025-04-18 12:43:17,349 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:17,352 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:17,352 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:25,129 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:25,144 - INFO - Aktualny gracz: Gracz 4: Polska - Genera³ - 5 minut
-2025-04-18 12:43:25,149 - INFO - Numer tury: 2
-2025-04-18 12:43:25,149 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:25,151 - INFO - Punkty ekonomiczne: 165
-2025-04-18 12:43:25,152 - INFO - Punkty specjalne: 2
-2025-04-18 12:43:25,909 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:25,912 - INFO - Aktualny gracz: Gracz 5: Polska - Dowódca - 5 minut
-2025-04-18 12:43:25,917 - INFO - Numer tury: 2
-2025-04-18 12:43:25,918 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:25,935 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:25,936 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:26,645 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:26,679 - INFO - Aktualny gracz: Gracz 6: Polska - Dowódca - 5 minut
-2025-04-18 12:43:26,679 - INFO - Numer tury: 2
-2025-04-18 12:43:26,687 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:26,691 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:26,691 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:27,474 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:27,490 - INFO - Aktualny gracz: Gracz 1: Niemcy - Genera³ - 5 minut
-2025-04-18 12:43:27,491 - INFO - Numer tury: 3
-2025-04-18 12:43:27,492 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:27,494 - INFO - Punkty ekonomiczne: 203
-2025-04-18 12:43:27,495 - INFO - Punkty specjalne: 3
-2025-04-18 12:43:28,146 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:28,160 - INFO - Aktualny gracz: Gracz 2: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:28,163 - INFO - Numer tury: 3
-2025-04-18 12:43:28,180 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:28,192 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:28,194 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:28,765 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:28,788 - INFO - Aktualny gracz: Gracz 3: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:28,790 - INFO - Numer tury: 3
-2025-04-18 12:43:28,798 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:28,805 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:28,806 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:29,440 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:29,482 - INFO - Aktualny gracz: Gracz 4: Polska - Genera³ - 5 minut
-2025-04-18 12:43:29,491 - INFO - Numer tury: 3
-2025-04-18 12:43:29,492 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:29,493 - INFO - Punkty ekonomiczne: 166
-2025-04-18 12:43:29,494 - INFO - Punkty specjalne: 3
-2025-04-18 12:43:30,046 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:30,048 - INFO - Aktualny gracz: Gracz 5: Polska - Dowódca - 5 minut
-2025-04-18 12:43:30,049 - INFO - Numer tury: 3
-2025-04-18 12:43:30,060 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:30,062 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:30,063 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:30,716 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:30,734 - INFO - Aktualny gracz: Gracz 6: Polska - Dowódca - 5 minut
-2025-04-18 12:43:30,741 - INFO - Numer tury: 3
-2025-04-18 12:43:30,741 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:30,743 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:30,744 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:31,357 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:31,364 - INFO - Aktualny gracz: Gracz 1: Niemcy - Genera³ - 5 minut
-2025-04-18 12:43:31,366 - INFO - Numer tury: 4
-2025-04-18 12:43:31,368 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:31,377 - INFO - Punkty ekonomiczne: 229
-2025-04-18 12:43:31,379 - INFO - Punkty specjalne: 4
-2025-04-18 12:43:33,002 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:33,013 - INFO - Aktualny gracz: Gracz 2: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:33,015 - INFO - Numer tury: 4
-2025-04-18 12:43:33,018 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:33,020 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:33,034 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:34,080 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:34,092 - INFO - Aktualny gracz: Gracz 3: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:34,093 - INFO - Numer tury: 4
-2025-04-18 12:43:34,095 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:34,109 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:34,111 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:35,804 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:35,837 - INFO - Aktualny gracz: Gracz 4: Polska - Genera³ - 5 minut
-2025-04-18 12:43:35,848 - INFO - Numer tury: 4
-2025-04-18 12:43:35,850 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:35,853 - INFO - Punkty ekonomiczne: 245
-2025-04-18 12:43:35,854 - INFO - Punkty specjalne: 4
-2025-04-18 12:43:36,404 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:36,419 - INFO - Aktualny gracz: Gracz 5: Polska - Dowódca - 5 minut
-2025-04-18 12:43:36,420 - INFO - Numer tury: 4
-2025-04-18 12:43:36,422 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:36,436 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:36,438 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:36,985 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:36,986 - INFO - Aktualny gracz: Gracz 6: Polska - Dowódca - 5 minut
-2025-04-18 12:43:36,989 - INFO - Numer tury: 4
-2025-04-18 12:43:37,005 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:37,007 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:37,008 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:37,524 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:37,531 - INFO - Aktualny gracz: Gracz 1: Niemcy - Genera³ - 5 minut
-2025-04-18 12:43:37,536 - INFO - Numer tury: 5
-2025-04-18 12:43:37,537 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:37,538 - INFO - Punkty ekonomiczne: 239
-2025-04-18 12:43:37,539 - INFO - Punkty specjalne: 5
-2025-04-18 12:43:38,418 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:38,449 - INFO - Aktualny gracz: Gracz 2: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:38,455 - INFO - Numer tury: 5
-2025-04-18 12:43:38,458 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:38,458 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:38,466 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:39,276 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:39,297 - INFO - Aktualny gracz: Gracz 3: Niemcy - Dowódca - 5 minut
-2025-04-18 12:43:39,298 - INFO - Numer tury: 5
-2025-04-18 12:43:39,299 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:39,301 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:39,301 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:41,012 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:41,057 - INFO - Aktualny gracz: Gracz 4: Polska - Genera³ - 5 minut
-2025-04-18 12:43:41,058 - INFO - Numer tury: 5
-2025-04-18 12:43:41,058 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:41,059 - INFO - Punkty ekonomiczne: 248
-2025-04-18 12:43:41,059 - INFO - Punkty specjalne: 5
-2025-04-18 12:43:42,022 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:42,030 - INFO - Aktualny gracz: Gracz 5: Polska - Dowódca - 5 minut
-2025-04-18 12:43:42,031 - INFO - Numer tury: 5
-2025-04-18 12:43:42,033 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:42,052 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:42,056 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:44,091 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:44,098 - INFO - Aktualny gracz: Gracz 6: Polska - Dowódca - 5 minut
-2025-04-18 12:43:44,099 - INFO - Numer tury: 5
-2025-04-18 12:43:44,101 - INFO - Pogoda: === Pogoda ===
-Temperatura: 1°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:44,119 - INFO - Punkty ekonomiczne: 0
-2025-04-18 12:43:44,124 - INFO - Punkty specjalne: 0
-2025-04-18 12:43:53,603 - INFO - === Szczegó³y tury ===
-2025-04-18 12:43:53,606 - INFO - Aktualny gracz: Gracz 1: Niemcy - Genera³ - 5 minut
-2025-04-18 12:43:53,608 - INFO - Numer tury: 6
-2025-04-18 12:43:53,609 - INFO - Pogoda: === Pogoda ===
-Temperatura: 9°C
-Zachmurzenie: Bezchmurnie
-Opady: Bezdeszczowo
-
-2025-04-18 12:43:53,622 - INFO - Punkty ekonomiczne: 300
-2025-04-18 12:43:53,623 - INFO - Punkty specjalne: 6
+2025-04-18 21:19:54,159 - INFO - Punkty ekonomiczne: 0
+2025-04-18 21:19:54,160 - INFO - Punkty specjalne: 0

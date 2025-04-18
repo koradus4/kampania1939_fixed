@@ -25,16 +25,18 @@ if __name__ == "__main__":
     root.mainloop()
 
     # Pobranie wyborów graczy z ekranu startowego
-    miejsca = ekran_startowy.miejsca  # Lista nacji w kolejności: Generał 1, Dowódca 1, Dowódca 2, Generał 2, Dowódca 1, Dowódca 2
+    game_data = ekran_startowy.get_game_data()
+    miejsca = game_data["miejsca"]
+    czasy = game_data["czasy"]
 
-    # Tworzenie obiektów graczy
+    # Tworzenie obiektów graczy z uwzględnieniem czasu na turę
     gracze = [
-        Gracz(1, miejsca[0], "Generał"),
-        Gracz(2, miejsca[1], "Dowódca"),
-        Gracz(3, miejsca[2], "Dowódca"),
-        Gracz(4, miejsca[3], "Generał"),
-        Gracz(5, miejsca[4], "Dowódca"),
-        Gracz(6, miejsca[5], "Dowódca"),
+        Gracz(1, miejsca[0], "Generał", czasy[0]),
+        Gracz(2, miejsca[1], "Dowódca", czasy[1]),
+        Gracz(3, miejsca[2], "Dowódca", czasy[2]),
+        Gracz(4, miejsca[3], "Generał", czasy[3]),
+        Gracz(5, miejsca[4], "Dowódca", czasy[4]),
+        Gracz(6, miejsca[5], "Dowódca", czasy[5]),
     ]
 
     # Inicjalizacja menedżera tur
@@ -48,27 +50,27 @@ if __name__ == "__main__":
         # Logowanie przed otwarciem panelu
         print(f"[DEBUG] Próba otwarcia panelu dla gracza: {current_player}")
 
-        # Otwieranie odpowiedniego panelu z numerem tury
+        # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
         if current_player.rola == "Generał" and current_player.nacja == "Polska":
             print(f"[DEBUG] Przypisano PanelGeneralaPolska dla gracza {current_player.numer}")
-            app = PanelGeneralaPolska(turn_number=turn_manager.current_turn, ekonomia=current_player.economy)
+            app = PanelGeneralaPolska(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player)
         elif current_player.rola == "Generał" and current_player.nacja == "Niemcy":
             print(f"[DEBUG] Przypisano PanelGeneralaNiemcy dla gracza {current_player.numer}")
-            app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn, ekonomia=current_player.economy)
+            app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player)
         elif current_player.rola == "Dowódca" and current_player.nacja == "Polska":
             if current_player.numer in [2, 5]:
                 print(f"[DEBUG] Przypisano PanelDowodcyPolska1 dla gracza {current_player.numer}")
-                app = PanelDowodcyPolska1(turn_number=turn_manager.current_turn)
+                app = PanelDowodcyPolska1(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)
             elif current_player.numer in [3, 6]:
                 print(f"[DEBUG] Przypisano PanelDowodcyPolska2 dla gracza {current_player.numer}")
-                app = PanelDowodcyPolska2(turn_number=turn_manager.current_turn)
+                app = PanelDowodcyPolska2(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)
         elif current_player.rola == "Dowódca" and current_player.nacja == "Niemcy":
             if current_player.numer in [2, 5]:
                 print(f"[DEBUG] Przypisano PanelDowodcyNiemcy1 dla gracza {current_player.numer}")
-                app = PanelDowodcyNiemcy1(turn_number=turn_manager.current_turn)
+                app = PanelDowodcyNiemcy1(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)
             elif current_player.numer in [3, 6]:
                 print(f"[DEBUG] Przypisano PanelDowodcyNiemcy2 dla gracza {current_player.numer}")
-                app = PanelDowodcyNiemcy2(turn_number=turn_manager.current_turn)
+                app = PanelDowodcyNiemcy2(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)
         else:
             print(f"[ERROR] Nie znaleziono odpowiedniego panelu dla gracza: {current_player}")
             continue

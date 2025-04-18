@@ -17,5 +17,8 @@ class Gracz:
         self.czas = czas  # Czas na podturę
         self.economy = EconomySystem()  # Indywidualny system ekonomii dla gracza
 
+        # Dodanie debugowania w terminalu, aby śledzić ustawienie czasu na podturę
+        print(f"[DEBUG] Inicjalizacja gracza {numer}: nacja={nacja}, rola={rola}, czas={czas} minut")
+
     def __str__(self):
         return f"Gracz {self.numer}: {self.nacja} - {self.rola} - {self.czas} minut"
