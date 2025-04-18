@@ -1,85 +1,22 @@
-2025-04-18 21:19:26,237 - INFO - Inicjalizacja ekranu startowego.
-2025-04-18 21:19:26,238 - INFO - Tworzenie wid¿etów ekranu startowego.
-2025-04-18 21:19:28,078 - DEBUG - Gracz 1 wybra³ nacjê: Niemcy
-2025-04-18 21:19:28,078 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 21:19:29,179 - DEBUG - Gracz 2 wybra³ nacjê: Polska
-2025-04-18 21:19:29,180 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 21:19:29,180 - ERROR - Gracz 2 w Team 1 ma inn¹ nacjê ni¿ Genera³ Team 1.
-2025-04-18 21:19:32,031 - DEBUG - Gracz 2 wybra³ nacjê: Niemcy
-2025-04-18 21:19:32,032 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 21:19:33,041 - DEBUG - Gracz 3 wybra³ nacjê: Niemcy
-2025-04-18 21:19:33,042 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 21:19:34,275 - DEBUG - Gracz 4 wybra³ nacjê: Polska
-2025-04-18 21:19:34,276 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 21:19:35,163 - DEBUG - Gracz 5 wybra³ nacjê: Polska
-2025-04-18 21:19:35,163 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 21:19:36,099 - DEBUG - Gracz 6 wybra³ nacjê: Polska
-2025-04-18 21:19:36,100 - INFO - Gracz 6 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 21:19:40,561 - INFO - Próba rozpoczêcia gry.
-2025-04-18 21:19:40,561 - DEBUG - Czas na turê dla gracza 1: 2
-2025-04-18 21:19:40,562 - DEBUG - Czas na turê dla gracza 2: 5
-2025-04-18 21:19:40,562 - DEBUG - Czas na turê dla gracza 3: 8
-2025-04-18 21:19:40,563 - DEBUG - Czas na turê dla gracza 4: 3
-2025-04-18 21:19:40,563 - DEBUG - Czas na turê dla gracza 5: 5
-2025-04-18 21:19:40,564 - DEBUG - Czas na turê dla gracza 6: 7
-2025-04-18 21:19:40,565 - INFO - Gra siê rozpoczyna.
-2025-04-18 21:19:44,357 - INFO - === Szczegó³y tury ===
-2025-04-18 21:19:44,391 - INFO - Aktualny gracz: Gracz 1: Niemcy - Genera³ - 2 minut
-2025-04-18 21:19:44,398 - INFO - Numer tury: 1
-2025-04-18 21:19:44,405 - INFO - Pogoda: === Pogoda ===
-Temperatura: 13°C
-Zachmurzenie: Du¿e zachmurzenie
-Opady: Intensywne opady
-
-2025-04-18 21:19:44,407 - INFO - Punkty ekonomiczne: 94
-2025-04-18 21:19:44,408 - INFO - Punkty specjalne: 1
-2025-04-18 21:19:47,427 - INFO - === Szczegó³y tury ===
-2025-04-18 21:19:47,449 - INFO - Aktualny gracz: Gracz 2: Niemcy - Dowódca - 5 minut
-2025-04-18 21:19:47,450 - INFO - Numer tury: 1
-2025-04-18 21:19:47,451 - INFO - Pogoda: === Pogoda ===
-Temperatura: 13°C
-Zachmurzenie: Du¿e zachmurzenie
-Opady: Intensywne opady
-
-2025-04-18 21:19:47,453 - INFO - Punkty ekonomiczne: 0
-2025-04-18 21:19:47,457 - INFO - Punkty specjalne: 0
-2025-04-18 21:19:48,935 - INFO - === Szczegó³y tury ===
-2025-04-18 21:19:48,949 - INFO - Aktualny gracz: Gracz 3: Niemcy - Dowódca - 8 minut
-2025-04-18 21:19:48,955 - INFO - Numer tury: 1
-2025-04-18 21:19:48,959 - INFO - Pogoda: === Pogoda ===
-Temperatura: 13°C
-Zachmurzenie: Du¿e zachmurzenie
-Opady: Intensywne opady
-
-2025-04-18 21:19:48,960 - INFO - Punkty ekonomiczne: 0
-2025-04-18 21:19:48,961 - INFO - Punkty specjalne: 0
-2025-04-18 21:19:50,817 - INFO - === Szczegó³y tury ===
-2025-04-18 21:19:50,837 - INFO - Aktualny gracz: Gracz 4: Polska - Genera³ - 3 minut
-2025-04-18 21:19:50,839 - INFO - Numer tury: 1
-2025-04-18 21:19:50,840 - INFO - Pogoda: === Pogoda ===
-Temperatura: 13°C
-Zachmurzenie: Du¿e zachmurzenie
-Opady: Intensywne opady
-
-2025-04-18 21:19:50,848 - INFO - Punkty ekonomiczne: 60
-2025-04-18 21:19:50,848 - INFO - Punkty specjalne: 1
-2025-04-18 21:19:52,351 - INFO - === Szczegó³y tury ===
-2025-04-18 21:19:52,371 - INFO - Aktualny gracz: Gracz 5: Polska - Dowódca - 5 minut
-2025-04-18 21:19:52,374 - INFO - Numer tury: 1
-2025-04-18 21:19:52,378 - INFO - Pogoda: === Pogoda ===
-Temperatura: 13°C
-Zachmurzenie: Du¿e zachmurzenie
-Opady: Intensywne opady
-
-2025-04-18 21:19:52,381 - INFO - Punkty ekonomiczne: 0
-2025-04-18 21:19:52,382 - INFO - Punkty specjalne: 0
-2025-04-18 21:19:54,137 - INFO - === Szczegó³y tury ===
-2025-04-18 21:19:54,150 - INFO - Aktualny gracz: Gracz 6: Polska - Dowódca - 7 minut
-2025-04-18 21:19:54,152 - INFO - Numer tury: 1
-2025-04-18 21:19:54,157 - INFO - Pogoda: === Pogoda ===
-Temperatura: 13°C
-Zachmurzenie: Du¿e zachmurzenie
-Opady: Intensywne opady
-
-2025-04-18 21:19:54,159 - INFO - Punkty ekonomiczne: 0
-2025-04-18 21:19:54,160 - INFO - Punkty specjalne: 0
+2025-04-18 23:54:14,638 - INFO - Inicjalizacja ekranu startowego.
+2025-04-18 23:54:14,638 - INFO - Tworzenie wid¿etów ekranu startowego.
+2025-04-18 23:54:16,240 - DEBUG - Gracz 1 wybra³ nacjê: Polska
+2025-04-18 23:54:16,240 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Polska
+2025-04-18 23:54:17,012 - DEBUG - Gracz 2 wybra³ nacjê: Polska
+2025-04-18 23:54:17,012 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Polska
+2025-04-18 23:54:17,786 - DEBUG - Gracz 3 wybra³ nacjê: Polska
+2025-04-18 23:54:17,786 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Polska
+2025-04-18 23:54:18,761 - DEBUG - Gracz 4 wybra³ nacjê: Niemcy
+2025-04-18 23:54:18,761 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-18 23:54:19,611 - DEBUG - Gracz 5 wybra³ nacjê: Niemcy
+2025-04-18 23:54:19,611 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-18 23:54:20,504 - DEBUG - Gracz 6 wybra³ nacjê: Niemcy
+2025-04-18 23:54:20,504 - INFO - Gracz 6 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-18 23:54:20,786 - INFO - Próba rozpoczêcia gry.
+2025-04-18 23:54:20,786 - DEBUG - Czas na turê dla gracza 1: 5
+2025-04-18 23:54:20,787 - DEBUG - Czas na turê dla gracza 2: 5
+2025-04-18 23:54:20,787 - DEBUG - Czas na turê dla gracza 3: 5
+2025-04-18 23:54:20,787 - DEBUG - Czas na turê dla gracza 4: 5
+2025-04-18 23:54:20,788 - DEBUG - Czas na turê dla gracza 5: 5
+2025-04-18 23:54:20,788 - DEBUG - Czas na turê dla gracza 6: 5
+2025-04-18 23:54:20,788 - INFO - Gra siê rozpoczyna.

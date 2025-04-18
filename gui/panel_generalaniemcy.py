@@ -13,13 +13,12 @@ class PanelGeneralaNiemcy(tk.Tk):
         # Flaga wskazująca, czy panel jest aktywny
         self.is_active = True
 
+        # Inicjalizacja czasu na podturę w sekundach
+        self.remaining_time = gracz.czas * 60
+
         # Wyświetlanie numeru tury
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
         self.turn_label.pack(pady=5)
-
-        # Debugowanie pozostałego czasu na turę
-        self.remaining_time = gracz.czas * 60  # Przypisanie czasu na turę na podstawie obiektu gracza
-        print(f"[DEBUG] Pozostały czas na turę: {self.remaining_time}")
 
         # Główna ramka podziału
         self.main_frame = tk.Frame(self)
@@ -113,17 +112,14 @@ class PanelGeneralaNiemcy(tk.Tk):
         if hasattr(self, 'timer_id'):
             self.after_cancel(self.timer_id)
         self.is_active = False  # Ustawienie flagi na False przy niszczeniu panelu
-        print("[DEBUG] PanelGeneralaNiemcy: destroy() called")
         super().destroy()
 
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
-        print(f"[DEBUG] PanelGeneralaNiemcy: Otrzymano raport pogodowy: {weather_report}")
         self.weather_panel.update_weather(weather_report)
 
     def update_economy(self):
         """Aktualizuje sekcję raportu ekonomicznego w panelu."""
-        print(f"[DEBUG] PanelGeneralaNiemcy: Aktualizacja raportu ekonomicznego: Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}, Punkty specjalne: {self.ekonomia.get_points()['special_points']}")
         economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
         self.economy_panel.update_economy(economy_report)
 
@@ -134,6 +130,8 @@ class PanelGeneralaNiemcy(tk.Tk):
                 self.remaining_time -= 1
                 self.timer_label.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
                 self.timer_id = self.after(1000, self.update_timer)
+            else:
+                self.end_turn()
 
 if __name__ == "__main__":
     app = PanelGeneralaNiemcy(turn_number=1, ekonomia=None, gracz=None)  # Przekazanie obiektu gracza

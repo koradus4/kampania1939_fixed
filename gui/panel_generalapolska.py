@@ -12,7 +12,6 @@ class PanelGeneralaPolska(tk.Tk):
 
         # Pobranie czasu na podturę z obiektu Gracz
         self.remaining_time = gracz.czas * 60  # Czas na podturę w sekundach
-        print(f"[DEBUG] Pozostały czas na turę: {self.remaining_time}")
 
         # Wyświetlanie numeru tury
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
@@ -30,6 +29,10 @@ class PanelGeneralaPolska(tk.Tk):
         self.label = tk.Label(self.left_frame, text="Panel Generała Polska", font=("Arial", 16), bg="lightgray")
         self.label.pack(pady=10)
 
+        # Przycisk zakończenia podtury
+        self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
+        self.end_turn_button.pack(pady=20)
+
         # Sekcja odliczania czasu
         self.timer_frame = tk.Frame(self.left_frame, bg="white", relief=tk.SUNKEN, borderwidth=2)
         self.timer_frame.pack(pady=10, fill=tk.BOTH, expand=False)
@@ -39,14 +42,6 @@ class PanelGeneralaPolska(tk.Tk):
 
         # Uruchomienie timera
         self.update_timer()
-
-        # Przycisk zakończenia podtury
-        self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
-        self.end_turn_button.pack(pady=20)
-
-        # Przeniesienie przycisku "Kup dodatkowy czas" do lewej sekcji
-        self.buy_time_button = tk.Button(self.left_frame, text="Kup dodatkowy czas", command=self.buy_time)
-        self.buy_time_button.pack(pady=10)
 
         # Przeniesienie ramki dla raportu ekonomicznego bezpośrednio nad raport pogodowy
         self.weather_panel = PanelPogodowy(self.left_frame)
@@ -106,20 +101,19 @@ class PanelGeneralaPolska(tk.Tk):
         self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
 
     def update_timer(self):
-        """Odlicza czas i aktualizuje etykietę."""
-        if self.remaining_time > 0:
-            self.remaining_time -= 1
-            self.timer_label.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
-            self.after(1000, self.update_timer)
-        else:
-            self.end_turn()
+        if self.winfo_exists():
+            if self.remaining_time > 0:
+                self.remaining_time -= 1
+                self.timer_label.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
+                self.timer_id = self.after(1000, self.update_timer)
+            else:
+                self.end_turn()
 
     def end_turn(self):
         """Kończy podturę."""
         self.destroy()
 
     def destroy(self):
-        print("[DEBUG] PanelGeneralaPolska: destroy() called")
         super().destroy()
 
     def update_weather(self, weather_report):
@@ -129,7 +123,6 @@ class PanelGeneralaPolska(tk.Tk):
 
     def update_economy(self):
         """Aktualizuje sekcję raportu ekonomicznego w panelu."""
-        print(f"[DEBUG] PanelGeneralaPolska: Aktualizacja raportu ekonomicznego: Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}, Punkty specjalne: {self.ekonomia.get_points()['special_points']}")
         economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
         self.economy_panel.update_economy(economy_report)
 

@@ -8,21 +8,19 @@ class TurnManager:
         self.current_turn = 1
         self.current_player_index = 0
 
-        # Inicjalizacja raportu pogodowego na początku gry
+        # Inicjalizacja obiektu Pogoda jako atrybutu klasy
         from core.pogoda import Pogoda
-        pogoda = Pogoda()
-        pogoda.generuj_pogode()
-        self.current_weather = pogoda.generuj_raport_pogodowy()
+        self.weather = Pogoda()
+        self.weather.generuj_pogode()
+        self.current_weather = self.weather.generuj_raport_pogodowy()
 
     def rozpocznij_nowa_ture(self):
         """Rozpoczyna nową turę i generuje pogodę raz na dzień."""
         if self.current_turn % 6 == 1:  # Generowanie pogody raz na dzień (co 6 tur)
-            print(f"[DEBUG] Rozpoczęcie nowego dnia: Tura {self.current_turn}")
             self.weather.generuj_pogode()
 
         # Inkrementacja tury
         self.current_turn += 1
-        print(f"[DEBUG] Rozpoczęcie nowej tury: {self.current_turn}")
 
     def next_turn(self):
         """
@@ -30,19 +28,14 @@ class TurnManager:
         Zwraca True, jeśli wszyscy gracze zakończyli swoje tury.
         """
         self.current_player_index += 1
-        print(f"[DEBUG] Przechodzenie do następnego gracza. Index: {self.current_player_index}")
 
         if self.current_player_index >= len(self.players):
             self.current_player_index = 0
             self.current_turn += 1
-            print(f"[DEBUG] Rozpoczęcie nowej tury: {self.current_turn}")
 
             if self.current_turn % 6 == 0:  # Co 6 tur generujemy nowy raport pogodowy
-                from core.pogoda import Pogoda
-                pogoda = Pogoda()
-                pogoda.generuj_pogode()
-                self.current_weather = pogoda.generuj_raport_pogodowy()
-                print(f"[DEBUG] Nowy raport pogodowy: {self.current_weather}")
+                self.weather.generuj_pogode()
+                self.current_weather = self.weather.generuj_raport_pogodowy()
 
             return True  # Zakończono pełną turę
 
@@ -53,11 +46,7 @@ class TurnManager:
         Zwraca aktualnego gracza.
         :return: Obiekt klasy Gracz.
         """
-        current_player = self.players[self.current_player_index]
-        print(f"[DEBUG] Aktualny gracz: {current_player}")
-        print(f"[DEBUG] Numer tury: {self.current_turn}")
-        print(f"[DEBUG] Raport pogodowy: {self.current_weather}")
-        return current_player
+        return self.players[self.current_player_index]
 
     def get_turn_info(self):
         """

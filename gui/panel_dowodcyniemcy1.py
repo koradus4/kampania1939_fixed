@@ -13,9 +13,6 @@ class PanelDowodcyNiemcy1(tk.Tk):
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
         self.turn_label.pack(pady=5)
 
-        # Debugowanie pozostałego czasu na turę
-        print(f"[DEBUG] Pozostały czas na turę: {self.remaining_time}")
-
         # Główna ramka podziału
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
@@ -117,6 +114,8 @@ class PanelDowodcyNiemcy1(tk.Tk):
                 self.remaining_time -= 1
                 self.timer_label.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
                 self.timer_id = self.after(1000, self.update_timer)
+            else:
+                self.end_turn()
 
 if __name__ == "__main__":
     app = PanelDowodcyNiemcy1(turn_number=1, remaining_time=60)
