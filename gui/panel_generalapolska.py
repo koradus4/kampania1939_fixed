@@ -8,7 +8,6 @@ class PanelGeneralaPolska(tk.Tk):
         super().__init__()
         self.title("Panel Generała Polska")
         self.state("zoomed")  # Maksymalizacja okna
-        self.remaining_time = 180
         self.ekonomia = ekonomia  # Przechowywanie obiektu ekonomii
 
         # Wyświetlanie numeru tury
@@ -19,17 +18,13 @@ class PanelGeneralaPolska(tk.Tk):
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Lewy panel (przyciski i licznik czasu)
+        # Lewy panel (przyciski)
         self.left_frame = tk.Frame(self.main_frame, width=300, bg="lightgray")
         self.left_frame.pack(side=tk.LEFT, fill=tk.Y)
 
         # Nagłówek
         self.label = tk.Label(self.left_frame, text="Panel Generała Polska", font=("Arial", 16), bg="lightgray")
         self.label.pack(pady=10)
-
-        # Licznik czasu
-        self.timer_label = tk.Label(self.left_frame, text="Pozostały czas: 180 sekund", font=("Arial", 12), bg="lightgray")
-        self.timer_label.pack(pady=10)
 
         # Przycisk zakończenia podtury
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
@@ -75,12 +70,6 @@ class PanelGeneralaPolska(tk.Tk):
         self.map_canvas.bind("<ButtonPress-1>", self.start_pan)
         self.map_canvas.bind("<B1-Motion>", self.do_pan)
 
-        # Inicjalizacja identyfikatora after
-        self.timer_id = None
-
-        # Wywołanie timera
-        self.timer_id = self.after(1000, self.update_timer)
-
     def load_map(self, map_path):
         """Wczytuje mapę i wyświetla ją na canvasie."""
         try:
@@ -98,23 +87,12 @@ class PanelGeneralaPolska(tk.Tk):
         """Przesuwa mapę myszką."""
         self.map_canvas.scan_dragto(event.x, event.y, gain=1)
 
-    def update_timer(self):
-        """Aktualizuje licznik czasu."""
-        if self.remaining_time > 0:
-            self.remaining_time -= 1
-            self.timer_label.config(text=f"Pozostały czas: {self.remaining_time} sekund")
-            self.timer_id = self.after(1000, self.update_timer)  # Zapisujemy ID after
-        else:
-            self.end_turn()
-
     def update_scrollregion(self, event):
         """Aktualizuje obszar przewijania mapy."""
         self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
 
     def end_turn(self):
         """Kończy podturę."""
-        if self.timer_id:
-            self.after_cancel(self.timer_id)  # Anulowanie zaplanowanego wywołania
         self.destroy()
 
     def destroy(self):
