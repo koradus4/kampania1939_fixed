@@ -18,15 +18,14 @@ class PanelDowodcyNiemcy1(tk.Tk):
         self.main_frame.pack(fill=tk.BOTH, expand=True)
 
         # Lewy panel (przyciski)
-        self.left_frame = tk.Frame(self.main_frame, width=300, bg="lightgray")
+        self.left_frame = tk.Frame(self.main_frame, width=300, bg="olive")
         self.left_frame.pack(side=tk.LEFT, fill=tk.Y)
+        self.left_frame.pack_propagate(False)  # Zapobiega dynamicznej zmianie rozmiaru panelu
+        self.left_frame.config(width=298)  # Ustawia stałą szerokość panelu na 298 pikseli
 
-        # Dodano miejsce na nazwisko dowódcy
-        self.general_name_label = tk.Label(self.left_frame, text="Nazwisko Dowódcy", font=("Arial", 14), bg="lightgray")
+        # Dodano obramowanie dla nazwiska dowódcy
+        self.general_name_label = tk.Label(self.left_frame, text="Generał Walther von Reichenau", font=("Arial", 12), bg="white", relief=tk.SUNKEN, borderwidth=2, wraplength=280, justify=tk.CENTER)
         self.general_name_label.pack(pady=5, fill=tk.BOTH, expand=False)
-
-        # Ustawienie nazwiska dowódcy
-        self.general_name_label.config(text="Generał Walther von Reichenau")
 
         # Przesunięto ramkę na zdjęcie dowódcy w dół
         self.general_photo_frame = tk.Frame(self.left_frame, width=298, height=298, bg="white", relief=tk.SUNKEN, borderwidth=2)
@@ -55,6 +54,7 @@ class PanelDowodcyNiemcy1(tk.Tk):
         # Inicjalizacja panelu pogodowego
         self.weather_panel = PanelPogodowy(self.left_frame)
         self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
+        self.weather_panel.config(height=60)  # Ustawia stałą wysokość panelu pogodowego na 60 pikseli
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)

@@ -25,15 +25,14 @@ class PanelGeneralaNiemcy(tk.Tk):
         self.main_frame.pack(fill=tk.BOTH, expand=True)
 
         # Lewy panel (przyciski)
-        self.left_frame = tk.Frame(self.main_frame, width=300, bg="lightgray")
+        self.left_frame = tk.Frame(self.main_frame, width=300, bg="olive")
         self.left_frame.pack(side=tk.LEFT, fill=tk.Y)
+        self.left_frame.pack_propagate(False)  # Zapobiega dynamicznej zmianie rozmiaru panelu
+        self.left_frame.config(width=298)  # Ustawia stałą szerokość panelu na 298 pikseli
 
-        # Dodano miejsce na nazwisko generała
-        self.general_name_label = tk.Label(self.left_frame, text="Nazwisko Generała", font=("Arial", 14), bg="lightgray")
+        # Dodano obramowanie dla nazwiska generała
+        self.general_name_label = tk.Label(self.left_frame, text="Generał pułkownik Walther von Brauchitsch", font=("Arial", 12), bg="white", relief=tk.SUNKEN, borderwidth=2, wraplength=280, justify=tk.CENTER)
         self.general_name_label.pack(pady=5, fill=tk.BOTH, expand=False)
-
-        # Ustawienie nazwiska generała
-        self.general_name_label.config(text="Generał pułkownik Walther von Brauchitsch")
 
         # Przesunięto ramkę na zdjęcie generała w dół
         self.general_photo_frame = tk.Frame(self.left_frame, width=298, height=298, bg="white", relief=tk.SUNKEN, borderwidth=2)
@@ -64,10 +63,12 @@ class PanelGeneralaNiemcy(tk.Tk):
         # Sekcja raportu pogodowego
         self.weather_panel = PanelPogodowy(self.left_frame)
         self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
+        self.weather_panel.config(width=300, height=60)  # Ustawia stałą wysokość panelu pogodowego na 60 pikseli
 
         # Dodanie sekcji raportu ekonomicznego
         self.economy_panel = PanelEkonomiczny(self.left_frame)
         self.economy_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
+        self.economy_panel.config(width=300)  # Ustawia stałą szerokość panelu ekonomicznego na 300 pikseli
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
@@ -76,6 +77,7 @@ class PanelGeneralaNiemcy(tk.Tk):
         # Canvas z mapą
         self.map_canvas = tk.Canvas(self.map_frame, bg="gray", scrollregion=(0, 0, 2000, 2000))
         self.map_canvas.grid(row=0, column=0, sticky="nsew")
+        self.map_canvas.config(scrollregion=(0, 0, 0, 0))  # Usuwa suwaki
 
         # Suwaki
         self.h_scroll = tk.Scrollbar(self.map_frame, orient=tk.HORIZONTAL, command=self.map_canvas.xview)
@@ -118,6 +120,7 @@ class PanelGeneralaNiemcy(tk.Tk):
     def update_scrollregion(self, event):
         """Aktualizuje obszar przewijania mapy."""
         self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
+        print(f"[DEBUG] Scrollregion mapy: {self.map_canvas.cget('scrollregion')}")
 
     def end_turn(self):
         """Kończy podturę."""
@@ -132,11 +135,13 @@ class PanelGeneralaNiemcy(tk.Tk):
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
         self.weather_panel.update_weather(weather_report)
+        print(f"[DEBUG] Szerokość panelu pogodowego: {self.weather_panel.winfo_width()}")
 
     def update_economy(self):
         """Aktualizuje sekcję raportu ekonomicznego w panelu."""
         economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
         self.economy_panel.update_economy(economy_report)
+        print(f"[DEBUG] Szerokość panelu ekonomicznego: {self.economy_panel.winfo_width()}")
 
     def update_timer(self):
         """Aktualizuje odliczanie czasu."""
@@ -147,6 +152,9 @@ class PanelGeneralaNiemcy(tk.Tk):
                 self.timer_id = self.after(1000, self.update_timer)
             else:
                 self.end_turn()
+        else:
+            if hasattr(self, 'timer_id'):
+                self.after_cancel(self.timer_id)
 
 if __name__ == "__main__":
     app = PanelGeneralaNiemcy(turn_number=1, ekonomia=None, gracz=None)  # Przekazanie obiektu gracza
