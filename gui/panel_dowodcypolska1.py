@@ -21,23 +21,20 @@ class PanelDowodcyPolska1(tk.Tk):
         self.left_frame = tk.Frame(self.main_frame, width=300, bg="lightgray")
         self.left_frame.pack(side=tk.LEFT, fill=tk.Y)
 
-        # Nagłówek
-        self.label = tk.Label(self.left_frame, text="Panel Dowódcy Polska 1", font=("Arial", 16), bg="lightgray")
-        self.label.pack(pady=10)
-
-        # Przycisk zakończenia podtury
-        self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
-        self.end_turn_button.pack(pady=20)
+        # Przesunięto ramkę na zdjęcie generała wyżej
+        self.general_photo_frame = tk.Frame(self.left_frame, width=298, height=298, bg="white", relief=tk.SUNKEN, borderwidth=2)
+        self.general_photo_frame.pack(pady=5, fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
-        self.timer_frame = tk.Frame(self.left_frame, bg="white", relief=tk.SUNKEN, borderwidth=2)
+        self.timer_frame = tk.Frame(self.left_frame, bg="white", relief=tk.SUNKEN, borderwidth=2, width=298)
         self.timer_frame.pack(pady=10, fill=tk.BOTH, expand=False)
 
         self.timer_label = tk.Label(self.timer_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14), bg="white")
         self.timer_label.pack(pady=5)
 
-        # Uruchomienie timera
-        self.update_timer()
+        # Przesunięto przycisk "Zakończ Podturę" poniżej ramki z czasem
+        self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
+        self.end_turn_button.pack(pady=20)
 
         # Sekcja raportu pogodowego
         # Inicjalizacja panelu pogodowego
@@ -72,6 +69,9 @@ class PanelDowodcyPolska1(tk.Tk):
         # Obsługa przesuwania myszką
         self.map_canvas.bind("<ButtonPress-1>", self.start_pan)
         self.map_canvas.bind("<B1-Motion>", self.do_pan)
+
+        # Uruchomienie timera
+        self.update_timer()
 
     def load_map(self, map_path):
         """Wczytuje mapę i wyświetla ją na canvasie."""

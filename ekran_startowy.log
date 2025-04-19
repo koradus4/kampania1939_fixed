@@ -1,22 +1,22 @@
-2025-04-18 23:54:14,638 - INFO - Inicjalizacja ekranu startowego.
-2025-04-18 23:54:14,638 - INFO - Tworzenie wid¿etów ekranu startowego.
-2025-04-18 23:54:16,240 - DEBUG - Gracz 1 wybra³ nacjê: Polska
-2025-04-18 23:54:16,240 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 23:54:17,012 - DEBUG - Gracz 2 wybra³ nacjê: Polska
-2025-04-18 23:54:17,012 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 23:54:17,786 - DEBUG - Gracz 3 wybra³ nacjê: Polska
-2025-04-18 23:54:17,786 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Polska
-2025-04-18 23:54:18,761 - DEBUG - Gracz 4 wybra³ nacjê: Niemcy
-2025-04-18 23:54:18,761 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 23:54:19,611 - DEBUG - Gracz 5 wybra³ nacjê: Niemcy
-2025-04-18 23:54:19,611 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 23:54:20,504 - DEBUG - Gracz 6 wybra³ nacjê: Niemcy
-2025-04-18 23:54:20,504 - INFO - Gracz 6 pomyœlnie wybra³ nacjê: Niemcy
-2025-04-18 23:54:20,786 - INFO - Próba rozpoczêcia gry.
-2025-04-18 23:54:20,786 - DEBUG - Czas na turê dla gracza 1: 5
-2025-04-18 23:54:20,787 - DEBUG - Czas na turê dla gracza 2: 5
-2025-04-18 23:54:20,787 - DEBUG - Czas na turê dla gracza 3: 5
-2025-04-18 23:54:20,787 - DEBUG - Czas na turê dla gracza 4: 5
-2025-04-18 23:54:20,788 - DEBUG - Czas na turê dla gracza 5: 5
-2025-04-18 23:54:20,788 - DEBUG - Czas na turê dla gracza 6: 5
-2025-04-18 23:54:20,788 - INFO - Gra siê rozpoczyna.
+2025-04-19 12:08:04,202 - INFO - Inicjalizacja ekranu startowego.
+2025-04-19 12:08:04,202 - INFO - Tworzenie wid¿etów ekranu startowego.
+2025-04-19 12:08:06,029 - DEBUG - Gracz 1 wybra³ nacjê: Polska
+2025-04-19 12:08:06,030 - INFO - Gracz 1 pomyœlnie wybra³ nacjê: Polska
+2025-04-19 12:08:06,838 - DEBUG - Gracz 2 wybra³ nacjê: Polska
+2025-04-19 12:08:06,838 - INFO - Gracz 2 pomyœlnie wybra³ nacjê: Polska
+2025-04-19 12:08:07,630 - DEBUG - Gracz 3 wybra³ nacjê: Polska
+2025-04-19 12:08:07,630 - INFO - Gracz 3 pomyœlnie wybra³ nacjê: Polska
+2025-04-19 12:08:08,502 - DEBUG - Gracz 4 wybra³ nacjê: Niemcy
+2025-04-19 12:08:08,502 - INFO - Gracz 4 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-19 12:08:09,293 - DEBUG - Gracz 5 wybra³ nacjê: Niemcy
+2025-04-19 12:08:09,293 - INFO - Gracz 5 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-19 12:08:10,296 - DEBUG - Gracz 6 wybra³ nacjê: Niemcy
+2025-04-19 12:08:10,296 - INFO - Gracz 6 pomyœlnie wybra³ nacjê: Niemcy
+2025-04-19 12:08:10,699 - INFO - Próba rozpoczêcia gry.
+2025-04-19 12:08:10,700 - DEBUG - Czas na turê dla gracza 1: 5
+2025-04-19 12:08:10,700 - DEBUG - Czas na turê dla gracza 2: 5
+2025-04-19 12:08:10,700 - DEBUG - Czas na turê dla gracza 3: 5
+2025-04-19 12:08:10,700 - DEBUG - Czas na turê dla gracza 4: 5
+2025-04-19 12:08:10,701 - DEBUG - Czas na turê dla gracza 5: 5
+2025-04-19 12:08:10,701 - DEBUG - Czas na turê dla gracza 6: 5
+2025-04-19 12:08:10,701 - INFO - Gra siê rozpoczyna.
