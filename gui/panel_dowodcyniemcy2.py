@@ -22,20 +22,35 @@ class PanelDowodcyNiemcy2(tk.Tk):
         self.left_frame = tk.Frame(self.main_frame, width=300, bg="lightgray")
         self.left_frame.pack(side=tk.LEFT, fill=tk.Y)
 
-        # Przesunięto ramkę na zdjęcie generała wyżej
+        # Dodano miejsce na nazwisko dowódcy
+        self.general_name_label = tk.Label(self.left_frame, text="Nazwisko Dowódcy", font=("Arial", 14), bg="lightgray")
+        self.general_name_label.pack(pady=5, fill=tk.BOTH, expand=False)
+
+        # Ustawienie nazwiska dowódcy
+        self.general_name_label.config(text="Generał Fedor von Bock")
+
+        # Przesunięto ramkę na zdjęcie dowódcy w dół
         self.general_photo_frame = tk.Frame(self.left_frame, width=298, height=298, bg="white", relief=tk.SUNKEN, borderwidth=2)
-        self.general_photo_frame.pack(pady=5, fill=tk.BOTH, expand=False)
+        self.general_photo_frame.pack(pady=10, fill=tk.BOTH, expand=False)
+
+        # Wczytanie zdjęcia dowódcy i dopasowanie do ramki
+        general_image_path = "gui/images/Generał Fedor von Bock.png"
+        self.general_image = Image.open(general_image_path).resize((298, 298), Image.Resampling.LANCZOS)
+        self.general_photo = ImageTk.PhotoImage(self.general_image)
+        general_photo_label = tk.Label(self.general_photo_frame, image=self.general_photo, bg="white")
+        general_photo_label.image = self.general_photo  # Referencja, aby obraz nie został usunięty przez GC
+        general_photo_label.pack()
 
         # Sekcja odliczania czasu
         self.timer_frame = tk.Frame(self.left_frame, bg="white", relief=tk.SUNKEN, borderwidth=2, width=298)
-        self.timer_frame.pack(pady=10, fill=tk.BOTH, expand=False)
+        self.timer_frame.pack(pady=15, fill=tk.BOTH, expand=False)
 
         self.timer_label = tk.Label(self.timer_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14), bg="white")
         self.timer_label.pack(pady=5)
 
         # Przesunięto przycisk "Zakończ Podturę" poniżej ramki z czasem
         self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
-        self.end_turn_button.pack(pady=20)
+        self.end_turn_button.pack(pady=25)
 
         # Uruchomienie timera
         self.update_timer()
