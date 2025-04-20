@@ -27,12 +27,12 @@ class PanelDowodcyNiemcy1(tk.Tk):
 
         # Zastąpienie kodu odpowiedzialnego za zdjęcie i nazwisko gracza
         panel_gracza = PanelGracza(self.left_frame, "c:/Users/klif/kampania1939_fixed/gui/images/Generał Walther von Reichenau.png", "Generał Walther von Reichenau")
-        panel_gracza.pack(pady=10, fill=tk.BOTH, expand=False)
+        panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
         # Zmieniono ramkę z czasem na interaktywny klawisz
         self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4, width=298, cursor="hand2")
-        self.timer_frame.pack(pady=15, fill=tk.BOTH, expand=False)
+        self.timer_frame.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
 
         # Dodano obsługę kliknięcia na ramkę z czasem
         self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
@@ -46,6 +46,9 @@ class PanelDowodcyNiemcy1(tk.Tk):
         self.weather_panel = PanelPogodowy(self.left_frame)
         self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
         self.weather_panel.config(height=60)  # Ustawia stałą wysokość panelu pogodowego na 60 pikseli
+
+        # Zmniejszono przerwę między dolną częścią panelu pogodowego a dolną krawędzią okna do 1 piksela
+        self.weather_panel.pack_configure(pady=1)
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)

@@ -12,8 +12,11 @@ class PanelGeneralaPolska(tk.Tk):
         self.state("zoomed")  # Maksymalizacja okna
         self.ekonomia = ekonomia  # Przechowywanie obiektu ekonomii
 
-        # Pobranie czasu na podturę z obiektu Gracz
-        self.remaining_time = gracz.czas * 60  # Czas na podturę w sekundach
+        # Flaga wskazująca, czy panel jest aktywny
+        self.is_active = True
+
+        # Inicjalizacja czasu na podturę w sekundach
+        self.remaining_time = gracz.czas * 60
 
         # Wyświetlanie numeru tury
         self.turn_label = tk.Label(self, text=f"Tura: {turn_number}", font=("Arial", 14), bg="lightgray")
@@ -29,13 +32,13 @@ class PanelGeneralaPolska(tk.Tk):
         self.left_frame.pack_propagate(False)  # Zapobiega dynamicznej zmianie rozmiaru panelu
         self.left_frame.config(width=298)  # Ustawia stałą szerokość panelu na 298 pikseli
 
-        # Zmieniono ścieżkę na pełną, aby uniknąć problemów z lokalizacją pliku
+        # Zastąpienie kodu odpowiedzialnego za zdjęcie i nazwisko gracza
         panel_gracza = PanelGracza(self.left_frame, "c:/Users/klif/kampania1939_fixed/gui/images/Marszałek Polski Edward Rydz-Śmigły.png", "Marszałek Polski Edward Rydz-Śmigły")
-        panel_gracza.pack(pady=10, fill=tk.BOTH, expand=False)
+        panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
         self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4, width=298, cursor="hand2")
-        self.timer_frame.pack(pady=15, fill=tk.BOTH, expand=False)
+        self.timer_frame.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
 
         # Dodano obsługę kliknięcia na ramkę z czasem
         self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
@@ -47,14 +50,19 @@ class PanelGeneralaPolska(tk.Tk):
         # Uruchomienie timera
         self.update_timer()
 
-        # Przeniesienie ramki dla raportu ekonomicznego bezpośrednio nad raport pogodowy
+        # Sekcja raportu pogodowego
         self.weather_panel = PanelPogodowy(self.left_frame)
-        self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
+        self.weather_panel.pack_forget()
+        self.weather_panel.pack(side=tk.BOTTOM, pady=1, fill=tk.BOTH, expand=False)  # Zmniejszono przerwę między dolną częścią panelu pogodowego a dolną krawędzią okna do 1 piksela
         self.weather_panel.config(width=300, height=60)  # Ustawia stałą wysokość panelu pogodowego na 60 pikseli
 
+        # Dodanie sekcji raportu ekonomicznego
         self.economy_panel = PanelEkonomiczny(self.left_frame)
         self.economy_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
         self.economy_panel.config(width=300)  # Ustawia stałą szerokość panelu ekonomicznego na 300 pikseli
+
+        # Zmiana odstępu między panelem ekonomicznym a raportem pogodowym
+        self.economy_panel.pack_configure(pady=1)
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
@@ -86,11 +94,6 @@ class PanelGeneralaPolska(tk.Tk):
         self.map_canvas.bind("<ButtonPress-1>", self.start_pan)
         self.map_canvas.bind("<B1-Motion>", self.do_pan)
 
-        # Debugowanie
-        print(f"[DEBUG] Szerokość panelu pogodowego: {self.weather_panel.winfo_width()}")
-        print(f"[DEBUG] Szerokość panelu ekonomicznego: {self.economy_panel.winfo_width()}")
-        print(f"[DEBUG] Scrollregion mapy: {self.map_canvas.cget('scrollregion')}")
-
     def load_map(self, map_path):
         """Wczytuje mapę i wyświetla ją na canvasie."""
         try:
@@ -113,6 +116,27 @@ class PanelGeneralaPolska(tk.Tk):
         self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
         print(f"[DEBUG] Scrollregion mapy: {self.map_canvas.cget('scrollregion')}")
 
+    def end_turn(self):
+        """Kończy podturę."""
+        self.destroy()
+
+    def destroy(self):
+        if hasattr(self, 'timer_id'):
+            self.after_cancel(self.timer_id)
+        self.is_active = False  # Ustawienie flagi na False przy niszczeniu panelu
+        super().destroy()
+
+    def update_weather(self, weather_report):
+        """Aktualizuje sekcję raportu pogodowego w panelu."""
+        self.weather_panel.update_weather(weather_report)
+        print(f"[DEBUG] Szerokość panelu pogodowego: {self.weather_panel.winfo_width()}")
+
+    def update_economy(self):
+        """Aktualizuje sekcję raportu ekonomicznego w panelu."""
+        economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
+        self.economy_panel.update_economy(economy_report)
+        print(f"[DEBUG] Szerokość panelu ekonomicznego: {self.economy_panel.winfo_width()}")
+
     def update_timer(self):
         """Aktualizuje odliczanie czasu."""
         if self.winfo_exists():
@@ -122,30 +146,6 @@ class PanelGeneralaPolska(tk.Tk):
                 self.timer_id = self.after(1000, self.update_timer)
             else:
                 self.end_turn()
-        else:
-            if hasattr(self, 'timer_id'):
-                self.after_cancel(self.timer_id)
-
-    def end_turn(self):
-        """Kończy podturę."""
-        self.destroy()
-
-    def destroy(self):
-        super().destroy()
-
-    def update_weather(self, weather_report):
-        """Aktualizuje sekcję raportu pogodowego w panelu."""
-        print(f"[DEBUG] PanelGeneralaPolska: Otrzymano raport pogodowy: {weather_report}")
-        self.weather_panel.update_weather(weather_report)
-
-    def update_economy(self):
-        """Aktualizuje sekcję raportu ekonomicznego w panelu."""
-        economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
-        self.economy_panel.update_economy(economy_report)
-
-    def buy_time(self):
-        """Logika kupowania dodatkowego czasu."""
-        print("Kupiono dodatkowy czas!")
 
     def confirm_end_turn(self, event):
         """Potwierdza zakończenie tury."""
