@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image, ImageTk  # Obsługa obrazów
 from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_gracza import PanelGracza
@@ -29,15 +30,16 @@ class PanelDowodcyNiemcy1(tk.Tk):
         panel_gracza.pack(pady=10, fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
-        self.timer_frame = tk.Frame(self.left_frame, bg="white", relief=tk.SUNKEN, borderwidth=2, width=298)
+        # Zmieniono ramkę z czasem na interaktywny klawisz
+        self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4, width=298, cursor="hand2")
         self.timer_frame.pack(pady=15, fill=tk.BOTH, expand=False)
 
-        self.timer_label = tk.Label(self.timer_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14), bg="white")
-        self.timer_label.pack(pady=5)
+        # Dodano obsługę kliknięcia na ramkę z czasem
+        self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
 
-        # Przesunięto przycisk "Zakończ Podturę" poniżej ramki z czasem
-        self.end_turn_button = tk.Button(self.left_frame, text="Zakończ Podturę", command=self.end_turn)
-        self.end_turn_button.pack(pady=25)
+        # Dodano obsługę zmiany wyglądu przy najechaniu myszką
+        self.timer_frame.bind("<Enter>", lambda e: self.timer_frame.config(bg="#556B2F"))
+        self.timer_frame.bind("<Leave>", lambda e: self.timer_frame.config(bg="#6B8E23"))
 
         # Sekcja raportu pogodowego
         # Inicjalizacja panelu pogodowego
@@ -116,10 +118,15 @@ class PanelDowodcyNiemcy1(tk.Tk):
         if self.winfo_exists():
             if self.remaining_time > 0:
                 self.remaining_time -= 1
-                self.timer_label.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
+                self.timer_frame.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
                 self.timer_id = self.after(1000, self.update_timer)
             else:
                 self.end_turn()
+
+    def confirm_end_turn(self, event):
+        """Potwierdza zakończenie tury."""
+        if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz zakończyć turę przed czasem?"):
+            self.end_turn()
 
 if __name__ == "__main__":
     app = PanelDowodcyNiemcy1(turn_number=1, remaining_time=60)

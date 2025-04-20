@@ -56,7 +56,7 @@ class EkranStartowy:
             self.comboboxes.append(combobox)
 
             czas_combobox = ttk.Combobox(frame, values=list(range(1, 11)), state="readonly")
-            czas_combobox.set(5)  # Domyślnie ustawione na 5 minut
+            czas_combobox.set(1)  # Domyślnie ustawione na 1 minutę
             czas_combobox.bind("<<ComboboxSelected>>", self.create_czas_callback(i))
             czas_combobox.pack(side=tk.LEFT, padx=10)
             self.czas_comboboxes.append(czas_combobox)
@@ -96,31 +96,32 @@ class EkranStartowy:
 
         return True
 
+    # Dodano logikę dynamicznego dostosowywania suwaków i przywracania domyślnych wartości
     def sprawdz_czas(self, idx):
-        """Weryfikuje, czy suma czasu dla jednej nacji nie przekracza 15 minut i dostosowuje czas ostatniego gracza."""
+        """Weryfikuje, czy suma czasu dla jednej nacji nie przekracza 15 minut i dostosowuje czas pozostałych graczy."""
         team_1_czas = sum(int(self.czas_comboboxes[i].get()) for i in range(3) if self.czas_comboboxes[i].get().isdigit())
         team_2_czas = sum(int(self.czas_comboboxes[i].get()) for i in range(3, 6) if self.czas_comboboxes[i].get().isdigit())
 
-        # Dostosowanie czasu dla ostatniego gracza w Team 1
-        if team_1_czas < 15:
-            pozostaly_czas = 15 - sum(int(self.czas_comboboxes[i].get()) for i in range(2))
-            self.czas_comboboxes[2].set(pozostaly_czas)
+        # Przywracanie domyślnych wartości, jeśli suma przekracza 15 minut
+        if team_1_czas > 15 or team_2_czas > 15:
+            for i in range(6):
+                self.czas_comboboxes[i].set(1)
+            messagebox.showerror("Błąd", "Suma czasu w drużynie nie może przekraczać 15 minut! Przywrócono domyślne wartości.")
+            return
 
-        # Dostosowanie czasu dla ostatniego gracza w Team 2
-        if team_2_czas < 15:
-            pozostaly_czas = 15 - sum(int(self.czas_comboboxes[i].get()) for i in range(3, 5))
-            self.czas_comboboxes[5].set(pozostaly_czas)
+        # Dostosowanie maksymalnych wartości dla graczy w drużynie 1
+        if idx < 3:
+            for i in range(3):
+                if i != idx:
+                    max_czas = 15 - team_1_czas + int(self.czas_comboboxes[i].get())
+                    self.czas_comboboxes[i]["values"] = list(range(1, max_czas + 1))
 
-        # Walidacja przekroczenia czasu
-        if team_1_czas > 15:
-            logging.error("Czas dla Team 1 przekracza 15 minut.")
-            messagebox.showerror("Błąd", "Czas dla Team 1 nie może przekraczać 15 minut!")
-            self.czas_comboboxes[idx].set(5)
-
-        if team_2_czas > 15:
-            logging.error("Czas dla Team 2 przekracza 15 minut.")
-            messagebox.showerror("Błąd", "Czas dla Team 2 nie może przekraczać 15 minut!")
-            self.czas_comboboxes[idx].set(5)
+        # Dostosowanie maksymalnych wartości dla graczy w drużynie 2
+        if idx >= 3:
+            for i in range(3, 6):
+                if i != idx:
+                    max_czas = 15 - team_2_czas + int(self.czas_comboboxes[i].get())
+                    self.czas_comboboxes[i]["values"] = list(range(1, max_czas + 1))
 
     def wybierz_nacje(self, idx, wybor):
         logging.debug(f"Gracz {idx + 1} wybrał nację: {wybor}")
@@ -147,6 +148,7 @@ class EkranStartowy:
         logging.debug(f"Czas na turę dla gracza {idx + 1}: {czas}")
         return int(czas) if czas.isdigit() else 5
 
+    # Dodano walidację przy rozpoczęciu gry, aby sprawdzić, czy suma punktów w drużynach wynosi dokładnie 15
     def rozpocznij_gre(self):
         logging.info("Próba rozpoczęcia gry.")
 
@@ -159,6 +161,20 @@ class EkranStartowy:
 
         # Dodatkowa weryfikacja logiki wyborów
         if not self.sprawdz_wszystkie_wybory():
+            return
+
+        # Sprawdzenie sumy punktów w drużynach
+        team_1_czas = sum(int(self.czas_comboboxes[i].get()) for i in range(3))
+        team_2_czas = sum(int(self.czas_comboboxes[i].get()) for i in range(3, 6))
+
+        if team_1_czas < 15:
+            messagebox.showerror("Błąd", f"Drużyna 1 ma do rozdysponowania {15 - team_1_czas} punktów.")
+            self.czas_comboboxes[2].focus_set()  # Podświetlenie ostatniego gracza w drużynie 1
+            return
+
+        if team_2_czas < 15:
+            messagebox.showerror("Błąd", f"Drużyna 2 ma do rozdysponowania {15 - team_2_czas} punktów.")
+            self.czas_comboboxes[5].focus_set()  # Podświetlenie ostatniego gracza w drużynie 2
             return
 
         # Zapisanie danych w atrybutach klasy przed zniszczeniem GUI
