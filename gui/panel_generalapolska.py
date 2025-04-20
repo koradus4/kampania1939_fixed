@@ -2,6 +2,7 @@ import tkinter as tk
 from PIL import Image, ImageTk  # Obsługa obrazów
 from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_ekonomiczny import PanelEkonomiczny
+from gui.panel_gracza import PanelGracza
 
 class PanelGeneralaPolska(tk.Tk):
     def __init__(self, turn_number, ekonomia, gracz):
@@ -27,21 +28,9 @@ class PanelGeneralaPolska(tk.Tk):
         self.left_frame.pack_propagate(False)  # Zapobiega dynamicznej zmianie rozmiaru panelu
         self.left_frame.config(width=298)  # Ustawia stałą szerokość panelu na 298 pikseli
 
-        # Dodano obramowanie dla nazwiska generała
-        self.general_name_label = tk.Label(self.left_frame, text="Marszałek Polski Edward Rydz-Śmigły", font=("Arial", 12), bg="white", relief=tk.SUNKEN, borderwidth=2, wraplength=280, justify=tk.CENTER)
-        self.general_name_label.pack(pady=5, fill=tk.BOTH, expand=False)
-
-        # Dodano ramkę na zdjęcie generała
-        self.general_photo_frame = tk.Frame(self.left_frame, width=298, height=298, bg="white", relief=tk.SUNKEN, borderwidth=2)
-        self.general_photo_frame.pack(pady=10, fill=tk.BOTH, expand=False)
-
-        # Wczytanie zdjęcia generała i dopasowanie do ramki
-        general_image_path = "gui/images/Marszałek Polski Edward Rydz-Śmigły .png"
-        self.general_image = Image.open(general_image_path).resize((298, 298), Image.Resampling.LANCZOS)
-        self.general_photo = ImageTk.PhotoImage(self.general_image)
-        general_photo_label = tk.Label(self.general_photo_frame, image=self.general_photo, bg="white")
-        general_photo_label.image = self.general_photo  # Referencja, aby obraz nie został usunięty przez GC
-        general_photo_label.pack()
+        # Zmieniono ścieżkę na pełną, aby uniknąć problemów z lokalizacją pliku
+        panel_gracza = PanelGracza(self.left_frame, "c:/Users/klif/kampania1939_fixed/gui/images/Marszałek Polski Edward Rydz-Śmigły.png", "Marszałek Polski Edward Rydz-Śmigły")
+        panel_gracza.pack(pady=10, fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
         self.timer_frame = tk.Frame(self.left_frame, bg="white", relief=tk.SUNKEN, borderwidth=2, width=298)
