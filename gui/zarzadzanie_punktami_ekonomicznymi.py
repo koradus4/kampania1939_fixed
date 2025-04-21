@@ -1,0 +1,37 @@
+import tkinter as tk
+
+class ZarzadzaniePunktamiEkonomicznymi(tk.Frame):
+    def __init__(self, parent, available_points, commanders, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+
+        self.available_points = available_points  # Dostępna pula punktów ekonomicznych
+        self.commanders = commanders  # Lista dowódców
+        self.commander_points = {commander: 0 for commander in commanders}  # Punkty przydzielone dowódcom
+
+        # Wyświetlanie dostępnych punktów
+        self.points_label = tk.Label(self, text=f"Dostępne punkty: {self.available_points}", font=("Arial", 12))
+        self.points_label.pack(pady=5)
+
+        # Tworzenie suwaków dla każdego dowódcy
+        for commander in self.commanders:
+            frame = tk.Frame(self)
+            frame.pack(fill=tk.X, pady=5)
+
+            label = tk.Label(frame, text=commander, font=("Arial", 10))
+            label.pack(side=tk.LEFT, padx=5)
+
+            slider = tk.Scale(frame, from_=0, to=self.available_points, orient=tk.HORIZONTAL, resolution=1, command=lambda value, c=commander: self.update_points(c, int(value)))
+            slider.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=5)
+
+            setattr(self, f"{commander}_slider", slider)
+
+    def update_points(self, commander, value):
+        # Obliczanie nowej dostępnej puli punktów
+        current_total = sum(self.commander_points.values()) - self.commander_points[commander]
+        if current_total + value <= self.available_points:
+            self.commander_points[commander] = value
+            self.points_label.config(text=f"Dostępne punkty: {self.available_points - sum(self.commander_points.values())}")
+        else:
+            # Przywracanie suwaka do poprzedniej wartości, jeśli przekroczono limit
+            slider = getattr(self, f"{commander}_slider")
+            slider.set(self.commander_points[commander])

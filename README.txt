@@ -1,39 +1,48 @@
-### Plan implementacji systemu ekonomii i zarządzania czasem w grze
 
-#### 1. Zmiana systemu ekonomii
-- **Cel**: Uproszczenie systemu ekonomii i dodanie generowania punktów ekonomicznych oraz punktów specjalnych dla generałów.
-- **Kroki**:
-  1. Usuń wszystkie obecne funkcje w pliku `ekonomia.py`.
-  2. Dodaj mechanizm generowania punktów ekonomicznych (1-100) dla generałów co pełną turę.
-  3. Dodaj generowanie 1 punktu specjalnego na turę dla każdego generała.
-  4. Wyświetlaj punkty ekonomiczne i specjalne w panelu generała w osobnej ramce.
-  5. Dodaj możliwość rozdysponowywania punktów ekonomicznych na dowódców.
-
-#### 2. Dodanie wyboru czasu w ekranie startowym
-- **Cel**: Umożliwienie graczom wyboru czasu na podturę dla generałów i dowódców.
-- **Kroki**:
-  1. W pliku `ekran_startowy.py` dodaj nowe pola wyboru (`ttk.Combobox`) obok wyboru nacji.
-  2. Domyślnie ustaw czas na 5 minut dla generała i po 5 minut dla dowódców (łącznie 15 minut).
-  3. Waliduj, aby suma czasu dla jednej nacji wynosiła dokładnie 15 minut.
-  4. Zapisz wybrany czas w obiekcie gracza (`Gracz`).
-
-#### 3. Modyfikacja paneli graczy
-- **Cel**: Wyświetlanie pozostałego czasu oraz punktów ekonomicznych w panelach generałów i dowódców.
-- **Kroki**:
-  1. W plikach `panel_generalapolska.py` i `panel_dowodcypolska1.py` dodaj nową ramkę z opisem "Czas" i "Punkty ekonomiczne".
-  2. Wyświetlaj pozostały czas w formacie minut i sekund.
-  3. Aktualizuj czas co sekundę.
-  4. Dodaj przycisk "Kup dodatkowy czas" w panelu generała, który pozwoli na zakup czasu kosztem punktów ekonomicznych.
-  5. Zaktualizuj punkty ekonomiczne i czas w panelach dowódców.
-
-#### Kolejność implementacji
-1. **Zmiana systemu ekonomii**.
-2. **Dodanie wyboru czasu w ekranie startowym**.
-3. **Modyfikacja paneli graczy**.
-
-#### Docelowe funkcjonalności
-- Generałowie otrzymują punkty ekonomiczne (1-100) i 1 punkt specjalny co turę.
-- Generałowie mogą rozdysponowywać punkty ekonomiczne na dowódców.
-- Gracze wybierają czas na podtury w ekranie startowym.
-- Czas i punkty ekonomiczne są wyświetlane w panelach graczy.
-- Generałowie mogą kupować dodatkowy czas kosztem punktów ekonomicznych.
+GitHub Copilot
+Plan funkcjonalności dla generałów
+1. Rozdzielanie punktów ekonomicznych
+Cel: Generałowie mogą przydzielać dostępne punkty ekonomiczne swoim dowódcom.
+Interfejs:
+Suwaki do dynamicznego przydzielania punktów ekonomicznych.
+Suwaki będą czułe, umożliwiając przesunięcie o 1 punkt za pomocą kliknięcia.
+Dostępna pula punktów ekonomicznych będzie automatycznie aktualizowana po każdej zmianie.
+Ograniczenia:
+Generał nie może przydzielić więcej punktów, niż ma dostępnych w puli.
+Punkty są odejmowane z dostępnej puli w czasie rzeczywistym.
+2. Wydawanie punktów specjalnych
+Cel: Generałowie mogą wydawać punkty specjalne na akcje strategiczne.
+Dostępne akcje specjalne:
+Polska:
+Lend-Lease (Stany Zjednoczone): Wsparcie materiałowe od USA. Koszt: 3 pkt specjalne.
+Sabotaż (Francja): Akcja dywersyjna wspierana przez Francję. Koszt: 5 pkt specjalne.
+Porozumienie strategiczne (Wielka Brytania): Współpraca strategiczna z Wielką Brytanią. Koszt: 3 pkt specjalne (losowanie 1-50 pkt ekonomicznych).
+Niemcy:
+Sojusz wojskowy (Włochy): Wsparcie militarne od Włoch. Koszt: 3 pkt specjalne.
+Interwencja sojusznika (Rosja): Współpraca z Rosją w określonych działaniach. Koszt: 10 pkt specjalne.
+Porozumienie strategiczne (Japonia): Współpraca strategiczna z Japonią. Koszt: 5 pkt specjalne.
+Zasady:
+Akcje specjalne są dostępne na stałe, ale ich użycie wymaga odpowiedniej liczby punktów specjalnych.
+Generałowie zdobywają 1 punkt specjalny co turę.
+Po wydaniu punktów specjalnych, ich liczba jest automatycznie odejmowana z dostępnej puli.
+Akcje specjalne są natychmiast aktywowane po zakupie.
+3. Operacje lotnicze
+Cel: Generałowie mogą kupować operacje lotnicze za punkty ekonomiczne.
+Dostępne operacje:
+Bombardowanie: Atak na wrogie jednostki lub infrastrukturę. Koszt: 100 pkt ekonomicznych.
+Zwiad lotniczy: Odkrywanie pozycji wroga. Koszt: 25 pkt ekonomicznych.
+Zasady:
+Operacje lotnicze są dostępne tylko dla generałów.
+Nie ma ograniczeń w liczbie użyć operacji, dopóki generał ma wystarczającą liczbę punktów ekonomicznych.
+Wizualizacja na mapie:
+Bombardowanie: Zaznaczenie obszaru bombardowania na mapie.
+Zwiad lotniczy: Odkrycie obszaru na mapie po wykonaniu zwiadu.
+4. Klawisze operacyjne
+Cel: Generałowie mogą wydawać rozkazy, zaznaczając punkty na mapie do zdobycia lub obrony.
+Dostępne klawisze:
+Atak: Rozpoczęcie ofensywy.
+Obrona: Przygotowanie do obrony.
+Zasady:
+Zaznaczanie punktów na mapie odbywa się poprzez kliknięcie na mapę.
+Akcje ataku/obrony są przydzielane dowódcom.
+Po realizacji tych akcji generałowie mogą otrzymać dodatkowe punkty ekonomiczne (do przemyślenia i dopracowania, aby było logiczne i życiowe).

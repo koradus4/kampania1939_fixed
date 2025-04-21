@@ -4,6 +4,7 @@ from PIL import Image, ImageTk  # Obsługa obrazów
 from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_ekonomiczny import PanelEkonomiczny
 from gui.panel_gracza import PanelGracza
+from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomicznymi
 
 class PanelGeneralaPolska(tk.Tk):
     def __init__(self, turn_number, ekonomia, gracz):
@@ -63,6 +64,28 @@ class PanelGeneralaPolska(tk.Tk):
 
         # Zmiana odstępu między panelem ekonomicznym a raportem pogodowym
         self.economy_panel.pack_configure(pady=1)
+
+        # Dodanie sekcji zarządzania punktami ekonomicznymi
+        self.zarzadzanie_punktami = ZarzadzaniePunktamiEkonomicznymi(
+            self.left_frame,
+            available_points=100,  # Przykładowa pula punktów ekonomicznych
+            commanders=["Dowódca 1", "Dowódca 2", "Dowódca 3"]  # Przykładowi dowódcy
+        )
+        self.zarzadzanie_punktami.pack_forget()
+
+        # Ukrycie suwaków na początku
+        self.sliders_frame = None
+
+        # Dodanie klawisza "Wsparcie dowódców" z wyglądem klawisza zegara
+        self.support_button = tk.Label(self.left_frame, text="Wsparcie dowódców", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4, width=298, cursor="hand2")
+        self.support_button.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+
+        # Dodanie obsługi kliknięcia na klawisz "Wsparcie dowódców"
+        self.support_button.bind("<Button-1>", lambda e: self.show_support_sliders())
+
+        # Dodano obsługę zmiany wyglądu przy najechaniu myszką
+        self.support_button.bind("<Enter>", lambda e: self.support_button.config(bg="#556B2F"))
+        self.support_button.bind("<Leave>", lambda e: self.support_button.config(bg="#6B8E23"))
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
@@ -151,6 +174,28 @@ class PanelGeneralaPolska(tk.Tk):
         """Potwierdza zakończenie tury."""
         if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz zakończyć turę przed czasem?"):
             self.end_turn()
+
+    def show_support_sliders(self):
+        # Ukrycie klawisza "Wsparcie dowódców"
+        self.support_button.pack_forget()
+
+        # Wyświetlenie suwaków
+        self.zarzadzanie_punktami.pack(pady=10, fill=tk.BOTH, expand=False)
+
+        # Dodanie przycisku "Akceptuj" tylko raz
+        if not hasattr(self, 'accept_button'):
+            self.accept_button = tk.Button(self.zarzadzanie_punktami, text="Akceptuj", font=("Arial", 12), bg="green", fg="white", command=self.accept_support)
+            self.accept_button.pack(pady=10, fill=tk.BOTH, expand=False)
+
+    def accept_support(self):
+        # Zapisanie punktów (logika do zaimplementowania)
+        print("[DEBUG] Punkty przydzielone dowódcom:", self.zarzadzanie_punktami.commander_points)
+
+        # Ukrycie suwaków
+        self.zarzadzanie_punktami.pack_forget()
+
+        # Przywrócenie klawisza "Wsparcie dowódców"
+        self.support_button.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
 
 if __name__ == "__main__":
     class MockEkonomia:
