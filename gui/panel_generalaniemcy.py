@@ -4,9 +4,10 @@ from PIL import Image, ImageTk  # Obsługa obrazów
 from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_ekonomiczny import PanelEkonomiczny
 from gui.panel_gracza import PanelGracza
+from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomicznymi
 
 class PanelGeneralaNiemcy(tk.Tk):
-    def __init__(self, turn_number, ekonomia, gracz):
+    def __init__(self, turn_number, ekonomia, gracz, gracze):
         super().__init__()
         self.title("Panel Generała Niemcy")
         self.state("zoomed")  # Maksymalizacja okna
@@ -50,6 +51,20 @@ class PanelGeneralaNiemcy(tk.Tk):
         # Uruchomienie timera
         self.update_timer()
 
+        # Dodanie klawisza "Wsparcie dowódców" z wyglądem klawisza zegara
+        self.support_button = tk.Label(self.left_frame, text="Wsparcie dowódców", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4, width=298, cursor="hand2")
+        self.support_button.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+
+        # Dodanie obsługi kliknięcia na klawisz "Wsparcie dowódców"
+        self.support_button.bind("<Button-1>", lambda e: self.show_support_sliders())
+
+        # Dodano obsługę zmiany wyglądu przy najechaniu myszką
+        self.support_button.bind("<Enter>", lambda e: self.support_button.config(bg="#556B2F"))
+        self.support_button.bind("<Leave>", lambda e: self.support_button.config(bg="#6B8E23"))
+
+        # Ukrycie suwaków na początku
+        self.sliders_frame = None
+
         # Sekcja raportu pogodowego
         self.weather_panel = PanelPogodowy(self.left_frame)
         self.weather_panel.pack_forget()
@@ -63,6 +78,17 @@ class PanelGeneralaNiemcy(tk.Tk):
 
         # Zmiana odstępu między panelem ekonomicznym a raportem pogodowym
         self.economy_panel.pack_configure(pady=1)
+
+        # Filtrowanie dowódców dla danej nacji
+        commanders = [gracz for gracz in gracze if gracz.nacja == "Niemcy" and gracz.rola == "Dowódca"]
+
+        # Przekazanie dowódców do ZarzadzaniePunktamiEkonomicznymi
+        self.zarzadzanie_punktami = ZarzadzaniePunktamiEkonomicznymi(
+            self.left_frame,
+            available_points=100,  # Przykładowa pula punktów ekonomicznych
+            commanders=[dowodca.numer for dowodca in commanders]  # Lista dowódców dla Niemiec
+        )
+        self.zarzadzanie_punktami.pack_forget()
 
         # Prawy panel (mapa z suwakami)
         self.map_frame = tk.Frame(self.main_frame)
@@ -132,10 +158,14 @@ class PanelGeneralaNiemcy(tk.Tk):
         print(f"[DEBUG] Szerokość panelu pogodowego: {self.weather_panel.winfo_width()}")
 
     def update_economy(self):
-        """Aktualizuje sekcję raportu ekonomicznego w panelu."""
+        """Aktualizuje sekcję raportu ekonomicznego w panelu oraz wartość dostępnych punktów w suwakach."""
         economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
         self.economy_panel.update_economy(economy_report)
         print(f"[DEBUG] Szerokość panelu ekonomicznego: {self.economy_panel.winfo_width()}")
+
+        # Aktualizacja dostępnych punktów w suwakach
+        new_available_points = self.ekonomia.get_points()['economic_points']
+        self.zarzadzanie_punktami.refresh_available_points(new_available_points)
 
     def update_timer(self):
         """Aktualizuje odliczanie czasu."""
@@ -152,6 +182,33 @@ class PanelGeneralaNiemcy(tk.Tk):
         if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz zakończyć turę przed czasem?"):
             self.end_turn()
 
+    def show_support_sliders(self):
+        # Ukrycie klawisza "Wsparcie dowódców"
+        self.support_button.pack_forget()
+
+        # Wyświetlenie suwaków
+        self.zarzadzanie_punktami.pack(pady=10, fill=tk.BOTH, expand=False)
+
+        # Dodanie przycisku "Akceptuj" tylko raz
+        if not hasattr(self, 'accept_button'):
+            self.accept_button = tk.Button(self.zarzadzanie_punktami, text="Akceptuj", font=("Arial", 12), bg="green", fg="white", command=self.accept_support)
+            self.accept_button.pack(pady=10, fill=tk.BOTH, expand=False)
+
+    def accept_support(self):
+        # Zapisanie punktów (logika do zaimplementowania)
+        print("[DEBUG] Punkty przydzielone dowódcom:", self.zarzadzanie_punktami.commander_points)
+
+        # Aktualizacja raportu ekonomicznego po rozdysponowaniu punktów
+        total_assigned_points = sum(self.zarzadzanie_punktami.commander_points.values())
+        self.ekonomia.subtract_points(total_assigned_points)
+        self.update_economy()
+
+        # Ukrycie suwaków
+        self.zarzadzanie_punktami.pack_forget()
+
+        # Przywrócenie klawisza "Wsparcie dowódców"
+        self.support_button.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+
 if __name__ == "__main__":
-    app = PanelGeneralaNiemcy(turn_number=1, ekonomia=None, gracz=None)  # Przekazanie obiektu gracza
+    app = PanelGeneralaNiemcy(turn_number=1, ekonomia=None, gracz=None, gracze=[])  # Przekazanie obiektu gracza i listy graczy
     app.mainloop()

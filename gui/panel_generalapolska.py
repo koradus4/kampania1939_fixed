@@ -7,7 +7,7 @@ from gui.panel_gracza import PanelGracza
 from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomicznymi
 
 class PanelGeneralaPolska(tk.Tk):
-    def __init__(self, turn_number, ekonomia, gracz):
+    def __init__(self, turn_number, ekonomia, gracz, gracze):
         super().__init__()
         self.title("Panel Generała Polska")
         self.state("zoomed")  # Maksymalizacja okna
@@ -65,11 +65,14 @@ class PanelGeneralaPolska(tk.Tk):
         # Zmiana odstępu między panelem ekonomicznym a raportem pogodowym
         self.economy_panel.pack_configure(pady=1)
 
-        # Dodanie sekcji zarządzania punktami ekonomicznymi
+        # Filtrowanie dowódców dla danej nacji
+        commanders = [gracz for gracz in gracze if gracz.nacja == "Polska" and gracz.rola == "Dowódca"]
+
+        # Przekazanie dowódców do ZarzadzaniePunktamiEkonomicznymi
         self.zarzadzanie_punktami = ZarzadzaniePunktamiEkonomicznymi(
             self.left_frame,
             available_points=100,  # Przykładowa pula punktów ekonomicznych
-            commanders=["Dowódca 1", "Dowódca 2", "Dowódca 3"]  # Przykładowi dowódcy
+            commanders=[dowodca.numer for dowodca in commanders]  # Lista dowódców dla Polski
         )
         self.zarzadzanie_punktami.pack_forget()
 
@@ -155,10 +158,14 @@ class PanelGeneralaPolska(tk.Tk):
         print(f"[DEBUG] Szerokość panelu pogodowego: {self.weather_panel.winfo_width()}")
 
     def update_economy(self):
-        """Aktualizuje sekcję raportu ekonomicznego w panelu."""
+        """Aktualizuje sekcję raportu ekonomicznego w panelu oraz wartość dostępnych punktów w suwakach."""
         economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
         self.economy_panel.update_economy(economy_report)
         print(f"[DEBUG] Szerokość panelu ekonomicznego: {self.economy_panel.winfo_width()}")
+
+        # Aktualizacja dostępnych punktów w suwakach
+        new_available_points = self.ekonomia.get_points()['economic_points']
+        self.zarzadzanie_punktami.refresh_available_points(new_available_points)
 
     def update_timer(self):
         """Aktualizuje odliczanie czasu."""
@@ -191,6 +198,11 @@ class PanelGeneralaPolska(tk.Tk):
         # Zapisanie punktów (logika do zaimplementowania)
         print("[DEBUG] Punkty przydzielone dowódcom:", self.zarzadzanie_punktami.commander_points)
 
+        # Aktualizacja raportu ekonomicznego po rozdysponowaniu punktów
+        total_assigned_points = sum(self.zarzadzanie_punktami.commander_points.values())
+        self.ekonomia.subtract_points(total_assigned_points)
+        self.update_economy()
+
         # Ukrycie suwaków
         self.zarzadzanie_punktami.pack_forget()
 
@@ -202,11 +214,26 @@ if __name__ == "__main__":
         def get_points(self, nation=None):
             return {"economic_points": 100, "special_points": 50}
 
+        def subtract_points(self, points):
+            print(f"[DEBUG] Odejmowanie punktów: {points}")
+
     class MockGracz:
         def __init__(self):
             self.czas = 5
 
+    class MockDowodca:
+        def __init__(self, nacja, rola, numer):
+            self.nacja = nacja
+            self.rola = rola
+            self.numer = numer
+
     ekonomia = MockEkonomia()
     gracz = MockGracz()
-    app = PanelGeneralaPolska(turn_number=1, ekonomia=ekonomia, gracz=gracz)
+    gracze = [
+        MockDowodca(nacja="Polska", rola="Dowódca", numer=1),
+        MockDowodca(nacja="Polska", rola="Dowódca", numer=2),
+        MockDowodca(nacja="Polska", rola="Dowódca", numer=3),
+        MockDowodca(nacja="Niemcy", rola="Dowódca", numer=4)
+    ]
+    app = PanelGeneralaPolska(turn_number=1, ekonomia=ekonomia, gracz=gracz, gracze=gracze)
     app.mainloop()

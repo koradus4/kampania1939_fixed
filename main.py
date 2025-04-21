@@ -41,9 +41,9 @@ if __name__ == "__main__":
 
         # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
         if current_player.rola == "Generał" and current_player.nacja == "Polska":
-            app = PanelGeneralaPolska(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player)
+            app = PanelGeneralaPolska(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=gracze)
         elif current_player.rola == "Generał" and current_player.nacja == "Niemcy":
-            app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player)
+            app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=gracze)
         elif current_player.rola == "Dowódca" and current_player.nacja == "Polska":
             if current_player.numer in [2, 5]:
                 app = PanelDowodcyPolska1(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)

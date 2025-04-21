@@ -20,6 +20,15 @@ class EconomySystem:
         self.special_points += 1
         print(f"[DEBUG] +1 punkt specjalny")
 
+    def subtract_points(self, points):
+        """Odejmuje punkty ekonomiczne z dostępnej puli."""
+        if hasattr(self, 'economic_points'):
+            self.economic_points -= points
+            if self.economic_points < 0:
+                self.economic_points = 0
+        else:
+            print("[ERROR] Obiekt EconomySystem nie ma atrybutu 'economic_points'.")
+
     def get_points(self):
         """Zwraca aktualne punkty ekonomiczne i specjalne."""
         return {"economic_points": self.economic_points, "special_points": self.special_points}
