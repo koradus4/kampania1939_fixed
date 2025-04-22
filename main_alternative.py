@@ -62,6 +62,21 @@ if __name__ == "__main__":
             current_player.economy.add_special_points()
             app.update_economy()
 
+        # Debug: Wyświetlenie liczby punktów ekonomicznych przydzielonych panelowi dowódcy
+        if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
+            przydzielone_punkty = current_player.economy.get_assigned_points()
+            print(f"[DEBUG] Panel {app.__class__.__name__} odbiera punkty ekonomiczne: {przydzielone_punkty}")
+
+        # Debug: Wyświetlenie aktualnej wartości punktów w panelu dowódcy
+        if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
+            aktualne_punkty = app.points_frame.cget("text")
+            print(f"[DEBUG] Panel {app.__class__.__name__} aktualna wartość punktów: {aktualne_punkty}")
+
+        # Aktualizacja punktów ekonomicznych dla paneli dowódców
+        if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
+            przydzielone_punkty = current_player.economy.get_assigned_points()
+            app.update_economy(przydzielone_punkty)
+
         app.mainloop()  # Uruchomienie panelu
 
         # Przejście do następnej tury/podtury

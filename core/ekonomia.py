@@ -34,6 +34,11 @@ class EconomySystem:
         """Zwraca aktualne punkty ekonomiczne i specjalne."""
         return {"economic_points": self.economic_points, "special_points": self.special_points}
 
+    def get_assigned_points(self):
+        """Zwraca liczbę punktów przydzielonych dowódcom."""
+        # Na potrzeby demonstracji zwracamy stałą wartość, np. 1 punkt na dowódcę
+        return 1
+
 if __name__ == "__main__":
     economy = EconomySystem()
 
