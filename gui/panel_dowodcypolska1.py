@@ -40,6 +40,10 @@ class PanelDowodcyPolska1(tk.Tk):
         self.timer_frame.bind("<Enter>", lambda e: self.timer_frame.config(bg="#556B2F"))
         self.timer_frame.bind("<Leave>", lambda e: self.timer_frame.config(bg="#6B8E23"))
 
+        # Dodanie okna do odbioru punktów w odpowiednim miejscu
+        self.points_frame = tk.Label(self.left_frame, text="Punkty do odbioru: 0", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        self.points_frame.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+
         # Sekcja raportu pogodowego
         # Inicjalizacja panelu pogodowego
         self.weather_panel = PanelPogodowy(self.left_frame)
@@ -118,7 +122,6 @@ class PanelDowodcyPolska1(tk.Tk):
 
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
-        print(f"[DEBUG] PanelDowodcyPolska1: Otrzymano raport pogodowy: {weather_report}")
         self.weather_panel.update_weather(weather_report)
 
     def update_timer(self):

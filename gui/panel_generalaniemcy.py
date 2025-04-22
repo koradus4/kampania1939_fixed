@@ -140,7 +140,6 @@ class PanelGeneralaNiemcy(tk.Tk):
     def update_scrollregion(self, event):
         """Aktualizuje obszar przewijania mapy."""
         self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
-        print(f"[DEBUG] Scrollregion mapy: {self.map_canvas.cget('scrollregion')}")
 
     def end_turn(self):
         """Kończy podturę."""
@@ -155,13 +154,11 @@ class PanelGeneralaNiemcy(tk.Tk):
     def update_weather(self, weather_report):
         """Aktualizuje sekcję raportu pogodowego w panelu."""
         self.weather_panel.update_weather(weather_report)
-        print(f"[DEBUG] Szerokość panelu pogodowego: {self.weather_panel.winfo_width()}")
 
     def update_economy(self):
         """Aktualizuje sekcję raportu ekonomicznego w panelu oraz wartość dostępnych punktów w suwakach."""
         economy_report = f"Punkty ekonomiczne: {self.ekonomia.get_points()['economic_points']}\nPunkty specjalne: {self.ekonomia.get_points()['special_points']}"
         self.economy_panel.update_economy(economy_report)
-        print(f"[DEBUG] Szerokość panelu ekonomicznego: {self.economy_panel.winfo_width()}")
 
         # Aktualizacja dostępnych punktów w suwakach
         new_available_points = self.ekonomia.get_points()['economic_points']
@@ -186,17 +183,32 @@ class PanelGeneralaNiemcy(tk.Tk):
         # Ukrycie klawisza "Wsparcie dowódców"
         self.support_button.pack_forget()
 
+        # Resetowanie wartości suwaków do 0 przy każdym otwarciu sekcji
+        for commander in self.zarzadzanie_punktami.commander_points.keys():
+            slider = getattr(self.zarzadzanie_punktami, f"{commander}_slider", None)
+            if slider:
+                slider.set(0)
+            self.zarzadzanie_punktami.commander_points[commander] = 0
+
         # Wyświetlenie suwaków
         self.zarzadzanie_punktami.pack(pady=10, fill=tk.BOTH, expand=False)
 
         # Dodanie przycisku "Akceptuj" tylko raz
         if not hasattr(self, 'accept_button'):
-            self.accept_button = tk.Button(self.zarzadzanie_punktami, text="Akceptuj", font=("Arial", 12), bg="green", fg="white", command=self.accept_support)
+            self.accept_button = tk.Button(self.zarzadzanie_punktami, text="Akceptuj", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", command=self.accept_support)
             self.accept_button.pack(pady=10, fill=tk.BOTH, expand=False)
 
     def accept_support(self):
         # Zapisanie punktów (logika do zaimplementowania)
-        print("[DEBUG] Punkty przydzielone dowódcom:", self.zarzadzanie_punktami.commander_points)
+
+        # Debug: Wyświetlenie przydzielonych punktów
+        print("[DEBUG] Przydzielone punkty:")
+        for commander, points in self.zarzadzanie_punktami.commander_points.items():
+            print(f"[DEBUG] Dowódca {commander}: {points} punktów")
+
+        # Debug: Wyświetlenie sumy punktów przekazanych do zarządzania ekonomią
+        total_assigned_points = sum(self.zarzadzanie_punktami.commander_points.values())
+        print(f"[DEBUG] Suma punktów przekazanych do zarządzania ekonomią: {total_assigned_points}")
 
         # Aktualizacja raportu ekonomicznego po rozdysponowaniu punktów
         total_assigned_points = sum(self.zarzadzanie_punktami.commander_points.values())

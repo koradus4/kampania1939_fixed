@@ -14,5 +14,4 @@ class PanelPogodowy(tk.Frame):
 
     def update_weather(self, weather_report):
         """Aktualizuje zawartość raportu pogodowego."""
-        print(f"[DEBUG] Aktualizacja raportu pogodowego: {weather_report}")
         self.text_label.config(text=weather_report)

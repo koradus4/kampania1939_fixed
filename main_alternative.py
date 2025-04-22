@@ -1,4 +1,3 @@
-from gui.ekran_startowy import EkranStartowy
 from core.tura import TurnManager
 from model.gracz import Gracz
 from gui.panel_generalapolska import PanelGeneralaPolska
@@ -7,19 +6,12 @@ from gui.panel_dowodcypolska1 import PanelDowodcyPolska1
 from gui.panel_dowodcypolska2 import PanelDowodcyPolska2
 from gui.panel_dowodcyniemcy1 import PanelDowodcyNiemcy1
 from gui.panel_dowodcyniemcy2 import PanelDowodcyNiemcy2
-import tkinter as tk
 
 # Funkcja główna
 if __name__ == "__main__":
-    # Ekran startowy
-    root = tk.Tk()
-    ekran_startowy = EkranStartowy(root)
-    root.mainloop()
-
-    # Pobranie wyborów graczy z ekranu startowego
-    game_data = ekran_startowy.get_game_data()
-    miejsca = game_data["miejsca"]
-    czasy = game_data["czasy"]
+    # Automatyczne ustawienia graczy
+    miejsca = ["Polska", "Polska", "Polska", "Niemcy", "Niemcy", "Niemcy"]
+    czasy = [5, 5, 5, 5, 5, 5]  # Czas na turę w minutach
 
     # Tworzenie obiektów graczy z uwzględnieniem czasu na turę
     gracze = [
@@ -38,6 +30,9 @@ if __name__ == "__main__":
     while True:
         # Pobranie aktualnego gracza
         current_player = turn_manager.get_current_player()
+
+        # Debug: Wyświetlenie aktualnego gracza i numeru tury
+        print(f"[DEBUG] Tura {turn_manager.current_turn}: Gracz {current_player.numer} ({current_player.nacja}, {current_player.rola})")
 
         # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
         if current_player.rola == "Generał" and current_player.nacja == "Polska":

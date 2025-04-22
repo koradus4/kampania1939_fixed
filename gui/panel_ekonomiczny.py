@@ -14,5 +14,4 @@ class PanelEkonomiczny(tk.Frame):
 
     def update_economy(self, economy_report):
         """Aktualizuje zawartość raportu ekonomicznego."""
-        print(f"[DEBUG] Aktualizacja raportu ekonomicznego: {economy_report}")
         self.text_label.config(text=economy_report)

@@ -9,7 +9,6 @@ from model.gracz import Gracz
 
 # Konfiguracja loggera
 logging.basicConfig(
-    level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
     filename='ekran_startowy.log',
     filemode='w'

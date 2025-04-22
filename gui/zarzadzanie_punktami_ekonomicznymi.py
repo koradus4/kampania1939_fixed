@@ -68,3 +68,15 @@ class ZarzadzaniePunktamiEkonomicznymi(tk.Frame):
                 slider.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=5)
 
                 setattr(self, f"{commander}_slider", slider)
+
+    def accept_final_points(self):
+        """Zapisuje finalne ustawienia suwaków po akceptacji."""
+        for commander in self.commanders:
+            slider = getattr(self, f"{commander}_slider", None)
+            if slider:
+                self.commander_points[commander] = slider.get()
+
+        # Debug: Wyświetlenie finalnych punktów po akceptacji
+        print("[DEBUG] Finalne ustawienia punktów:")
+        for commander, points in self.commander_points.items():
+            print(f"[DEBUG] Dowódca {commander}: {points} punktów")
