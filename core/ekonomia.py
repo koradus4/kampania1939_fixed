@@ -8,6 +8,7 @@ class EconomySystem:
         """Inicjalizuje system ekonomii z domyślnymi wartościami."""
         self.economic_points = 0
         self.special_points = 0
+        self.assigned_points = 0  # Dodano pole do przechowywania przydzielonych punktów
 
     def generate_economic_points(self):
         """Generuje punkty ekonomiczne."""
@@ -36,8 +37,7 @@ class EconomySystem:
 
     def get_assigned_points(self):
         """Zwraca liczbę punktów przydzielonych dowódcom."""
-        # Na potrzeby demonstracji zwracamy stałą wartość, np. 1 punkt na dowódcę
-        return 1
+        return self.assigned_points
 
 if __name__ == "__main__":
     economy = EconomySystem()

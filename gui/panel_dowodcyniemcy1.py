@@ -135,12 +135,7 @@ class PanelDowodcyNiemcy1(tk.Tk):
             self.end_turn()
 
     def update_economy(self, points):
-        """Aktualizuje punkty ekonomiczne dla dowódcy."""
-        print(f"[DEBUG] Aktualizacja punktów ekonomicznych w PanelDowodcyNiemcy1: {points}")
-        if not hasattr(self, 'points_frame'):
-            print("[ERROR] points_frame nie został zainicjalizowany w PanelDowodcyNiemcy1")
-        else:
-            print(f"[DEBUG] points_frame istnieje: {self.points_frame.cget('text')}")
+        """Aktualizuje liczbę punktów ekonomicznych w interfejsie."""
         self.points_frame.config(text=f"Punkty do odbioru: {points}")
 
 if __name__ == "__main__":

@@ -12,6 +12,7 @@ class PanelGeneralaNiemcy(tk.Tk):
         self.title("Panel Generała Niemcy")
         self.state("zoomed")  # Maksymalizacja okna
         self.ekonomia = ekonomia  # Przechowywanie obiektu ekonomii
+        self.gracze = gracze  # Przechowywanie listy graczy
 
         # Flaga wskazująca, czy panel jest aktywny
         self.is_active = True
@@ -199,19 +200,24 @@ class PanelGeneralaNiemcy(tk.Tk):
             self.accept_button.pack(pady=10, fill=tk.BOTH, expand=False)
 
     def accept_support(self):
-        # Zapisanie punktów (logika do zaimplementowania)
-
         # Debug: Wyświetlenie przydzielonych punktów
         print("[DEBUG] Przydzielone punkty:")
         for commander, points in self.zarzadzanie_punktami.commander_points.items():
             print(f"[DEBUG] Dowódca {commander}: {points} punktów")
+
+        # Przekazanie punktów do dowódców
+        for commander_id, pts in self.zarzadzanie_punktami.commander_points.items():
+            if pts > 0:
+                for player in self.gracze:  # Iteracja po liście graczy
+                    if player.numer == commander_id and player.rola == "Dowódca":
+                        player.economy.economic_points += pts
+                        print(f"[DEBUG] Dowódca {commander_id} otrzymał {pts} punktów. Aktualna suma: {player.economy.economic_points}")
 
         # Debug: Wyświetlenie sumy punktów przekazanych do zarządzania ekonomią
         total_assigned_points = sum(self.zarzadzanie_punktami.commander_points.values())
         print(f"[DEBUG] Suma punktów przekazanych do zarządzania ekonomią: {total_assigned_points}")
 
         # Aktualizacja raportu ekonomicznego po rozdysponowaniu punktów
-        total_assigned_points = sum(self.zarzadzanie_punktami.commander_points.values())
         self.ekonomia.subtract_points(total_assigned_points)
         self.update_economy()
 

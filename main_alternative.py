@@ -74,8 +74,8 @@ if __name__ == "__main__":
 
         # Aktualizacja punktów ekonomicznych dla paneli dowódców
         if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
-            przydzielone_punkty = current_player.economy.get_assigned_points()
-            app.update_economy(przydzielone_punkty)
+            przydzielone_punkty = current_player.economy.economic_points  # Pobranie liczby punktów ekonomicznych dowódcy
+            app.update_economy(przydzielone_punkty)  # Aktualizacja interfejsu dowódcy
 
         app.mainloop()  # Uruchomienie panelu
 

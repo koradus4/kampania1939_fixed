@@ -39,6 +39,9 @@ if __name__ == "__main__":
         # Pobranie aktualnego gracza
         current_player = turn_manager.get_current_player()
 
+        # Debug: Wyświetlenie aktualnego gracza i jego roli
+        print(f"[DEBUG] Aktualny gracz: {current_player.numer}, Rola: {current_player.rola}, Nacja: {current_player.nacja}")
+
         # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
         if current_player.rola == "Generał" and current_player.nacja == "Polska":
             app = PanelGeneralaPolska(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=gracze)
@@ -66,6 +69,11 @@ if __name__ == "__main__":
             current_player.economy.generate_economic_points()
             current_player.economy.add_special_points()
             app.update_economy()
+
+        # Aktualizacja punktów ekonomicznych dla paneli dowódców
+        if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
+            przydzielone_punkty = current_player.economy.economic_points  # Pobranie liczby punktów ekonomicznych dowódcy
+            app.update_economy(przydzielone_punkty)  # Aktualizacja interfejsu dowódcy
 
         app.mainloop()  # Uruchomienie panelu
 
