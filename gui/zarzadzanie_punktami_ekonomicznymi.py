@@ -39,7 +39,13 @@ class ZarzadzaniePunktamiEkonomicznymi(tk.Frame):
     def refresh_available_points(self, new_available_points):
         """Aktualizuje dostępną liczbę punktów ekonomicznych."""
         self.available_points = new_available_points
-        print(f"[DEBUG] Zaktualizowano dostępną liczbę punktów: {self.available_points}")
+        self.points_label.config(text=f"Dostępne punkty: {self.available_points - sum(self.commander_points.values())}")
+
+        # Aktualizacja zakresu suwaków
+        for commander in self.commanders:
+            slider = getattr(self, f"{commander}_slider", None)
+            if slider:
+                slider.config(to=self.available_points)
 
     def accept_final_points(self):
         """Zapisuje finalne ustawienia suwaków po akceptacji."""

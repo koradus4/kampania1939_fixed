@@ -72,7 +72,7 @@ class PanelGeneralaPolska(tk.Tk):
         # Przekazanie dowódców do ZarzadzaniePunktamiEkonomicznymi
         self.zarzadzanie_punktami = ZarzadzaniePunktamiEkonomicznymi(
             self.left_frame,
-            available_points=100,  # Przykładowa pula punktów ekonomicznych
+            available_points=self.ekonomia.get_points()['economic_points'],  # Użycie rzeczywistej puli punktów ekonomicznych
             commanders=[dowodca.numer for dowodca in commanders]  # Lista dowódców dla Polski
         )
         self.zarzadzanie_punktami.pack_forget()

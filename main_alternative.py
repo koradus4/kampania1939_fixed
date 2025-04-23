@@ -56,11 +56,15 @@ if __name__ == "__main__":
         if hasattr(app, 'update_weather'):
             app.update_weather(turn_manager.current_weather)
 
-        # Aktualizacja raportu ekonomicznego tylko dla paneli generałów
+        # Aktualizacja punktów ekonomicznych dla paneli generałów
         if isinstance(app, (PanelGeneralaPolska, PanelGeneralaNiemcy)):
             current_player.economy.generate_economic_points()
             current_player.economy.add_special_points()
             app.update_economy()
+
+            # Synchronizacja dostępnych punktów w sekcji suwaków
+            available_points = current_player.economy.get_points()['economic_points']
+            app.zarzadzanie_punktami.refresh_available_points(available_points)
 
         # Debug: Wyświetlenie liczby punktów ekonomicznych przydzielonych panelowi dowódcy
         if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):

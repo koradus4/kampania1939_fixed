@@ -70,6 +70,10 @@ if __name__ == "__main__":
             current_player.economy.add_special_points()
             app.update_economy()
 
+            # Synchronizacja dostępnych punktów w sekcji suwaków
+            available_points = current_player.economy.get_points()['economic_points']
+            app.zarzadzanie_punktami.refresh_available_points(available_points)
+
         # Aktualizacja punktów ekonomicznych dla paneli dowódców
         if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
             przydzielone_punkty = current_player.economy.economic_points  # Pobranie liczby punktów ekonomicznych dowódcy
