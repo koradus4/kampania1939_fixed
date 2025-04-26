@@ -1,0 +1,247 @@
+import tkinter as tk
+from tkinter import messagebox
+from PIL import Image, ImageTk
+from gui.panel_pogodowy import PanelPogodowy
+from gui.panel_ekonomiczny import PanelEkonomiczny
+from gui.panel_gracza import PanelGracza
+from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomicznymi
+
+class PanelGenerala:
+    def __init__(self, turn_number, ekonomia, gracz, gracze):
+        self.turn_number = turn_number
+        self.ekonomia = ekonomia
+        self.gracz = gracz
+        self.gracze = gracze
+
+        # Tworzenie głównego okna
+        self.root = tk.Tk()
+        self.root.title(f"Panel Generała - {self.gracz.nacja}")
+        self.root.state("zoomed")
+
+        # Wyświetlanie numeru tury
+        self.turn_label = tk.Label(self.root, text=f"Tura: {self.turn_number}", font=("Arial", 14), bg="lightgray")
+        self.turn_label.pack(pady=5)
+
+        # Główna ramka podziału
+        self.main_frame = tk.Frame(self.root)
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Lewy panel (przyciski)
+        self.left_frame = tk.Frame(self.main_frame, width=300, bg="olive")
+        self.left_frame.pack(side=tk.LEFT, fill=tk.Y)
+        self.left_frame.pack_propagate(False)
+
+        # Panel gracza
+        panel_gracza = PanelGracza(self.left_frame, self.gracz.image_path, self.gracz.name)
+        panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
+
+        # Sekcja odliczania czasu
+        minutes = self.gracz.czas
+        self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {minutes}:00", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        self.timer_frame.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
+
+        # Dodanie obsługi kliknięcia na ramkę z czasem jako przycisk zakończenia tury
+        self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
+
+        # Punkty ekonomiczne
+        self.points_frame = tk.Label(self.left_frame, text="Punkty ekonomiczne: 0", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        self.points_frame.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+        # Dodanie obsługi kliknięcia na "Punkty ekonomiczne" do otwierania suwaków wsparcia
+        self.points_frame.bind("<Button-1>", lambda e: self.show_support_sliders())
+
+        # Dodanie sekcji raportu ekonomicznego
+        self.economy_panel = PanelEkonomiczny(self.left_frame)
+        self.economy_panel.pack_forget()
+        self.economy_panel.pack(side=tk.BOTTOM, pady=10, fill=tk.BOTH, expand=False)
+        self.economy_panel.config(width=300)  # Ustawia stałą szerokość panelu ekonomicznego na 300 pikseli
+
+        # Panel pogodowy
+        self.weather_panel = PanelPogodowy(self.left_frame)
+        self.weather_panel.pack_forget()
+        self.weather_panel.pack(side=tk.BOTTOM, pady=1, fill=tk.BOTH, expand=False)
+
+        # Inicjalizacja suwaków wsparcia dowódców
+        commanders = [gracz for gracz in self.gracze if gracz.nacja == self.gracz.nacja and gracz.rola == "Dowódca"]
+        self.zarzadzanie_punktami_widget = ZarzadzaniePunktamiEkonomicznymi(
+            self.left_frame,
+            available_points=self.ekonomia.get_points()['economic_points'],
+            commanders=[dowodca.numer for dowodca in commanders]
+        )
+        self.zarzadzanie_punktami_widget.pack_forget()  # Ukrycie suwaków na początku
+
+        # Prawy panel (mapa)
+        self.map_frame = tk.Frame(self.main_frame)
+        self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+
+        self.map_canvas = tk.Canvas(self.map_frame, bg="gray", scrollregion=(0, 0, 2000, 2000))
+        self.map_canvas.grid(row=0, column=0, sticky="nsew")
+
+        self.h_scroll = tk.Scrollbar(self.map_frame, orient=tk.HORIZONTAL, command=self.map_canvas.xview)
+        self.h_scroll.grid(row=1, column=0, sticky="ew")
+        self.v_scroll = tk.Scrollbar(self.map_frame, orient=tk.VERTICAL, command=self.map_canvas.yview)
+        self.v_scroll.grid(row=0, column=1, sticky="ns")
+
+        self.map_canvas.config(xscrollcommand=self.h_scroll.set, yscrollcommand=self.v_scroll.set)
+        self.map_frame.grid_rowconfigure(0, weight=1)
+        self.map_frame.grid_columnconfigure(0, weight=1)
+
+        self.map_canvas.bind("<Configure>", self.update_scrollregion)
+        self.map_canvas.bind("<ButtonPress-1>", self.start_pan)
+        self.map_canvas.bind("<B1-Motion>", self.do_pan)
+
+        self.load_map(self.gracz.map_path)
+
+        # Przeliczenie czasu z minut na sekundy i zapisanie w zmiennej remaining_time
+        self.remaining_time = self.gracz.czas * 60
+
+        # Uruchomienie timera
+        self.update_timer()
+
+    def load_map(self, map_path):
+        """Wczytuje mapę i wyświetla ją na canvasie."""
+        try:
+            self.map_image = Image.open(map_path)
+            self.map_photo = ImageTk.PhotoImage(self.map_image)
+            self.map_canvas.create_image(0, 0, anchor="nw", image=self.map_photo)
+            self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
+        except Exception as e:
+            print(f"[ERROR] Nie udało się wczytać mapy: {e}")
+
+    def start_pan(self, event):
+        """Rozpoczyna przesuwanie mapy myszką."""
+        self.map_canvas.scan_mark(event.x, event.y)
+
+    def do_pan(self, event):
+        """Przesuwa mapę myszką."""
+        self.map_canvas.scan_dragto(event.x, event.y, gain=1)
+
+    def update_scrollregion(self, event):
+        """Aktualizuje obszar przewijania mapy."""
+        self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
+
+    def update_weather(self, weather_report):
+        self.weather_panel.update_weather(weather_report)
+
+    def update_economy(self, points=None):
+        """Aktualizuje sekcję raportu ekonomicznego w panelu."""
+        if points is None:
+            points = self.ekonomia.get_points()['economic_points']
+        special_points = self.ekonomia.get_points()['special_points']
+
+        # Aktualizacja tekstu w panelu ekonomicznym
+        economy_report = f"Punkty ekonomiczne: {points}\nPunkty specjalne: {special_points}"
+        self.economy_panel.update_economy(economy_report)
+
+        # Aktualizacja tekstu w sekcji punktów ekonomicznych
+        self.points_frame.config(text=f"Punkty ekonomiczne: {points}")
+
+    def zarzadzanie_punktami(self, available_points):
+        """Zarządza punktami ekonomicznymi i aktualizuje interfejs."""
+        if not hasattr(self, 'zarzadzanie_punktami_widget'):
+            # Inicjalizacja widgetu zarządzania punktami, jeśli nie istnieje
+            self.zarzadzanie_punktami_widget = ZarzadzaniePunktamiEkonomicznymi(
+                self.left_frame,
+                available_points=available_points,
+                commanders=[gracz.numer for gracz in self.gracze if gracz.nacja == self.gracz.nacja and gracz.rola == "Dowódca"]
+            )
+            self.zarzadzanie_punktami_widget.pack(pady=10, fill=tk.BOTH, expand=False)
+        else:
+            # Aktualizacja dostępnych punktów w istniejącym widgetcie
+            self.zarzadzanie_punktami_widget.refresh_available_points(available_points)
+
+    def show_support_sliders(self):
+        """Wyświetla suwaki do zarządzania punktami wsparcia dowódców."""
+        # Ukrycie klawisza "Wsparcie dowódców"
+        if hasattr(self, 'support_button'):
+            self.support_button.pack_forget()
+
+        # Resetowanie wartości suwaków do 0 przy każdym otwarciu sekcji
+        if hasattr(self, 'zarzadzanie_punktami_widget'):
+            for commander in self.zarzadzanie_punktami_widget.commander_points.keys():
+                slider = getattr(self.zarzadzanie_punktami_widget, f"{commander}_slider", None)
+                if slider:
+                    slider.set(0)
+                self.zarzadzanie_punktami_widget.commander_points[commander] = 0
+
+            # Wyświetlenie suwaków
+            self.zarzadzanie_punktami_widget.pack(pady=10, fill=tk.BOTH, expand=False)
+
+        # Dodanie przycisku "Akceptuj" tylko raz
+        if not hasattr(self, 'accept_button'):
+            self.accept_button = tk.Button(self.zarzadzanie_punktami_widget, text="Akceptuj", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", command=self.accept_support)
+            self.accept_button.pack(pady=10, fill=tk.BOTH, expand=False)
+
+    def accept_support(self):
+        """Akceptuje przydzielone punkty wsparcia i aktualizuje ekonomię."""
+        # Debug: Wyświetlenie przydzielonych punktów
+        print("[DEBUG] Przydzielone punkty:")
+        for commander, points in self.zarzadzanie_punktami_widget.commander_points.items():
+            print(f"[DEBUG] Dowódca {commander}: {points} punktów")
+
+        # Przekazanie punktów do dowódców
+        for commander_id, pts in self.zarzadzanie_punktami_widget.commander_points.items():
+            if pts > 0:
+                for player in self.gracze:  # Iteracja po liście graczy
+                    if player.numer == commander_id and player.rola == "Dowódca":
+                        player.economy.economic_points += pts
+                        print(f"[DEBUG] Dowódca {commander_id} otrzymał {pts} punktów. Aktualna suma: {player.economy.economic_points}")
+
+        # Debug: Wyświetlenie sumy punktów przekazanych do zarządzania ekonomią
+        total_assigned_points = sum(self.zarzadzanie_punktami_widget.commander_points.values())
+        print(f"[DEBUG] Suma punktów przekazanych do zarządzania ekonomią: {total_assigned_points}")
+
+        # Aktualizacja raportu ekonomicznego po rozdysponowaniu punktów
+        self.ekonomia.subtract_points(total_assigned_points)
+        self.update_economy()
+
+        # Ukrycie suwaków
+        self.zarzadzanie_punktami_widget.pack_forget()
+
+        # Przywrócenie klawisza "Wsparcie dowódców"
+        if hasattr(self, 'support_button'):
+            self.support_button.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+
+    def update_timer(self):
+        """Aktualizuje odliczanie czasu."""
+        if self.root.winfo_exists():
+            if self.remaining_time > 0:
+                self.remaining_time -= 1
+                minutes = self.remaining_time // 60
+                seconds = self.remaining_time % 60
+                self.timer_frame.config(text=f"Pozostały czas: {minutes}:{seconds:02d}")
+                self.timer_id = self.root.after(1000, self.update_timer)
+            else:
+                self.end_turn()  # Automatyczne zakończenie tury po upływie czasu
+
+    def reset_support_sliders(self):
+        """Resetuje suwaki wsparcia dowódców po zakończeniu tury."""
+        if hasattr(self, 'zarzadzanie_punktami_widget'):
+            for commander in self.zarzadzanie_punktami_widget.commander_points.keys():
+                slider = getattr(self.zarzadzanie_punktami_widget, f"{commander}_slider", None)
+                if slider:
+                    slider.set(0)
+                self.zarzadzanie_punktami_widget.commander_points[commander] = 0
+
+    def end_turn(self):
+        """Kończy podturę i zamyka panel."""
+        print("[DEBUG] Zakończenie tury przez gracza.")
+        self.reset_support_sliders()  # Resetowanie suwaków wsparcia
+        self.root.destroy()  # Zamknięcie panelu
+
+    def confirm_end_turn(self, event=None):
+        """Potwierdza zakończenie tury."""
+        if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz zakończyć turę przed czasem?"):
+            self.end_turn()
+
+    def destroy(self):
+        """Anuluje timer i niszczy okno."""
+        if hasattr(self, 'timer_id') and self.timer_id is not None:
+            try:
+                self.root.after_cancel(self.timer_id)
+                self.timer_id = None  # Resetowanie identyfikatora timera
+            except Exception as e:
+                print(f"[ERROR] Nie udało się anulować timera: {e}")
+        super().destroy()
+
+    def mainloop(self):
+        self.root.mainloop()

@@ -1,11 +1,7 @@
 from core.tura import TurnManager
 from model.gracz import Gracz
-from gui.panel_generalapolska import PanelGeneralaPolska
-from gui.panel_generalaniemcy import PanelGeneralaNiemcy
-from gui.panel_dowodcypolska1 import PanelDowodcyPolska1
-from gui.panel_dowodcypolska2 import PanelDowodcyPolska2
-from gui.panel_dowodcyniemcy1 import PanelDowodcyNiemcy1
-from gui.panel_dowodcyniemcy2 import PanelDowodcyNiemcy2
+from gui.panel_generala import PanelGenerala
+from gui.panel_dowodcy import PanelDowodcy
 
 # Funkcja główna
 if __name__ == "__main__":
@@ -31,54 +27,29 @@ if __name__ == "__main__":
         # Pobranie aktualnego gracza
         current_player = turn_manager.get_current_player()
 
-        # Debug: Wyświetlenie aktualnego gracza i numeru tury
-        print(f"[DEBUG] Tura {turn_manager.current_turn}: Gracz {current_player.numer} ({current_player.nacja}, {current_player.rola})")
-
         # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
-        if current_player.rola == "Generał" and current_player.nacja == "Polska":
-            app = PanelGeneralaPolska(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=gracze)
-        elif current_player.rola == "Generał" and current_player.nacja == "Niemcy":
-            app = PanelGeneralaNiemcy(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=gracze)
-        elif current_player.rola == "Dowódca" and current_player.nacja == "Polska":
-            if current_player.numer in [2, 5]:
-                app = PanelDowodcyPolska1(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)
-            elif current_player.numer in [3, 6]:
-                app = PanelDowodcyPolska2(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)
-        elif current_player.rola == "Dowódca" and current_player.nacja == "Niemcy":
-            if current_player.numer in [2, 5]:
-                app = PanelDowodcyNiemcy1(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)
-            elif current_player.numer in [3, 6]:
-                app = PanelDowodcyNiemcy2(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60)
-        else:
-            continue
+        if current_player.rola == "Generał":
+            app = PanelGenerala(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=gracze)
+        elif current_player.rola == "Dowódca":
+            app = PanelDowodcy(turn_number=turn_manager.current_turn, remaining_time=current_player.czas * 60, gracz=current_player)
 
         # Aktualizacja pogody dla panelu
         if hasattr(app, 'update_weather'):
             app.update_weather(turn_manager.current_weather)
 
         # Aktualizacja punktów ekonomicznych dla paneli generałów
-        if isinstance(app, (PanelGeneralaPolska, PanelGeneralaNiemcy)):
+        if isinstance(app, PanelGenerala):
             current_player.economy.generate_economic_points()
             current_player.economy.add_special_points()
-            app.update_economy()
+            available_points = current_player.economy.get_points()['economic_points']
+            app.update_economy(available_points)  # Przekazanie dostępnych punktów ekonomicznych
 
             # Synchronizacja dostępnych punktów w sekcji suwaków
-            available_points = current_player.economy.get_points()['economic_points']
-            app.zarzadzanie_punktami.refresh_available_points(available_points)
-
-        # Debug: Wyświetlenie liczby punktów ekonomicznych przydzielonych panelowi dowódcy
-        if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
-            przydzielone_punkty = current_player.economy.get_assigned_points()
-            print(f"[DEBUG] Panel {app.__class__.__name__} odbiera punkty ekonomiczne: {przydzielone_punkty}")
-
-        # Debug: Wyświetlenie aktualnej wartości punktów w panelu dowódcy
-        if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
-            aktualne_punkty = app.points_frame.cget("text")
-            print(f"[DEBUG] Panel {app.__class__.__name__} aktualna wartość punktów: {aktualne_punkty}")
+            app.zarzadzanie_punktami(available_points)
 
         # Aktualizacja punktów ekonomicznych dla paneli dowódców
-        if isinstance(app, (PanelDowodcyPolska1, PanelDowodcyPolska2, PanelDowodcyNiemcy1, PanelDowodcyNiemcy2)):
-            przydzielone_punkty = current_player.economy.economic_points  # Pobranie liczby punktów ekonomicznych dowódcy
+        if isinstance(app, PanelDowodcy):
+            przydzielone_punkty = current_player.economy.get_points()['economic_points']
             app.update_economy(przydzielone_punkty)  # Aktualizacja interfejsu dowódcy
 
         app.mainloop()  # Uruchomienie panelu
