@@ -1,0 +1,45 @@
+{
+  "terrain": {
+    "16_13": {
+      "move_mod": -2,
+      "defense_mod": 1
+    },
+    "15_12": {
+      "move_mod": -2,
+      "defense_mod": 1
+    },
+    "1_0": {
+      "move_mod": -2,
+      "defense_mod": 1
+    },
+    "1_1": {
+      "move_mod": -2,
+      "defense_mod": 1
+    },
+    "1_2": {
+      "move_mod": -2,
+      "defense_mod": 1
+    }
+  },
+  "key_points": {
+    "14_13": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "15_13": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    }
+  },
+  "spawn_points": {
+    "Nacja A": [
+      "0_0",
+      "0_1",
+      "0_2",
+      "1_2",
+      "1_1",
+      "1_0",
+      "1_0"
+    ]
+  }
+}
