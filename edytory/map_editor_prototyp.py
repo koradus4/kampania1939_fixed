@@ -428,6 +428,9 @@ class MapEditor:
             self.hex_data = loaded_data.get("terrain", {})
             self.key_points = loaded_data.get("key_points", {})
             self.spawn_points = loaded_data.get("spawn_points", {})
+            # Upewnij się, że mamy obraz tła w PhotoImage
+            if not hasattr(self, 'photo_bg'):
+                self.load_map_image()
             self.draw_grid()
             messagebox.showinfo("Wczytano", f"Dane mapy zostały wczytane z:\n{self.current_working_file}\n"
                                            f"Liczba kluczowych punktów: {len(self.key_points)}\n"
@@ -451,18 +454,57 @@ class MapEditor:
         # Tworzenie folderu, jeśli nie istnieje
         os.makedirs(DEST_FOLDER, exist_ok=True)
 
-        try:
-            # Zapisanie mapy globalnej
-            self.bg_image.save(DEST_GLOBAL_MAP)
-            print(f"[INFO] Zapisano mapę globalną: {DEST_GLOBAL_MAP}")
+        decorated = self.bg_image.copy()
+        mid_pixel = self.world_height // 2
 
-            # Zapisanie map dowódców (przykład: podział na pół mapy)
+        try:
+            # przygotuj warstwę RGBA
+            base = self.bg_image.convert("RGBA")
+            overlay = Image.new("RGBA", base.size, (0,0,0,0))
+            draw = ImageDraw.Draw(overlay)
+            font = ImageFont.load_default()
+
+            # Rysowanie siatki i tekstów na warstwie overlay
+            for hex_id, (cx, cy) in self.hex_centers.items():
+                verts = get_hex_vertices(cx, cy, self.hex_size)
+                draw.polygon(verts, outline='red')
+                terrain = self.hex_data.get(hex_id, self.hex_defaults)
+                txt = f"M:{terrain['move_mod']} D:{terrain['defense_mod']}"
+                draw.text((cx, cy), txt, font=font, fill='blue', anchor='mm')
+
+            # Rysowanie punktów kluczowych na warstwie overlay
+            for hex_id, kp in self.key_points.items():
+                cx, cy = self.hex_centers[hex_id]
+                draw.text((cx, cy - self.hex_size*0.4), kp['type'], font=font, fill='yellow', anchor='mm')
+
+            # rysuj mgiełkę punktów wystawienia
+            for nation, hexes in self.spawn_points.items():
+                for hex_id in hexes:
+                    cx, cy = self.hex_centers[hex_id]
+                    verts = get_hex_vertices(cx, cy, self.hex_size)
+                    if nation == "Polska":
+                        # lewa połowa biało
+                        left_half = [verts[i] for i in (0,1,2,3)]
+                        draw.polygon(left_half, fill=(255,255,255,100), outline=None)
+                        # prawa połowa czerwono
+                        right_half = [verts[i] for i in (0,3,4,5)]
+                        draw.polygon(right_half, fill=(255,0,0,100), outline=None)
+                    elif nation == "Niemcy":
+                        # całość granatowa
+                        draw.polygon(verts, fill=(0,0,128,100), outline=None)
+
+            # Scal warstwy i zapisz
+            decorated = Image.alpha_composite(base, overlay)
             mid_pixel = self.world_height // 2
-            img_top = self.bg_image.crop((0, 0, self.world_width, mid_pixel))
-            img_bottom = self.bg_image.crop((0, mid_pixel, self.world_width, self.world_height))
+
+            # Konwersja RGBA → RGB przed przycinaniem i zapisem
+            rgb_map = decorated.convert("RGB")
+            # Zapisz pełną mapę globalną przed przycięciem
+            rgb_map.save(DEST_GLOBAL_MAP)
+            img_top = rgb_map.crop((0, 0, self.world_width, mid_pixel))
+            img_bottom = rgb_map.crop((0, mid_pixel, self.world_width, self.world_height))
             img_top.save(DEST_COMMANDER1_MAP)
             img_bottom.save(DEST_COMMANDER2_MAP)
-            print(f"[INFO] Zapisano mapy dowódców: {DEST_COMMANDER1_MAP}, {DEST_COMMANDER2_MAP}")
 
             # Zapisanie danych JSON
             map_data = {

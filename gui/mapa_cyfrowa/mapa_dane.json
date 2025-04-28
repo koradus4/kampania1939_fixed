@@ -11,6 +11,10 @@
     "3_6": {
       "move_mod": -2,
       "defense_mod": 1
+    },
+    "6_29": {
+      "move_mod": -2,
+      "defense_mod": 2
     }
   },
   "key_points": {
@@ -25,12 +29,20 @@
     "10_6": {
       "type": "most",
       "value": 50
+    },
+    "6_29": {
+      "type": "miasto",
+      "value": 100
     }
   },
   "spawn_points": {
     "Nacja A": [],
     "Polska": [
       "1_0"
+    ],
+    "Niemcy": [
+      "1_30",
+      "1_31"
     ]
   }
 }
