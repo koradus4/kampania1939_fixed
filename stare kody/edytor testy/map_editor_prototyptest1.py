@@ -79,6 +79,13 @@ def get_hex_vertices(center_x, center_y, s):
         (center_x - s/2, center_y + (math.sqrt(3)/2)*s)
     ]
 
+# Ścieżki docelowe w folderze mapa_cyfrowa
+DEST_FOLDER = "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa"
+DEST_GLOBAL_MAP = f"{DEST_FOLDER}/mapa_globalna.jpg"
+DEST_COMMANDER1_MAP = f"{DEST_FOLDER}/mapa_dowodca1.jpg"
+DEST_COMMANDER2_MAP = f"{DEST_FOLDER}/mapa_dowodca2.jpg"
+DEST_DATA_FILE = f"{DEST_FOLDER}/mapa_dane.json"
+
 class MapEditor:
     def __init__(self, root, config):
         self.root = root
@@ -427,105 +434,45 @@ class MapEditor:
             self.draw_grid()
             messagebox.showinfo("Zresetowano", "Mapa została zresetowana do domyślnego terenu płaskiego.")
 
-    def save_map_as_image(self):
-        'Zapisuje obrazy mapy (globalnej i podmap) oraz dane JSON.'
-        base_dir = DEFAULT_MAP_DIR
-        global_dir = os.path.join(base_dir, "global")
-        podmap1_dir = os.path.join(base_dir, "podmapa1")
-        podmap2_dir = os.path.join(base_dir, "podmapa2")
-        # Tworzenie folderów, jeśli nie istnieją
-        os.makedirs(global_dir, exist_ok=True)
-        os.makedirs(podmap1_dir, exist_ok=True)
-        os.makedirs(podmap2_dir, exist_ok=True)
-
-        # Ścieżki plików wyjściowych
-        image_path = os.path.join(global_dir, "mapa_hex.png")
-        data_path = os.path.join(global_dir, "mapa_dane.json")
-        podmap1_image_path = os.path.join(podmap1_dir, "mapa_hex.png")
-        podmap2_image_path = os.path.join(podmap2_dir, "mapa_hex.png")
+    def save_files(self):
+        """Zapisuje pliki map i dane JSON do folderu mapa_cyfrowa."""
+        # Tworzenie folderu, jeśli nie istnieje
+        os.makedirs(DEST_FOLDER, exist_ok=True)
 
         try:
-            draw_labels = False  # Etykiety ruch/obrona wyłączone
+            # Zapisanie mapy globalnej
+            self.bg_image.save(DEST_GLOBAL_MAP)
+            print(f"[INFO] Zapisano mapę globalną: {DEST_GLOBAL_MAP}")
 
-            # --- Rysowanie mapy globalnej ---
-            img = self.bg_image.copy().convert("RGBA")
-            draw = ImageDraw.Draw(img)
-
-            s = self.hex_size
-            hex_height = math.sqrt(3) * s
-            horizontal_spacing = 1.5 * s
-            grid_cols = self.config.get("grid_cols")
-            grid_rows = self.config.get("grid_rows")
-
-            for col in range(grid_cols):
-                center_x = s + col * horizontal_spacing
-                for row in range(grid_rows):
-                    center_y = (s * math.sqrt(3) / 2) + row * hex_height
-                    if col % 2 == 1:
-                        center_y += hex_height / 2
-                    if center_x + s > self.world_width or center_y + (s * math.sqrt(3) / 2) > self.world_height:
-                        continue
-                    points = get_hex_vertices(center_x, center_y, s)
-                    draw.polygon(points, outline="red")
-
-            img.save(image_path)
-
-            # --- Tworzenie podmap (górna i dolna połowa) ---
+            # Zapisanie map dowódców (przykład: podział na pół mapy)
             mid_pixel = self.world_height // 2
-            img_top = img.crop((0, 0, self.world_width, mid_pixel))
-            img_bottom = img.crop((0, mid_pixel, self.world_width, self.world_height))
-            img_top.save(podmap1_image_path)
-            img_bottom.save(podmap2_image_path)
+            img_top = self.bg_image.crop((0, 0, self.world_width, mid_pixel))
+            img_bottom = self.bg_image.crop((0, mid_pixel, self.world_width, self.world_height))
+            img_top.save(DEST_COMMANDER1_MAP)
+            img_bottom.save(DEST_COMMANDER2_MAP)
+            print(f"[INFO] Zapisano mapy dowódców: {DEST_COMMANDER1_MAP}, {DEST_COMMANDER2_MAP}")
 
-            # Przygotowanie danych JSON
-            terrain1 = {}
-            terrain2 = {}
-            spawn1 = {}
-            spawn2 = {}
-
-            for hex_id, terrain in self.hex_data.items():
-                row = int(hex_id.split('_')[1])
-                if row < grid_rows // 2:
-                    terrain1[hex_id] = terrain
-                else:
-                    terrain2[hex_id] = terrain
-
-            for nation, hexes in self.spawn_points.items():
-                spawn1[nation] = []
-                spawn2[nation] = []
-                for hex_id in hexes:
-                    row = int(hex_id.split('_')[1])
-                    if row < grid_rows // 2:
-                        spawn1[nation].append(hex_id)
-                    else:
-                        spawn2[nation].append(hex_id)
-
-            map_global = {
+            # Zapisanie danych JSON
+            map_data = {
                 "terrain": self.hex_data,
-                "spawn_points": self.spawn_points,
-                "image_path": "global/mapa_hex.png"
+                "key_points": self.key_points,
+                "spawn_points": self.spawn_points
             }
-            map_sub1 = {
-                "terrain": terrain1,
-                "spawn_points": spawn1,
-                "image_path": "podmapa1/mapa_hex.png"
-            }
-            map_sub2 = {
-                "terrain": terrain2,
-                "spawn_points": spawn2,
-                "image_path": "podmapa2/mapa_hex.png"
-            }
-            full_data = {
-                "global": map_global,
-                "podmapa1": map_sub1,
-                "podmapa2": map_sub2
-            }
-            with open(data_path, "w", encoding="utf-8") as f:
-                json.dump(full_data, f, indent=2, ensure_ascii=False)
+            with open(DEST_DATA_FILE, "w", encoding="utf-8") as f:
+                json.dump(map_data, f, indent=2, ensure_ascii=False)
+            print(f"[INFO] Zapisano dane mapy: {DEST_DATA_FILE}")
 
-            messagebox.showinfo("Zapisano", f"Mapa globalna i podmapy zapisano w:\n{global_dir}\n{podmap1_dir}\n{podmap2_dir}")
         except Exception as e:
-            messagebox.showerror("Błąd", f"Nie udało się zapisać mapy:\n{str(e)}")
+            print(f"[ERROR] Nie udało się zapisać plików: {e}")
+
+    def save_map_as_image(self):
+        """Zapisuje obrazy mapy i dane JSON."""
+        try:
+            # Zapisz mapę globalną i dane
+            self.save_files()
+            print("[INFO] Mapa i dane zostały zapisane w folderze mapa_cyfrowa.")
+        except Exception as e:
+            print(f"[ERROR] Nie udało się zapisać mapy: {e}")
 
     def add_key_point_dialog(self):
         'Okno dialogowe do dodawania kluczowego punktu na wybranym heksie.'
