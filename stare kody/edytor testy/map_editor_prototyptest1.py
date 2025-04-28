@@ -21,7 +21,7 @@ TERRAIN_TYPES = {
 
 # Używamy oddzielnego pliku do zapisu danych (roboczy plik)
 DEFAULT_MAP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapa_cyfrowa")
-DATA_FILENAME_WORKING = os.path.join(DEFAULT_MAP_DIR, "dane_terenow_hexow_working.json")
+DATA_FILENAME_WORKING = os.path.join(DEFAULT_MAP_DIR, "mapa_dane.json")
 
 def zapisz_dane_hex(hex_data, filename=DATA_FILENAME_WORKING):
     'Zapisuje dane terenu do pliku JSON (roboczy plik).'
@@ -590,12 +590,12 @@ class MapEditor:
                 print(f"Utworzono folder docelowy: {map_folder}")
             except Exception as e:
                 print(f"Nie można utworzyć folderu mapa_cyfrowa: {e}")
-                return os.path.join(os.path.dirname(os.path.abspath(__file__)), "dane_terenow_hexow_working.json")
+                return os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapa_dane.json")
         if os.access(map_folder, os.W_OK):
-            return os.path.join(map_folder, "dane_terenow_hexow_working.json")
+            return os.path.join(map_folder, "mapa_dane.json")
         else:
             print(f"Brak uprawnień do zapisu w folderze {map_folder}")
-            return os.path.join(os.path.dirname(os.path.abspath(__file__)), "dane_terenow_hexow_working.json")
+            return os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapa_dane.json")
 
 if __name__ == "__main__":
     root = tk.Tk()

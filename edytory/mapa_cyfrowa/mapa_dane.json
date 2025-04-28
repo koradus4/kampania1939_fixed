@@ -1,0 +1,36 @@
+{
+  "terrain": {
+    "3_7": {
+      "move_mod": -2,
+      "defense_mod": 2
+    },
+    "0_0": {
+      "move_mod": -2,
+      "defense_mod": 2
+    },
+    "3_6": {
+      "move_mod": -2,
+      "defense_mod": 1
+    }
+  },
+  "key_points": {
+    "3_7": {
+      "type": "miasto",
+      "value": 100
+    },
+    "4_4": {
+      "type": "miasto",
+      "value": 100
+    },
+    "10_6": {
+      "type": "most",
+      "value": 50
+    }
+  },
+  "spawn_points": {
+    "Nacja A": [],
+    "Polska": [
+      "1_0"
+    ]
+  }
+}
