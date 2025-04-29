@@ -1,16 +1,16 @@
 import tkinter as tk
-from tkinter import messagebox, filedialog, simpledialog
+from tkinter import messagebox, filedialog, simpledialog, ttk
 import json
 import math
 import os
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 
+DEFAULT_MAP_FILE = r"C:\Users\klif\kampania1939_fixed\gui\mapa_cyfrowa\mapa_globalna.jpg"
+
 # ----------------------------
 # Konfiguracja rodzajów terenu
 # ----------------------------
 TERRAIN_TYPES = {
-    "teren_płaski": {"move_mod": 0, "defense_mod": 0},
-    "mała rzeka": {"move_mod": -2, "defense_mod": 1},
     "duża rzeka": {"move_mod": -4, "defense_mod": -1},
     "las": {"move_mod": -2, "defense_mod": 2},
     "bagno": {"move_mod": -3, "defense_mod": 1},
@@ -19,8 +19,14 @@ TERRAIN_TYPES = {
     "most": {"move_mod": 0, "defense_mod": 0}
 }
 
+# mapowanie państw → kolor mgiełki
+SPAWN_OVERLAY = {
+    "Polska": "#ffcccc",   # jasnoróżowo-biała
+    "Niemcy": "#ccccff"    # jasnoniebieska
+}
+
 # Używamy oddzielnego pliku do zapisu danych (roboczy plik)
-DEFAULT_MAP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapa_cyfrowa")
+DEFAULT_MAP_DIR = r"C:\Users\klif\kampania1939_fixed\gui\mapa_cyfrowa"
 DATA_FILENAME_WORKING = os.path.join(DEFAULT_MAP_DIR, "mapa_dane.json")
 
 def zapisz_dane_hex(hex_data, filename=DATA_FILENAME_WORKING):
@@ -79,12 +85,12 @@ def get_hex_vertices(center_x, center_y, s):
         (center_x - s/2, center_y + (math.sqrt(3)/2)*s)
     ]
 
-# Ścieżki docelowe w folderze mapa_cyfrowa
-DEST_FOLDER = "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa"
-DEST_GLOBAL_MAP = f"{DEST_FOLDER}/mapa_globalna.jpg"
-DEST_COMMANDER1_MAP = f"{DEST_FOLDER}/mapa_dowodca1.jpg"
-DEST_COMMANDER2_MAP = f"{DEST_FOLDER}/mapa_dowodca2.jpg"
-DEST_DATA_FILE = f"{DEST_FOLDER}/mapa_dane.json"
+# Zakomentowano stare stałe DEST_...
+# DEST_FOLDER = "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa"
+# DEST_GLOBAL_MAP = f"{DEST_FOLDER}/mapa_globalna.jpg"
+# DEST_COMMANDER1_MAP = f"{DEST_FOLDER}/mapa_dowodca1.jpg"
+# DEST_COMMANDER2_MAP = f"{DEST_FOLDER}/mapa_dowodca2.jpg"
+# DEST_DATA_FILE = f"{DEST_FOLDER}/mapa_dane.json"
 
 class MapEditor:
     def __init__(self, root, config):
@@ -92,6 +98,7 @@ class MapEditor:
         self.root.configure(bg="darkolivegreen")
         self.config = config["map_settings"]
         self.map_image_path = self.get_last_modified_map()  # Automatyczne otwieranie ostatniej mapy
+        self.map_image_path = self.get_last_modified_map()
         
         self.hex_size = self.config.get("hex_size", 30)
         self.hex_defaults = {"defense_mod": 0, "move_mod": 0}
@@ -116,6 +123,12 @@ class MapEditor:
         # Lista dostępnych nacji
         self.available_nations = ["Polska", "Niemcy"]
 
+        # Atrybut do przechowywania mapowania hex_id → nazwa/obiekt żetonu
+        self.hex_tokens = {}  # mapuje hex_id → ścieżka do pliku PNG z żetonem
+
+        # Przechowuje referencje do obrazków żetonów
+        self.token_images = {}  # Przechowuje referencje do obrazków żetonów
+
         # Zbuduj GUI
         self.build_gui()
         # Wczytaj mapę i dane
@@ -123,15 +136,16 @@ class MapEditor:
         self.load_data()
 
     def get_last_modified_map(self):
-        """Zwraca ścieżkę do ostatnio zmodyfikowanej mapy lub domyślną mapę."""
-        if os.path.exists(DEST_GLOBAL_MAP):
-            return DEST_GLOBAL_MAP
-        else:
-            messagebox.showinfo("Informacja", "Nie znaleziono ostatniej mapy. Wybierz nową mapę.")
-            return filedialog.askopenfilename(
-                title="Wybierz mapę",
-                filetypes=[("Obrazy", "*.jpg *.png *.bmp"), ("Wszystkie pliki", "*.*")]
-            )
+        # zawsze używamy predefiniowanej mapy
+        if os.path.exists(DEFAULT_MAP_FILE):
+            return DEFAULT_MAP_FILE
+        # jeśli nie ma pliku, pozwalamy wybrać ręcznie
+        messagebox.showinfo("Informacja", "Nie znaleziono pliku domyślnej mapy. Wybierz ręcznie.")
+        return filedialog.askopenfilename(
+            title="Wybierz mapę",
+            initialdir=os.path.dirname(DEFAULT_MAP_FILE),
+            filetypes=[("Obrazy", "*.jpg *.png *.bmp"), ("Wszystkie pliki", "*.*")]
+        )
 
     def build_gui(self):
         'Tworzy interfejs użytkownika.'
@@ -150,9 +164,9 @@ class MapEditor:
         )
         self.open_map_and_data_button.pack(padx=5, pady=5, fill=tk.X)
 
-        # Przycisk "Zapisz Mapę + Dane"
+        # Przycisk "Zapisz dane mapy"
         self.save_map_and_data_button = tk.Button(
-            buttons_frame, text="Zapisz Mapę + Dane", command=self.save_map_and_data,
+            buttons_frame, text="Zapisz dane mapy", command=self.save_map_and_data,
             bg="saddlebrown", fg="white", activebackground="saddlebrown", activeforeground="white"
         )
         self.save_map_and_data_button.pack(padx=5, pady=5, fill=tk.X)
@@ -203,6 +217,14 @@ class MapEditor:
                                           bg="saddlebrown", fg="white", activebackground="saddlebrown", activeforeground="white")
         self.reset_hex_button.pack(padx=5, pady=5, fill=tk.X)
 
+        # Dodanie sekcji "Wystaw żeton"
+        deploy_token_frame = tk.LabelFrame(self.panel_frame, text="Wystaw żeton", bg="darkolivegreen", fg="white",
+                                          font=("Arial", 10, "bold"))
+        deploy_token_frame.pack(fill=tk.X, padx=5, pady=5)
+        self.deploy_token_button = tk.Button(deploy_token_frame, text="Wystaw żeton", command=self.deploy_token_dialog,
+                                             bg="saddlebrown", fg="white", activebackground="saddlebrown", activeforeground="white")
+        self.deploy_token_button.pack(padx=5, pady=5, fill=tk.X)
+
         # Sekcja informacyjna o wybranym heksie
         self.control_panel_frame = tk.Frame(self.panel_frame, bg="darkolivegreen", relief=tk.RIDGE, bd=5)
         self.control_panel_frame.pack(side=tk.BOTTOM, fill=tk.BOTH, padx=5, pady=5, expand=True)
@@ -232,6 +254,10 @@ class MapEditor:
         self.spawn_info_label = tk.Label(self.control_content, text="Punkt wystawiania: brak", bg="darkolivegreen", fg="white",
                                          font=("Arial", 10))
         self.spawn_info_label.pack(anchor="w")
+        # Dodanie informacji o żetonie
+        self.token_info_label = tk.Label(self.control_content, text="Żeton: brak", bg="darkolivegreen", fg="white",
+                                         font=("Arial", 10))
+        self.token_info_label.pack(anchor="w")
 
         # Pole rysowania mapy z przewijaniem
         self.canvas_frame = tk.Frame(self.root)
@@ -273,8 +299,17 @@ class MapEditor:
         try:
             self.bg_image = Image.open(self.map_image_path).convert("RGB")
         except Exception as e:
-            messagebox.showerror("Błąd", f"Nie udało się załadować mapy:\n{str(e)}")
-            return
+            # jeśli nie udało się wczytać domyślnej mapy, poproś użytkownika o wybranie pliku
+            messagebox.showwarning("Uwaga", "Nie udało się załadować domyślnej mapy. Wskaż plik ręcznie.")
+            file = filedialog.askopenfilename(
+                title="Wybierz mapę",
+                filetypes=[("Obrazy", "*.jpg *.png *.bmp"), ("Wszystkie pliki", "*.*")]
+            )
+            if file:
+                self.map_image_path = file
+                return self.load_map_image()
+            else:
+                return
         self.world_width, self.world_height = self.bg_image.size
         self.photo_bg = ImageTk.PhotoImage(self.bg_image)
         # Ustaw obszar przewijania
@@ -283,10 +318,16 @@ class MapEditor:
         self.draw_grid()
 
     def draw_grid(self):
-        'Rysuje siatkę heksów i aktualizuje wyświetlane heksy.'
+        """Rysuje siatkę heksów i aktualizuje wyświetlane żetony."""
         self.canvas.delete("all")
+        # jeśli nadal brak photo_bg, wstaw biały obrazek 1×1, żeby nie wywaliło błędu
+        if not hasattr(self, 'photo_bg'):
+            # korzystamy ze `Image` zaimportowanego na górze pliku
+            self.photo_bg = ImageTk.PhotoImage(Image.new("RGB", (1,1), (255,255,255)))
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo_bg)
         self.hex_centers = {}
+        if not hasattr(self, 'token_images'):
+            self.token_images = {}
         s = self.hex_size
         hex_height = math.sqrt(3) * s
         horizontal_spacing = 1.5 * s
@@ -304,37 +345,68 @@ class MapEditor:
                 self.hex_centers[hex_id] = (center_x, center_y)
                 terrain = self.hex_data.get(hex_id, self.hex_defaults)
                 self.draw_hex(hex_id, center_x, center_y, s, terrain)
-        # Nakładanie mgiełki (półprzezroczystej) na punkty wystawienia
-        for nation, hexes in self.spawn_points.items():
-            for hex_id in hexes:
+
+        # Rysowanie żetonów na mapie
+        for hex_id, terrain in self.hex_data.items():
+            if "image" in terrain and hex_id in self.hex_centers:
+                cx, cy = self.hex_centers[hex_id]
+                img = Image.open(terrain["image"]).resize((self.hex_size, self.hex_size))
+                photo = ImageTk.PhotoImage(img)
+                self.canvas.create_image(cx, cy, image=photo, anchor=tk.CENTER, tags=f"token_{hex_id}")
+                self.token_images[hex_id] = photo
+
+        # nakładka mgiełki dla punktów zrzutu
+        for nation, hex_list in self.spawn_points.items():
+            color = SPAWN_OVERLAY.get(nation, "#ffffff")
+            for hex_id in hex_list:
                 if hex_id in self.hex_centers:
                     cx, cy = self.hex_centers[hex_id]
-                    vertices = get_hex_vertices(cx, cy, s)
-                    self.canvas.create_polygon(vertices, outline="", fill="gray", stipple="gray50", tags=f"spawn_{hex_id}")
-        # Rysowanie kluczowych punktów na mapie
-        for hex_id, key_point in self.key_points.items():
-            self.draw_key_point(hex_id, key_point['type'], key_point['value'])
+                    verts = get_hex_vertices(cx, cy, self.hex_size)
+                    # stipple symuluje przezroczystość
+                    self.canvas.create_polygon(
+                        verts,
+                        fill=color,
+                        outline="",
+                        stipple="gray25",
+                        tags=f"spawn_{nation}_{hex_id}"
+                    )
+
+        # rysowanie etykiet kluczowych punktów
+        for hex_id, kp in self.key_points.items():
+            if hex_id in self.hex_centers:
+                cx, cy = self.hex_centers[hex_id]
+                label = f"{kp['type']} ({kp['value']})"
+                self.canvas.create_text(
+                    cx, cy - self.hex_size * 0.6,
+                    text=label,
+                    fill="yellow",
+                    font=("Arial", 10, "bold"),
+                    tags=f"key_point_label_{hex_id}"
+                )
+
         # Podświetlenie wybranego heksu
         if self.selected_hex is not None:
             self.highlight_hex(self.selected_hex)
-        # Wypisanie skrajnych heksów w konsoli (debug)
-        self.print_extreme_hexes()
 
     def draw_hex(self, hex_id, center_x, center_y, s, terrain=None):
         'Rysuje pojedynczy heksagon na canvasie wraz z tekstem modyfikatorów.'
         points = get_hex_vertices(center_x, center_y, s)
         self.canvas.create_polygon(points, outline="red", fill="", width=2, tags=hex_id)
-        if terrain:
-            move_mod = terrain.get('move_mod', self.hex_defaults.get('move_mod', 0))
-            defense_mod = terrain.get('defense_mod', self.hex_defaults.get('defense_mod', 0))
-            tekst = f"M:{move_mod} D:{defense_mod}"
-        else:
-            move_mod = self.hex_defaults.get('move_mod', 0)
-            defense_mod = self.hex_defaults.get('defense_mod', 0)
-            tekst = f"M:{move_mod} D:{defense_mod}"
+        # usuwamy poprzedni tekst
         self.canvas.delete(f"tekst_{hex_id}")
-        self.canvas.create_text(center_x, center_y, text=tekst, fill="blue",
-                                font=("Arial", 10), anchor="center", tags=f"tekst_{hex_id}")
+        # rysujemy modyfikatory tylko jeśli ten heks ma niestandardowe dane
+        if hex_id in self.hex_data:
+            move_mod = terrain.get('move_mod', 0)
+            defense_mod = terrain.get('defense_mod', 0)
+            tekst = f"M:{move_mod} D:{defense_mod}"
+            self.canvas.create_text(
+                center_x, center_y,
+                text=tekst,
+                fill="blue",
+                font=("Arial", 10),
+                anchor="center",
+                tags=f"tekst_{hex_id}"
+            )
 
     def on_canvas_click(self, event):
         'Obsługuje kliknięcie myszką na canvasie - zaznacza heks i wyświetla jego dane.'
@@ -352,6 +424,12 @@ class MapEditor:
             terrain = self.hex_data.get(clicked_hex, self.hex_defaults)
             move_mod = terrain.get('move_mod', self.hex_defaults.get('move_mod', 0))
             defense_mod = terrain.get('defense_mod', self.hex_defaults.get('defense_mod', 0))
+            token_data = terrain.get("token", {})
+            if token_data:
+                token_png = token_data.get("png_file", "brak")
+                self.token_info_label.config(text=f"Żeton: {token_png}")
+            else:
+                self.token_info_label.config(text="Żeton: brak")
             messagebox.showinfo("Informacja o heksie",
                                 f"Heks: {clicked_hex}\nModyfikator ruchu: {move_mod}\nModyfikator obrony: {defense_mod}")
         else:
@@ -382,8 +460,12 @@ class MapEditor:
             defense_mod = terrain.get('defense_mod', self.hex_defaults.get('defense_mod', 0))
             key_point = self.key_points.get(hovered_hex, None)
             spawn_nations = [n for n, hexes in self.spawn_points.items() if hovered_hex in hexes]
+            token_info = self.hex_data.get(hovered_hex, {}).get("token", {}).get("name", "brak")
+            key = terrain.get("terrain_key", "płaski")
+            self.terrain_info_label.config(text=f"Teren: {key}")
+            token = self.hex_data.get(hovered_hex, {}).get("token", {}).get("png_file", "brak")
+            self.token_info_label.config(text=f"Żeton: {token}")
             self.hex_info_label.config(text=f"Heks: {hovered_hex}")
-            self.terrain_info_label.config(text=f"Teren: {terrain}")
             self.modifiers_info_label.config(text=f"Modyfikatory: Ruch: {move_mod}, Obrona: {defense_mod}")
             if key_point:
                 self.key_point_info_label.config(text=f"Kluczowy punkt: {key_point['type']} ({key_point['value']})")
@@ -399,14 +481,17 @@ class MapEditor:
             self.modifiers_info_label.config(text="Modyfikatory: brak")
             self.key_point_info_label.config(text="Kluczowy punkt: brak")
             self.spawn_info_label.config(text="Punkt wystawiania: brak")
+            self.token_info_label.config(text="Żeton: brak")
 
     def save_data(self):
         'Zapisuje aktualne dane (teren, kluczowe punkty, spawn_points) do pliku JSON.'
         optimized_data = {}
         for hex_id, terrain in self.hex_data.items():
             if (terrain.get('move_mod', 0) != self.hex_defaults.get('move_mod', 0) or
-                terrain.get('defense_mod', 0) != self.hex_defaults.get('defense_mod', 0)):
+                terrain.get('defense_mod', 0) != self.hex_defaults.get('defense_mod', 0) or
+                "token" in terrain):  # Uwzględnij dane żetonów
                 optimized_data[hex_id] = terrain
+
         map_data = {
             "terrain": optimized_data,
             "key_points": self.key_points,
@@ -428,9 +513,15 @@ class MapEditor:
             self.hex_data = loaded_data.get("terrain", {})
             self.key_points = loaded_data.get("key_points", {})
             self.spawn_points = loaded_data.get("spawn_points", {})
-            # Upewnij się, że mamy obraz tła w PhotoImage
-            if not hasattr(self, 'photo_bg'):
-                self.load_map_image()
+            self.hex_tokens = {
+                hex_id: terrain["image"]
+                for hex_id, terrain in self.hex_data.items()
+                if "image" in terrain and os.path.exists(terrain["image"])
+            }
+            # zawsze upewnij się, że tło jest załadowane
+            self.load_map_image()
+
+            # i dopiero potem rysuj grid
             self.draw_grid()
             messagebox.showinfo("Wczytano", f"Dane mapy zostały wczytane z:\n{self.current_working_file}\n"
                                            f"Liczba kluczowych punktów: {len(self.key_points)}\n"
@@ -449,99 +540,20 @@ class MapEditor:
             self.draw_grid()
             messagebox.showinfo("Zresetowano", "Mapa została zresetowana do domyślnego terenu płaskiego.")
 
-    def save_files(self):
-        """Zapisuje pliki map i dane JSON do folderu mapa_cyfrowa."""
-        # Tworzenie folderu, jeśli nie istnieje
-        os.makedirs(DEST_FOLDER, exist_ok=True)
-
-        decorated = self.bg_image.copy()
-        mid_pixel = self.world_height // 2
-
-        try:
-            # przygotuj warstwę RGBA
-            base = self.bg_image.convert("RGBA")
-            overlay = Image.new("RGBA", base.size, (0,0,0,0))
-            draw = ImageDraw.Draw(overlay)
-            font = ImageFont.load_default()
-
-            # Rysowanie siatki i tekstów na warstwie overlay
-            for hex_id, (cx, cy) in self.hex_centers.items():
-                verts = get_hex_vertices(cx, cy, self.hex_size)
-                draw.polygon(verts, outline='red')
-                terrain = self.hex_data.get(hex_id, self.hex_defaults)
-                txt = f"M:{terrain['move_mod']} D:{terrain['defense_mod']}"
-                draw.text((cx, cy), txt, font=font, fill='blue', anchor='mm')
-
-            # Rysowanie punktów kluczowych na warstwie overlay
-            for hex_id, kp in self.key_points.items():
-                cx, cy = self.hex_centers[hex_id]
-                draw.text((cx, cy - self.hex_size*0.4), kp['type'], font=font, fill='yellow', anchor='mm')
-
-            # rysuj mgiełkę punktów wystawienia
-            for nation, hexes in self.spawn_points.items():
-                for hex_id in hexes:
-                    cx, cy = self.hex_centers[hex_id]
-                    verts = get_hex_vertices(cx, cy, self.hex_size)
-                    if nation == "Polska":
-                        # lewa połowa biało
-                        left_half = [verts[i] for i in (0,1,2,3)]
-                        draw.polygon(left_half, fill=(255,255,255,100), outline=None)
-                        # prawa połowa czerwono
-                        right_half = [verts[i] for i in (0,3,4,5)]
-                        draw.polygon(right_half, fill=(255,0,0,100), outline=None)
-                    elif nation == "Niemcy":
-                        # całość granatowa
-                        draw.polygon(verts, fill=(0,0,128,100), outline=None)
-
-            # Scal warstwy i zapisz
-            decorated = Image.alpha_composite(base, overlay)
-            mid_pixel = self.world_height // 2
-
-            # Konwersja RGBA → RGB przed przycinaniem i zapisem
-            rgb_map = decorated.convert("RGB")
-            # Zapisz pełną mapę globalną przed przycięciem
-            rgb_map.save(DEST_GLOBAL_MAP)
-            img_top = rgb_map.crop((0, 0, self.world_width, mid_pixel))
-            img_bottom = rgb_map.crop((0, mid_pixel, self.world_width, self.world_height))
-            img_top.save(DEST_COMMANDER1_MAP)
-            img_bottom.save(DEST_COMMANDER2_MAP)
-
-            # Zapisanie danych JSON
-            map_data = {
-                "terrain": self.hex_data,
-                "key_points": self.key_points,
-                "spawn_points": self.spawn_points
-            }
-            with open(DEST_DATA_FILE, "w", encoding="utf-8") as f:
-                json.dump(map_data, f, indent=2, ensure_ascii=False)
-            print(f"[INFO] Zapisano dane mapy: {DEST_DATA_FILE}")
-
-        except Exception as e:
-            print(f"[ERROR] Nie udało się zapisać plików: {e}")
-
-    def save_map_as_image(self):
-        """Zapisuje obrazy mapy i dane JSON."""
-        try:
-            # Zapisz mapę globalną i dane
-            self.save_files()
-            print("[INFO] Mapa i dane zostały zapisane w folderze mapa_cyfrowa.")
-        except Exception as e:
-            print(f"[ERROR] Nie udało się zapisać mapy: {e}")
-
     def save_map_and_data(self):
-        """Zapisuje zarówno obraz mapy, jak i dane JSON."""
+        """Zapisuje tylko dane JSON mapy."""
         try:
-            self.save_files()  # Zapisuje mapy i dane
-            messagebox.showinfo("Sukces", "Mapa i dane zostały zapisane pomyślnie.")
+            self.save_data()  # Zapisuje dane JSON
+            messagebox.showinfo("Sukces", "Dane mapy zostały zapisane pomyślnie.")
         except Exception as e:
-            messagebox.showerror("Błąd", f"Nie udało się zapisać mapy i danych: {e}")
+            messagebox.showerror("Błąd", f"Nie udało się zapisać danych mapy: {e}")
 
     def open_map_and_data(self):
         """Otwiera mapę i wczytuje dane."""
         try:
             # Domyślna ścieżka do mapy
             map_path = filedialog.askopenfilename(
-                initialdir=DEST_FOLDER,
+                initialdir=DEFAULT_MAP_DIR,
                 title="Wybierz mapę",
                 filetypes=[("Obrazy", "*.jpg *.png *.bmp"), ("Wszystkie pliki", "*.*")]
             )
@@ -624,8 +636,12 @@ class MapEditor:
                 if self.selected_hex in self.hex_data:
                     del self.hex_data[self.selected_hex]
             else:
-                # W przeciwnym razie, dodaj/zaktualizuj wpis
-                self.hex_data[self.selected_hex] = terrain.copy()
+                # W przeciwnym razie, dodaj/zaktualizuj wpis z kluczem terenu
+                self.hex_data[self.selected_hex] = {
+                    "terrain_key": terrain_key,
+                    "move_mod": terrain["move_mod"],
+                    "defense_mod": terrain["defense_mod"]
+                }
             # Zapisz dane i odrysuj heks
             self.save_data()
             cx, cy = self.hex_centers[self.selected_hex]
@@ -646,6 +662,8 @@ class MapEditor:
         for nation, hexes in self.spawn_points.items():
             if self.selected_hex in hexes:
                 hexes.remove(self.selected_hex)
+        # Usuwanie żetonu z hex_tokens
+        self.hex_tokens.pop(self.selected_hex, None)
 
         # Zapisanie zmian i odświeżenie mapy
         self.save_data()
@@ -662,9 +680,9 @@ class MapEditor:
 
     def on_close(self):
         'Obsługuje zamknięcie aplikacji - daje możliwość zapisu mapy.'
-        answer = messagebox.askyesno("Zamykanie programu", "Czy chcesz zapisać mapę przed zamknięciem?")
+        answer = messagebox.askyesno("Zamykanie programu", "Czy chcesz zapisać dane mapy przed zamknięciem?")
         if answer:
-            self.save_map_as_image()
+            self.save_map_and_data()
         self.root.destroy()
 
     def print_extreme_hexes(self):
@@ -681,20 +699,143 @@ class MapEditor:
         print("Dolny skrajny (y) =", max(ys))
 
     def get_working_data_path(self):
-        'Zwraca ścieżkę do pliku roboczego w folderze mapa_cyfrowa.'
         map_folder = DEFAULT_MAP_DIR
         if not os.path.exists(map_folder):
-            try:
-                os.makedirs(map_folder)
-                print(f"Utworzono folder docelowy: {map_folder}")
-            except Exception as e:
-                print(f"Nie można utworzyć folderu mapa_cyfrowa: {e}")
-                return os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapa_dane.json")
-        if os.access(map_folder, os.W_OK):
-            return os.path.join(map_folder, "mapa_dane.json")
-        else:
-            print(f"Brak uprawnień do zapisu w folderze {map_folder}")
-            return os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapa_dane.json")
+            os.makedirs(map_folder)
+        return os.path.join(map_folder, "mapa_dane.json")
+
+    def load_tokens_from_folders(self, folders):
+        """Wczytuje listę żetonów z podanych folderów."""
+        tokens = []
+        for folder in folders:
+            if os.path.exists(folder):
+                for subfolder in os.listdir(folder):
+                    token_folder = os.path.join(folder, subfolder)
+                    if os.path.isdir(token_folder):
+                        json_path = os.path.join(token_folder, "token_data.json")
+                        png_path = os.path.join(token_folder, f"{subfolder}.png")
+                        if os.path.exists(json_path) and os.path.exists(png_path):
+                            tokens.append({
+                                "name": subfolder,
+                                "json_path": json_path,
+                                "image_path": png_path
+                            })
+        return tokens
+
+    def deploy_token_dialog(self):
+        """Wyświetla okno dialogowe z wszystkimi dostępnymi żetonami w folderze tokeny."""
+        dialog = tk.Toplevel(self.root)
+        dialog.title("Wybierz żeton")
+        dialog.geometry("300x300")
+        dialog.transient(self.root)
+        dialog.grab_set()
+
+        # Wczytaj żetony z folderów
+        token_base = r"C:\Users\klif\kampania1939_fixed\tokeny"
+        token_folders = [os.path.join(token_base, d)
+                         for d in os.listdir(token_base)
+                         if os.path.isdir(os.path.join(token_base, d))]
+        tokens = self.load_tokens_from_folders(token_folders)
+
+        # Ramka przewijana dla żetonów
+        canvas = tk.Canvas(dialog, bg="darkolivegreen")
+        scroll_y = tk.Scrollbar(dialog, orient="vertical", command=canvas.yview)
+        frame = tk.Frame(canvas, bg="darkolivegreen")
+
+        # Konfiguracja przewijania
+        frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=frame, anchor="nw")
+        canvas.configure(yscrollcommand=scroll_y.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scroll_y.pack(side="right", fill="y")
+
+        # Wyświetlanie żetonów
+        for token in tokens:
+            if os.path.exists(token["image_path"]):
+                img = Image.open(token["image_path"]).resize((50, 50))
+                img = ImageTk.PhotoImage(img)
+                btn = tk.Label(
+                    frame, image=img, text=token["name"], compound="top",
+                    bg="saddlebrown", fg="white"
+                )
+                btn.image = img  # Przechowuj referencję do obrazu
+                btn.pack(pady=5, padx=5)
+
+                # Dodaj obsługę przeciągania
+                btn.bind("<Button-1>", lambda e, t=token: self.start_drag(e, t))
+                btn.bind("<B1-Motion>", self.do_drag)
+                btn.bind("<ButtonRelease-1>", self.end_drag)
+
+    def start_drag(self, event, token):
+        """Rozpoczyna przeciąganie żetonu."""
+        self.dragged_token = token
+        self.dragged_image = Image.open(token["image_path"]).resize((50, 50))
+        self.dragged_image = ImageTk.PhotoImage(self.dragged_image)
+        self.dragged_item = self.canvas.create_image(
+            self.canvas.canvasx(event.x), self.canvas.canvasy(event.y), image=self.dragged_image, anchor=tk.CENTER
+        )
+
+    def do_drag(self, event):
+        """Obsługuje przeciąganie żetonu."""
+        if hasattr(self, "dragged_item"):
+            self.canvas.coords(self.dragged_item, self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
+
+    def end_drag(self, event):
+        """Kończy przeciąganie i umieszcza żeton na mapie."""
+        if hasattr(self, "dragged_item"):
+            x, y = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
+            clicked_hex = None
+            for hex_id, (cx, cy) in self.hex_centers.items():
+                vertices = get_hex_vertices(cx, cy, self.hex_size)
+                if point_in_polygon(x, y, vertices):
+                    clicked_hex = hex_id
+                    break
+
+            if clicked_hex:
+                # Umieść żeton na wybranym heksie
+                self.place_token_on_hex(self.dragged_token, clicked_hex)
+
+                # Wyświetl żeton na mapie
+                token_image = Image.open(self.dragged_token["image_path"]).resize((self.hex_size, self.hex_size))
+                token_image = ImageTk.PhotoImage(token_image)
+                self.canvas.create_image(
+                    self.hex_centers[clicked_hex][0],
+                    self.hex_centers[clicked_hex][1],
+                    image=token_image,
+                    anchor=tk.CENTER,
+                    tags=f"token_{clicked_hex}"
+                )
+                # Przechowuj referencję do obrazu, aby nie został usunięty przez GC
+                if not hasattr(self, "token_images"):
+                    self.token_images = {}
+                self.token_images[clicked_hex] = token_image
+            else:
+                messagebox.showinfo("Informacja", "Upuść żeton wewnątrz heksagonu.")
+
+            # Usuń przeciągany obraz
+            self.canvas.delete(self.dragged_item)
+            del self.dragged_item
+            del self.dragged_token
+            del self.dragged_image
+
+    def place_token_on_hex(self, token, hex_id):
+        """Umieszcza wybrany żeton na wskazanym heksie."""
+        # Automatyczne dodanie danych z pliku JSON do mapy
+        with open(token["json_path"], "r", encoding="utf-8") as f:
+            token_data = json.load(f)
+
+        # Przypisz dane żetonu do heksu
+        self.hex_data[hex_id] = {
+            "token": token_data,
+            "image": token["image_path"]
+        }
+        self.save_data()
+        self.draw_grid()
+        messagebox.showinfo("Sukces", f"Żeton '{token['name']}' został umieszczony na heksie {hex_id}.")
 
 if __name__ == "__main__":
     root = tk.Tk()
