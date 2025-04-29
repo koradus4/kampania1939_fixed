@@ -84,6 +84,93 @@
       "terrain_key": "mała miejscowość",
       "move_mod": -2,
       "defense_mod": 2
+    },
+    "29_2": {
+      "terrain_key": "mała rzeka",
+      "move_mod": -2,
+      "defense_mod": 1
+    },
+    "46_16": {
+      "token": {
+        "shape": "Prostokąt",
+        "nation": "Niemcy",
+        "unit_type": "AC",
+        "unit_size": "Pluton",
+        "movement_points": "12",
+        "attack_range": "6",
+        "attack_value": "6",
+        "combat_value": "3",
+        "unit_maintenance": "3",
+        "purchase_value": "22",
+        "sight_range": "3",
+        "png_file": "Niemcy AC Pluton.png",
+        "width": 240,
+        "height": 240
+      },
+      "image": "C:\\Users\\klif\\kampania1939_fixed\\tokeny\\niemieckie\\Niemcy AC Pluton\\Niemcy AC Pluton.png"
+    },
+    "46_17": {
+      "token": {
+        "shape": "Prostokąt",
+        "nation": "Niemcy",
+        "unit_type": "AC",
+        "unit_size": "Pluton",
+        "movement_points": "12",
+        "attack_range": "6",
+        "attack_value": "6",
+        "combat_value": "3",
+        "unit_maintenance": "3",
+        "purchase_value": "22",
+        "sight_range": "3",
+        "png_file": "Niemcy AC Pluton.png",
+        "width": 240,
+        "height": 240
+      },
+      "image": "C:\\Users\\klif\\kampania1939_fixed\\tokeny\\niemieckie\\Niemcy AC Pluton\\Niemcy AC Pluton.png"
+    },
+    "46_18": {
+      "token": {
+        "shape": "Prostokąt",
+        "nation": "Niemcy",
+        "unit_type": "P",
+        "unit_size": "Pluton",
+        "movement_points": "5",
+        "attack_range": "1",
+        "attack_value": "2",
+        "combat_value": "3",
+        "unit_maintenance": "2",
+        "purchase_value": "18",
+        "sight_range": "3",
+        "png_file": "Niemcy P Pluton.png",
+        "width": 240,
+        "height": 240
+      },
+      "image": "C:\\Users\\klif\\kampania1939_fixed\\tokeny\\niemieckie\\Niemcy P Pluton\\Niemcy P Pluton.png"
+    },
+    "39_19": {
+      "terrain_key": "mała miejscowość",
+      "move_mod": -2,
+      "defense_mod": 2
+    },
+    "38_19": {
+      "terrain_key": "mała miejscowość",
+      "move_mod": -2,
+      "defense_mod": 2
+    },
+    "39_18": {
+      "terrain_key": "mała miejscowość",
+      "move_mod": -2,
+      "defense_mod": 2
+    },
+    "11_4": {
+      "terrain_key": "mała miejscowość",
+      "move_mod": -2,
+      "defense_mod": 2
+    },
+    "11_3": {
+      "terrain_key": "mała miejscowość",
+      "move_mod": -2,
+      "defense_mod": 2
     }
   },
   "key_points": {
@@ -91,11 +178,23 @@
       "type": "miasto",
       "value": 100
     },
-    "11_4": {
+    "11_3": {
       "type": "miasto",
       "value": 100
     },
-    "11_3": {
+    "39_18": {
+      "type": "miasto",
+      "value": 100
+    },
+    "39_19": {
+      "type": "miasto",
+      "value": 100
+    },
+    "38_19": {
+      "type": "miasto",
+      "value": 100
+    },
+    "11_4": {
       "type": "miasto",
       "value": 100
     }
@@ -104,12 +203,16 @@
     "Nacja A": [],
     "Polska": [
       "0_0",
-      "0_0"
+      "0_0",
+      "0_1",
+      "0_2"
     ],
     "Niemcy": [
       "1_30",
       "1_31",
-      "0_12"
+      "55_14",
+      "54_14",
+      "55_13"
     ]
   }
 }

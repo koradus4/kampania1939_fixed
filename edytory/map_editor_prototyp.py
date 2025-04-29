@@ -11,6 +11,8 @@ DEFAULT_MAP_FILE = r"C:\Users\klif\kampania1939_fixed\gui\mapa_cyfrowa\mapa_glob
 # Konfiguracja rodzajów terenu
 # ----------------------------
 TERRAIN_TYPES = {
+    "teren_płaski": {"move_mod": 0, "defense_mod": 0},
+    "mała rzeka": {"move_mod": -2, "defense_mod": 1},
     "duża rzeka": {"move_mod": -4, "defense_mod": -1},
     "las": {"move_mod": -2, "defense_mod": 2},
     "bagno": {"move_mod": -3, "defense_mod": 1},
@@ -266,14 +268,14 @@ class MapEditor:
         self.canvas = tk.Canvas(self.canvas_frame, bg="white", cursor="cross")
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # Dodanie suwaków przewijania
-        # self.h_scrollbar = tk.Scrollbar(self.canvas_frame, orient=tk.HORIZONTAL, command=self.canvas.xview)
-        # self.h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X, expand=True)
+        # Dodanie suwaka pionowego
         self.v_scrollbar = tk.Scrollbar(self.canvas_frame, orient=tk.VERTICAL, command=self.canvas.yview)
         self.v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # self.canvas.configure(xscrollcommand=self.h_scrollbar.set, yscrollcommand=self.v_scrollbar.set)
-        self.canvas.configure(yscrollcommand=self.v_scrollbar.set)
+        # Przeniesienie poziomego suwaka do root
+        self.h_scrollbar = tk.Scrollbar(self.root, orient=tk.HORIZONTAL, command=self.canvas.xview)
+        self.h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        self.canvas.configure(xscrollcommand=self.h_scrollbar.set, yscrollcommand=self.v_scrollbar.set)
 
         self.canvas.bind("<Button-1>", self.on_canvas_click)
         self.canvas.bind("<B2-Motion>", self.do_pan)
@@ -726,9 +728,35 @@ class MapEditor:
         """Wyświetla okno dialogowe z wszystkimi dostępnymi żetonami w folderze tokeny."""
         dialog = tk.Toplevel(self.root)
         dialog.title("Wybierz żeton")
-        dialog.geometry("300x300")
+        dialog.geometry("300x300")  # Ustawienie rozmiaru okna
         dialog.transient(self.root)
         dialog.grab_set()
+
+        # Konfiguracja siatki w oknie dialogowym
+        dialog.rowconfigure(0, weight=1)
+        dialog.columnconfigure(0, weight=1)
+
+        # Ramka przewijana dla żetonów
+        frame_container = tk.Frame(dialog, bg="darkolivegreen")
+        frame_container.grid(row=0, column=0, sticky="nsew")
+
+        frame_container.rowconfigure(0, weight=1)
+        frame_container.columnconfigure(0, weight=1)
+
+        canvas = tk.Canvas(frame_container, bg="darkolivegreen")
+        canvas.grid(row=0, column=0, sticky="nsew")
+
+        scroll_y = tk.Scrollbar(frame_container, orient="vertical", command=canvas.yview)
+        scroll_y.grid(row=0, column=1, sticky="ns")
+
+        scroll_x = tk.Scrollbar(frame_container, orient="horizontal", command=canvas.xview)
+        scroll_x.grid(row=1, column=0, sticky="ew")
+
+        frame = tk.Frame(canvas, bg="darkolivegreen")
+
+        # Konfiguracja przewijania
+        canvas.create_window((0, 0), window=frame, anchor="nw")
+        canvas.configure(yscrollcommand=scroll_y.set, xscrollcommand=scroll_x.set)
 
         # Wczytaj żetony z folderów
         token_base = r"C:\Users\klif\kampania1939_fixed\tokeny"
@@ -736,22 +764,6 @@ class MapEditor:
                          for d in os.listdir(token_base)
                          if os.path.isdir(os.path.join(token_base, d))]
         tokens = self.load_tokens_from_folders(token_folders)
-
-        # Ramka przewijana dla żetonów
-        canvas = tk.Canvas(dialog, bg="darkolivegreen")
-        scroll_y = tk.Scrollbar(dialog, orient="vertical", command=canvas.yview)
-        frame = tk.Frame(canvas, bg="darkolivegreen")
-
-        # Konfiguracja przewijania
-        frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        canvas.create_window((0, 0), window=frame, anchor="nw")
-        canvas.configure(yscrollcommand=scroll_y.set)
-
-        canvas.pack(side="left", fill="both", expand=True)
-        scroll_y.pack(side="right", fill="y")
 
         # Wyświetlanie żetonów
         for token in tokens:
@@ -763,12 +775,16 @@ class MapEditor:
                     bg="saddlebrown", fg="white"
                 )
                 btn.image = img  # Przechowuj referencję do obrazu
-                btn.pack(pady=5, padx=5)
+                btn.pack(pady=5, padx=5, side="left")
 
                 # Dodaj obsługę przeciągania
                 btn.bind("<Button-1>", lambda e, t=token: self.start_drag(e, t))
                 btn.bind("<B1-Motion>", self.do_drag)
                 btn.bind("<ButtonRelease-1>", self.end_drag)
+
+        # Ustawienie scrollregion po dodaniu widgetów
+        frame.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox("all"))
 
     def start_drag(self, event, token):
         """Rozpoczyna przeciąganie żetonu."""
