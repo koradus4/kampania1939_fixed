@@ -29,7 +29,7 @@ class PanelDowodcy:
         self.left_frame.pack_propagate(False)
 
         # Panel gracza
-        panel_gracza = PanelGracza(self.left_frame, self.gracz.image_path, self.gracz.name)
+        panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path)
         panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
@@ -67,12 +67,13 @@ class PanelDowodcy:
         self.map_canvas.bind("<ButtonPress-1>", self.start_pan)
         self.map_canvas.bind("<B1-Motion>", self.do_pan)
 
-        self.load_map(self.gracz.map_path)
+        self.load_map()
         self.update_timer()
 
-    def load_map(self, map_path):
+    def load_map(self):
+        global_map_path = "C:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_globalna.jpg"
         try:
-            self.map_image = Image.open(map_path)
+            self.map_image = Image.open(global_map_path)
             self.map_photo = ImageTk.PhotoImage(self.map_image)
             self.map_canvas.create_image(0, 0, anchor="nw", image=self.map_photo)
         except Exception as e:

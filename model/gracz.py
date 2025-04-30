@@ -7,38 +7,41 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from core.ekonomia import EconomySystem
 
 class Gracz:
-    def __init__(self, numer, nacja, rola, czas=5):
+    def __init__(self, numer, nacja, rola, czas=5, image_path=None):
         """
         Inicjalizuje obiekt gracza.
         :param numer: Numer gracza (1-6).
         :param nacja: Wybrana nacja (np. "Polska" lub "Niemcy").
         :param rola: Rola gracza ("Generał" lub "Dowódca").
         :param czas: Czas na podturę w minutach (domyślnie 5 minut).
+        :param image_path: Ścieżka do zdjęcia gracza (domyślnie None).
         """
         self.numer = numer
         self.nacja = nacja
         self.rola = rola
         self.czas = czas  # Czas na podturę
+        self.image_path = image_path  # Ścieżka do zdjęcia gracza
         self.economy = EconomySystem()  # Indywidualny system ekonomii dla gracza
 
         # Przypisanie ścieżki do obrazu w zależności od nacji i roli
         base_path = "c:/Users/klif/kampania1939_fixed/gui/images/"
-        if self.nacja == "Polska" and self.rola == "Generał":
-            self.image_path = base_path + "Marszałek Polski Edward Rydz-Śmigły.png"
-        elif self.nacja == "Niemcy" and self.rola == "Generał":
-            self.image_path = base_path + "Generał pułkownik Walther von Brauchitsch.png"
-        elif self.nacja == "Polska" and self.rola == "Dowódca":
-            if self.numer == 2:  # Dowódca 2 Polska
-                self.image_path = base_path + "Generał Juliusz Rómmel.png"
-            else:  # Dowódca 1 Polska
-                self.image_path = base_path + "Generał Tadeusz Kutrzeba.png"
-        elif self.nacja == "Niemcy" and self.rola == "Dowódca":
-            if self.numer == 6:  # Dowódca 2 Niemcy
-                self.image_path = base_path + "Generał Walther von Reichenau.png"
-            else:  # Dowódca 1 Niemcy
-                self.image_path = base_path + "Generał Fedor von Bock.png"
-        else:
-            self.image_path = base_path + "default.png"  # Domyślny obraz, jeśli nie pasuje żadna rola/nacja
+        if self.image_path is None:  # Jeśli image_path nie jest podany, przypisz domyślną wartość
+            if self.nacja == "Polska" and self.rola == "Generał":
+                self.image_path = base_path + "Marszałek Polski Edward Rydz-Śmigły.png"
+            elif self.nacja == "Niemcy" and self.rola == "Generał":
+                self.image_path = base_path + "Generał pułkownik Walther von Brauchitsch.png"
+            elif self.nacja == "Polska" and self.rola == "Dowódca":
+                if self.numer == 2:  # Dowódca 2 Polska
+                    self.image_path = base_path + "Generał Juliusz Rómmel.png"
+                else:  # Dowódca 1 Polska
+                    self.image_path = base_path + "Generał Tadeusz Kutrzeba.png"
+            elif self.nacja == "Niemcy" and self.rola == "Dowódca":
+                if self.numer == 6:  # Dowódca 2 Niemcy
+                    self.image_path = base_path + "Generał Walther von Reichenau.png"
+                else:  # Dowódca 1 Niemcy
+                    self.image_path = base_path + "Generał Fedor von Bock.png"
+            else:
+                self.image_path = base_path + "default.png"  # Domyślny obraz, jeśli nie pasuje żadna rola/nacja
 
         # Przypisanie ścieżki do mapy w zależności od nacji i roli
         if self.nacja == "Polska" and self.rola == "Generał":

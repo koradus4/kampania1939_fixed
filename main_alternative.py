@@ -11,12 +11,12 @@ if __name__ == "__main__":
 
     # Tworzenie obiektów graczy z uwzględnieniem czasu na turę
     gracze = [
-        Gracz(1, miejsca[0], "Generał", czasy[0]),
-        Gracz(2, miejsca[1], "Dowódca", czasy[1]),
-        Gracz(3, miejsca[2], "Dowódca", czasy[2]),
-        Gracz(4, miejsca[3], "Generał", czasy[3]),
-        Gracz(5, miejsca[4], "Dowódca", czasy[4]),
-        Gracz(6, miejsca[5], "Dowódca", czasy[5]),
+        Gracz(1, miejsca[0], "Generał", czasy[0], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Juliusz Rómmel.png"),
+        Gracz(2, miejsca[1], "Dowódca", czasy[1], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Tadeusz Kutrzeba.png"),
+        Gracz(3, miejsca[2], "Dowódca", czasy[2], "c:/Users/klif/kampania1939_fixed/gui/images/Marszałek Polski Edward Rydz-Śmigły.png"),
+        Gracz(4, miejsca[3], "Generał", czasy[3], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Fedor von Bock.png"),
+        Gracz(5, miejsca[4], "Dowódca", czasy[4], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Walther von Reichenau.png"),
+        Gracz(6, miejsca[5], "Dowódca", czasy[5], "c:/Users/klif/kampania1939_fixed/gui/images/Generał pułkownik Walther von Brauchitsch.png"),
     ]
 
     # Inicjalizacja menedżera tur
