@@ -2,6 +2,13 @@ import tkinter as tk
 from tkinter import messagebox, simpledialog, filedialog
 import json, os, math, shutil, sys
 from PIL import Image, ImageDraw, ImageTk, ImageFont
+from pathlib import Path
+
+# Folder „assets” obok token_editor_prototyp.py
+ASSET_ROOT  = Path(__file__).with_name("assets")
+TOKENS_ROOT = ASSET_ROOT / "tokens"
+TOKENS_ROOT.mkdir(parents=True, exist_ok=True)
+
 # Dodanie biblioteki do odtwarzania dźwięków
 try:
     from playsound import playsound
@@ -24,9 +31,9 @@ def get_application_path():
         return os.path.dirname(os.path.abspath(__file__))
 
 # Domyślny katalog zapisu – tokeny mają być zapisywane w tym katalogu
-DEFAULT_TOKENS_DIR = r"C:\Users\klif\OneDrive\Pulpit\rzeczy do bzura 1939\żetony wszystko co potrzebne\żetony"
-if not os.path.exists(DEFAULT_TOKENS_DIR):
-    os.makedirs(DEFAULT_TOKENS_DIR)
+# DEFAULT_TOKENS_DIR = r"C:\Users\klif\OneDrive\Pulpit\rzeczy do bzura 1939\żetony wszystko co potrzebne\żetony"  # skomentowano starą definicję
+if not os.path.exists(TOKENS_ROOT):
+    os.makedirs(TOKENS_ROOT)
 
 def create_flag_background(nation, width, height):
     """Generates a flag image for the given nation, filling the entire area."""
@@ -114,7 +121,7 @@ class TokenEditor:
         self.variable_text_color = "black"
 
         # Katalog zapisu
-        self.save_directory = DEFAULT_TOKENS_DIR
+        self.save_directory = str(TOKENS_ROOT)      # start w assets/tokens
 
         # Add support upgrade attributes and selected_support BEFORE build_controls call
         self.support_upgrades = {
@@ -355,7 +362,7 @@ class TokenEditor:
     def enforce_save_directory_selection(self):
         """Wymusza wybór katalogu zapisu podczas uruchamiania programu."""
         while True:
-            dir_path = filedialog.askdirectory(title="Wybierz katalog zapisu")
+            dir_path = filedialog.askdirectory(title="Wybierz katalog zapisu", initialdir=self.save_directory)
             if dir_path:
                 self.save_directory = dir_path
                 self.save_dir_label.config(text=f"Katalog zapisu: {self.save_directory}")
@@ -995,17 +1002,11 @@ class TokenEditor:
 
         # Tworzenie głównego katalogu dla nacji
         nation_dir_name = f"tokeny_{prefix.lower()}"
-        nation_directory = os.path.join(self.save_directory, nation_dir_name)
-        if not os.path.exists(nation_directory):
-            os.makedirs(nation_directory)
-
-        # Tworzenie podkatalogu dla konkretnego żetonu
-        token_directory = os.path.join(nation_directory, token_name)
-        if not os.path.exists(token_directory):
-            os.makedirs(token_directory)
+        token_directory = TOKENS_ROOT / nation_dir_name / token_name
+        token_directory.mkdir(parents=True, exist_ok=True)
 
         token_img = self.create_token_image(custom_size=None, token_name=token_name)
-        png_path = os.path.join(token_directory, f"{token_name}.png")
+        png_path = token_directory / f"{token_name}.png"
         token_img.save(png_path)
 
         # Przygotowanie danych tokena
@@ -1021,12 +1022,12 @@ class TokenEditor:
             "unit_maintenance": self.unit_maintenance.get(),
             "purchase_value": self.purchase_value.get(),
             "sight_range": self.sight_range.get(),
-            "png_file": f"{token_name}.png",
+            "image": f"{nation_dir_name}/{token_name}/{token_name}.png",  # zaktualizowano klucz
             "width": final_size,
             "height": final_size
         }
 
-        token_json_path = os.path.join(token_directory, "token_data.json")
+        token_json_path = token_directory / "token_data.json"
         with open(token_json_path, "w", encoding="utf-8") as f:
             json.dump(token_data, f, indent=2, ensure_ascii=False)
 

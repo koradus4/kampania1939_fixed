@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "hex_size": 30,
+    "cols": 56,
+    "rows": 40,
+    "coord_system": "axial",
+    "orientation": "pointy"
+  },
+  "terrain": {
+    "4,4": {
+      "terrain_key": "mała miejscowość",
+      "move_mod": -2,
+      "defense_mod": 2
+    },
+    "4,3": {
+      "terrain_key": "płaski",
+      "move_mod": 0,
+      "defense_mod": 0,
+      "token": {
+        "unit": "Polska P Pluton podhalanska",
+        "image": "tokens/tokeny_polska/Polska P Pluton podhalanska/Polska P Pluton podhalanska.png"
+      }
+    },
+    "47,6": {
+      "terrain_key": "płaski",
+      "move_mod": 0,
+      "defense_mod": 0,
+      "token": {
+        "unit": "Niemcy TC Kompania panzer1",
+        "image": "tokens/tokeny_niemcy/Niemcy TC Kompania panzer1/Niemcy TC Kompania panzer1.png"
+      }
+    },
+    "46,3": {
+      "terrain_key": "miasto",
+      "move_mod": -2,
+      "defense_mod": 2
+    },
+    "7,4": {
+      "terrain_key": "mała rzeka",
+      "move_mod": -2,
+      "defense_mod": 1
+    },
+    "6,4": {
+      "terrain_key": "mała rzeka",
+      "move_mod": -2,
+      "defense_mod": 1
+    },
+    "6,3": {
+      "terrain_key": "mała rzeka",
+      "move_mod": -2,
+      "defense_mod": 1
+    },
+    "8,0": {
+      "terrain_key": "duża rzeka",
+      "move_mod": -4,
+      "defense_mod": -1
+    },
+    "9,0": {
+      "terrain_key": "duża rzeka",
+      "move_mod": -4,
+      "defense_mod": -1
+    },
+    "10,1": {
+      "terrain_key": "duża rzeka",
+      "move_mod": -4,
+      "defense_mod": -1
+    },
+    "11,0": {
+      "terrain_key": "duża rzeka",
+      "move_mod": -4,
+      "defense_mod": -1
+    },
+    "12,1": {
+      "terrain_key": "duża rzeka",
+      "move_mod": -4,
+      "defense_mod": -1
+    }
+  },
+  "key_points": {
+    "4,4": {
+      "type": "miasto",
+      "value": 100
+    },
+    "45,7": {
+      "type": "most",
+      "value": 50
+    },
+    "46,3": {
+      "type": "miasto",
+      "value": 100
+    }
+  },
+  "spawn_points": {
+    "Polska": [
+      "0,0"
+    ],
+    "Niemcy": [
+      "55,0"
+    ]
+  }
+}
