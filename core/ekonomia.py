@@ -14,12 +14,10 @@ class EconomySystem:
         """Generuje punkty ekonomiczne."""
         points = random.randint(1, 100)
         self.economic_points += points
-        print(f"[DEBUG] Wygenerowano {points} punktów ekonomicznych. Aktualna suma: {self.economic_points}")
 
     def add_special_points(self):
         """Dodaje 1 punkt specjalny."""
         self.special_points += 1
-        print(f"[DEBUG] Dodano 1 punkt specjalny. Aktualna suma: {self.special_points}")
 
     def subtract_points(self, points):
         """Odejmuje punkty ekonomiczne z dostępnej puli."""
@@ -27,7 +25,6 @@ class EconomySystem:
             self.economic_points -= points
             if self.economic_points < 0:
                 self.economic_points = 0
-            print(f"[DEBUG] Odjęto {points} punktów ekonomicznych. Aktualna suma: {self.economic_points}")
         else:
             print("[ERROR] Obiekt EconomySystem nie ma atrybutu 'economic_points'.")
 

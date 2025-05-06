@@ -93,9 +93,9 @@ class PanelDowodcy:
             if self.remaining_time > 0:
                 self.remaining_time -= 1
                 self.timer_frame.config(text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}")
-                self.root.after(1000, self.update_timer)
+                self.timer_id = self.root.after(1000, self.update_timer)  # Przypisanie identyfikatora timera
             else:
-                self.end_turn()
+                self.destroy()
 
     def update_weather(self, weather_report):
         self.weather_panel.update_weather(weather_report)
@@ -105,10 +105,10 @@ class PanelDowodcy:
 
     def confirm_end_turn(self, event):
         if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz zakończyć turę przed czasem?"):
-            self.end_turn()
+            self.destroy()
 
     def end_turn(self):
-        self.root.destroy()
+        self.destroy()
 
     def destroy(self):
         """Anuluje timer i niszczy okno."""
@@ -118,7 +118,7 @@ class PanelDowodcy:
                 self.timer_id = None  # Resetowanie identyfikatora timera
             except Exception as e:
                 print(f"[ERROR] Nie udało się anulować timera: {e}")
-        super().destroy()
+        self.root.destroy()
 
     def mainloop(self):
         self.root.mainloop()

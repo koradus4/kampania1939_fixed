@@ -53,8 +53,3 @@ class ZarzadzaniePunktamiEkonomicznymi(tk.Frame):
             slider = getattr(self, f"{commander}_slider", None)
             if slider:
                 self.commander_points[commander] = slider.get()
-
-        # Debug: Wyświetlenie finalnych punktów po akceptacji
-        print("[DEBUG] Finalne ustawienia punktów:")
-        for commander, points in self.commander_points.items():
-            print(f"[DEBUG] Dowódca {commander}: {points} punktów")

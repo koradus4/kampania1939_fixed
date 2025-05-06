@@ -52,7 +52,10 @@ if __name__ == "__main__":
             przydzielone_punkty = current_player.economy.get_points()['economic_points']
             app.update_economy(przydzielone_punkty)  # Aktualizacja interfejsu dowódcy
 
-        app.mainloop()  # Uruchomienie panelu
+        try:
+            app.mainloop()  # Uruchomienie panelu
+        except Exception as e:
+            print(f"Błąd: {e}")
 
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()

@@ -174,25 +174,15 @@ class PanelGenerala:
 
     def accept_support(self):
         """Akceptuje przydzielone punkty wsparcia i aktualizuje ekonomię."""
-        # Debug: Wyświetlenie przydzielonych punktów
-        print("[DEBUG] Przydzielone punkty:")
-        for commander, points in self.zarzadzanie_punktami_widget.commander_points.items():
-            print(f"[DEBUG] Dowódca {commander}: {points} punktów")
-
         # Przekazanie punktów do dowódców
         for commander_id, pts in self.zarzadzanie_punktami_widget.commander_points.items():
             if pts > 0:
                 for player in self.gracze:  # Iteracja po liście graczy
                     if player.numer == commander_id and player.rola == "Dowódca":
                         player.economy.economic_points += pts
-                        print(f"[DEBUG] Dowódca {commander_id} otrzymał {pts} punktów. Aktualna suma: {player.economy.economic_points}")
-
-        # Debug: Wyświetlenie sumy punktów przekazanych do zarządzania ekonomią
-        total_assigned_points = sum(self.zarzadzanie_punktami_widget.commander_points.values())
-        print(f"[DEBUG] Suma punktów przekazanych do zarządzania ekonomią: {total_assigned_points}")
 
         # Aktualizacja raportu ekonomicznego po rozdysponowaniu punktów
-        self.ekonomia.subtract_points(total_assigned_points)
+        self.ekonomia.subtract_points(sum(self.zarzadzanie_punktami_widget.commander_points.values()))
         self.update_economy()
 
         # Ukrycie suwaków
@@ -225,9 +215,8 @@ class PanelGenerala:
 
     def end_turn(self):
         """Kończy podturę i zamyka panel."""
-        print("[DEBUG] Zakończenie tury przez gracza.")
         self.reset_support_sliders()  # Resetowanie suwaków wsparcia
-        self.root.destroy()  # Zamknięcie panelu
+        self.destroy()  # Zamiast self.root.destroy()
 
     def confirm_end_turn(self, event=None):
         """Potwierdza zakończenie tury."""
@@ -242,7 +231,7 @@ class PanelGenerala:
                 self.timer_id = None  # Resetowanie identyfikatora timera
             except Exception as e:
                 print(f"[ERROR] Nie udało się anulować timera: {e}")
-        super().destroy()
+        self.root.destroy()
 
     def mainloop(self):
         self.root.mainloop()

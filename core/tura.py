@@ -16,8 +16,6 @@ class TurnManager:
 
     def rozpocznij_nowa_ture(self):
         """Rozpoczyna nową turę i generuje pogodę raz na dzień."""
-        # Debug: Wyświetlenie numeru tury i gracza
-        print(f"[DEBUG] Rozpoczęcie tury: {self.current_turn}, Gracz: {self.players[self.current_player_index].numer}")
 
         if self.current_turn % 6 == 1:  # Generowanie pogody raz na dzień (co 6 tur)
             self.weather.generuj_pogode()
