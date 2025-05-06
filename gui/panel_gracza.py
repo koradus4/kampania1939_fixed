@@ -28,6 +28,6 @@ class PanelGracza(tk.Frame):
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Test Panelu Gracza")
-    panel = PanelGracza(root, "Marszałek Polski Edward Rydz-Śmigły", "C:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_globalna.jpg")
+    panel = PanelGracza(root, "Marszałek Polski Edward Rydz-Śmigły", "C:/Users/klif/kampania1939_fixed/edytory/assets/mapa_globalna.jpg")
     panel.pack(pady=20, padx=20)
     root.mainloop()

@@ -71,7 +71,7 @@ class PanelDowodcy:
         self.update_timer()
 
     def load_map(self):
-        global_map_path = "C:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_globalna.jpg"
+        global_map_path = "C:/Users/klif/kampania1939_fixed/edytory/assets/mapa_globalna.jpg"
         try:
             self.map_image = Image.open(global_map_path)
             self.map_photo = ImageTk.PhotoImage(self.map_image)
