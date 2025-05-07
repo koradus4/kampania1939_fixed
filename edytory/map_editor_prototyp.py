@@ -25,19 +25,19 @@ def to_rel(path: str) -> str:
 # Konfiguracja rodzajów terenu
 # ----------------------------
 TERRAIN_TYPES = {
-    "teren_płaski": {"move_mod": 0, "defense_mod": 0},
+    "teren_płaski": {"move_mod": -1, "defense_mod": 0},
     "mała rzeka": {"move_mod": -2, "defense_mod": 1},
     "duża rzeka": {"move_mod": -4, "defense_mod": -1},
     "las": {"move_mod": -2, "defense_mod": 2},
     "bagno": {"move_mod": -3, "defense_mod": 1},
     "mała miejscowość": {"move_mod": -2, "defense_mod": 2},
     "miasto": {"move_mod": -2, "defense_mod": 2},
-    "most": {"move_mod": 0, "defense_mod": 0}
+    "most": {"move_mod": -1, "defense_mod": -1}
 }
 
 # mapowanie państw → kolor mgiełki
 SPAWN_OVERLAY = {
-    "Polska": "#ffcccc",   # jasnoróżowo-biała
+    "Polska": "#ffcccc;#ffffff",   # białe od góry, czerwone na dole
     "Niemcy": "#ccccff"    # jasnoniebieska
 }
 
@@ -386,19 +386,37 @@ class MapEditor:
 
         # nakładka mgiełki dla punktów zrzutu
         for nation, hex_list in self.spawn_points.items():
-            color = SPAWN_OVERLAY.get(nation, "#ffffff")
-            for hex_id in hex_list:
-                if hex_id in self.hex_centers:
-                    cx, cy = self.hex_centers[hex_id]
-                    verts = get_hex_vertices(cx, cy, self.hex_size)
-                    # stipple symuluje przezroczystość
-                    self.canvas.create_polygon(
-                        verts,
-                        fill=color,
-                        outline="",
-                        stipple="gray25",
-                        tags=f"spawn_{nation}_{hex_id}"
-                    )
+            if nation == "Polska":
+                for hex_id in hex_list:
+                    if hex_id in self.hex_centers:
+                        cx, cy = self.hex_centers[hex_id]
+                        verts = get_hex_vertices(cx, cy, self.hex_size)
+                        self.canvas.create_polygon(
+                            verts,
+                            fill="white",  # Górna część biała
+                            outline="",
+                            stipple="gray25",
+                            tags=f"spawn_{nation}_{hex_id}"
+                        )
+                        self.canvas.create_polygon(
+                            verts,
+                            fill="red",  # Dolna część czerwona
+                            outline="",
+                            stipple="gray25",
+                            tags=f"spawn_{nation}_{hex_id}"
+                        )
+            else:
+                for hex_id in hex_list:
+                    if hex_id in self.hex_centers:
+                        cx, cy = self.hex_centers[hex_id]
+                        verts = get_hex_vertices(cx, cy, self.hex_size)
+                        self.canvas.create_polygon(
+                            verts,
+                            fill=SPAWN_OVERLAY.get(nation, "#ffffff"),
+                            outline="",
+                            stipple="gray25",
+                            tags=f"spawn_{nation}_{hex_id}"
+                        )
 
         # rysowanie etykiet kluczowych punktów
         for hex_id, kp in self.key_points.items():
