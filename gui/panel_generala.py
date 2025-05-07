@@ -5,6 +5,8 @@ from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_ekonomiczny import PanelEkonomiczny
 from gui.panel_gracza import PanelGracza
 from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomicznymi
+from model.mapa import Mapa
+from gui.panel_mapa import PanelMapa
 
 class PanelGenerala:
     def __init__(self, turn_number, ekonomia, gracz, gracze):
@@ -73,23 +75,16 @@ class PanelGenerala:
         self.map_frame = tk.Frame(self.main_frame)
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        self.map_canvas = tk.Canvas(self.map_frame, bg="gray", scrollregion=(0, 0, 2000, 2000))
-        self.map_canvas.grid(row=0, column=0, sticky="nsew")
-
-        self.h_scroll = tk.Scrollbar(self.map_frame, orient=tk.HORIZONTAL, command=self.map_canvas.xview)
-        self.h_scroll.grid(row=1, column=0, sticky="ew")
-        self.v_scroll = tk.Scrollbar(self.map_frame, orient=tk.VERTICAL, command=self.map_canvas.yview)
-        self.v_scroll.grid(row=0, column=1, sticky="ns")
-
-        self.map_canvas.config(xscrollcommand=self.h_scroll.set, yscrollcommand=self.v_scroll.set)
-        self.map_frame.grid_rowconfigure(0, weight=1)
-        self.map_frame.grid_columnconfigure(0, weight=1)
-
-        self.map_canvas.bind("<Configure>", self.update_scrollregion)
-        self.map_canvas.bind("<ButtonPress-1>", self.start_pan)
-        self.map_canvas.bind("<B1-Motion>", self.do_pan)
-
-        self.load_map()
+        # Inicjalizacja modelu mapy i panelu mapy
+        self.mapa_model = Mapa("assets/mapa_dane.json")
+        self.panel_mapa = PanelMapa(
+            parent=self.map_frame,
+            map_model=self.mapa_model,
+            bg_path="assets/mapa_globalna.jpg",
+            width=800, height=600
+        )
+        self.panel_mapa.pack(fill="both", expand=True)
+        self.panel_mapa.bind_click_callback(self.on_map_click)
 
         # Przeliczenie czasu z minut na sekundy i zapisanie w zmiennej remaining_time
         self.remaining_time = self.gracz.czas * 60
@@ -97,28 +92,12 @@ class PanelGenerala:
         # Uruchomienie timera
         self.update_timer()
 
-    def load_map(self):
-        """Wczytuje mapę i wyświetla ją na canvasie."""
-        global_map_path = "C:/Users/klif/kampania1939_fixed/assets/mapa_globalna.jpg"
-        try:
-            self.map_image = Image.open(global_map_path)
-            self.map_photo = ImageTk.PhotoImage(self.map_image)
-            self.map_canvas.create_image(0, 0, anchor="nw", image=self.map_photo)
-            self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
-        except Exception as e:
-            print(f"[ERROR] Nie udało się wczytać mapy: {e}")
-
-    def start_pan(self, event):
-        """Rozpoczyna przesuwanie mapy myszką."""
-        self.map_canvas.scan_mark(event.x, event.y)
-
-    def do_pan(self, event):
-        """Przesuwa mapę myszką."""
-        self.map_canvas.scan_dragto(event.x, event.y, gain=1)
-
-    def update_scrollregion(self, event):
-        """Aktualizuje obszar przewijania mapy."""
-        self.map_canvas.config(scrollregion=self.map_canvas.bbox("all"))
+    def on_map_click(self, q, r):
+        tile = self.mapa_model.get_tile(q, r)
+        tk.messagebox.showinfo(
+            "Płytka",
+            f"Hex: ({q},{r})\nTyp: {tile.terrain_key}\nRuch: {tile.move_mod}\nObrona: {tile.defense_mod}"
+        )
 
     def update_weather(self, weather_report):
         self.weather_panel.update_weather(weather_report)
