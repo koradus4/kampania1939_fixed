@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageTk, ImageFont
 from pathlib import Path
 
 # Folder „assets” obok token_editor_prototyp.py
-ASSET_ROOT  = Path(__file__).with_name("assets")
+ASSET_ROOT  = Path("C:/Users/klif/kampania1939_fixed/assets")
 TOKENS_ROOT = ASSET_ROOT / "tokens"
 TOKENS_ROOT.mkdir(parents=True, exist_ok=True)
 

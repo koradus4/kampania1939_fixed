@@ -7,11 +7,12 @@ from pathlib import Path
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 
 # Folder „assets” obok map_editor_prototyp.py
-ASSET_ROOT = Path(__file__).with_name("assets")
+ASSET_ROOT = Path("C:/Users/klif/kampania1939_fixed/assets")
 ASSET_ROOT.mkdir(exist_ok=True)
 
 DEFAULT_MAP_FILE = str(ASSET_ROOT / "mapa_globalna.jpg")
-token_base       = str(ASSET_ROOT / "tokens")
+DEFAULT_MAP_DIR = ASSET_ROOT
+DATA_FILENAME_WORKING = DEFAULT_MAP_DIR / "mapa_dane.json"
 
 def to_rel(path: str) -> str:
     """Zwraca ścieżkę assets/... względem katalogu projektu."""
@@ -39,11 +40,6 @@ SPAWN_OVERLAY = {
     "Polska": "#ffcccc",   # jasnoróżowo-biała
     "Niemcy": "#ccccff"    # jasnoniebieska
 }
-
-# Używamy oddzielnego pliku do zapisu danych (roboczy plik)
-DEFAULT_MAP_DIR = Path(__file__).with_name("assets")
-DEFAULT_MAP_DIR.mkdir(exist_ok=True)
-DATA_FILENAME_WORKING = DEFAULT_MAP_DIR / "mapa_dane.json"
 
 def zapisz_dane_hex(hex_data, filename=DATA_FILENAME_WORKING):
     'Zapisuje dane terenu do pliku JSON (roboczy plik).'

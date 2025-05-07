@@ -99,7 +99,7 @@ class PanelGenerala:
 
     def load_map(self):
         """Wczytuje mapę i wyświetla ją na canvasie."""
-        global_map_path = "C:/Users/klif/kampania1939_fixed/edytory/assets/mapa_globalna.jpg"
+        global_map_path = "C:/Users/klif/kampania1939_fixed/assets/mapa_globalna.jpg"
         try:
             self.map_image = Image.open(global_map_path)
             self.map_photo = ImageTk.PhotoImage(self.map_image)

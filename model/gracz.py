@@ -45,9 +45,9 @@ class Gracz:
 
         # Przypisanie ścieżki do mapy w zależności od nacji i roli
         if self.nacja == "Polska" and self.rola == "Generał":
-            self.map_path = "C:/Users/klif/kampania1939_fixed/edytory/assets/mapa_globalna.jpg"
+            self.map_path = "C:/Users/klif/kampania1939_fixed/assets/mapa_globalna.jpg"
         elif self.nacja == "Niemcy" and self.rola == "Generał":
-            self.map_path = "C:/Users/klif/kampania1939_fixed/edytory/assets/mapa_globalna.jpg"
+            self.map_path = "C:/Users/klif/kampania1939_fixed/assets/mapa_globalna.jpg"
         elif self.nacja == "Polska" and self.rola == "Dowódca":
             if self.numer == 2:  # Dowódca 2 Polska
                 self.map_path = "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca2.jpg"
