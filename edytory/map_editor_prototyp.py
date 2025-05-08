@@ -340,19 +340,16 @@ class MapEditor:
     def draw_grid(self):
         """Rysuje siatkę heksów i aktualizuje wyświetlane żetony."""
         self.canvas.delete("all")
-        # jeśli nadal brak photo_bg, wstaw biały obrazek 1×1, żeby nie wywaliło błędu
         if not hasattr(self, 'photo_bg'):
-            # korzystamy ze `Image` zaimportowanego na górze pliku
-            self.photo_bg = ImageTk.PhotoImage(Image.new("RGB", (1,1), (255,255,255)))
+            self.photo_bg = ImageTk.PhotoImage(Image.new("RGB", (1, 1), (255, 255, 255)))
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo_bg)
         self.hex_centers = {}
-        if not hasattr(self, 'token_images'):
-            self.token_images = {}
         s = self.hex_size
         hex_height = math.sqrt(3) * s
         horizontal_spacing = 1.5 * s
         grid_cols = self.config.get("grid_cols")
         grid_rows = self.config.get("grid_rows")
+
         for col in range(grid_cols):
             center_x = s + col * horizontal_spacing
             for row in range(grid_rows):
@@ -364,6 +361,15 @@ class MapEditor:
                 q, r = offset_to_axial(col, row)
                 hex_id = f"{q},{r}"
                 self.hex_centers[hex_id] = (center_x, center_y)
+
+                # Dodanie domyślnych danych terenu płaskiego, jeśli brak danych
+                if hex_id not in self.hex_data:
+                    self.hex_data[hex_id] = {
+                        "terrain_key": "teren_płaski",
+                        "move_mod": -1,
+                        "defense_mod": 0
+                    }
+
                 terrain = self.hex_data.get(hex_id, self.hex_defaults)
                 self.draw_hex(hex_id, center_x, center_y, s, terrain)
 
