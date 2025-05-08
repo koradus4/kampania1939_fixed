@@ -1,17 +1,9 @@
 import math
 
-def get_hex_vertices(center_x, center_y, size):
-    """
-    Zwraca listę wierzchołków (x,y) dla heksa pointy-top,
-    w układzie axial, z podanym rozmiarem (size).
-    """
-    verts = []
-    for i in range(6):
-        angle = math.radians(60 * i - 30)
-        x = center_x + size * math.cos(angle)
-        y = center_y + size * math.sin(angle)
-        verts.append((x, y))
-    return verts
+def get_hex_vertices(cx, cy, s):
+    import math
+    angles = [math.radians(60 * i) for i in range(6)]
+    return [(cx + s * math.cos(a), cy + s * math.sin(a)) for a in angles]
 
 def point_in_polygon(x, y, poly):
     """
