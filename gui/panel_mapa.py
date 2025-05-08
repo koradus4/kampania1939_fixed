@@ -45,6 +45,21 @@ class PanelMapa(tk.Frame):
                         stipple="gray12",
                         tags="hex"
                     )
+            elif txt.startswith("key"):
+                self.canvas.create_polygon(
+                    flat,
+                    outline="red",
+                    fill="",
+                    width=1,
+                    tags="hex"
+                )
+                self.canvas.create_text(
+                    cx, cy,
+                    text=txt.replace("key", ""),
+                    anchor="center",
+                    fill="blue",
+                    tags="hex"
+                )
             else:
                 self.canvas.create_polygon(
                     flat,
