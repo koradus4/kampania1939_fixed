@@ -81,6 +81,7 @@ class PanelGenerala:
             parent=self.map_frame,
             map_model=self.mapa_model,
             bg_path="assets/mapa_globalna.jpg",
+            player_nation=self.gracz.nacja,  # Przekazanie nacji gracza
             width=800, height=600
         )
         self.panel_mapa.pack(fill="both", expand=True)

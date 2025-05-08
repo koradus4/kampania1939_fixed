@@ -3,9 +3,10 @@ from PIL import Image, ImageTk
 from model.mapa import Mapa
 
 class PanelMapa(tk.Frame):
-    def __init__(self, parent, map_model: Mapa, bg_path: str, width=800, height=600):
+    def __init__(self, parent, map_model: Mapa, bg_path: str, player_nation: str, width=800, height=600):
         super().__init__(parent)
         self.map_model = map_model
+        self.player_nation = player_nation  # Dodano nację gracza
 
         # Canvas + Scrollbary
         self.canvas = tk.Canvas(self, width=width, height=height)
@@ -34,20 +35,24 @@ class PanelMapa(tk.Frame):
         self.canvas.delete("hex")
         for verts, (cx, cy), txt in self.map_model.get_overlay_items():
             flat = [coord for p in verts for coord in p]
-            self.canvas.create_polygon(
-                flat,
-                outline="red",
-                fill="",
-                width=1,
-                tags="hex"
-            )
-            # Usunięcie wyświetlania tekstu na heksie
-            # self.canvas.create_text(
-            #     cx, cy,
-            #     text=txt,
-            #     anchor="center",
-            #     tags="hex"
-            # )
+            if "spawn" in txt:
+                spawn_nation = txt.replace("spawn", "")
+                if spawn_nation == self.player_nation.lower():
+                    self.canvas.create_polygon(
+                        flat,
+                        outline="red",
+                        fill="gray",
+                        stipple="gray12",
+                        tags="hex"
+                    )
+            else:
+                self.canvas.create_polygon(
+                    flat,
+                    outline="red",
+                    fill="",
+                    width=1,
+                    tags="hex"
+                )
 
     def _on_click(self, ev):
         x = self.canvas.canvasx(ev.x)
