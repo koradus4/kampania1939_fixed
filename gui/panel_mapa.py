@@ -41,12 +41,13 @@ class PanelMapa(tk.Frame):
                 width=1,
                 tags="hex"
             )
-            self.canvas.create_text(
-                cx, cy,
-                text=txt,
-                anchor="center",
-                tags="hex"
-            )
+            # Usunięcie wyświetlania tekstu na heksie
+            # self.canvas.create_text(
+            #     cx, cy,
+            #     text=txt,
+            #     anchor="center",
+            #     tags="hex"
+            # )
 
     def _on_click(self, ev):
         x = self.canvas.canvasx(ev.x)

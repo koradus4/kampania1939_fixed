@@ -94,9 +94,10 @@ class PanelGenerala:
 
     def on_map_click(self, q, r):
         tile = self.mapa_model.get_tile(q, r)
+        additional_info = f"\nSpawn: {tile.spawn_nation}" if tile.spawn_nation else ""
         tk.messagebox.showinfo(
             "Płytka",
-            f"Hex: ({q},{r})\nTyp: {tile.terrain_key}\nRuch: {tile.move_mod}\nObrona: {tile.defense_mod}"
+            f"Hex: ({q},{r})\nTyp: {tile.terrain_key}\nRuch: {tile.move_mod}\nObrona: {tile.defense_mod}{additional_info}"
         )
 
     def update_weather(self, weather_report):
