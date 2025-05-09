@@ -4,9 +4,10 @@ import json, os, math, shutil, sys
 from PIL import Image, ImageDraw, ImageTk, ImageFont
 from pathlib import Path
 
-# Folder „assets” obok token_editor_prototyp.py
-ASSET_ROOT  = Path("C:/Users/klif/kampania1939_fixed/assets")
-TOKENS_ROOT = ASSET_ROOT / "tokens"
+# ───────── SCIEŻKI WZGLĘDNE ─────────
+PROJECT_ROOT = Path(__file__).resolve().parent.parent  # katalog główny repo
+ASSET_ROOT   = PROJECT_ROOT / "assets"
+TOKENS_ROOT  = ASSET_ROOT / "tokens"
 TOKENS_ROOT.mkdir(parents=True, exist_ok=True)
 
 # Dodanie biblioteki do odtwarzania dźwięków
@@ -29,11 +30,6 @@ def get_application_path():
     else:
         # Jeśli uruchomione jako skrypt
         return os.path.dirname(os.path.abspath(__file__))
-
-# Domyślny katalog zapisu – tokeny mają być zapisywane w tym katalogu
-# DEFAULT_TOKENS_DIR = r"C:\Users\klif\OneDrive\Pulpit\rzeczy do bzura 1939\żetony wszystko co potrzebne\żetony"  # skomentowano starą definicję
-if not os.path.exists(TOKENS_ROOT):
-    os.makedirs(TOKENS_ROOT)
 
 def create_flag_background(nation, width, height):
     """Generates a flag image for the given nation, filling the entire area."""
@@ -95,7 +91,7 @@ class TokenEditor:
         self.hex_token_size_var = tk.IntVar(value=240)
         self.square_token_size_var = tk.IntVar(value=240)
 
-        # Ustawienie kształtu – opcje "Heks" (nieaktywny) i "Prostokąt" (aktywny)
+        # Ustawienie kształtu – opcje "Heks" (aktywny) i "Prostokąt" (aktywny)
         self.shape = tk.StringVar(value="Prostokąt")
         self.nation = tk.StringVar(value="Polska")
         self.unit_type = tk.StringVar(value="P")
@@ -356,25 +352,6 @@ class TokenEditor:
         # Dodajemy flagę dla tła
         self.custom_bg_copied = False
 
-        # Wymuszenie wyboru katalogu zapisu
-        self.enforce_save_directory_selection()
-
-    def enforce_save_directory_selection(self):
-        """Wymusza wybór katalogu zapisu podczas uruchamiania programu."""
-        while True:
-            dir_path = filedialog.askdirectory(title="Wybierz katalog zapisu", initialdir=self.save_directory)
-            if dir_path:
-                self.save_directory = dir_path
-                self.save_dir_label.config(text=f"Katalog zapisu: {self.save_directory}")
-                break
-            else:
-                if messagebox.askyesno("Brak katalogu zapisu", "Nie wybrano katalogu zapisu. Czy chcesz spróbować ponownie?"):
-                    continue
-                else:
-                    messagebox.showwarning("Zamknięcie programu", "Program zostanie zamknięty, ponieważ nie wybrano katalogu zapisu.")
-                    self.root.destroy()
-                    sys.exit()
-
     def set_default_text_color(self):
         defaults = {
             "Polska": "black",
@@ -398,7 +375,7 @@ class TokenEditor:
         shape_frame = tk.LabelFrame(left_frame, text="Kształt Żetonu", bg="darkolivegreen", 
                                     fg="white", font=("Arial", 10, "bold"))
         shape_frame.pack(fill=tk.X, padx=5, pady=5)
-        for text, val, state in [("Heks", "Heks", tk.DISABLED), ("Prostokąt", "Prostokąt", tk.NORMAL)]:
+        for text, val, state in [("Heks", "Heks", tk.NORMAL), ("Prostokąt", "Prostokąt", tk.NORMAL)]:
             tk.Radiobutton(shape_frame, text=text, variable=self.shape, value=val,
                           command=self.update_preview, state=state, 
                           bg="darkolivegreen", fg="white", selectcolor="saddlebrown",
@@ -555,7 +532,7 @@ class TokenEditor:
         hex_size_frame.pack(side=tk.LEFT, padx=5)
         tk.Label(hex_size_frame, text="Heks", bg="darkolivegreen", fg="white", font=("Arial", 9)).pack()  # zmniejszona czcionka
         tk.Radiobutton(hex_size_frame, text="240x240", variable=self.hex_token_size_var, value=240,
-                      command=self.update_preview, state=tk.DISABLED,
+                      command=self.update_preview, state=tk.NORMAL,
                       bg="darkolivegreen", fg="white", selectcolor="saddlebrown",
                       activebackground="saddlebrown", activeforeground="white",
                       indicatoron=False, width=8, pady=2).pack(anchor=tk.W)  # zmniejszono width z 8 na 6
@@ -922,8 +899,26 @@ class TokenEditor:
         token_img = bg_image.copy()
         draw = ImageDraw.Draw(token_img)
         
-        # Rysowanie prostokątnego obramowania
-        draw.rectangle([0, 0, width, height], outline="black", width=3)
+        # ───────── Kształt obramowania ─────────
+        if self.shape.get() == "Heks":
+            # Punkty heksu (płaski wierzch)
+            pts = [
+                (width * 0.25, 0),
+                (width * 0.75, 0),
+                (width,        height * 0.5),
+                (width * 0.75, height),
+                (width * 0.25, height),
+                (0,            height * 0.5)
+            ]
+            # Maska – rogi poza heks przeźroczyste
+            mask = Image.new("L", (width, height), 0)
+            ImageDraw.Draw(mask).polygon(pts, fill=255)
+            token_img.putalpha(mask)
+            # Obramowanie
+            draw.line(pts + [pts[0]], fill="black", width=3, joint="curve")
+        else:
+            # Kwadrat
+            draw.rectangle([0, 0, width, height], outline="black", width=3)
         
         # Domyślne kolory dla nacji
         default_colors = {
@@ -988,50 +983,75 @@ class TokenEditor:
         return token_img
 
     def save_token(self):
-        final_size = self.hex_token_size_var.get() if self.shape.get() == "Heks" else self.square_token_size_var.get()
-        prefix = self.nation.get()
-        default_suffix = f"{self.unit_type.get()} {self.unit_size.get()}"
-        name_suffix = simpledialog.askstring("Nazwa Żetonu",
-                                             f"Podaj nazwę tokena (prefiks '{prefix}' jest niemienny):",
-                                             initialvalue=default_suffix)
-        if not name_suffix:
-            messagebox.showwarning("Brak nazwy", "Musisz podać nazwę tokena.")
-            return
+        """Zapisuje żeton w nowej strukturze + aktualizuje centralny indeks."""
+        FINAL_SIZE = 240  # px – docelowy rozmiar png
 
-        token_name = f"{prefix} {name_suffix}"
+        nation     = self.nation.get()
+        unit_type  = self.unit_type.get()
+        unit_size  = self.unit_size.get()
+        base_id    = f"{unit_type}_{unit_size}".replace(" ", "_")        # np. P_Pluton
 
-        # Tworzenie głównego katalogu dla nacji
-        nation_dir_name = f"tokeny_{prefix.lower()}"
-        token_directory = TOKENS_ROOT / nation_dir_name / token_name
-        token_directory.mkdir(parents=True, exist_ok=True)
+        # ── 1. dodatkowa etykieta użytkownika ───────────────────────────
+        user_label = simpledialog.askstring(
+            "Nazwa wyświetlana",
+            "Podaj nazwę oddziału (np. '1. Podhalański Pluton Czołgów')\n"
+            "Możesz zostawić puste – wtedy grafika będzie bez etykiety."
+        ) or ""
 
-        token_img = self.create_token_image(custom_size=None, token_name=token_name)
-        png_path = token_directory / f"{token_name}.png"
-        token_img.save(png_path)
+        # ── 2. zrób slug z etykiety, aby nie nadpisywać poprzednich ──
+        import re, datetime as _dt
+        label_slug = re.sub(r"[^A-Za-z0-9]+", "_", user_label.strip())[:32] if user_label else ""
+        token_id   = f"{base_id}__{label_slug}" if label_slug else base_id
 
-        # Przygotowanie danych tokena
-        token_data = {
-            "shape": self.shape.get(),
-            "nation": self.nation.get(),
-            "unit_type": self.unit_type.get(),
-            "unit_size": self.unit_size.get(),
-            "movement_points": self.movement_points.get(),
-            "attack_range": self.attack_range.get(),
-            "attack_value": self.attack_value.get(),
-            "combat_value": self.combat_value.get(),
-            "unit_maintenance": self.unit_maintenance.get(),
-            "purchase_value": self.purchase_value.get(),
-            "sight_range": self.sight_range.get(),
-            "image": f"{nation_dir_name}/{token_name}/{token_name}.png",  # zaktualizowano klucz
-            "width": final_size,
-            "height": final_size
+        token_dir = TOKENS_ROOT / nation / token_id
+        # jeżeli katalog już istnieje, dodaj znacznik czasu
+        if token_dir.exists():
+            ts = _dt.datetime.now().strftime("%Y%m%d%H%M%S")
+            token_id  += f"_{ts}"
+            token_dir  = TOKENS_ROOT / nation / token_id
+        token_dir.mkdir(parents=True, exist_ok=True)
+
+        # ---- PNG ---- – dodaj etykietę, jeśli ją wpisano
+        token_name_on_img = user_label if user_label else f"{nation} {base_id}"
+        img = self.create_token_image(custom_size=FINAL_SIZE,
+                                      token_name=token_name_on_img)
+        img.save(token_dir / "token.png")
+
+        # ---- JSON ----
+        meta = {
+            "id":   token_id,                      # unikalny klucz
+            "nation":    nation,
+            "unitType":  unit_type,
+            "unitSize":  unit_size,
+            "shape":     self.shape.get().lower(),   # "heks" lub "prostokąt"
+            "label":     user_label,            # ← nowe pole
+            "move":      int(self.movement_points.get() or 0),
+            "attack":    { "range": int(self.attack_range.get() or 0),
+                           "value": int(self.attack_value.get() or 0) },
+            "maintenance": int(self.unit_maintenance.get() or 0),
+            "price":       int(self.purchase_value.get() or 0),
+            "sight":       int(self.sight_range.get() or 0),
+            # względna ścieżka do stałej nazwy pliku
+            "image": str((Path('assets') / 'tokens' / nation / token_id / 'token.png')
+                         .as_posix()),
+            "w": FINAL_SIZE, "h": FINAL_SIZE
         }
+        with open(token_dir / "token.json", "w", encoding="utf-8") as fh:
+            json.dump(meta, fh, indent=2, ensure_ascii=False)
 
-        token_json_path = token_directory / "token_data.json"
-        with open(token_json_path, "w", encoding="utf-8") as f:
-            json.dump(token_data, f, indent=2, ensure_ascii=False)
+        self.build_index()
+        messagebox.showinfo("✔", f"Zapisano żeton w  {token_dir}")
 
-        messagebox.showinfo("Zapisano", f"Żeton '{token_name}' został zapisany w katalogu:\n{token_directory}")
+    def build_index(self):
+        """Generuje assets/tokens/index.json zawierający wszystkie definicje."""
+        all_defs = []
+        for jf in TOKENS_ROOT.rglob("token.json"):
+            try:
+                all_defs.append(json.loads(jf.read_text(encoding="utf-8")))
+            except Exception:
+                pass
+        (TOKENS_ROOT / "index.json").write_text(json.dumps(all_defs, indent=2, ensure_ascii=False),
+                                               encoding="utf-8")
 
     def clear_database(self):
         if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz wyczyścić bazę żetonów?"):
