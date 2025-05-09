@@ -342,11 +342,6 @@
       "move_mod": -1,
       "defense_mod": 0
     },
-    "2,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
     "2,7": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
@@ -9383,6 +9378,11 @@
       "defense_mod": 0
     },
     "16,27": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "2,6": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
       "defense_mod": 0

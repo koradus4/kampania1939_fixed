@@ -375,7 +375,7 @@ class TokenEditor:
         shape_frame = tk.LabelFrame(left_frame, text="Kształt Żetonu", bg="darkolivegreen", 
                                     fg="white", font=("Arial", 10, "bold"))
         shape_frame.pack(fill=tk.X, padx=5, pady=5)
-        for text, val, state in [("Heks", "Heks", tk.NORMAL), ("Prostokąt", "Prostokąt", tk.NORMAL)]:
+        for text, val, state in [("Heks", "Heks", tk.DISABLED), ("Prostokąt", "Prostokąt", tk.NORMAL)]:
             tk.Radiobutton(shape_frame, text=text, variable=self.shape, value=val,
                           command=self.update_preview, state=state, 
                           bg="darkolivegreen", fg="white", selectcolor="saddlebrown",

@@ -793,15 +793,15 @@ class MapEditor:
         return os.path.join(map_folder, "mapa_dane.json")
 
     def load_tokens_from_folders(self, folders):
-        """Wczytuje listę żetonów z podanych folderów."""
+        """Wczytuje listę żetonów z podanych folderów (zgodnie z nową strukturą: token.json + token.png)."""
         tokens = []
         for folder in folders:
             if os.path.exists(folder):
                 for subfolder in os.listdir(folder):
                     token_folder = os.path.join(folder, subfolder)
                     if os.path.isdir(token_folder):
-                        json_path = os.path.join(token_folder, "token_data.json")
-                        png_path = os.path.join(token_folder, f"{subfolder}.png")
+                        json_path = os.path.join(token_folder, "token.json")   # poprawka: nowa nazwa pliku
+                        png_path = os.path.join(token_folder, "token.png")     # poprawka: nowa nazwa pliku
                         if os.path.exists(json_path) and os.path.exists(png_path):
                             tokens.append({
                                 "name": subfolder,
