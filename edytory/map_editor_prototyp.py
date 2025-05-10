@@ -748,7 +748,7 @@ class MapEditor:
             messagebox.showerror("Błąd", "Niepoprawny rodzaj terenu.")
 
     def reset_selected_hex(self):
-        """Czyści wszystkie dane przypisane do wybranego heksu."""
+        """Czyści wszystkie dane przypisane do wybranego heksu i aktualizuje plik start_tokens.json."""
         if self.selected_hex is None:
             messagebox.showinfo("Informacja", "Najpierw wybierz heks klikając na niego.")
             return
@@ -765,6 +765,8 @@ class MapEditor:
         # Zapisanie zmian i odświeżenie mapy
         self.save_data()
         self.draw_grid()
+        # Automatyczna aktualizacja pliku start_tokens.json po usunięciu żetonu
+        self.export_start_tokens()
         messagebox.showinfo("Sukces", f"Dane dla heksu {self.selected_hex} zostały zresetowane.")
 
     def do_pan(self, event):
@@ -901,7 +903,7 @@ class MapEditor:
             x, y = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
             clicked_hex = self.get_clicked_hex(x, y)
             if clicked_hex:
-                self.place_token_on_hex(self.dragged_token["image_path"], clicked_hex)
+                self.place_token_on_hex(self.dragged_token, clicked_hex)
             else:
                 messagebox.showinfo("Informacja", "Upuść żeton wewnątrz heksagonu.")
 
@@ -911,7 +913,7 @@ class MapEditor:
             del self.dragged_token
             del self.dragged_image
 
-    def place_token_on_hex(self, token_path, clicked_hex):
+    def place_token_on_hex(self, token, clicked_hex):
         q, r = clicked_hex           # już axial
         hex_id = f"{q},{r}"
 
@@ -923,9 +925,17 @@ class MapEditor:
                 "defense_mod": 0
             }
 
-        rel_path = to_rel(token_path).replace("\\", "/")
+        # Wczytaj prawdziwe ID żetonu z token.json
+        try:
+            with open(token["json_path"], "r", encoding="utf-8") as f:
+                token_json = json.load(f)
+            token_id = token_json["id"]
+        except Exception:
+            token_id = Path(token["json_path"]).stem
+
+        rel_path = to_rel(token["image_path"]).replace("\\", "/")
         self.hex_data[hex_id]["token"] = {
-            "unit": Path(token_path).stem,
+            "unit": token_id,
             "image": rel_path
         }
 

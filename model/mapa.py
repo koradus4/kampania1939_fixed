@@ -45,6 +45,9 @@ class Mapa:
             y += (math.sqrt(3) * s) / 2
         return x, y
 
+    def hex_to_pixel(self, q, r):
+        return self._hex_center(q, r)
+
     def coords_to_hex(self, x, y):
         for q in range(self.cols):
             for r in range(self.rows):
