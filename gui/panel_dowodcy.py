@@ -5,6 +5,7 @@ from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_gracza import PanelGracza
 from model.mapa import Mapa
 from gui.panel_mapa import PanelMapa
+from model.zetony import ZetonyMapy
 
 class PanelDowodcy:
     def __init__(self, turn_number, remaining_time, gracz):
@@ -53,6 +54,11 @@ class PanelDowodcy:
         self.map_frame = tk.Frame(self.main_frame)
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
+        # Pobranie żetonów dla danego dowódcy
+        zetony = ZetonyMapy()
+        owner_str = f"{self.gracz.numer} ({self.gracz.nacja})"
+        tokens_to_draw = zetony.get_tokens_for_owner(owner_str)
+
         # Inicjalizacja modelu mapy i panelu mapy
         self.mapa_model = Mapa("assets/mapa_dane.json")
         self.panel_mapa = PanelMapa(
@@ -60,6 +66,7 @@ class PanelDowodcy:
             map_model=self.mapa_model,
             bg_path="assets/mapa_globalna.jpg",
             player_nation=self.gracz.nacja,  # Przekazanie nacji gracza
+            tokens_to_draw=tokens_to_draw,
             width=800, height=600
         )
         self.panel_mapa.pack(fill="both", expand=True)

@@ -4,10 +4,11 @@ from model.mapa import Mapa
 from model.zetony import ZetonyMapy
 
 class PanelMapa(tk.Frame):
-    def __init__(self, parent, map_model: Mapa, bg_path: str, player_nation: str, width=800, height=600):
+    def __init__(self, parent, map_model: Mapa, bg_path: str, player_nation: str, tokens_to_draw=None, width=800, height=600):
         super().__init__(parent)
         self.map_model = map_model
         self.player_nation = player_nation  # Dodano nację gracza
+        self.tokens_to_draw = tokens_to_draw  # Lista żetonów do rysowania (przefiltrowana)
 
         # Canvas + Scrollbary
         self.canvas = tk.Canvas(self, width=width, height=height)
@@ -79,9 +80,9 @@ class PanelMapa(tk.Frame):
                 )
 
     def _draw_tokens_on_map(self):
-        # Rysuje wszystkie żetony na mapie na podstawie danych z ZetonyMapy
         print("[DEBUG] Start rysowania żetonów na mapie")
-        for token in self.zetony.get_tokens_on_map():
+        tokens = self.tokens_to_draw if self.tokens_to_draw is not None else self.zetony.get_tokens_on_map()
+        for token in tokens:
             token_id = token["id"]
             q, r = token["q"], token["r"]
             print(f"[DEBUG] Próba rysowania żetonu: id={token_id}, q={q}, r={r}")

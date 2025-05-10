@@ -34,3 +34,21 @@ class ZetonyMapy:
 
     def get_tokens_on_map(self):
         return self.start_tokens
+
+    def get_tokens_for_nation(self, nation):
+        # Zwraca żetony na mapie danej nacji (ignoruje owner)
+        result = []
+        for token in self.start_tokens:
+            token_data = self.get_token_data(token["id"])
+            if token_data and token_data.get("nation") == nation:
+                result.append(token)
+        return result
+
+    def get_tokens_for_owner(self, owner):
+        # Zwraca żetony na mapie przypisane do danego ownera (np. '2 (Polska)')
+        result = []
+        for token in self.start_tokens:
+            token_data = self.get_token_data(token["id"])
+            if token_data and token_data.get("owner") == owner:
+                result.append(token)
+        return result

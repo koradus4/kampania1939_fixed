@@ -7,6 +7,7 @@ from gui.panel_gracza import PanelGracza
 from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomicznymi
 from model.mapa import Mapa
 from gui.panel_mapa import PanelMapa
+from model.zetony import ZetonyMapy
 
 class PanelGenerala:
     def __init__(self, turn_number, ekonomia, gracz, gracze):
@@ -75,6 +76,10 @@ class PanelGenerala:
         self.map_frame = tk.Frame(self.main_frame)
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
+        # Pobranie żetonów dla nacji generała
+        zetony = ZetonyMapy()
+        tokens_to_draw = zetony.get_tokens_for_nation(self.gracz.nacja)
+
         # Inicjalizacja modelu mapy i panelu mapy
         self.mapa_model = Mapa("assets/mapa_dane.json")
         self.panel_mapa = PanelMapa(
@@ -82,6 +87,7 @@ class PanelGenerala:
             map_model=self.mapa_model,
             bg_path="assets/mapa_globalna.jpg",
             player_nation=self.gracz.nacja,  # Przekazanie nacji gracza
+            tokens_to_draw=tokens_to_draw,
             width=800, height=600
         )
         self.panel_mapa.pack(fill="both", expand=True)
