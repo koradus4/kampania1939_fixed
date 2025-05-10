@@ -675,7 +675,11 @@
     "4,6": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "token",
+        "image": "tokens/Polska/P_Pluton__1_podhalanska/token.png"
+      }
     },
     "4,7": {
       "terrain_key": "teren_płaski",
@@ -1158,11 +1162,6 @@
       "defense_mod": 0
     },
     "7,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
-    "7,3": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
       "defense_mod": 0
@@ -8040,7 +8039,11 @@
     "48,6": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "token",
+        "image": "tokens/Niemcy/TC_Pluton__1_czolg_guderian/token.png"
+      }
     },
     "48,7": {
       "terrain_key": "teren_płaski",
@@ -9383,6 +9386,11 @@
       "defense_mod": 0
     },
     "2,6": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "7,3": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
       "defense_mod": 0

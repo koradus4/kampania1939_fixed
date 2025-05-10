@@ -1,0 +1,67 @@
+Tak, **kumam**! Oto jak możesz to zrobić krok po kroku:
+
+---
+
+## 1. **Naniesienie początkowych żetonów na mapę przy starcie gry**
+
+- **Przygotuj plik startowy** (np. `start_tokens.json`), w którym określisz, które żetony i na jakich heksach mają się pojawić na początku gry, np.:
+    ```json
+    [
+      {"id": "TC_Pluton__1_czolg_guderian", "q": 5, "r": 7},
+      {"id": "P_Pluton__1_podhalanska", "q": 2, "r": 3}
+    ]
+    ```
+- **Podczas uruchamiania gry** (w panelu mapy lub edytorze mapy) wczytaj ten plik i umieść żetony na odpowiednich heksach, korzystając z ich PNG i metadanych.
+
+---
+
+## 2. **Możliwość ruszania żetonami tylko przez odpowiednich dowódców**
+
+- **Panel dowódcy**:
+    - Dowódca widzi wszystkie żetony, ale może przesuwać tylko te, które mają `"nation": "Polska"` (jeśli jest polskim dowódcą) lub `"nation": "Niemcy"` (jeśli jest niemieckim dowódcą).
+    - Przesuwanie żetonu sprawdza warunki terenowe (np. koszt ruchu na dany heks).
+- **Panel generała**:
+    - Generał widzi całą mapę i wszystkie żetony, ale nie może ich przesuwać.
+
+---
+
+## 3. **Kroki techniczne**
+
+### A. **Wczytywanie początkowych żetonów**
+- Dodaj funkcję do `PanelMapa` lub `MapEditor`, która:
+    1. Wczytuje `start_tokens.json`.
+    2. Dla każdego żetonu pobiera dane z `index.json` i PNG.
+    3. Umieszcza żeton na mapie na odpowiednim heksie.
+
+### B. **Obsługa ruchu żetonów**
+- W panelu dowódcy:
+    - Po kliknięciu na żeton sprawdź, czy należy do nacji dowódcy.
+    - Pozwól przesunąć żeton tylko na heks, na który pozwalają punkty ruchu i teren.
+    - Po ruchu aktualizuj pozycję żetonu.
+
+### C. **Przykładowy fragment kodu do wczytania żetonów na start**
+```python
+import json
+
+def load_start_tokens(self, path="start_tokens.json"):
+    with open(path, "r", encoding="utf-8") as f:
+        start_tokens = json.load(f)
+    for token in start_tokens:
+        token_id = token["id"]
+        q, r = token["q"], token["r"]
+        # Pobierz dane żetonu z index.json lub token.json
+        # Dodaj żeton do self.tokens_on_map[token_id] = {"q": q, "r": r, ...}
+        # Wyświetl żeton na mapie
+```
+
+---
+
+## 4. **Podsumowanie**
+
+- **Przy starcie gry**: żetony są rozmieszczane na mapie wg pliku startowego.
+- **Dowódcy**: mogą przesuwać tylko swoje żetony, z uwzględnieniem terenu.
+- **Generałowie**: tylko podgląd.
+
+---
+
+**Jeśli chcesz, przygotuję gotowy kod do wczytywania początkowych żetonów na mapę. Daj znać, czy mam to zrobić!**

@@ -245,6 +245,15 @@ class MapEditor:
                                              bg="saddlebrown", fg="white", activebackground="saddlebrown", activeforeground="white")
         self.deploy_token_button.pack(padx=5, pady=5, fill=tk.X)
 
+        # Dodanie przycisku eksportu rozmieszczenia żetonów
+        self.export_tokens_button = tk.Button(
+            self.panel_frame,
+            text="Eksportuj rozmieszczenie żetonów",
+            command=self.export_start_tokens,
+            bg="saddlebrown", fg="white", activebackground="saddlebrown", activeforeground="white"
+        )
+        self.export_tokens_button.pack(padx=5, pady=5, fill=tk.X)
+
         # Sekcja informacyjna o wybranym heksie
         self.control_panel_frame = tk.Frame(self.panel_frame, bg="darkolivegreen", relief=tk.RIDGE, bd=5)
         self.control_panel_frame.pack(side=tk.BOTTOM, fill=tk.BOTH, padx=5, pady=5, expand=True)
@@ -962,6 +971,27 @@ class MapEditor:
             self.draw_hex(hex_id, cx, cy, self.hex_size, terrain)
         else:
             messagebox.showerror("Błąd", "Niepoprawny rodzaj terenu.")
+
+    def export_start_tokens(self, path=None):
+        """Eksportuje rozmieszczenie wszystkich żetonów na mapie do assets/start_tokens.json."""
+        if path is None:
+            path = str(ASSET_ROOT / "start_tokens.json")
+        tokens = []
+        for hex_id, terrain in self.hex_data.items():
+            token = terrain.get("token")
+            if token and "unit" in token:
+                try:
+                    q, r = map(int, hex_id.split(","))
+                except Exception:
+                    continue
+                tokens.append({
+                    "id": token["unit"],
+                    "q": q,
+                    "r": r
+                })
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(tokens, f, indent=2, ensure_ascii=False)
+        messagebox.showinfo("Sukces", f"Wyeksportowano rozmieszczenie żetonów do:\n{path}")
 
 if __name__ == "__main__":
     root = tk.Tk()
