@@ -507,10 +507,11 @@ class MapEditor:
                                     outline="yellow", width=3, tags="highlight")
 
     def on_canvas_hover(self, event):
-        'Wyświetla informacje o heksie przy najechaniu myszką.'
+        'Wyświetla informacje o heksie przy najechaniu myszką oraz powiększa heks z żetonem.'
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
         hovered_hex = self.get_clicked_hex(x, y)
+        self.canvas.delete("hover_zoom")  # Usuwa poprzedni powiększony heks
         if hovered_hex:
             q, r = hovered_hex
             hex_id = f"{q},{r}"
@@ -519,10 +520,9 @@ class MapEditor:
             defense_mod = terrain.get('defense_mod', self.hex_defaults.get('defense_mod', 0))
             key_point = self.key_points.get(hex_id, None)
             spawn_nations = [n for n, hexes in self.spawn_points.items() if hex_id in hexes]
-            token_info = self.hex_data.get(hex_id, {}).get("token", {}).get("name", "brak")
+            token = terrain.get("token", {})
             key = terrain.get("terrain_key", "płaski")
             self.terrain_info_label.config(text=f"Teren: {key}")
-            token = self.hex_data.get(hex_id, {}).get("token", {})
             token_png = token.get("image", "brak")
             self.token_info_label.config(text=f"Żeton: {token_png}")
             self.hex_info_label.config(text=f"Heks: {hex_id}")
@@ -535,6 +535,34 @@ class MapEditor:
                 self.spawn_info_label.config(text=f"Punkt wystawiania: {', '.join(spawn_nations)}")
             else:
                 self.spawn_info_label.config(text="Punkt wystawiania: brak")
+
+            # --- POWIĘKSZENIE HEKSA Z ŻETONEM ---
+            if token and "image" in token and hex_id in self.hex_centers:
+                cx, cy = self.hex_centers[hex_id]
+                s_zoom = int(self.hex_size * 1.5)
+                points = get_hex_vertices(cx, cy, s_zoom)
+                self.canvas.create_polygon(
+                    points, outline="orange", fill="#ffffcc", width=3, tags="hover_zoom"
+                )
+                label = f"M:{move_mod} D:{defense_mod}"
+                if token.get('unit'):
+                    label += f"\n{token.get('unit')}"
+                self.canvas.create_text(
+                    cx, cy, text=label, fill="black", font=("Arial", 14, "bold"), tags="hover_zoom"
+                )
+                # Wyświetl powiększony żeton
+                img_path = ASSET_ROOT / token["image"]
+                if img_path.exists():
+                    try:
+                        img = Image.open(img_path).resize((s_zoom, s_zoom))
+                        tk_img = ImageTk.PhotoImage(img)
+                        self.canvas.create_image(cx, cy, image=tk_img, tags="hover_zoom")
+                        # Przechowuj referencję, by nie znikł z pamięci
+                        if not hasattr(self, '_hover_zoom_images'):
+                            self._hover_zoom_images = []
+                        self._hover_zoom_images.append(tk_img)
+                    except Exception:
+                        pass
         else:
             self.hex_info_label.config(text="Heks: brak")
             self.terrain_info_label.config(text="Teren: brak")
@@ -542,6 +570,9 @@ class MapEditor:
             self.key_point_info_label.config(text="Kluczowy punkt: brak")
             self.spawn_info_label.config(text="Punkt wystawiania: brak")
             self.token_info_label.config(text="Żeton: brak")
+        # Czyść referencje do obrazków, jeśli nie ma powiększenia
+        if not hovered_hex and hasattr(self, '_hover_zoom_images'):
+            self._hover_zoom_images.clear()
 
     def save_data(self):
         'Zapisuje aktualne dane (teren, kluczowe punkty, spawn_points) do pliku JSON.'
@@ -839,7 +870,7 @@ class MapEditor:
         return tokens
 
     def deploy_token_dialog(self):
-        """Wyświetla okno dialogowe z wszystkimi dostępnymi żetonami w folderze tokeny."""
+        """Wyświetla okno dialogowe z wszystkimi dostępnymi żetonami w folderze tokeny (unikalność: żeton znika po wystawieniu)."""
         dialog = tk.Toplevel(self.root)
         dialog.title("Wybierz żeton")
         dialog.geometry("300x300")  # Ustawienie rozmiaru okna
@@ -879,8 +910,16 @@ class MapEditor:
                          if os.path.isdir(os.path.join(token_base, d))]
         tokens = self.load_tokens_from_folders(token_folders)
 
+        # Filtruj żetony, które już są na mapie (unikalność)
+        used_token_ids = set()
+        for terrain in self.hex_data.values():
+            token = terrain.get("token")
+            if token and "unit" in token:
+                used_token_ids.add(token["unit"])
+        available_tokens = [t for t in tokens if self._get_token_id_from_json(t["json_path"]) not in used_token_ids]
+
         # Wyświetlanie żetonów
-        for token in tokens:
+        for token in available_tokens:
             if os.path.exists(token["image_path"]):
                 img = Image.open(token["image_path"]).resize((50, 50))
                 img = ImageTk.PhotoImage(img)
@@ -899,6 +938,14 @@ class MapEditor:
         # Ustawienie scrollregion po dodaniu widgetów
         frame.update_idletasks()
         canvas.configure(scrollregion=canvas.bbox("all"))
+
+    def _get_token_id_from_json(self, json_path):
+        try:
+            with open(json_path, "r", encoding="utf-8") as f:
+                token_json = json.load(f)
+            return token_json.get("id")
+        except Exception:
+            return None
 
     def start_drag(self, event, token):
         """Rozpoczyna przeciąganie żetonu."""

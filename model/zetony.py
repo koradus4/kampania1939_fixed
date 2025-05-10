@@ -14,9 +14,13 @@ class ZetonyMapy:
     def _load_index(self, path):
         if not os.path.exists(path):
             print(f"[WARN] Brak pliku index.json: {path}. Lista żetonów będzie pusta.")
-            return []
+            return {}
         with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+            # Jeśli lista, zamień na dict po id
+            if isinstance(data, list):
+                return {t["id"]: t for t in data if "id" in t}
+            return data
 
     def _load_start_tokens(self, path):
         if not os.path.exists(path):

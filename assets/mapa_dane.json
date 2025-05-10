@@ -835,17 +835,29 @@
     "5,6": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Batalion__PAC1",
+        "image": "tokens/Polska/AC_Batalion__PAC1/token.png"
+      }
     },
     "5,7": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AP_Batalion__PAPLOT1",
+        "image": "tokens/Polska/AP_Batalion__PAPLOT1/token.png"
+      }
     },
     "5,8": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Kompania__PP2",
+        "image": "tokens/Polska/P_Kompania__PP2/token.png"
+      }
     },
     "5,9": {
       "terrain_key": "teren_płaski",
@@ -1155,7 +1167,11 @@
     "7,4": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "TC_Batalion__PCC2",
+        "image": "tokens/Polska/TC_Batalion__PCC2/token.png"
+      }
     },
     "7,5": {
       "terrain_key": "teren_płaski",
@@ -1165,7 +1181,11 @@
     "7,6": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "TC_Kompania__PCC1",
+        "image": "tokens/Polska/TC_Kompania__PCC1/token.png"
+      }
     },
     "7,7": {
       "terrain_key": "teren_płaski",
@@ -7887,16 +7907,6 @@
       "move_mod": -1,
       "defense_mod": 0
     },
-    "47,12": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
-    "47,13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
     "47,14": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
@@ -8195,12 +8205,20 @@
     "49,7": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "TC_Kompania__NCC1",
+        "image": "tokens/Niemcy/TC_Kompania__NCC1/token.png"
+      }
     },
     "49,8": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Kompania__NP2",
+        "image": "tokens/Niemcy/P_Kompania__NP2/token.png"
+      }
     },
     "49,9": {
       "terrain_key": "teren_płaski",
@@ -8215,17 +8233,29 @@
     "49,11": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Batalion__NP1",
+        "image": "tokens/Niemcy/P_Batalion__NP1/token.png"
+      }
     },
     "49,12": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AP_Pluton__NAPOLT1",
+        "image": "tokens/Niemcy/AP_Pluton__NAPOLT1/token.png"
+      }
     },
     "49,13": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Pluton__NAC1",
+        "image": "tokens/Niemcy/AC_Pluton__NAC1/token.png"
+      }
     },
     "49,14": {
       "terrain_key": "teren_płaski",
@@ -8233,11 +8263,6 @@
       "defense_mod": 0
     },
     "49,15": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
-    "49,16": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
       "defense_mod": 0
@@ -8698,26 +8723,6 @@
       "defense_mod": 0
     },
     "52,9": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
-    "52,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
-    "52,11": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
-    "52,12": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
-    "52,13": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
       "defense_mod": 0
@@ -9365,7 +9370,11 @@
     "7,3": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Pluton__PP1",
+        "image": "tokens/Polska/P_Pluton__PP1/token.png"
+      }
     },
     "4,6": {
       "terrain_key": "teren_płaski",
@@ -9386,6 +9395,45 @@
       "terrain_key": "teren_płaski",
       "move_mod": -1,
       "defense_mod": 0
+    },
+    "52,10": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "52,11": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "52,12": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "52,13": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "47,13": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "47,12": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "49,16": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0,
+      "token": {
+        "unit": "TC_Pluton__NCC2",
+        "image": "tokens/Niemcy/TC_Pluton__NCC2/token.png"
+      }
     }
   },
   "key_points": {
@@ -9450,14 +9498,6 @@
       "value": 50
     },
     "51,12": {
-      "type": "węzeł komunikacyjny",
-      "value": 75
-    },
-    "52,13": {
-      "type": "węzeł komunikacyjny",
-      "value": 75
-    },
-    "52,12": {
       "type": "węzeł komunikacyjny",
       "value": 75
     },
