@@ -37,6 +37,9 @@ class PanelMapa(tk.Frame):
         self.token_images = {}  # referencje do obrazków żetonów
         self._draw_tokens_on_map()
 
+        # hover
+        self._bind_hover()
+
     def _draw_hex_grid(self):
         self.canvas.delete("hex")
         for verts, (cx, cy), txt in self.map_model.get_overlay_items():
@@ -105,6 +108,49 @@ class PanelMapa(tk.Frame):
                 print(f"[DEBUG] Błąd ładowania żetonu {token_id}: {e}")
         print("[DEBUG] Koniec rysowania żetonów na mapie")
 
+    def _on_hover(self, event):
+        # Usuwa poprzedni powiększony żeton
+        self.canvas.delete("hover_zoom")
+        x = self.canvas.canvasx(event.x)
+        y = self.canvas.canvasy(event.y)
+        # Znajdź heks pod kursorem
+        hr = self.map_model.coords_to_hex(x, y)
+        if not hr:
+            return
+        q, r = hr
+        # Sprawdź, czy na tym heksie jest żeton
+        for token in self.zetony.get_tokens_on_map():
+            if token["q"] == q and token["r"] == r:
+                token_id = token["id"]
+                token_data = self.zetony.get_token_data(token_id)
+                if not token_data:
+                    return
+                img_path = token_data.get("image")
+                if not img_path:
+                    img_path = f"assets/tokens/{token_data['nation']}/{token_id}/token.png"
+                try:
+                    img = Image.open(img_path)
+                    hex_size = self.map_model.hex_size
+                    zoom_size = int(hex_size * 2)
+                    img = img.resize((zoom_size, zoom_size), Image.LANCZOS)
+                    tk_img = ImageTk.PhotoImage(img)
+                    x_pix, y_pix = self.map_model.hex_to_pixel(q, r)
+                    self.canvas.create_image(x_pix, y_pix, image=tk_img, anchor="center", tags="hover_zoom")
+                    # Przechowuj referencję, by nie znikł z pamięci
+                    if not hasattr(self, '_hover_zoom_images'):
+                        self._hover_zoom_images = []
+                    self._hover_zoom_images.clear()
+                    self._hover_zoom_images.append(tk_img)
+                except Exception as e:
+                    print(f"[DEBUG] Błąd ładowania powiększonego żetonu {token_id}: {e}")
+                break
+
+    def _bind_hover(self):
+        self.canvas.bind("<Motion>", self._on_hover)
+
+    def _unbind_hover(self):
+        self.canvas.unbind("<Motion>")
+
     def _on_click(self, ev):
         x = self.canvas.canvasx(ev.x)
         y = self.canvas.canvasy(ev.y)
@@ -117,3 +163,5 @@ class PanelMapa(tk.Frame):
 
     def refresh(self):
         self._draw_hex_grid()
+        self._draw_tokens_on_map()
+        self._bind_hover()

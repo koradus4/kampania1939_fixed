@@ -1,62 +1,82 @@
 [
   {
-    "id": "AC_Batalion__PAC1",
-    "q": 5,
-    "r": 6
+    "id": "AC_Pluton__pac3",
+    "q": 3,
+    "r": 11
   },
   {
-    "id": "AP_Batalion__PAPLOT1",
-    "q": 5,
-    "r": 7
+    "id": "AP_Pluton__paplot3",
+    "q": 3,
+    "r": 12
   },
   {
-    "id": "P_Kompania__PP2",
-    "q": 5,
-    "r": 8
+    "id": "P_Pluton__pp3",
+    "q": 4,
+    "r": 12
   },
   {
-    "id": "TC_Batalion__PCC2",
+    "id": "TC_Pluton__pcc3",
+    "q": 6,
+    "r": 13
+  },
+  {
+    "id": "TC_Pluton__pcc2",
+    "q": 7,
+    "r": 5
+  },
+  {
+    "id": "AC_Pluton__pac2",
+    "q": 8,
+    "r": 4
+  },
+  {
+    "id": "P_Pluton__np6",
+    "q": 48,
+    "r": 14
+  },
+  {
+    "id": "TC_Pluton__ncc6",
+    "q": 48,
+    "r": 16
+  },
+  {
+    "id": "P_Pluton__np5",
+    "q": 49,
+    "r": 4
+  },
+  {
+    "id": "TC_Pluton__ncc5",
+    "q": 49,
+    "r": 5
+  },
+  {
+    "id": "AP_Pluton__naplot6",
+    "q": 50,
+    "r": 15
+  },
+  {
+    "id": "AC_Pluton__nac6",
+    "q": 50,
+    "r": 16
+  },
+  {
+    "id": "AC_Pluton__nac5",
+    "q": 51,
+    "r": 3
+  },
+  {
+    "id": "AP_Pluton__naplot5",
+    "q": 51,
+    "r": 5
+  },
+  {
+    "id": "P_Pluton__pp2",
     "q": 7,
     "r": 4
   },
   {
-    "id": "TC_Kompania__PCC1",
+    "id": "AP_Pluton__paplot2",
     "q": 7,
     "r": 6
-  },
-  {
-    "id": "TC_Kompania__NCC1",
-    "q": 49,
-    "r": 7
-  },
-  {
-    "id": "P_Kompania__NP2",
-    "q": 49,
-    "r": 8
-  },
-  {
-    "id": "P_Batalion__NP1",
-    "q": 49,
-    "r": 11
-  },
-  {
-    "id": "AP_Pluton__NAPOLT1",
-    "q": 49,
-    "r": 12
-  },
-  {
-    "id": "AC_Pluton__NAC1",
-    "q": 49,
-    "r": 13
-  },
-  {
-    "id": "P_Pluton__PP1",
-    "q": 7,
-    "r": 3
-  },
-  {
-    "id": "TC_Pluton__NCC2",
-    "q": 49,
-    "r": 16
   }
 ]

@@ -410,6 +410,23 @@ class TokenEditor:
         tk.Label(economic_points_frame, text="Punkty:", bg="darkolivegreen", fg="white").pack(side=tk.LEFT, padx=5)
         tk.Entry(economic_points_frame, state=tk.DISABLED, width=10).pack(side=tk.RIGHT, padx=5)
 
+        # --- Sekcja wyboru dowódcy ---
+        commander_frame = tk.LabelFrame(left_frame, text="Dowódca (właściciel żetonu)", bg="darkolivegreen", fg="white", font=("Arial", 10, "bold"))
+        commander_frame.pack(fill=tk.X, padx=5, pady=5)
+        # Lista dowódców: (numer, nacja)
+        self.commanders = [
+            (2, "Polska"),
+            (3, "Polska"),
+            (5, "Niemcy"),
+            (6, "Niemcy")
+        ]
+        self.selected_commander = tk.StringVar(value="")
+        commander_options = [f"{num} ({nation})" for num, nation in self.commanders]
+        tk.Label(commander_frame, text="Wybierz dowódcę:", bg="darkolivegreen", fg="white").pack(side=tk.LEFT, padx=5)
+        self.commander_menu = tk.OptionMenu(commander_frame, self.selected_commander, *commander_options)
+        self.commander_menu.config(bg="saddlebrown", fg="white", width=18)
+        self.commander_menu.pack(side=tk.LEFT, padx=5)
+
         # Pozostałe elementy w układzie grid
         unit_frame = tk.LabelFrame(container, text="Rodzaj Jednostki", bg="darkolivegreen", fg="white",
                                    font=("Arial", 9, "bold"))  # zmniejszona czcionka z 10 na 9
@@ -1017,6 +1034,9 @@ class TokenEditor:
                                       token_name=token_name_on_img)
         img.save(token_dir / "token.png")
 
+        # Pobierz wybranego dowódcę
+        owner = self.selected_commander.get()  # np. '2 (Polska)'
+
         # ---- JSON ----
         meta = {
             "id":   token_id,                      # unikalny klucz
@@ -1031,6 +1051,7 @@ class TokenEditor:
             "maintenance": int(self.unit_maintenance.get() or 0),
             "price":       int(self.purchase_value.get() or 0),
             "sight":       int(self.sight_range.get() or 0),
+            "owner":       owner,
             # względna ścieżka do stałej nazwy pliku
             "image": str((Path('assets') / 'tokens' / nation / token_id / 'token.png')
                          .as_posix()),
