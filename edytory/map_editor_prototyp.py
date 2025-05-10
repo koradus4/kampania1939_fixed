@@ -545,6 +545,15 @@ class MapEditor:
 
     def save_data(self):
         'Zapisuje aktualne dane (teren, kluczowe punkty, spawn_points) do pliku JSON.'
+        # --- USUWANIE MARTWYCH ŻETONÓW ---
+        for hex_id, terrain in list(self.hex_data.items()):
+            token = terrain.get("token")
+            if token and "image" in token:
+                img_path = ASSET_ROOT / token["image"]
+                if not img_path.exists():
+                    # Usuń martwy wpis żetonu
+                    terrain.pop("token", None)
+        # --- KONIEC USUWANIA ---
         optimized_data = {}
         for hex_id, terrain in self.hex_data.items():
             if (terrain.get('move_mod', 0) != self.hex_defaults.get('move_mod', 0) or
@@ -761,6 +770,14 @@ class MapEditor:
                 hexes.remove(self.selected_hex)
         # Usuwanie żetonu z hex_tokens
         self.hex_tokens.pop(self.selected_hex, None)
+
+        # --- USUWANIE MARTWYCH WPISÓW ŻETONÓW Z CAŁEJ MAPY ---
+        for hex_id, terrain in list(self.hex_data.items()):
+            token = terrain.get("token")
+            if token and "image" in token:
+                img_path = ASSET_ROOT / token["image"]
+                if not img_path.exists():
+                    terrain.pop("token", None)
 
         # Zapisanie zmian i odświeżenie mapy
         self.save_data()
