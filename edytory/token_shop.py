@@ -74,10 +74,11 @@ def create_flag_background(nation, width, height):
     return bg
 
 class TokenEditor:
-    def __init__(self, root, available_points=0, available_commanders=None):
+    def __init__(self, root, available_points=0, available_commanders=None, on_points_update=None):
         self.root = root
         self.available_points = available_points  # liczba punktów ekonomicznych przekazana z PanelGenerala
         self.available_commanders = available_commanders if available_commanders is not None else []
+        self.on_points_update = on_points_update
         self.root.title("Edytor Żetonów")
         self.root.geometry("800x600")  # Adjusted window size for better visibility on a tablet
         self.root.configure(bg="darkolivegreen")
@@ -998,68 +999,70 @@ class TokenEditor:
         return token_img
 
     def save_token(self):
-        """Zapisuje żeton w nowej strukturze + aktualizuje centralny indeks."""
-        FINAL_SIZE = 240  # px – docelowy rozmiar png
+        # Pobierz koszt żetonu
+        try:
+            cost = int(self.purchase_value.get())
+        except Exception:
+            messagebox.showerror("Błąd", "Nieprawidłowa wartość kosztu żetonu!")
+            return
 
+        # Sprawdź, czy generał ma wystarczającą liczbę punktów
+        if cost > self.available_points:
+            messagebox.showerror("Błąd", "Za mało punktów ekonomicznych na zakup żetonu!")
+            return
+
+        # Odejmij koszt od dostępnych punktów
+        self.available_points -= cost
+        self.economic_points_var.set(str(self.available_points))
+
+        # Zapisz żeton (PNG + JSON) z ownerem wybranego dowódcy
+        FINAL_SIZE = 240  # px – docelowy rozmiar png
         nation     = self.nation.get()
         unit_type  = self.unit_type.get()
         unit_size  = self.unit_size.get()
-        base_id    = f"{unit_type}_{unit_size}".replace(" ", "_")        # np. P_Pluton
-
-        # ── 1. dodatkowa etykieta użytkownika ───────────────────────────
+        base_id    = f"{unit_type}_{unit_size}".replace(" ", "_")
+        import re, datetime as _dt
         user_label = simpledialog.askstring(
             "Nazwa wyświetlana",
-            "Podaj nazwę oddziału (np. '1. Podhalański Pluton Czołgów')\n"
-            "Możesz zostawić puste – wtedy grafika będzie bez etykiety."
+            "Podaj nazwę oddziału (np. '1. Podhalański Pluton Czołgów')\nMożesz zostawić puste – wtedy grafika będzie bez etykiety."
         ) or ""
-
-        # ── 2. zrób slug z etykiety, aby nie nadpisywać poprzednich ──
-        import re, datetime as _dt
         label_slug = re.sub(r"[^A-Za-z0-9]+", "_", user_label.strip())[:32] if user_label else ""
         token_id   = f"{base_id}__{label_slug}" if label_slug else base_id
-
         token_dir = TOKENS_ROOT / nation / token_id
-        # jeżeli katalog już istnieje, dodaj znacznik czasu
         if token_dir.exists():
             ts = _dt.datetime.now().strftime("%Y%m%d%H%M%S")
             token_id  += f"_{ts}"
             token_dir  = TOKENS_ROOT / nation / token_id
         token_dir.mkdir(parents=True, exist_ok=True)
-
-        # ---- PNG ---- – dodaj etykietę, jeśli ją wpisano
         token_name_on_img = user_label if user_label else f"{nation} {base_id}"
-        img = self.create_token_image(custom_size=FINAL_SIZE,
-                                      token_name=token_name_on_img)
+        img = self.create_token_image(custom_size=FINAL_SIZE, token_name=token_name_on_img)
         img.save(token_dir / "token.png")
-
-        # Pobierz wybranego dowódcę
-        owner = self.selected_commander.get()  # np. '2 (Polska)'
-
-        # ---- JSON ----
+        owner = self.selected_commander.get()
         meta = {
-            "id":   token_id,                      # unikalny klucz
+            "id":   token_id,
             "nation":    nation,
             "unitType":  unit_type,
             "unitSize":  unit_size,
-            "shape":     self.shape.get().lower(),   # "heks" lub "prostokąt"
-            "label":     user_label,            # ← nowe pole
+            "shape":     self.shape.get().lower(),
+            "label":     user_label,
             "move":      int(self.movement_points.get() or 0),
-            "attack":    { "range": int(self.attack_range.get() or 0),
-                           "value": int(self.attack_value.get() or 0) },
+            "attack":    { "range": int(self.attack_range.get() or 0), "value": int(self.attack_value.get() or 0) },
             "maintenance": int(self.unit_maintenance.get() or 0),
             "price":       int(self.purchase_value.get() or 0),
             "sight":       int(self.sight_range.get() or 0),
             "owner":       owner,
-            # względna ścieżka do stałej nazwy pliku
-            "image": str((Path('assets') / 'tokens' / nation / token_id / 'token.png')
-                         .as_posix()),
+            "image": str((Path('assets') / 'tokens' / nation / token_id / 'token.png').as_posix()),
             "w": FINAL_SIZE, "h": FINAL_SIZE
         }
         with open(token_dir / "token.json", "w", encoding="utf-8") as fh:
             json.dump(meta, fh, indent=2, ensure_ascii=False)
-
         self.build_index()
-        messagebox.showinfo("✔", f"Zapisano żeton w  {token_dir}")
+
+        # Callback do PanelGenerala z nową liczbą punktów
+        if callable(self.on_points_update):
+            self.on_points_update(self.available_points)
+
+        messagebox.showinfo("✔", f"Zapisano żeton w  {token_dir}\nPozostało punktów: {self.available_points}")
 
     def build_index(self):
         """Generuje assets/tokens/index.json zawierający wszystkie definicje."""

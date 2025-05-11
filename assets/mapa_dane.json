@@ -9333,11 +9333,6 @@
       "move_mod": -1,
       "defense_mod": 0
     },
-    "3,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
     "50,4": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,

@@ -236,12 +236,19 @@ class PanelGenerala:
     def open_token_shop(self):
         import tkinter as tk
         from edytory.token_shop import TokenEditor
-        # Przekazanie liczby punktów ekonomicznych
         points = self.ekonomia.get_points()['economic_points']
-        # Wyznacz listę dostępnych dowódców dla aktualnego generała
         commanders = [(gracz.numer, gracz.nacja) for gracz in self.gracze if gracz.nacja == self.gracz.nacja and gracz.rola == "Dowódca"]
         shop_window = tk.Toplevel(self.root)
-        token_editor = TokenEditor(shop_window, available_points=points, available_commanders=commanders)
+        # Zapamiętaj początkową liczbę punktów
+        self._last_points = points
+        def update_points(points_left):
+            # Odejmij tylko różnicę (jeśli punkty spadły)
+            diff = self._last_points - points_left
+            if diff > 0:
+                self.ekonomia.subtract_points(diff)
+            self._last_points = points_left
+            self.update_economy(points_left)
+        token_editor = TokenEditor(shop_window, available_points=points, available_commanders=commanders, on_points_update=update_points)
         shop_window.grab_set()
 
     def mainloop(self):
