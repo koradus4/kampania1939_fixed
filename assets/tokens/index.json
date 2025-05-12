@@ -240,66 +240,6 @@
     "h": 240
   },
   {
-    "id": "P_Pluton__kryspin1",
-    "nation": "Polska",
-    "unitType": "P",
-    "unitSize": "Pluton",
-    "shape": "prostokąt",
-    "label": "kryspin1",
-    "move": 5,
-    "attack": {
-      "range": 1,
-      "value": 2
-    },
-    "maintenance": 2,
-    "price": 18,
-    "sight": 3,
-    "owner": "",
-    "image": "assets/tokens/Polska/P_Pluton__kryspin1/token.png",
-    "w": 240,
-    "h": 240
-  },
-  {
-    "id": "P_Pluton__kryspin1_20250511204516",
-    "nation": "Polska",
-    "unitType": "P",
-    "unitSize": "Pluton",
-    "shape": "prostokąt",
-    "label": "kryspin1",
-    "move": 5,
-    "attack": {
-      "range": 1,
-      "value": 2
-    },
-    "maintenance": 2,
-    "price": 18,
-    "sight": 3,
-    "owner": "",
-    "image": "assets/tokens/Polska/P_Pluton__kryspin1_20250511204516/token.png",
-    "w": 240,
-    "h": 240
-  },
-  {
-    "id": "P_Pluton__kryspin1_20250511204530",
-    "nation": "Polska",
-    "unitType": "P",
-    "unitSize": "Pluton",
-    "shape": "prostokąt",
-    "label": "kryspin1",
-    "move": 5,
-    "attack": {
-      "range": 1,
-      "value": 2
-    },
-    "maintenance": 2,
-    "price": 18,
-    "sight": 3,
-    "owner": "",
-    "image": "assets/tokens/Polska/P_Pluton__kryspin1_20250511204530/token.png",
-    "w": 240,
-    "h": 240
-  },
-  {
     "id": "P_Pluton__pp2",
     "nation": "Polska",
     "unitType": "P",

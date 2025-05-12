@@ -52,19 +52,6 @@ class PanelGenerala:
         # Dodanie obsługi kliknięcia na "Punkty ekonomiczne" do otwierania suwaków wsparcia
         self.points_frame.bind("<Button-1>", lambda e: self.show_support_sliders())
 
-        # Przycisk 'Zakup żetony'
-        self.buy_tokens_button = tk.Button(
-            self.left_frame,
-            text="Zakup żetony",
-            font=("Arial", 14, "bold"),
-            bg="#6B8E23",
-            fg="white",
-            relief=tk.RAISED,
-            borderwidth=4,
-            command=self.open_token_shop
-        )
-        self.buy_tokens_button.pack(pady=(10, 10), fill=tk.BOTH, expand=False)
-
         # Dodanie sekcji raportu ekonomicznego
         self.economy_panel = PanelEkonomiczny(self.left_frame)
         self.economy_panel.pack_forget()
@@ -232,24 +219,6 @@ class PanelGenerala:
             except Exception as e:
                 print(f"[ERROR] Nie udało się anulować timera: {e}")
         self.root.destroy()
-
-    def open_token_shop(self):
-        import tkinter as tk
-        from edytory.token_shop import TokenEditor
-        points = self.ekonomia.get_points()['economic_points']
-        commanders = [(gracz.numer, gracz.nacja) for gracz in self.gracze if gracz.nacja == self.gracz.nacja and gracz.rola == "Dowódca"]
-        shop_window = tk.Toplevel(self.root)
-        # Zapamiętaj początkową liczbę punktów
-        self._last_points = points
-        def update_points(points_left):
-            # Odejmij tylko różnicę (jeśli punkty spadły)
-            diff = self._last_points - points_left
-            if diff > 0:
-                self.ekonomia.subtract_points(diff)
-            self._last_points = points_left
-            self.update_economy(points_left)
-        token_editor = TokenEditor(shop_window, available_points=points, available_commanders=commanders, on_points_update=update_points)
-        shop_window.grab_set()
 
     def mainloop(self):
         self.root.mainloop()

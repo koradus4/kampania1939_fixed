@@ -80,7 +80,7 @@ class PanelMapa(tk.Frame):
                 )
 
     def _draw_tokens_on_map(self):
-        # Rysuje wszystkie żetony na mapie na podstawie danych z ZetonyMapy
+        # Usunięto debug printy
         tokens = self.tokens_to_draw if self.tokens_to_draw is not None else self.zetony.get_tokens_on_map()
         for token in tokens:
             token_id = token["id"]
