@@ -1,1 +1,2 @@
 To jest plik testowy utworzony w celu sprawdzenia automatycznego wypychania na GitHub.
+test
