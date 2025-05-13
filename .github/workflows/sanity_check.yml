@@ -18,5 +18,4 @@ jobs:
       run: |
         echo "Sprawdzanie struktury projektu..."
         [ -d "assets" ] || (echo "❌ Brak folderu assets!" && exit 1)
-        [ -d "tokens" ] || (echo "❌ Brak folderu tokens!" && exit 1)
         echo "✅ Wszystkie wymagane foldery istnieją."

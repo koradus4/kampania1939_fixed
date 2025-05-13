@@ -5,5 +5,9 @@
         "markdown": true,
         "scminput": false
     },
-    "git.postCommitCommand": "push"
+    "git.postCommitCommand": "push",
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "git.suggestSmartCommit": false
 }
