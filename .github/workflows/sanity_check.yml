@@ -1,0 +1,22 @@
+name: Sanity check - struktura projektu
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-structure:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Check essential folders
+      run: |
+        echo "Sprawdzanie struktury projektu..."
+        [ -d "assets" ] || (echo "❌ Brak folderu assets!" && exit 1)
+        [ -d "tokens" ] || (echo "❌ Brak folderu tokens!" && exit 1)
+        echo "✅ Wszystkie wymagane foldery istnieją."

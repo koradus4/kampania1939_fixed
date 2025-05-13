@@ -4,5 +4,6 @@
         "plaintext": false,
         "markdown": true,
         "scminput": false
-    }
+    },
+    "git.postCommitCommand": "push"
 }
