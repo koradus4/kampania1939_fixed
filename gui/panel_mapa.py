@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import os
+from pathlib import Path
 from model.mapa import Mapa
 from model.zetony import ZetonyMapy
 
@@ -177,14 +178,23 @@ class PanelMapa(tk.Frame):
         """Rysuje nowy żeton na mapie w heksie (q,r)."""
         from PIL import Image, ImageTk
         import os
+        # spróbuj wczytać indeks generała, a jeśli go nie ma – domyślny
+        base = Path(__file__).parent.parent  # root projektu
+        idx_custom = base / "assets" / "tokens" / "generated_by_general" / "index.json"
+        if idx_custom.exists():
+            zetony = ZetonyMapy(index_path=str(idx_custom))
+        else:
+            zetony = ZetonyMapy()  # załaduje defaultowy assets/tokens/index.json
         # Pobierz metadane żetonu i wyciągnij ścieżkę do obrazka
-        zetony = ZetonyMapy()
         meta = zetony.get_token_data(token_meta["id"])
         if not meta or "image" not in meta:
             print(f"[WARN] Brak definicji obrazka dla żetonu {token_meta['id']}")
             return
+        # Upewnij się, że ścieżka jest absolutna względem projektu
         img_path = meta["image"]
-        # Upewnij się, że ścieżka jest poprawna względem katalogu projektu
+        # Jeśli ścieżka nie zaczyna się od 'assets/tokens/generated_by_general', popraw ją:
+        if not img_path.startswith("assets/tokens/generated_by_general"):
+            img_path = os.path.join("assets/tokens/generated_by_general", meta["nation"], meta["id"], "token.png")
         if not os.path.exists(img_path):
             print(f"[ERROR] Nie znaleziono pliku obrazka żetonu: {img_path}")
             return
