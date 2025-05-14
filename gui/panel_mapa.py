@@ -1,5 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import os
 from model.mapa import Mapa
 from model.zetony import ZetonyMapy
 
@@ -94,6 +95,11 @@ class PanelMapa(tk.Frame):
                 img_path = f"assets/tokens/{token_data['nation']}/{token_id}/token.png"
             try:
                 img = Image.open(img_path)
+            except FileNotFoundError:
+                print(f"[ERROR] Nie można otworzyć obrazka żetonu: {img_path}")
+                # fallback: wczytaj placeholder lub pomiń
+                img = Image.new("RGBA", (getattr(self, 'token_size', 64), getattr(self, 'token_size', 64)), (255,0,0,128))
+            try:
                 # Skalowanie do rozmiaru heksa
                 hex_size = self.map_model.hex_size
                 img = img.resize((hex_size, hex_size), Image.LANCZOS)
@@ -126,6 +132,11 @@ class PanelMapa(tk.Frame):
                     img_path = f"assets/tokens/{token_data['nation']}/{token_id}/token.png"
                 try:
                     img = Image.open(img_path)
+                except FileNotFoundError:
+                    print(f"[ERROR] Nie można otworzyć obrazka żetonu: {img_path}")
+                    # fallback: wczytaj placeholder lub pomiń
+                    img = Image.new("RGBA", (getattr(self, 'token_size', 64), getattr(self, 'token_size', 64)), (255,0,0,128))
+                try:
                     hex_size = self.map_model.hex_size
                     zoom_size = int(hex_size * 2)
                     img = img.resize((zoom_size, zoom_size), Image.LANCZOS)
@@ -161,3 +172,37 @@ class PanelMapa(tk.Frame):
         self._draw_hex_grid()
         self._draw_tokens_on_map()
         self._bind_hover()
+
+    def add_token(self, token_meta):
+        """Rysuje nowy żeton na mapie w heksie (q,r)."""
+        from PIL import Image, ImageTk
+        import os
+        # Pobierz metadane żetonu i wyciągnij ścieżkę do obrazka
+        zetony = ZetonyMapy()
+        meta = zetony.get_token_data(token_meta["id"])
+        if not meta or "image" not in meta:
+            print(f"[WARN] Brak definicji obrazka dla żetonu {token_meta['id']}")
+            return
+        img_path = meta["image"]
+        # Upewnij się, że ścieżka jest poprawna względem katalogu projektu
+        if not os.path.exists(img_path):
+            print(f"[ERROR] Nie znaleziono pliku obrazka żetonu: {img_path}")
+            return
+        try:
+            img = Image.open(img_path)
+        except FileNotFoundError:
+            print(f"[ERROR] Nie można otworzyć obrazka żetonu: {img_path}")
+            # fallback: wczytaj placeholder lub pomiń
+            img = Image.new("RGBA", (getattr(self, 'token_size', 64), getattr(self, 'token_size', 64)), (255,0,0,128))
+        sz = img.size
+        photo = ImageTk.PhotoImage(img)
+        # 2) Przelicz pixelowe współrzędne (zakładam helper get_pixel_coords lub hex_to_pixel):
+        if hasattr(self.map_model, 'get_pixel_coords'):
+            x, y = self.map_model.get_pixel_coords(token_meta['q'], token_meta['r'])
+        else:
+            x, y = self.map_model.hex_to_pixel(token_meta['q'], token_meta['r'])
+        # 3) Wstaw na canvas:
+        self.canvas.create_image(x, y, image=photo, anchor="center")
+        # 4) Przechowaj referencję, by nie zniknęło:
+        if not hasattr(self, "_token_images"): self._token_images = []
+        self._token_images.append(photo)
