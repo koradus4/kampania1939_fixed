@@ -8,53 +8,6 @@ from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomiczn
 from model.mapa import Mapa
 from gui.panel_mapa import PanelMapa
 from model.zetony import ZetonyMapy
-import os
-import json
-import shutil
-
-class DraggableTokenLabel(tk.Label):
-    def start_drag(self, event):
-        self._drag_data = {'x': event.x, 'y': event.y}
-        self.lift()
-        self._dragging = True
-        self._drag_window = None
-
-    def do_drag(self, event):
-        if not getattr(self, '_dragging', False):
-            return
-        # Przesuwanie labela w oknie rezerwy (opcjonalnie: ghost)
-        # Można dodać efekt podążania kursora, ale uproszczone:
-        x = self.winfo_pointerx() - self.winfo_rootx() - self._drag_data['x']
-        y = self.winfo_pointery() - self.winfo_rooty() - self._drag_data['y']
-        self.place(x=x, y=y)
-
-    def do_drop(self, event):
-        if not getattr(self, '_dragging', False):
-            return
-        self._dragging = False
-        # Przekazanie token_meta do PanelMapa
-        # Znajdź główne okno i PanelMapa
-        root = self.winfo_toplevel()
-        # PanelMapa jest przekazany przez master.master.panel_mapa
-        try:
-            panel_generala = root.panel_generala  # Dodaj referencję w __init__
-            panel_mapa = panel_generala.panel_mapa
-        except Exception:
-            panel_mapa = None
-        if panel_mapa:
-            # Przekaż event i token_meta do drop
-            # Przelicz globalne współrzędne kursora na lokalne PanelMapa
-            x = self.winfo_pointerx() - panel_mapa.winfo_rootx()
-            y = self.winfo_pointery() - panel_mapa.winfo_rooty()
-            class DummyEvent:
-                pass
-            dummy_event = DummyEvent()
-            dummy_event.x = x
-            dummy_event.y = y
-            panel_mapa.drop(dummy_event, self.token_meta)
-        # Przywróć pozycję labela
-        self.place_forget()
-        self.pack(pady=2)
 
 class PanelGenerala:
     def __init__(self, turn_number, ekonomia, gracz, gracze):
@@ -99,17 +52,6 @@ class PanelGenerala:
         # Dodanie obsługi kliknięcia na "Punkty ekonomiczne" do otwierania suwaków wsparcia
         self.points_frame.bind("<Button-1>", lambda e: self.show_support_sliders())
 
-        # Dodanie przycisku "Kup nowy żeton"
-        self.buy_button = tk.Button(
-            self.left_frame,
-            text="Kup nowy żeton",
-            font=("Arial", 12, "bold"),
-            bg="#6B8E23",
-            fg="white",
-            command=self.buy_token
-        )
-        self.buy_button.pack(pady=5, fill=tk.X)
-
         # Dodanie sekcji raportu ekonomicznego
         self.economy_panel = PanelEkonomiczny(self.left_frame)
         self.economy_panel.pack_forget()
@@ -138,35 +80,6 @@ class PanelGenerala:
         zetony = ZetonyMapy()
         tokens_to_draw = zetony.get_tokens_for_nation(self.gracz.nacja)
 
-        # Wczytaj wszystkie definicje z generated_by_general/index.json
-        gen_index_path = os.path.join("assets", "tokens", "generated_by_general", "index.json")
-        # upewnij się, że katalog istnieje
-        os.makedirs(os.path.dirname(gen_index_path), exist_ok=True)
-        # jeśli plik nie istnieje lub jest pusty, stwórz go z pustą listą
-        if not os.path.exists(gen_index_path) or os.path.getsize(gen_index_path) == 0:
-            with open(gen_index_path, 'w', encoding='utf-8') as f:
-                json.dump([], f)
-        # bezpieczne wczytanie JSONa
-        with open(gen_index_path, 'r', encoding='utf-8') as f:
-            try:
-                all_defs = json.load(f)
-            except json.JSONDecodeError:
-                all_defs = []
-        self._old_def_ids = [d['id'] for d in all_defs]
-
-        # Wczytaj rozmieszczone żetony z placed_tokens.json
-        placed_path = os.path.join("assets", "placed_tokens.json")
-        placed_tokens = []
-        if os.path.exists(placed_path):
-            with open(placed_path, "r", encoding="utf-8") as f:
-                try:
-                    placed_tokens = json.load(f)
-                except Exception:
-                    placed_tokens = []
-        # Dodaj rozmieszczone żetony do mapy i usuń z rezerwy
-        placed_ids = {t['id'] for t in placed_tokens}
-        tokens_to_draw += placed_tokens
-
         # Inicjalizacja modelu mapy i panelu mapy
         self.mapa_model = Mapa("assets/mapa_dane.json")
         self.panel_mapa = PanelMapa(
@@ -180,112 +93,13 @@ class PanelGenerala:
         self.panel_mapa.pack(fill="both", expand=True)
         self.panel_mapa.bind_click_callback(self.on_map_click)
 
-        # Usuń rozmieszczone żetony z rezerwy
-        if hasattr(self, 'available_tokens'):
-            self.available_tokens = [t for t in self.available_tokens if t['id'] not in placed_ids]
-            self._render_available_tokens()
-
         # Przeliczenie czasu z minut na sekundy i zapisanie w zmiennej remaining_time
         self.remaining_time = self.gracz.czas * 60
 
         # Uruchomienie timera
         self.update_timer()
 
-        # --- USUŃ stary reserve_frame (jeśli istnieje) ---
-        if hasattr(self, 'reserve_frame'):
-            self.reserve_frame.destroy()
-            del self.reserve_frame
-        # --- NOWA RAMKA REZERWY WEWNĄTRZ OKNA ---
-        # ramka rezerwy po lewej stronie
-        self.reserve_frame = tk.Frame(self.left_frame)
-        self.reserve_frame.pack(side=tk.BOTTOM, fill="y", expand=False, pady=10)
-        # ustawiamy w niej Canvas + Scrollbar
-        self._reserve_canvas = tk.Canvas(self.reserve_frame, height=200)
-        vsb = tk.Scrollbar(self.reserve_frame, orient="vertical", command=self._reserve_canvas.yview)
-        self._reserve_inner = tk.Frame(self._reserve_canvas)
-        self._reserve_canvas.configure(yscrollcommand=vsb.set)
-        vsb.pack(side="right", fill="y")
-        self._reserve_canvas.pack(side="left", fill="both", expand=True)
-        self._reserve_canvas.create_window((0,0), window=self._reserve_inner, anchor="nw")
-        self._reserve_inner.bind("<Configure>", lambda e: self._reserve_canvas.configure(scrollregion=self._reserve_canvas.bbox("all")))
-        # self.root.panel_generala = self  # NIEPOTRZEBNE już dla Toplevel
-
-        # stan drag-&-drop
-        self.current_drag_token = None
-        self.drag_preview = None
-
-    def start_drag(self, event, token):
-        parent = self.winfo_toplevel()
-        self.current_drag_token = token
-        img = event.widget.image
-        self.drag_preview = tk.Label(parent, image=img, borderwidth=0)
-        self.drag_preview.image = img
-        parent.bind("<Motion>", self.on_drag_motion)
-        parent.bind("<ButtonRelease-1>", self.on_drag_release)
-
-    def on_drag_motion(self, event):
-        if self.drag_preview:
-            self.drag_preview.place(x=event.x, y=event.y)
-
-    def on_drag_release(self, event):
-        if not self.current_drag_token:
-            return
-        canvas = self.panel_mapa.canvas
-        x = event.x - canvas.winfo_x()
-        y = event.y - canvas.winfo_y()
-        q, r = self.panel_mapa.coords_to_hex(x, y)
-        self.on_map_click(q, r, self.current_drag_token)
-        self.drag_preview.destroy()
-        self.drag_preview = None
-        self.current_drag_token = None
-        parent = self.winfo_toplevel()
-        parent.unbind("<Motion>")
-        parent.unbind("<ButtonRelease-1>")
-
-    def on_map_click(self, q, r, token_meta=None):
-        # --- WARUNEK SPAWN-HEKS ---
-        tile = self.panel_mapa.map_model.get_tile(q, r)
-        import tkinter.messagebox as messagebox
-        if not hasattr(self, 'gracz') or not hasattr(self.gracz, 'nacja'):
-            nation = getattr(self, 'nation', None)
-        else:
-            nation = self.gracz.nacja
-        if not hasattr(tile, 'spawn_nation') or tile.spawn_nation != nation:
-            messagebox.showwarning('Nie możesz tu postawić', 'Możesz wystawiać żetony tylko na własnych spawn-heksach.')
-            return
-        # --- KONIEC WARUNKU ---
-        # Tryb deploy przez drag & drop lub kliknięcie na rezerwę
-        if token_meta:
-            token_meta['q'], token_meta['r'] = q, r
-            if not hasattr(self, 'start_tokens'):
-                self.start_tokens = []
-            self.start_tokens.append(token_meta)
-            # usuń z rezerwy
-            if hasattr(self, 'available_tokens'):
-                self.available_tokens = [t for t in self.available_tokens if t['id'] != token_meta['id']]
-                self._render_available_tokens()
-            if hasattr(self, 'panel_mapa'):
-                self.panel_mapa.add_token(token_meta)
-                self.panel_mapa.save_placed_token(token_meta)
-            # zachowaj w stanie gry
-            try:
-                import game_state
-                if hasattr(game_state, 'placed_tokens'):
-                    game_state.placed_tokens.append(token_meta)
-                    game_state.save_state()
-            except ImportError:
-                pass
-            messagebox.showinfo("Rozmieszczono", f"Żeton {token_meta['id']} na ({q},{r})")
-            return
-        # --- ELSE: klik poza trybem deploy ---
-        # Sprawdź, czy na tym hexie stoi żeton
-        if hasattr(self.panel_mapa.map_model, 'get_token_at'):
-            token = self.panel_mapa.map_model.get_token_at(q, r)
-            if token:
-                info = '\n'.join(f"{k}: {v}" for k, v in token.items() if k not in ('q', 'r'))
-                messagebox.showinfo('Właściwości jednostki', info)
-                return
-        # Oryginalne zachowanie: info o heksie
+    def on_map_click(self, q, r):
         tile = self.mapa_model.get_tile(q, r)
         additional_info = f"\nSpawn: {tile.spawn_nation}" if tile.spawn_nation else ""
         tk.messagebox.showinfo(
@@ -405,103 +219,6 @@ class PanelGenerala:
             except Exception as e:
                 print(f"[ERROR] Nie udało się anulować timera: {e}")
         self.root.destroy()
-
-    def buy_token(self):
-        """Otwiera edytor żetonu w nowym oknie."""
-        import sys
-        import os
-        from pathlib import Path
-        # Dodaj katalog edytory do sys.path jeśli nie ma go na liście
-        edytory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../edytory'))
-        if edytory_path not in sys.path:
-            sys.path.append(edytory_path)
-        import importlib
-        token_editor_prototyp = importlib.import_module('token_editor_prototyp')
-
-        # 1) Ustawiamy osobny katalog dla nowych żetonów:
-        token_editor_prototyp.TOKENS_ROOT = Path("assets/tokens/generated_by_general")
-        token_editor_prototyp.TOKENS_ROOT.mkdir(parents=True, exist_ok=True)
-        # 2) Uruchamiamy edytor w nowym oknie:
-        win = tk.Toplevel(self.root)
-        win.title("Edytor żetonów")
-        editor = token_editor_prototyp.TokenEditor(win)
-        win.grab_set()
-        win.wait_window()
-        # 3) Po zamknięciu okna – weryfikacja ekonomii:
-        self._finalize_purchase()
-
-    def _finalize_purchase(self):
-        """Weryfikuje ekonomię po zakupie żetonu."""
-        # 1) Wczytaj wszystkie nowe wpisy z katalogu generated_by_general
-        gen_root = "assets/tokens/generated_by_general"
-        index_path = os.path.join(gen_root, "index.json")
-        with open(index_path, encoding="utf-8") as f:
-            all_defs = json.load(f)
-        # 2) Pobierz ID nowych żetonów (np. porównując z wcześniejszą listą w self._old_def_ids)
-        new_defs = [t for t in all_defs if t["id"] not in getattr(self, "_old_def_ids", [])]
-        total_cost = sum(int(d.get("price", 0)) for d in new_defs)
-        # Zadbajmy, by _old_def_ids rosło o nowe tokeny
-        self._old_def_ids.extend(d['id'] for d in new_defs)
-        pts = self.ekonomia.get_points()['economic_points']
-        if total_cost > pts:
-            tk.messagebox.showwarning("Brak punktów", f"Potrzebujesz {total_cost}, masz {pts}.")
-            # usuń katalog z nowymi żetonami
-            for d in new_defs:
-                shutil.rmtree(os.path.join(gen_root, d["nation"], d["id"]), ignore_errors=True)
-            # --- AKTUALIZACJA INDEX.JSON ---
-            gen_index_path = os.path.join(gen_root, "index.json")
-            with open(gen_index_path, encoding="utf-8") as f:
-                all_defs = json.load(f)
-            valid_defs = []
-            for d in all_defs:
-                path = os.path.join(gen_root, d['nation'], d['id'])
-                if os.path.isdir(path):
-                    valid_defs.append(d)
-            with open(gen_index_path, 'w', encoding="utf-8") as f:
-                json.dump(valid_defs, f, indent=2, ensure_ascii=False)
-            return
-        # 3) Odejmij punkty i odśwież UI
-        self.ekonomia.subtract_points(total_cost)
-        self.update_economy()
-        self.zarzadzanie_punktami(self.ekonomia.get_points()['economic_points'])
-        tk.messagebox.showinfo("Zakup udany", f"Kupiono {len(new_defs)} żeton(ów) za {total_cost} pkt.")
-        # 4) Zaktualizuj pulę dostępnych żetonów
-        self.available_tokens = new_defs
-        self._old_def_ids = [d["id"] for d in all_defs]
-        self._render_available_tokens()
-        # --- Zapisz stan rozmieszczonych żetonów ---
-        try:
-            import game_state
-            game_state.save_state()
-        except ImportError:
-            pass
-
-    def _render_available_tokens(self):
-        """Rysuje miniaturki kupionych żetonów w panelu rezerwy (lewa ramka)."""
-        # Czyść zawartość ramki rezerwy
-        for widget in self._reserve_inner.winfo_children():
-            widget.destroy()
-        if not hasattr(self, 'available_tokens') or not self.available_tokens:
-            label = tk.Label(self._reserve_inner, text="Brak żetonów w rezerwie", bg='lightgray')
-            label.pack(pady=10)
-            return
-        for token in self.available_tokens:
-            img_path = os.path.join('assets/tokens/generated_by_general', token['nation'], token['id'], 'token.png')
-            if os.path.exists(img_path):
-                img = Image.open(img_path).resize((64, 64))
-                photo = ImageTk.PhotoImage(img)
-                lbl = DraggableTokenLabel(self._reserve_inner, image=photo, cursor="hand2")
-                lbl.image = photo
-                lbl.token_meta = token  # zachowaj dane tokena
-                lbl.pack(pady=2)
-                lbl.bind("<ButtonPress-1>", lambda e, t=token: self.start_drag(e, t))
-            else:
-                lbl = tk.Label(self._reserve_inner, text=token['id'], bg='lightgray')
-                lbl.pack(pady=2)
-
-    def _start_placing_token(self, token):
-        self.placing_token = token
-        tk.messagebox.showinfo("Rozmieszczanie", f"Kliknij na mapę, aby rozmieścić żeton: {token['id']}")
 
     def mainloop(self):
         self.root.mainloop()
