@@ -40,6 +40,14 @@ class PanelMapa(tk.Frame):
         self.token_images = {}  # referencje do obrazków żetonów
         self._draw_tokens_on_map()
 
+        # --- Odtwarzanie rozmieszczonych żetonów z game_state ---
+        try:
+            from game_state import load_state
+            for token in load_state() or []:
+                self.add_token(token)
+        except ImportError:
+            pass
+
         # hover
         self._bind_hover()
 
@@ -164,6 +172,16 @@ class PanelMapa(tk.Frame):
         y = self.canvas.canvasy(ev.y)
         hr = self.map_model.coords_to_hex(x, y)
         if hr and hasattr(self, "_click_cb"):
+            # Jeśli tryb rozmieszczania żetonu przez generała:
+            if hasattr(self, "_placing_token") and self._placing_token:
+                token_meta = self._placing_token
+                token_meta = token_meta.copy()
+                token_meta["q"], token_meta["r"] = hr
+                self.add_token(token_meta)
+                self.save_placed_token(token_meta)
+                self._placing_token = None  # wyłącz tryb rozmieszczania
+                # Usuwanie z rezerwy powinno być obsłużone w panelu generała
+                return
             self._click_cb(*hr)
 
     def bind_click_callback(self, cb):
@@ -178,6 +196,7 @@ class PanelMapa(tk.Frame):
         """Rysuje nowy żeton na mapie w heksie (q,r)."""
         from PIL import Image, ImageTk
         import os
+        from pathlib import Path
         # spróbuj wczytać indeks generała, a jeśli go nie ma – domyślny
         base = Path(__file__).parent.parent  # root projektu
         idx_custom = base / "assets" / "tokens" / "generated_by_general" / "index.json"
@@ -190,9 +209,8 @@ class PanelMapa(tk.Frame):
         if not meta or "image" not in meta:
             print(f"[WARN] Brak definicji obrazka dla żetonu {token_meta['id']}")
             return
-        # Upewnij się, że ścieżka jest absolutna względem projektu
         img_path = meta["image"]
-        # Jeśli ścieżka nie zaczyna się od 'assets/tokens/generated_by_general', popraw ją:
+        # Upewnij się, że ścieżka jest poprawna względem katalogu projektu
         if not img_path.startswith("assets/tokens/generated_by_general"):
             img_path = os.path.join("assets/tokens/generated_by_general", meta["nation"], meta["id"], "token.png")
         if not os.path.exists(img_path):
@@ -202,9 +220,10 @@ class PanelMapa(tk.Frame):
             img = Image.open(img_path)
         except FileNotFoundError:
             print(f"[ERROR] Nie można otworzyć obrazka żetonu: {img_path}")
-            # fallback: wczytaj placeholder lub pomiń
             img = Image.new("RGBA", (getattr(self, 'token_size', 64), getattr(self, 'token_size', 64)), (255,0,0,128))
-        sz = img.size
+        # Skalowanie do rozmiaru heksa (jak przy starcie)
+        hex_size = self.map_model.hex_size if hasattr(self.map_model, 'hex_size') else 64
+        img = img.resize((hex_size, hex_size), Image.LANCZOS)
         photo = ImageTk.PhotoImage(img)
         # 2) Przelicz pixelowe współrzędne (zakładam helper get_pixel_coords lub hex_to_pixel):
         if hasattr(self.map_model, 'get_pixel_coords'):
@@ -216,3 +235,37 @@ class PanelMapa(tk.Frame):
         # 4) Przechowaj referencję, by nie zniknęło:
         if not hasattr(self, "_token_images"): self._token_images = []
         self._token_images.append(photo)
+
+    def save_placed_token(self, token_meta):
+        """Zapisuje rozmieszczony żeton do assets/placed_tokens.json (unikalność po id)."""
+        import json
+        from pathlib import Path
+        placed_path = Path(__file__).parent.parent / "assets" / "placed_tokens.json"
+        # Wczytaj istniejące rozmieszczenia
+        if placed_path.exists():
+            with open(placed_path, "r", encoding="utf-8") as f:
+                try:
+                    placed = json.load(f)
+                except Exception:
+                    placed = []
+        else:
+            placed = []
+        # Nadpisz jeśli żeton o tym id już istnieje (nie duplikuj)
+        placed = [t for t in placed if t.get('id') != token_meta.get('id')]
+        placed.append(token_meta)
+        with open(placed_path, "w", encoding="utf-8") as f:
+            json.dump(placed, f, ensure_ascii=False, indent=2)
+
+    def enable_token_placement(self, token_meta):
+        """Włącza tryb rozmieszczania żetonu przez generała."""
+        self._placing_token = token_meta
+        # Można dodać podpowiedź w UI, np. zmiana kursora
+
+    def drop(self, event, token_meta):
+        """Obsługuje upuszczenie żetonu z rezerwy na mapę (drag & drop)."""
+        # Przelicz współrzędne eventu (x, y) na q, r
+        x, y = event.x, event.y
+        q, r = self.pixel_to_hex(x, y)
+        # Wywołaj on_map_click w PanelGenerala (master)
+        if hasattr(self.master, 'on_map_click'):
+            self.master.on_map_click(q, r, token_meta)

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "P_Pluton__pl1",
+    "nation": "Polska",
+    "unitType": "P",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "pl1",
+    "move": 5,
+    "attack": {
+      "range": 1,
+      "value": 2
+    },
+    "maintenance": 2,
+    "price": 18,
+    "sight": 3,
+    "owner": "2 (Polska)",
+    "image": "assets/tokens/Polska/P_Pluton__pl1/token.png",
+    "w": 240,
+    "h": 240,
+    "q": 1,
+    "r": 1
+  },
+  {
+    "id": "P_Pluton__pl2",
+    "nation": "Polska",
+    "unitType": "P",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "pl2",
+    "move": 5,
+    "attack": {
+      "range": 1,
+      "value": 2
+    },
+    "maintenance": 2,
+    "price": 18,
+    "sight": 3,
+    "owner": "3 (Polska)",
+    "image": "assets/tokens/Polska/P_Pluton__pl2/token.png",
+    "w": 240,
+    "h": 240,
+    "q": 0,
+    "r": 8
+  }
+]

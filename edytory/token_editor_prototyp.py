@@ -16,7 +16,7 @@ try:
     SOUND_AVAILABLE = True
 except ImportError:
     SOUND_AVAILABLE = False
-    messagebox.showwarning("Brak biblioteki dźwięku", 
+    messagebox.showwarning("Brak biblioteki dźwięku",
                            "Biblioteka 'playsound' nie jest zainstalowana. "
                            "Podgląd dźwięków nie będzie dostępny.\n\n"
                            "Aby zainstalować bibliotekę, użyj komendy:\n"
@@ -96,7 +96,7 @@ class TokenEditor:
         self.nation = tk.StringVar(value="Polska")
         self.unit_type = tk.StringVar(value="P")
         self.unit_size = tk.StringVar(value="Pluton")
-        
+
         self.movement_points = tk.StringVar()
         self.attack_range = tk.StringVar()
         self.attack_value = tk.StringVar()
@@ -108,10 +108,10 @@ class TokenEditor:
         self.custom_bg_path = None
 
         # Parametry transformacji tła
-        self.bg_rotation = 0      
-        self.bg_scale = 1.0       
-        self.bg_translate_x = 0   
-        self.bg_translate_y = 0   
+        self.bg_rotation = 0
+        self.bg_scale = 1.0
+        self.bg_translate_x = 0
+        self.bg_translate_y = 0
 
         # Kolor napisów – domyślnie ustawiony dla "Polska" (black)
         self.variable_text_color = "black"
@@ -188,9 +188,9 @@ class TokenEditor:
         }
         self.selected_support = tk.StringVar(value="")  # Przechowuje wybrane wsparcie
 
-        # Dodajemy słownik określający dozwolone wsparcie dla każdego typu jednostki        
+        # Dodajemy słownik określający dozwolone wsparcie dla każdego typu jednostki
         self.allowed_support = {
-            "P": ["drużyna granatników", "sekcja km.ppanc", "sekcja ckm", 
+            "P": ["drużyna granatników", "sekcja km.ppanc", "sekcja ckm",
                  "przodek dwukonny", "sam. ciezarowy Fiat 621", "sam.ciezarowy Praga Rv"],
             "K": ["sekcja ckm"],
             "TC": ["obserwator"],
@@ -198,7 +198,7 @@ class TokenEditor:
             "TL": ["obserwator"],
             "TS": ["obserwator"],
             "AC": ["drużyna granatników", "sekcja ckm", "sekcja km.ppanc",
-                  "sam. ciezarowy Fiat 621", "sam.ciezarowy Praga Rv", 
+                  "sam. ciezarowy Fiat 621", "sam.ciezarowy Praga Rv",
                   "ciagnik altyleryjski", "obserwator"],
             "AL": ["drużyna granatników", "sekcja ckm", "sekcja km.ppanc",
                   "przodek dwukonny", "sam. ciezarowy Fiat 621", "sam.ciezarowy Praga Rv",
@@ -207,20 +207,20 @@ class TokenEditor:
                   "przodek dwukonny", "sam. ciezarowy Fiat 621", "sam.ciezarowy Praga Rv",
                   "ciagnik altyleryjski", "obserwator"],
             "Z": ["drużyna granatników", "sekcja km.ppanc", "sekcja ckm", "obserwator"],
-            "D": ["drużyna granatników", "sekcja km.ppanc", "sekcja ckm", 
+            "D": ["drużyna granatników", "sekcja km.ppanc", "sekcja ckm",
                  "sam. ciezarowy Fiat 621", "sam.ciezarowy Praga Rv", "obserwator"],
-            "G": ["drużyna granatników", "sekcja km.ppanc", "sekcja ckm", 
+            "G": ["drużyna granatników", "sekcja km.ppanc", "sekcja ckm",
                  "sam. ciezarowy Fiat 621", "sam.ciezarowy Praga Rv", "obserwator"]
         }
 
         # Te atrybuty muszą być zainicjowane PRZED wywołaniem update_numeric_fields()
         self.selected_supports = set()  # Zbiór dla wielu wybranych wsparć
         self.selected_transport = tk.StringVar(value="")  # Dla pojedynczego transportu
-        self.transport_types = ["przodek dwukonny", "sam. ciezarowy Fiat 621", 
+        self.transport_types = ["przodek dwukonny", "sam. ciezarowy Fiat 621",
                               "sam.ciezarowy Praga Rv", "ciagnik altyleryjski"]
-        
+
         self.selected_support = tk.StringVar(value="")  # Stary atrybut - można usunąć później
-        
+
         self.update_numeric_fields()  # Teraz to wywołanie będzie działać poprawnie
 
         main_container = tk.Frame(root, bg="darkolivegreen")
@@ -243,24 +243,24 @@ class TokenEditor:
         # Dodanie przycisków do podglądu dźwięków
         self.sound_frame = tk.Frame(self.preview_frame, bg="darkolivegreen")
         self.sound_frame.pack(padx=10, pady=(0,10))
-        
+
         # Etykieta dla sekcji dźwięków
-        tk.Label(self.sound_frame, text="Podgląd dźwięków:", 
+        tk.Label(self.sound_frame, text="Podgląd dźwięków:",
                  bg="darkolivegreen", fg="white", font=("Arial", 10, "bold")).pack(pady=(0,5))
-        
+
         # Ramka na przyciski dźwięków
         sound_buttons_frame = tk.Frame(self.sound_frame, bg="darkolivegreen")
         sound_buttons_frame.pack()
-        
+
         # Przyciski do odtwarzania dźwięków
         self.attack_button = tk.Button(sound_buttons_frame, text="Atak", command=lambda: self.play_sound(self.sound_attack),
                                        bg="saddlebrown", fg="white", width=8, state=tk.DISABLED)
         self.attack_button.pack(side=tk.LEFT, padx=5)
-        
+
         self.move_button = tk.Button(sound_buttons_frame, text="Ruch", command=lambda: self.play_sound(self.sound_move),
                                     bg="saddlebrown", fg="white", width=8, state=tk.DISABLED)
         self.move_button.pack(side=tk.LEFT, padx=5)
-        
+
         self.destroy_button = tk.Button(sound_buttons_frame, text="Likwidacja", command=lambda: self.play_sound(self.sound_destroy),
                                        bg="saddlebrown", fg="white", width=8, state=tk.DISABLED)
         self.destroy_button.pack(side=tk.LEFT, padx=5)
@@ -286,10 +286,10 @@ class TokenEditor:
                   bg="saddlebrown", fg="white").pack(side=tk.LEFT, padx=2)
         tk.Button(self.transformation_frame, text="p", command=self.rotate_right,
                   bg="saddlebrown", fg="white").pack(side=tk.LEFT, padx=2)
-        
+
         self.color_frame_visible = False
         self.color_frame = tk.Frame(self.preview_frame, bg="darkolivegreen")
-        
+
         self.preview_canvas.bind("<Enter>", self.on_mouse_enter)
         self.preview_canvas.bind("<Motion>", self.on_mouse_motion)
         self.preview_canvas.bind("<Leave>", self.on_mouse_leave)
@@ -316,7 +316,7 @@ class TokenEditor:
 
         tk.Button(btn_frame, text="Pobieranie tła", command=self.load_background,
                   bg="gray", fg="white", state=tk.DISABLED).pack(side=tk.LEFT, padx=5)  # Nieaktywny
-        
+
         # Wybór katalogu zapisu
         save_dir_frame = tk.Frame(self.control_frame, bg="darkolivegreen")
         save_dir_frame.pack(pady=5)
@@ -325,7 +325,7 @@ class TokenEditor:
         self.save_dir_label = tk.Label(save_dir_frame, text=f"Katalog zapisu: {self.save_directory}",
                                        bg="darkolivegreen", fg="white")
         self.save_dir_label.pack(side=tk.LEFT, padx=5)
-        
+
         # Klawisze sterujące (alternatywne)
         self.root.bind("<Left>", self.on_key_left)
         self.root.bind("<Right>", self.on_key_right)
@@ -341,7 +341,7 @@ class TokenEditor:
         # Osobny atrybut dla wybranego transportu
         self.selected_transport = tk.StringVar(value="")
         # Lista typów transportu
-        self.transport_types = ["przodek dwukonny", "sam. ciezarowy Fiat 621", 
+        self.transport_types = ["przodek dwukonny", "sam. ciezarowy Fiat 621",
                               "sam.ciezarowy Praga Rv", "ciagnik altyleryjski"]
 
         # Dźwięki jednostki
@@ -372,12 +372,12 @@ class TokenEditor:
         left_frame.grid(row=0, column=0, padx=5, pady=5, sticky="n")
 
         # Sekcja wyboru kształtu
-        shape_frame = tk.LabelFrame(left_frame, text="Kształt Żetonu", bg="darkolivegreen", 
+        shape_frame = tk.LabelFrame(left_frame, text="Kształt Żetonu", bg="darkolivegreen",
                                     fg="white", font=("Arial", 10, "bold"))
         shape_frame.pack(fill=tk.X, padx=5, pady=5)
         for text, val, state in [("Heks", "Heks", tk.DISABLED), ("Prostokąt", "Prostokąt", tk.NORMAL)]:
             tk.Radiobutton(shape_frame, text=text, variable=self.shape, value=val,
-                          command=self.update_preview, state=state, 
+                          command=self.update_preview, state=state,
                           bg="darkolivegreen", fg="white", selectcolor="saddlebrown",
                           activebackground="saddlebrown", activeforeground="white",
                           indicatoron=False, width=20, pady=2).pack(anchor=tk.W)
@@ -388,12 +388,12 @@ class TokenEditor:
         nation_frame.pack(fill=tk.X, padx=5, pady=5)
 
         # Lista nacji z aktywnymi tylko Polska i Niemcy
-        for n, state in [("Polska", tk.NORMAL), 
-                         ("Niemcy", tk.NORMAL), 
-                         ("Wielka Brytania", tk.DISABLED), 
-                         ("Japonia", tk.DISABLED), 
-                         ("Stany Zjednoczone", tk.DISABLED), 
-                         ("Francja", tk.DISABLED), 
+        for n, state in [("Polska", tk.NORMAL),
+                         ("Niemcy", tk.NORMAL),
+                         ("Wielka Brytania", tk.DISABLED),
+                         ("Japonia", tk.DISABLED),
+                         ("Stany Zjednoczone", tk.DISABLED),
+                         ("Francja", tk.DISABLED),
                          ("Związek Radziecki", tk.DISABLED)]:
             tk.Radiobutton(nation_frame, text=n, variable=self.nation, value=n,
                            command=lambda n=n: [self.set_default_text_color(), self.update_preview()],
@@ -402,7 +402,7 @@ class TokenEditor:
                            indicatoron=False, width=20, pady=2, state=state).pack(anchor=tk.W)
 
         # Sekcja "Dostępne Punkty Ekonomiczne"
-        economic_points_frame = tk.LabelFrame(left_frame, text="Dostępne Punkty Ekonomiczne", 
+        economic_points_frame = tk.LabelFrame(left_frame, text="Dostępne Punkty Ekonomiczne",
                                               bg="darkolivegreen", fg="white", font=("Arial", 10, "bold"))
         economic_points_frame.pack(fill=tk.X, padx=5, pady=5)
 
@@ -431,7 +431,7 @@ class TokenEditor:
         unit_frame = tk.LabelFrame(container, text="Rodzaj Jednostki", bg="darkolivegreen", fg="white",
                                    font=("Arial", 9, "bold"))  # zmniejszona czcionka z 10 na 9
         unit_frame.grid(row=0, column=1, padx=5, pady=5, sticky="n")
-        
+
         # Lista jednostek z typami czołgów i artylerią
         unit_types = [
             ("Piechota (P)", "P", tk.NORMAL),
@@ -450,8 +450,8 @@ class TokenEditor:
 
         for text, val, state in unit_types:
             tk.Radiobutton(unit_frame, text=text, variable=self.unit_type, value=val,
-                          command=lambda: [self.update_numeric_fields(), 
-                                           self.update_support_buttons(), 
+                          command=lambda: [self.update_numeric_fields(),
+                                           self.update_support_buttons(),
                                            self.update_preview()],
                           bg="darkolivegreen", fg="white", selectcolor="saddlebrown",
                           activebackground="saddlebrown", activeforeground="white",
@@ -476,7 +476,7 @@ class TokenEditor:
         support_frame = tk.LabelFrame(vertical_container, text="Wsparcie jednostki", bg="darkolivegreen", fg="white",
                                     font=("Arial", 9, "bold"))
         support_frame.pack(fill=tk.X, padx=0, pady=(5,0))  # Dodane pady aby odsunąć od poprzedniego modułu
-        
+
         # Słownik skróconych nazw dla wsparcia
         shortened_names = {
             "drużyna granatników": "granatniki",
@@ -488,7 +488,7 @@ class TokenEditor:
             "ciagnik altyleryjski": "ciągnik art.",
             "obserwator": "obserwator"
         }
-        
+
         # Słownik do przechowywania przycisków wsparcia
         self.support_buttons = {}
 
@@ -515,7 +515,7 @@ class TokenEditor:
                     else:
                         self.selected_supports.add(name)
                         button.configure(bg="saddlebrown")
-                
+
                 self.update_numeric_fields()
                 self.update_preview()
             return toggle
@@ -541,10 +541,10 @@ class TokenEditor:
         right_frame.grid(row=0, column=3, rowspan=2, padx=5, pady=5, sticky="n")
 
         # Wybór rozmiaru tokena
-        size_choice_frame = tk.LabelFrame(right_frame, text="Wybór Rozmiaru Tokena", 
+        size_choice_frame = tk.LabelFrame(right_frame, text="Wybór Rozmiaru Tokena",
                                         bg="darkolivegreen", fg="white", font=("Arial", 10, "bold"))
         size_choice_frame.pack(fill=tk.X, padx=5, pady=5)
-        
+
         hex_size_frame = tk.Frame(size_choice_frame, bg="darkolivegreen")
         hex_size_frame.pack(side=tk.LEFT, padx=5)
         tk.Label(hex_size_frame, text="Heks", bg="darkolivegreen", fg="white", font=("Arial", 9)).pack()  # zmniejszona czcionka
@@ -564,7 +564,7 @@ class TokenEditor:
                       indicatoron=False, width=8, pady=2).pack(anchor=tk.W)  # zmniejszono width z 8 na 6
 
         # Wartości liczbowe bezpośrednio pod wyborem rozmiaru
-        numeric_frame = tk.LabelFrame(right_frame, text="Wartości Liczbowe", 
+        numeric_frame = tk.LabelFrame(right_frame, text="Wartości Liczbowe",
                                       bg="darkolivegreen", fg="white", font=("Arial", 10, "bold"))
         numeric_frame.pack(fill=tk.X, padx=5, pady=5)
 
@@ -588,12 +588,12 @@ class TokenEditor:
         """Aktualizuje stan przycisków wsparcia na podstawie wybranego typu jednostki"""
         current_unit = self.unit_type.get()
         allowed = self.allowed_support.get(current_unit, [])
-        
+
         # Resetujemy wybrane wsparcia jeśli nie są dozwolone dla nowej jednostki
         self.selected_supports = {s for s in self.selected_supports if s in allowed}
         if self.selected_transport.get() not in allowed:
             self.selected_transport.set("")
-        
+
         # Aktualizujemy stan wszystkich przycisków
         for support_name, btn in self.support_buttons.items():
             if support_name in allowed:
@@ -609,7 +609,7 @@ class TokenEditor:
     def update_numeric_fields(self):
         defaults = {
             "ruch": {
-                "P": "5", "K": "16", 
+                "P": "5", "K": "16",
                 "TC": "18", "TŚ": "20", "TL": "22", "TS": "24",
                 "AC": "12", "AL": "14", "AP": "16",
                 "Z": "20", "D": "16", "G": "16"
@@ -702,50 +702,50 @@ class TokenEditor:
 
         # After setting default values, apply support modifications
         all_selected = self.selected_supports | {self.selected_transport.get()} if self.selected_transport.get() else self.selected_supports
-        
+
         # Zmienna do śledzenia czy już naliczono -1 do ruchu
         movement_penalty_applied = False
-        
+
         # Znajdź najwyższy modyfikator zasięgu ataku wśród wsparcia
         max_range_bonus = 0
         for support in self.selected_supports:
             if support and support in self.support_upgrades:
                 range_mod = self.support_upgrades[support].get("range", 0)
                 max_range_bonus = max(max_range_bonus, range_mod)
-        
+
         # Najpierw sprawdź transport, ponieważ ma priorytet
         if self.selected_transport.get():
             transport = self.support_upgrades[self.selected_transport.get()]
             current_movement = int(self.movement_points.get() or 0)
             self.movement_points.set(str(current_movement + transport["movement"]))
-        
+
         # Następnie sprawdź pozostałe wsparcia
         for support in self.selected_supports:
             if support and support in self.support_upgrades:
                 upgrade = self.support_upgrades[support]
-                
+
                 # Specjalna logika dla kary do ruchu
                 if (upgrade["movement"] < 0 and not movement_penalty_applied):
                     current_movement = int(self.movement_points.get() or 0)
                     self.movement_points.set(str(current_movement - 1))
                     movement_penalty_applied = True
-                
+
                 # Pozostałe modyfikatory stosuj normalnie (oprócz zasięgu)
                 current_attack = int(self.attack_value.get() or 0)
                 current_combat = int(self.combat_value.get() or 0)
                 current_unit_maintenance = int(self.unit_maintenance.get() or 0)
                 current_purchase = int(self.purchase_value.get() or 0)
-                
+
                 self.attack_value.set(str(current_attack + upgrade["attack"]))
                 self.combat_value.set(str(current_combat + upgrade["combat"]))
                 self.unit_maintenance.set(str(current_unit_maintenance + upgrade["unit_maintenance"]))
                 self.purchase_value.set(str(current_purchase + upgrade["purchase"]))
-                
+
                 # Apply sight range modification if present
                 if "sight" in upgrade:
                     current_sight = int(self.sight_range.get() or 0)
                     self.sight_range.set(str(current_sight + upgrade["sight"]))
-        
+
         # Zastosuj najwyższy bonus do zasięgu ataku
         if max_range_bonus > 0:
             current_range = int(self.attack_range.get() or 0)
@@ -760,9 +760,9 @@ class TokenEditor:
             current_unit_maintenance += self.support_upgrades[self.selected_transport.get()].get("unit_maintenance", 0)
         self.unit_maintenance.set(str(current_unit_maintenance))
 
-    def on_mouse_enter(self, event): 
+    def on_mouse_enter(self, event):
         self.show_tooltip(event)
-    def on_mouse_motion(self, event): 
+    def on_mouse_motion(self, event):
         self.show_tooltip(event)
     def on_mouse_leave(self, event):
         if self.tooltip:
@@ -781,7 +781,7 @@ class TokenEditor:
         self.tooltip.wm_overrideredirect(True)
         self.tooltip.wm_geometry("+%d+%d" % (event.x_root + 10, event.y_root + 10))
         tk.Label(self.tooltip, text=text, background="#ffffe0", relief="solid", borderwidth=1, font=("Arial", 8)).pack()
-    
+
     def update_preview(self):
         self.preview_canvas.delete("all")
         token_name = f"{self.nation.get()} {self.unit_type.get()} {self.unit_size.get()}"  # Generowanie nazwy żetonu
@@ -800,7 +800,7 @@ class TokenEditor:
             self.dim_label.config(text=f"Kwadrat (oryginalnie {token_size}x{token_size})")
 
         self.preview_canvas.create_image(0, 0, anchor=tk.NW, image=self.preview_image)
-    
+
     def load_background(self):
         file_path = filedialog.askopenfilename(
             title="Wybierz obraz tła",
@@ -814,13 +814,13 @@ class TokenEditor:
             self.bg_translate_y = 0
             self.custom_bg_copied = False  # Reset flagi przy wczytaniu nowego tła
             self.update_preview()
-    
+
     def select_save_directory(self):
         dir_path = filedialog.askdirectory(title="Wybierz katalog zapisu")
         if dir_path:
             self.save_directory = dir_path
             self.save_dir_label.config(text=f"Katalog zapisu: {self.save_directory}")
-    
+
     def toggle_color_frame(self):
         if self.color_frame_visible:
             self.color_frame.pack_forget()
@@ -833,11 +833,11 @@ class TokenEditor:
                 tk.Button(self.color_frame, text=col, bg=col, command=lambda c=col: self.change_text_color(c),
                           fg="white").pack(side=tk.LEFT, padx=5)
             self.color_frame_visible = True
-    
+
     def change_text_color(self, color):
         self.variable_text_color = color
         self.update_preview()
-    
+
     # Funkcje transformacji tła
     def translate_left(self):
         self.bg_translate_x -= 10
@@ -857,7 +857,7 @@ class TokenEditor:
     def scale_up(self):
         self.bg_scale += 0.1
         self.update_preview()
-    
+
     # Funkcje obracania tła
     def rotate_left(self):
         self.bg_rotation = (self.bg_rotation - 10) % 360
@@ -888,17 +888,17 @@ class TokenEditor:
         self.rotate_left()
     def on_key_p(self, event):
         self.rotate_right()
-    
+
     def create_token_image(self, custom_size=None, token_name=None):
         if custom_size is not None:
             width = height = custom_size
         else:
-            width = height = (self.hex_token_size_var.get() if self.shape.get() == "Heks" 
+            width = height = (self.hex_token_size_var.get() if self.shape.get() == "Heks"
                               else self.square_token_size_var.get())
-        
+
         # Na najniższej warstwie umieszczam flagę nacji
         base_bg = create_flag_background(self.nation.get(), width, height)
-        
+
         # Jeśli jest niestandardowe tło, nakładam je na flagę
         if self.custom_bg_path is not None:
             try:
@@ -911,11 +911,11 @@ class TokenEditor:
                 base_bg.paste(custom_bg, (paste_x, paste_y), custom_bg)
             except Exception as e:
                 messagebox.showerror("Błąd", f"Nie można załadować obrazu tła:\n{e}")
-        
+
         bg_image = base_bg
         token_img = bg_image.copy()
         draw = ImageDraw.Draw(token_img)
-        
+
         # ───────── Kształt obramowania ─────────
         if self.shape.get() == "Heks":
             # Punkty heksu (płaski wierzch)
@@ -936,7 +936,7 @@ class TokenEditor:
         else:
             # Kwadrat
             draw.rectangle([0, 0, width, height], outline="black", width=3)
-        
+
         # Domyślne kolory dla nacji
         default_colors = {
             "Polska": "black",
@@ -948,11 +948,11 @@ class TokenEditor:
             "Związek Radziecki": "white"
         }
         text_color = self.variable_text_color if self.variable_text_color else default_colors.get(self.nation.get(), "black")
-        
+
         margin = 5
         small_font_size = max(8, int(width * 0.12))  # Zmniejszono rozmiar czcionki
         font_small = ImageFont.truetype("arial.ttf", small_font_size)
-        
+
         # Przygotowanie tekstu – dwa wiersze (z dodaniem zasięgu widzenia)
         row_top_text = f"{self.unit_maintenance.get()}-{self.purchase_value.get()}"
         row_bottom_text = f"{self.movement_points.get()}-{self.attack_range.get()}-{self.attack_value.get()}-{self.sight_range.get()}"
@@ -976,7 +976,7 @@ class TokenEditor:
         draw.text((row_top_x, row_top_y), row_top_text, fill=text_color, font=font_small)
         draw.text((row_middle_x, row_middle_y), row_middle_text, fill=text_color, font=font_small)
         draw.text((row_bottom_x, row_bottom_y), row_bottom_text, fill=text_color, font=font_small)
-        
+
         # Umieszczenie nazwy żetonu w centralnej części
         if token_name is not None:
             try:
@@ -984,7 +984,7 @@ class TokenEditor:
                 font_name = ImageFont.truetype("arial.ttf", name_font_size)
             except Exception:
                 font_name = ImageFont.load_default()
-            
+
             # Dopasowanie rozmiaru czcionki, aby nazwa mieściła się w żetonie
             while True:
                 bbox_name = draw.textbbox((0, 0), token_name, font=font_name)
@@ -992,11 +992,11 @@ class TokenEditor:
                     break
                 name_font_size -= 1
                 font_name = ImageFont.truetype("arial.ttf", name_font_size)
-            
+
             name_x = (width - (bbox_name[2] - bbox_name[0])) / 2
             name_y = (height - (bbox_name[3] - bbox_name[1])) / 2
             draw.text((name_x, name_y), token_name, fill=text_color, font=font_name)
-        
+
         return token_img
 
     def save_token(self):
@@ -1062,6 +1062,7 @@ class TokenEditor:
 
         self.build_index()
         messagebox.showinfo("✔", f"Zapisano żeton w  {token_dir}")
+        self.root.destroy()
 
     def build_index(self):
         """Generuje assets/tokens/index.json zawierający wszystkie definicje."""
@@ -1075,16 +1076,16 @@ class TokenEditor:
                                                encoding="utf-8")
 
     def clear_database(self):
-        if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz wyczyścić bazę żetonów?"):
+        if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz wyczyścić bazę żetonów"):
             index_json_path = os.path.join(self.save_directory, "token_index.json")
             old_json_path = os.path.join(self.save_directory, "token_data.json")
-            
+
             if os.path.exists(index_json_path):
                 # Wczytaj dane indeksu aby znaleźć wszystkie podkatalogi
                 try:
                     with open(index_json_path, "r", encoding="utf-8") as f:
                         index_data = json.load(f)
-                    
+
                     # Usuń wszystkie podkatalogi żetonów
                     for token_name, token_info in index_data.items():
                         token_dir = os.path.join(self.save_directory, token_info.get("directory", token_name))
@@ -1095,16 +1096,16 @@ class TokenEditor:
                                 messagebox.showwarning("Ostrzeżenie", f"Nie można usunąć katalogu {token_dir}: {str(e)}")
                 except Exception as e:
                     messagebox.showwarning("Ostrzeżenie", f"Błąd podczas czytania danych indeksu: {str(e)}")
-                
+
                 # Usuń plik JSON indeksu
                 os.remove(index_json_path)
-            
+
             # Sprawdź i usuń stary format danych
             if os.path.exists(old_json_path):
                 try:
                     with open(old_json_path, "r", encoding="utf-8") as f:
                         saved_data = json.load(f)
-                    
+
                     # Usuń wszystkie podkatalogi żetonów
                     for token_name, token_data in saved_data.items():
                         token_dir = os.path.join(self.save_directory, token_data.get("token_directory", token_name))
@@ -1115,10 +1116,10 @@ class TokenEditor:
                                 messagebox.showwarning("Ostrzeżenie", f"Nie można usunąć katalogu {token_dir}: {str(e)}")
                 except Exception as e:
                     messagebox.showwarning("Ostrzeżenie", f"Błąd podczas czytania danych żetonów: {str(e)}")
-                
+
                 # Usuń plik JSON
                 os.remove(old_json_path)
-            
+
             # Usuń pliki PNG, które mogą zostać w głównym katalogu
             for file in os.listdir(self.save_directory):
                 if file.endswith(".png"):
@@ -1126,7 +1127,7 @@ class TokenEditor:
                         os.remove(os.path.join(self.save_directory, file))
                     except Exception as e:
                         messagebox.showwarning("Ostrzeżenie", f"Nie można usunąć pliku {file}: {str(e)}")
-            
+
             messagebox.showinfo("Baza wyczyszczona", "Baza żetonów oraz miniatury została wyczyszczona.")
 
     def load_sounds(self):
@@ -1136,9 +1137,9 @@ class TokenEditor:
             ("ruch", "sound_move", "Dźwięk odtwarzany podczas ruchu jednostki"),
             ("likwidacja", "sound_destroy", "Dźwięk odtwarzany przy zniszczeniu jednostki")
         ]
-        
+
         for label, attr, description in sound_info:
-            if messagebox.askyesno("Wczytywanie dźwięku", 
+            if messagebox.askyesno("Wczytywanie dźwięku",
                                   f"{description}\n\nCzy chcesz wczytać dźwięk dla: {label}?"):
                 path = filedialog.askopenfilename(
                     title=f"Wybierz dźwięk dla: {label}",
@@ -1146,21 +1147,21 @@ class TokenEditor:
                 )
                 if path:
                     setattr(self, attr, path)
-                    messagebox.showinfo("Dźwięk wczytany", 
+                    messagebox.showinfo("Dźwięk wczytany",
                                        f"Dźwięk '{os.path.basename(path)}' został wczytany dla akcji: {label}")
                 else:
                     messagebox.showinfo("Anulowano", f"Nie wybrano dźwięku dla akcji: {label}")
-        
+
         # Po załadowaniu dźwięków aktualizuj stan przycisków
         self.update_sound_buttons()
-    
+
     def play_sound(self, sound_path):
         """Odtwarza dźwięk z podanej ścieżki."""
         if not SOUND_AVAILABLE:
-            messagebox.showinfo("Brak biblioteki dźwięku", 
+            messagebox.showinfo("Brak biblioteki dźwięku",
                                "Biblioteka 'playsound' nie jest zainstalowana. Nie można odtworzyć dźwięku.")
             return
-            
+
         if sound_path and os.path.exists(sound_path):
             try:
                 playsound(sound_path)
@@ -1168,12 +1169,12 @@ class TokenEditor:
                 messagebox.showerror("Błąd odtwarzania", f"Nie można odtworzyć dźwięku: {str(e)}")
         else:
             messagebox.showinfo("Brak dźwięku", "Dźwięk nie został wczytany lub plik nie istnieje.")
-    
+
     def update_sound_buttons(self):
         """Aktualizuje stan przycisków dźwięku w zależności od dostępności plików."""
         if not SOUND_AVAILABLE:
             return
-            
+
         # Aktualizuj stan przycisków w zależności od dostępności dźwięków
         self.attack_button.config(state=tk.NORMAL if self.sound_attack and os.path.exists(self.sound_attack) else tk.DISABLED)
         self.move_button.config(state=tk.NORMAL if self.sound_move and os.path.exists(self.sound_move) else tk.DISABLED)
@@ -1186,49 +1187,49 @@ class TokenEditor:
             # Sprawdź stary format dla kompatybilności wstecznej
             old_json_path = os.path.join(self.save_directory, "token_data.json")
             if os.path.exists(old_json_path):
-                messagebox.showinfo("Stary format danych", 
+                messagebox.showinfo("Stary format danych",
                                   "Wykryto stary format danych. Zalecane jest ponowne zapisanie żetonów w nowym formacie.")
                 self.load_token_old_format(old_json_path)
                 return
             else:
-                messagebox.showwarning("Brak indeksu tokenów", 
+                messagebox.showwarning("Brak indeksu tokenów",
                                      f"Nie znaleziono pliku token_index.json w katalogu {self.save_directory}.")
                 return
-            
+
         try:
             with open(index_json_path, "r", encoding="utf-8") as f:
                 index_data = json.load(f)
-                
+
             if not index_data:
                 messagebox.showinfo("Brak tokenów", "Baza tokenów jest pusta.")
                 return
-                
+
             # Stwórz listę dostępnych tokenów
             token_names = list(index_data.keys())
-            token_name = simpledialog.askstring("Wczytaj token", 
+            token_name = simpledialog.askstring("Wczytaj token",
                                               "Wybierz nazwę tokena do wczytania:",
                                               initialvalue=token_names[0])
-                
+
             if not token_name or token_name not in index_data:
                 return
-                
+
             token_info = index_data[token_name]
-            
+
             # Określamy katalog tokena
             token_directory = os.path.join(self.save_directory, token_info.get("directory", token_name))
             if not os.path.exists(token_directory):
                 token_directory = self.save_directory  # Jeśli podkatalog nie istnieje, użyj głównego katalogu
-                
+
             # Wczytaj dane tokena z pliku JSON w podkatalogu
             token_json_path = os.path.join(token_directory, "token_data.json")
             if not os.path.exists(token_json_path):
-                messagebox.showwarning("Brak danych tokena", 
+                messagebox.showwarning("Brak danych tokena",
                                      f"Nie znaleziono pliku token_data.json w katalogu {token_directory}.")
                 return
-                
+
             with open(token_json_path, "r", encoding="utf-8") as f:
                 token_data = json.load(f)
-            
+
             # Wczytaj dane tokena
             self.shape.set(token_data.get("shape", "Prostokąt"))
             self.nation.set(token_data.get("nation", "Polska"))
@@ -1246,7 +1247,7 @@ class TokenEditor:
             self.bg_translate_x = token_data.get("bg_translate_x", 0)
             self.bg_translate_y = token_data.get("bg_translate_y", 0)
             self.variable_text_color = token_data.get("variable_text_color", "black")
-                
+
             # Wczytaj dźwięki z podkatalogu tokena
             for sound_type in ["sound_attack", "sound_move", "sound_destroy"]:
                 file_key = f"{sound_type}_file"
@@ -1258,7 +1259,7 @@ class TokenEditor:
                         setattr(self, sound_type, None)
                 else:
                     setattr(self, sound_type, None)
-                
+
             # Wczytaj tło z podkatalogu tokena
             if token_data.get("background_file") and os.path.exists(os.path.join(token_directory, token_data.get("background_file"))):
                 self.custom_bg_path = os.path.join(token_directory, token_data.get("background_file"))
@@ -1266,15 +1267,15 @@ class TokenEditor:
             else:
                 self.custom_bg_path = None
                 self.custom_bg_copied = False
-                
+
             # Aktualizuj interfejs
             self.update_support_buttons()
             self.update_numeric_fields()
             self.update_preview()
             self.update_sound_buttons()
-                
+
             messagebox.showinfo("Wczytano", f"Token '{token_name}' został wczytany.")
-                
+
         except Exception as e:
             messagebox.showerror("Błąd", f"Nie udało się wczytać tokena: {str(e)}")
 
@@ -1283,27 +1284,27 @@ class TokenEditor:
         try:
             with open(json_path, "r", encoding="utf-8") as f:
                 saved_data = json.load(f)
-                
+
             if not saved_data:
                 messagebox.showinfo("Brak tokenów", "Baza tokenów jest pusta.")
                 return
-                
+
             # Stwórz listę dostępnych tokenów
             token_names = list(saved_data.keys())
-            token_name = simpledialog.askstring("Wczytaj token", 
+            token_name = simpledialog.askstring("Wczytaj token",
                                               "Wybierz nazwę tokena do wczytania:",
                                               initialvalue=token_names[0])
-                
+
             if not token_name or token_name not in saved_data:
                 return
-                
+
             token_data = saved_data[token_name]
-            
+
             # Określamy katalog tokena
             token_directory = os.path.join(self.save_directory, token_data.get("token_directory", token_name))
             if not os.path.exists(token_directory):
                 token_directory = self.save_directory  # Jeśli podkatalog nie istnieje, użyj głównego katalogu
-                
+
             # Wczytaj dane tokena
             self.shape.set(token_data.get("shape", "Prostokąt"))
             self.nation.set(token_data.get("nation", "Polska"))
@@ -1321,7 +1322,7 @@ class TokenEditor:
             self.bg_translate_x = token_data.get("bg_translate_x", 0)
             self.bg_translate_y = token_data.get("bg_translate_y", 0)
             self.variable_text_color = token_data.get("variable_text_color", "black")
-                
+
             # Wczytaj dźwięki z podkatalogu tokena
             for sound_type in ["sound_attack", "sound_move", "sound_destroy"]:
                 file_key = f"{sound_type}_file"
@@ -1333,7 +1334,7 @@ class TokenEditor:
                         setattr(self, sound_type, None)
                 else:
                     setattr(self, sound_type, None)
-                
+
             # Wczytaj tło z podkatalogu tokena
             if token_data.get("background_file") and os.path.exists(os.path.join(token_directory, token_data.get("background_file"))):
                 self.custom_bg_path = os.path.join(token_directory, token_data.get("background_file"))
@@ -1341,18 +1342,17 @@ class TokenEditor:
             else:
                 self.custom_bg_path = None
                 self.custom_bg_copied = False
-                
+
             # Aktualizuj interfejs
             self.update_support_buttons()
             self.update_numeric_fields()
             self.update_preview()
             self.update_sound_buttons()
-                
+
             messagebox.showinfo("Wczytano", f"Token '{token_name}' został wczytany.")
-                
+
         except Exception as e:
             messagebox.showerror("Błąd", f"Nie udało się wczytać tokena: {str(e)}")
-
 def main():
     root = tk.Tk()
     app = TokenEditor(root)
