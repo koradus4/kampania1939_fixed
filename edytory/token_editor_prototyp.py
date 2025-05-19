@@ -119,6 +119,25 @@ class TokenEditor:
         # Katalog zapisu
         self.save_directory = str(TOKENS_ROOT)      # start w assets/tokens
 
+        # ─── Domyślne wartości żywotności (strength) dla unitType__unitSize ───
+        self.default_strengths = {
+            "P__Pluton": 8,
+            "P__Kompania": 24,
+            "P__Batalion": 48,
+            "AC__Pluton": 6,
+            "AC__Kompania": 18,
+            "AC__Batalion": 36,
+            "TC__Pluton": 10,
+            "TC__Kompania": 30,
+            "TC__Batalion": 60,
+            "AL__Pluton": 7,
+            "AL__Kompania": 21,
+            "AL__Batalion": 42,
+            "AP__Pluton": 5,
+            "AP__Kompania": 15,
+            "AP__Batalion": 30
+        }
+
         # Add support upgrade attributes and selected_support BEFORE build_controls call
         self.support_upgrades = {
             "drużyna granatników": {
@@ -575,7 +594,7 @@ class TokenEditor:
             ("Zasięg Ataku:", self.attack_range, "white", tk.NORMAL),
             ("Wartość Ataku:", self.attack_value, "white", tk.NORMAL),
             ("Zasięg Widzenia:", self.sight_range, "white", tk.NORMAL),  # Przeniesiono wyżej
-            ("Wartość Bojowa:", self.combat_value, "gray", tk.DISABLED),  # Ustawiono na szaro i nieaktywne
+            ("Wartość Bojowa:", self.combat_value, "gray", tk.NORMAL),  # Odblokowane pole
             ("Koszt Utrzymania:", self.unit_maintenance, "red", tk.NORMAL),
             ("Wartość Zakupu:", self.purchase_value, "white", tk.NORMAL)
         ]:
@@ -694,8 +713,9 @@ class TokenEditor:
         self.movement_points.set(defaults["ruch"].get(ut, ""))
         self.attack_range.set(defaults["range"].get(ut, ""))
         self.attack_value.set(defaults["attack"][size].get(ut, ""))
-        # Nie ustawiaj wartości bojowej
-        # self.combat_value.set(defaults["combat"][size].get(ut, ""))
+        # Ustaw domyślną wartość bojową (żywotność)
+        key = f"{ut}__{size}"
+        self.combat_value.set(str(self.default_strengths.get(key, "")))
         self.unit_maintenance.set(defaults["unit_maintenance"][size].get(ut, ""))
         self.purchase_value.set(defaults["purchase"][size].get(ut, ""))
         self.sight_range.set(defaults["sight"].get(ut, ""))
@@ -1006,14 +1026,21 @@ class TokenEditor:
         nation     = self.nation.get()
         unit_type  = self.unit_type.get()
         unit_size  = self.unit_size.get()
+        # Pobierz numer dowódcy i skrót nacji
+        commander_full = self.selected_commander.get()  # np. '2 (Polska)'
+        commander_num = commander_full.split()[0] if commander_full else "?"
+
+        nation_short = "PL" if nation == "Polska" else ("N" if nation == "Niemcy" else nation[:2].upper())
         base_id    = f"{unit_type}_{unit_size}".replace(" ", "_")        # np. P_Pluton
 
         # ── 1. dodatkowa etykieta użytkownika ───────────────────────────
+        default_label = f"{commander_num}_{nation_short}_{unit_type}_{unit_size}"
         user_label = simpledialog.askstring(
             "Nazwa wyświetlana",
             "Podaj nazwę oddziału (np. '1. Podhalański Pluton Czołgów')\n"
-            "Możesz zostawić puste – wtedy grafika będzie bez etykiety."
-        ) or ""
+            "Możesz zostawić domyślną – wtedy grafika będzie miała nazwę domyślną.",
+            initialvalue=default_label
+        ) or default_label
 
         # ── 2. zrób slug z etykiety, aby nie nadpisywać poprzednich ──
         import re, datetime as _dt
@@ -1048,6 +1075,7 @@ class TokenEditor:
             "move":      int(self.movement_points.get() or 0),
             "attack":    { "range": int(self.attack_range.get() or 0),
                            "value": int(self.attack_value.get() or 0) },
+            "combat_value": int(self.combat_value.get() or 0),  # Dodane pole
             "maintenance": int(self.unit_maintenance.get() or 0),
             "price":       int(self.purchase_value.get() or 0),
             "sight":       int(self.sight_range.get() or 0),
@@ -1075,7 +1103,7 @@ class TokenEditor:
                                                encoding="utf-8")
 
     def clear_database(self):
-        if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz wyczyścić bazę żetonów?"):
+        if messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz wyczyścić bazę żetonów"):
             index_json_path = os.path.join(self.save_directory, "token_index.json")
             old_json_path = os.path.join(self.save_directory, "token_data.json")
             

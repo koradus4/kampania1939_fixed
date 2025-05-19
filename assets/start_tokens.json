@@ -1,82 +1,82 @@
 [
   {
-    "id": "AC_Pluton__pac3",
-    "q": 3,
+    "id": "TC_Pluton__3_PL_TC_Pluton",
+    "q": 6,
+    "r": 10
+  },
+  {
+    "id": "P_Pluton__3_PL_P_Pluton",
+    "q": 7,
     "r": 11
   },
   {
-    "id": "AP_Pluton__paplot3",
-    "q": 3,
-    "r": 12
-  },
-  {
-    "id": "P_Pluton__pp3",
-    "q": 4,
-    "r": 12
-  },
-  {
-    "id": "TC_Pluton__pcc3",
-    "q": 6,
-    "r": 13
-  },
-  {
-    "id": "TC_Pluton__pcc2",
-    "q": 7,
-    "r": 5
-  },
-  {
-    "id": "AC_Pluton__pac2",
+    "id": "P_Pluton__2_PL_P_Pluton",
     "q": 8,
-    "r": 4
+    "r": 6
   },
   {
-    "id": "P_Pluton__np6",
-    "q": 48,
-    "r": 14
+    "id": "AP_Pluton__3_PL_AP_Pluton",
+    "q": 8,
+    "r": 11
   },
   {
-    "id": "TC_Pluton__ncc6",
-    "q": 48,
-    "r": 16
+    "id": "AC_Pluton__3_PL_AC_Pluton",
+    "q": 8,
+    "r": 12
   },
   {
-    "id": "P_Pluton__np5",
-    "q": 49,
-    "r": 4
-  },
-  {
-    "id": "TC_Pluton__ncc5",
-    "q": 49,
+    "id": "AP_Pluton__2_PL_AP_Pluton",
+    "q": 9,
     "r": 5
   },
   {
-    "id": "AP_Pluton__naplot6",
-    "q": 50,
-    "r": 15
-  },
-  {
-    "id": "AC_Pluton__nac6",
-    "q": 50,
-    "r": 16
-  },
-  {
-    "id": "AC_Pluton__nac5",
-    "q": 51,
+    "id": "AC_Pluton__5_N_AC_Pluton",
+    "q": 21,
     "r": 3
   },
   {
-    "id": "AP_Pluton__naplot5",
-    "q": 51,
+    "id": "AP_Pluton__5_N_AP_Pluton",
+    "q": 21,
+    "r": 4
+  },
+  {
+    "id": "AC_Pluton__6_N_AC_Pluton",
+    "q": 21,
+    "r": 13
+  },
+  {
+    "id": "AP_Pluton__6_N_AP_Pluton",
+    "q": 21,
+    "r": 14
+  },
+  {
+    "id": "TC_Pluton__5_N_TC_Pluton",
+    "q": 23,
+    "r": 12
+  },
+  {
+    "id": "P_Pluton__6_N_P_Pluton",
+    "q": 23,
+    "r": 13
+  },
+  {
+    "id": "P_Pluton__5_N_P_Pluton",
+    "q": 24,
     "r": 5
   },
   {
-    "id": "P_Pluton__pp2",
+    "id": "TC_Pluton__6_N_TC_Pluton",
+    "q": 24,
+    "r": 6
+  },
+  {
+    "id": "TC_Pluton__2_PL_TC_Pluton",
     "q": 7,
     "r": 4
   },
   {
-    "id": "AP_Pluton__paplot2",
-    "q": 7,
-    "r": 6
+    "id": "AC_Pluton__2_PL_AC_Pluton",
+    "q": 9,
+    "r": 4
   }
 ]
