@@ -2,7 +2,7 @@ class TurnManager:
     def __init__(self, players):
         """
         Inicjalizuje menedżera tur.
-        :param players: Lista obiektów klasy Gracz w ustalonej kolejności.
+        :param players: Lista obiektów klasy Player w ustalonej kolejności.
         """
         self.players = players
         self.current_turn = 1
@@ -45,7 +45,7 @@ class TurnManager:
     def get_current_player(self):
         """
         Zwraca aktualnego gracza.
-        :return: Obiekt klasy Gracz.
+        :return: Obiekt klasy Player.
         """
         return self.players[self.current_player_index]
 
@@ -57,9 +57,9 @@ class TurnManager:
         current_player = self.get_current_player()
         return {
             "turn": self.current_turn,
-            "player": current_player.numer,
-            "nation": current_player.nacja,
-            "role": current_player.rola,
+            "player": current_player.id,
+            "nation": current_player.nation,
+            "role": current_player.role,
         }
 
     def is_game_over(self, max_turns=10):

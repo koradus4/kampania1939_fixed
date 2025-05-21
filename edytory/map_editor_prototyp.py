@@ -10,9 +10,14 @@ from PIL import Image, ImageTk, ImageDraw, ImageFont
 ASSET_ROOT = Path("C:/Users/klif/kampania1939_fixed/assets")
 ASSET_ROOT.mkdir(exist_ok=True)
 
+# Dodajemy folder data na potrzeby silnika i testów
+DATA_ROOT = Path("C:/Users/klif/kampania1939_fixed/data")
+DATA_ROOT.mkdir(exist_ok=True)
+
 DEFAULT_MAP_FILE = str(ASSET_ROOT / "mapa_globalna.jpg")
 DEFAULT_MAP_DIR = ASSET_ROOT
-DATA_FILENAME_WORKING = DEFAULT_MAP_DIR / "mapa_dane.json"
+# Zmieniamy domyślną ścieżkę zapisu danych mapy na data/map_data.json
+DATA_FILENAME_WORKING = DATA_ROOT / "map_data.json"
 
 def to_rel(path: str) -> str:
     """Zwraca ścieżkę assets/... względem katalogu projektu."""
@@ -846,10 +851,10 @@ class MapEditor:
         print("Dolny skrajny (y) =", max(ys))
 
     def get_working_data_path(self):
-        map_folder = DEFAULT_MAP_DIR
-        if not os.path.exists(map_folder):
-            os.makedirs(map_folder)
-        return os.path.join(map_folder, "mapa_dane.json")
+        # Zawsze zwracaj ścieżkę do data/map_data.json
+        data_dir = Path(__file__).parent.parent / "data"
+        data_dir.mkdir(exist_ok=True)
+        return str(data_dir / "map_data.json")
 
     def load_tokens_from_folders(self, folders):
         """Wczytuje listę żetonów z podanych folderów (zgodnie z nową strukturą: token.json + token.png)."""

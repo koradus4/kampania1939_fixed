@@ -4,9 +4,6 @@ import tkinter.simpledialog as simpledialog
 from tkinter import ttk
 import logging
 
-# Dodanie importu klasy Gracz
-from model.gracz import Gracz
-
 # Konfiguracja loggera
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',

@@ -5,9 +5,8 @@ from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_ekonomiczny import PanelEkonomiczny
 from gui.panel_gracza import PanelGracza
 from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomicznymi
-from model.mapa import Mapa
+from engine.board import Board
 from gui.panel_mapa import PanelMapa
-from model.zetony import ZetonyMapy
 
 class PanelGenerala:
     def __init__(self, turn_number, ekonomia, gracz, gracze):
@@ -18,7 +17,7 @@ class PanelGenerala:
 
         # Tworzenie głównego okna
         self.root = tk.Tk()
-        self.root.title(f"Panel Generała - {self.gracz.nacja}")
+        self.root.title(f"Panel Generała - {self.gracz.nation}")
         self.root.state("zoomed")
 
         # Wyświetlanie numeru tury
@@ -39,7 +38,7 @@ class PanelGenerala:
         panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
-        minutes = self.gracz.czas
+        minutes = self.gracz.time_limit
         self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {minutes}:00", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
         self.timer_frame.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
 
@@ -64,11 +63,11 @@ class PanelGenerala:
         self.weather_panel.pack(side=tk.BOTTOM, pady=1, fill=tk.BOTH, expand=False)
 
         # Inicjalizacja suwaków wsparcia dowódców
-        commanders = [gracz for gracz in self.gracze if gracz.nacja == self.gracz.nacja and gracz.rola == "Dowódca"]
+        commanders = [gracz for gracz in self.gracze if gracz.nation == self.gracz.nation and gracz.role == "Dowódca"]
         self.zarzadzanie_punktami_widget = ZarzadzaniePunktamiEkonomicznymi(
             self.left_frame,
             available_points=self.ekonomia.get_points()['economic_points'],
-            commanders=[dowodca.numer for dowodca in commanders]
+            commanders=[dowodca.id for dowodca in commanders]
         )
         self.zarzadzanie_punktami_widget.pack_forget()  # Ukrycie suwaków na początku
 
@@ -76,25 +75,20 @@ class PanelGenerala:
         self.map_frame = tk.Frame(self.main_frame)
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        # Pobranie żetonów dla nacji generała
-        zetony = ZetonyMapy()
-        tokens_to_draw = zetony.get_tokens_for_nation(self.gracz.nacja)
-
         # Inicjalizacja modelu mapy i panelu mapy
-        self.mapa_model = Mapa("assets/mapa_dane.json")
+        self.mapa_model = Board("assets/mapa_dane.json")
         self.panel_mapa = PanelMapa(
             parent=self.map_frame,
             map_model=self.mapa_model,
             bg_path="assets/mapa_globalna.jpg",
-            player_nation=self.gracz.nacja,  # Przekazanie nacji gracza
-            tokens_to_draw=tokens_to_draw,
+            player_nation=self.gracz.nation,  # Przekazanie nacji gracza
             width=800, height=600
         )
         self.panel_mapa.pack(fill="both", expand=True)
         self.panel_mapa.bind_click_callback(self.on_map_click)
 
         # Przeliczenie czasu z minut na sekundy i zapisanie w zmiennej remaining_time
-        self.remaining_time = self.gracz.czas * 60
+        self.remaining_time = self.gracz.time_limit * 60
 
         # Uruchomienie timera
         self.update_timer()
@@ -130,7 +124,7 @@ class PanelGenerala:
             self.zarzadzanie_punktami_widget = ZarzadzaniePunktamiEkonomicznymi(
                 self.left_frame,
                 available_points=available_points,
-                commanders=[gracz.numer for gracz in self.gracze if gracz.nacja == self.gracz.nacja and gracz.rola == "Dowódca"]
+                commanders=[gracz.id for gracz in self.gracze if gracz.nacja == self.gracz.nacja and gracz.rola == "Dowódca"]
             )
             self.zarzadzanie_punktami_widget.pack(pady=10, fill=tk.BOTH, expand=False)
         else:
@@ -165,7 +159,7 @@ class PanelGenerala:
         for commander_id, pts in self.zarzadzanie_punktami_widget.commander_points.items():
             if pts > 0:
                 for player in self.gracze:  # Iteracja po liście graczy
-                    if player.numer == commander_id and player.rola == "Dowódca":
+                    if player.id == commander_id and player.role == "Dowódca":
                         player.economy.economic_points += pts
 
         # Aktualizacja raportu ekonomicznego po rozdysponowaniu punktów

@@ -1,10 +1,10 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from model.mapa import Mapa
-from model.zetony import ZetonyMapy
+from engine.board import Board  # NOWY: silnikowa obsługa mapy
+from engine.token import Token  # NOWY: silnikowa obsługa żetonów
 
 class PanelMapa(tk.Frame):
-    def __init__(self, parent, map_model: Mapa, bg_path: str, player_nation: str, tokens_to_draw=None, width=800, height=600):
+    def __init__(self, parent, map_model: Board, bg_path: str, player_nation: str, tokens_to_draw=None, width=800, height=600):
         super().__init__(parent)
         self.map_model = map_model
         self.player_nation = player_nation  # Dodano nację gracza
@@ -34,7 +34,29 @@ class PanelMapa(tk.Frame):
         self.canvas.bind("<Button-1>", self._on_click)
 
         # żetony
-        self.zetony = ZetonyMapy()
+        # self.zetony = Token()  # USUNIĘTO: niepoprawna inicjalizacja
+        from engine.token import load_tokens
+        import os
+        index_path = os.path.join('assets', 'tokens', 'index.json')
+        start_path = os.path.join('assets', 'start_tokens.json')
+        self.zetony = type('TokenManager', (), {})()  # tymczasowy obiekt do proxy
+        self.zetony.tokens = load_tokens(index_path, start_path)
+        self.zetony.token_map = {t.id: t for t in self.zetony.tokens}
+        def get_tokens_on_map():
+            return [
+                {'id': t.id, 'q': t.q, 'r': t.r} for t in self.zetony.tokens if t.q is not None and t.r is not None
+            ]
+        def get_token_data(token_id):
+            t = self.zetony.token_map.get(token_id)
+            if not t:
+                return None
+            d = dict(t.stats)
+            d['id'] = t.id
+            d['nation'] = t.stats.get('nation', '')
+            d['image'] = t.stats.get('image', '')
+            return d
+        self.zetony.get_tokens_on_map = get_tokens_on_map
+        self.zetony.get_token_data = get_token_data
         self.token_images = {}  # referencje do obrazków żetonów
         self._draw_tokens_on_map()
 

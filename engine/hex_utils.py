@@ -1,15 +1,10 @@
 import math
 
 def get_hex_vertices(cx, cy, s):
-    import math
     angles = [math.radians(60 * i) for i in range(6)]
     return [(cx + s * math.cos(a), cy + s * math.sin(a)) for a in angles]
 
 def point_in_polygon(x, y, poly):
-    """
-    Ray-casting: sprawdza, czy punkt (x,y) jest wewnątrz wielokąta poly.
-    poly to lista (x0,y0),(x1,y1),... wierzchołków.
-    """
     inside = False
     n = len(poly)
     for i in range(n):
