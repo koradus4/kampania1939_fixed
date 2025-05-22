@@ -9,11 +9,12 @@ from engine.board import Board
 from gui.panel_mapa import PanelMapa
 
 class PanelGenerala:
-    def __init__(self, turn_number, ekonomia, gracz, gracze):
+    def __init__(self, turn_number, ekonomia, gracz, gracze, game_engine):
         self.turn_number = turn_number
         self.ekonomia = ekonomia
         self.gracz = gracz
         self.gracze = gracze
+        self.game_engine = game_engine
 
         # Tworzenie głównego okna
         self.root = tk.Tk()
@@ -74,32 +75,21 @@ class PanelGenerala:
         # Prawy panel (mapa)
         self.map_frame = tk.Frame(self.main_frame)
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
-
-        # Inicjalizacja modelu mapy i panelu mapy
-        self.mapa_model = Board("assets/mapa_dane.json")
+        # PanelMapa korzysta z silnika gry
         self.panel_mapa = PanelMapa(
             parent=self.map_frame,
-            map_model=self.mapa_model,
+            game_engine=self.game_engine,
             bg_path="assets/mapa_globalna.jpg",
-            player_nation=self.gracz.nation,  # Przekazanie nacji gracza
+            player_nation=self.gracz.nation,
             width=800, height=600
         )
         self.panel_mapa.pack(fill="both", expand=True)
-        self.panel_mapa.bind_click_callback(self.on_map_click)
 
         # Przeliczenie czasu z minut na sekundy i zapisanie w zmiennej remaining_time
         self.remaining_time = self.gracz.time_limit * 60
 
         # Uruchomienie timera
         self.update_timer()
-
-    def on_map_click(self, q, r):
-        tile = self.mapa_model.get_tile(q, r)
-        additional_info = f"\nSpawn: {tile.spawn_nation}" if tile.spawn_nation else ""
-        tk.messagebox.showinfo(
-            "Płytka",
-            f"Hex: ({q},{r})\nTyp: {tile.terrain_key}\nRuch: {tile.move_mod}\nObrona: {tile.defense_mod}{additional_info}"
-        )
 
     def update_weather(self, weather_report):
         self.weather_panel.update_weather(weather_report)

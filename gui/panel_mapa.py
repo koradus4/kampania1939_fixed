@@ -1,14 +1,13 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from engine.board import Board  # NOWY: silnikowa obsługa mapy
-from engine.token import Token  # NOWY: silnikowa obsługa żetonów
 
 class PanelMapa(tk.Frame):
-    def __init__(self, parent, map_model: Board, bg_path: str, player_nation: str, tokens_to_draw=None, width=800, height=600):
+    def __init__(self, parent, game_engine, bg_path: str, player_nation: str, width=800, height=600):
         super().__init__(parent)
-        self.map_model = map_model
-        self.player_nation = player_nation  # Dodano nację gracza
-        self.tokens_to_draw = tokens_to_draw  # Lista żetonów do rysowania (przefiltrowana)
+        self.game_engine = game_engine
+        self.map_model = self.game_engine.board
+        self.player_nation = player_nation
+        self.tokens = self.game_engine.tokens
 
         # Canvas + Scrollbary
         self.canvas = tk.Canvas(self, width=width, height=height)
@@ -34,30 +33,7 @@ class PanelMapa(tk.Frame):
         self.canvas.bind("<Button-1>", self._on_click)
 
         # żetony
-        # self.zetony = Token()  # USUNIĘTO: niepoprawna inicjalizacja
-        from engine.token import load_tokens
-        import os
-        index_path = os.path.join('assets', 'tokens', 'index.json')
-        start_path = os.path.join('assets', 'start_tokens.json')
-        self.zetony = type('TokenManager', (), {})()  # tymczasowy obiekt do proxy
-        self.zetony.tokens = load_tokens(index_path, start_path)
-        self.zetony.token_map = {t.id: t for t in self.zetony.tokens}
-        def get_tokens_on_map():
-            return [
-                {'id': t.id, 'q': t.q, 'r': t.r} for t in self.zetony.tokens if t.q is not None and t.r is not None
-            ]
-        def get_token_data(token_id):
-            t = self.zetony.token_map.get(token_id)
-            if not t:
-                return None
-            d = dict(t.stats)
-            d['id'] = t.id
-            d['nation'] = t.stats.get('nation', '')
-            d['image'] = t.stats.get('image', '')
-            return d
-        self.zetony.get_tokens_on_map = get_tokens_on_map
-        self.zetony.get_token_data = get_token_data
-        self.token_images = {}  # referencje do obrazków żetonów
+        self.token_images = {}
         self._draw_tokens_on_map()
 
         # hover
@@ -103,23 +79,23 @@ class PanelMapa(tk.Frame):
 
     def _draw_tokens_on_map(self):
         print("[DEBUG] Start rysowania żetonów na mapie")
-        tokens = self.tokens_to_draw if self.tokens_to_draw is not None else self.zetony.get_tokens_on_map()
+        tokens = [
+            {'id': t.id, 'q': t.q, 'r': t.r} for t in self.tokens if t.q is not None and t.r is not None
+        ]
         for token in tokens:
             token_id = token["id"]
             q, r = token["q"], token["r"]
             print(f"[DEBUG] Próba rysowania żetonu: id={token_id}, q={q}, r={r}")
-            token_data = self.zetony.get_token_data(token_id)
+            token_data = next((t for t in self.tokens if t.id == token_id), None)
             if not token_data:
-                print(f"[DEBUG] Brak danych żetonu w index.json: {token_id}")
+                print(f"[DEBUG] Brak danych żetonu: {token_id}")
                 continue
-            # Ścieżka do obrazka żetonu
-            img_path = token_data.get("image")
+            img_path = token_data.stats.get("image")
             if not img_path:
-                img_path = f"assets/tokens/{token_data['nation']}/{token_id}/token.png"
+                img_path = f"assets/tokens/{token_data.stats.get('nation','')}/{token_id}/token.png"
             print(f"[DEBUG] Ścieżka do obrazka: {img_path}")
             try:
                 img = Image.open(img_path)
-                # Skalowanie do rozmiaru heksa
                 hex_size = self.map_model.hex_size
                 img = img.resize((hex_size, hex_size), Image.LANCZOS)
                 tk_img = ImageTk.PhotoImage(img)
@@ -142,15 +118,15 @@ class PanelMapa(tk.Frame):
             return
         q, r = hr
         # Sprawdź, czy na tym heksie jest żeton
-        for token in self.zetony.get_tokens_on_map():
-            if token["q"] == q and token["r"] == r:
-                token_id = token["id"]
-                token_data = self.zetony.get_token_data(token_id)
+        for token in self.tokens:
+            if token.q == q and token.r == r:
+                token_id = token.id
+                token_data = next((t for t in self.tokens if t.id == token_id), None)
                 if not token_data:
                     return
-                img_path = token_data.get("image")
+                img_path = token_data.stats.get("image")
                 if not img_path:
-                    img_path = f"assets/tokens/{token_data['nation']}/{token_id}/token.png"
+                    img_path = f"assets/tokens/{token_data.stats.get('nation','')}/{token_id}/token.png"
                 try:
                     img = Image.open(img_path)
                     hex_size = self.map_model.hex_size

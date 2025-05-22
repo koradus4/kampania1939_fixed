@@ -3,12 +3,21 @@ from engine.player import Player
 from gui.panel_generala import PanelGenerala
 from gui.panel_dowodcy import PanelDowodcy
 from core.ekonomia import EconomySystem
+from engine.engine import GameEngine
 
 # Funkcja główna
 if __name__ == "__main__":
     # Automatyczne ustawienia graczy
     miejsca = ["Polska", "Polska", "Polska", "Niemcy", "Niemcy", "Niemcy"]
     czasy = [5, 5, 5, 5, 5, 5]  # Czas na turę w minutach
+
+    # Inicjalizacja silnika gry (GameEngine jako źródło prawdy)
+    game_engine = GameEngine(
+        map_path="assets/mapa_dane.json",
+        tokens_index_path="assets/tokens/index.json",
+        tokens_start_path="assets/start_tokens.json",
+        seed=42
+    )
 
     # Tworzenie obiektów graczy z uwzględnieniem czasu na turę
     players = [
@@ -26,7 +35,7 @@ if __name__ == "__main__":
             p.economy = EconomySystem()
 
     # Inicjalizacja menedżera tur
-    turn_manager = TurnManager(players)
+    turn_manager = TurnManager(players, game_engine=game_engine)
 
     # Pętla tur
     while True:
@@ -35,9 +44,9 @@ if __name__ == "__main__":
 
         # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
         if current_player.role == "Generał":
-            app = PanelGenerala(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=players)
+            app = PanelGenerala(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=players, game_engine=game_engine)
         elif current_player.role == "Dowódca":
-            app = PanelDowodcy(turn_number=turn_manager.current_turn, remaining_time=current_player.time_limit * 60, gracz=current_player)
+            app = PanelDowodcy(turn_number=turn_manager.current_turn, remaining_time=current_player.time_limit * 60, gracz=current_player, game_engine=game_engine)
 
         # Aktualizacja pogody dla panelu
         if hasattr(app, 'update_weather'):

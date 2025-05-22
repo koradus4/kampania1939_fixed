@@ -3,14 +3,14 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_gracza import PanelGracza
-from engine.board import Board
 from gui.panel_mapa import PanelMapa
 
 class PanelDowodcy:
-    def __init__(self, turn_number, remaining_time, gracz):
+    def __init__(self, turn_number, remaining_time, gracz, game_engine):
         self.turn_number = turn_number
         self.remaining_time = remaining_time
         self.gracz = gracz
+        self.game_engine = game_engine
 
         # Tworzenie głównego okna
         self.root = tk.Tk()
@@ -53,27 +53,17 @@ class PanelDowodcy:
         self.map_frame = tk.Frame(self.main_frame)
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        # Inicjalizacja modelu mapy i panelu mapy
-        self.mapa_model = Board("assets/mapa_dane.json")
+        # PanelMapa korzysta z silnika gry
         self.panel_mapa = PanelMapa(
             parent=self.map_frame,
-            map_model=self.mapa_model,
+            game_engine=self.game_engine,
             bg_path="assets/mapa_globalna.jpg",
-            player_nation=self.gracz.nation,  # Przekazanie nacji gracza
+            player_nation=self.gracz.nation,
             width=800, height=600
         )
         self.panel_mapa.pack(fill="both", expand=True)
-        self.panel_mapa.bind_click_callback(self.on_map_click)
 
         self.update_timer()
-
-    def on_map_click(self, q, r):
-        tile = self.mapa_model.get_tile(q, r)
-        additional_info = f"\nSpawn: {tile.spawn_nation}" if tile.spawn_nation else ""
-        tk.messagebox.showinfo(
-            "Płytka",
-            f"Hex: ({q},{r})\nTyp: {tile.terrain_key}\nRuch: {tile.move_mod}\nObrona: {tile.defense_mod}{additional_info}"
-        )
 
     def update_timer(self):
         if self.root.winfo_exists():

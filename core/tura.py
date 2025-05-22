@@ -1,12 +1,14 @@
 class TurnManager:
-    def __init__(self, players):
+    def __init__(self, players, game_engine=None):
         """
         Inicjalizuje menedżera tur.
         :param players: Lista obiektów klasy Player w ustalonej kolejności.
+        :param game_engine: Instancja GameEngine przechowująca stan gry.
         """
         self.players = players
         self.current_turn = 1
         self.current_player_index = 0
+        self.game_engine = game_engine
 
         # Inicjalizacja obiektu Pogoda jako atrybutu klasy
         from core.pogoda import Pogoda
