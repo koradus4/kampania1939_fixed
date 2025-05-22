@@ -32,6 +32,24 @@ class GameEngine:
         """Rejestruje i wykonuje akcję (np. ruch, walka)."""
         return action.execute(self)
 
+    def get_visible_tokens(self, player):
+        """Zwraca listę żetonów widocznych dla danego gracza (elastyczne filtrowanie)."""
+        # Przyszłościowo: obsługa pola 'visible_for', mgły wojny, szpiegów itp.
+        visible = []
+        for token in self.tokens:
+            # 1. Mgła wojny i pole 'visible_for' (jeśli istnieje)
+            if 'visible_for' in token.stats:
+                if player.id in token.stats['visible_for']:
+                    visible.append(token)
+                    continue
+            # 2. Generał widzi wszystkie żetony swojej nacji
+            if player.role.lower() == 'generał' and token.stats.get('nation') == player.nation:
+                visible.append(token)
+            # 3. Dowódca widzi tylko swoje żetony
+            elif player.role.lower() == 'dowódca' and token.owner == f"{player.id} ({player.nation})":
+                visible.append(token)
+        return visible
+
 # Przykład użycia:
 # engine = GameEngine('data/map_data.json', 'data/tokens_index.json', 'data/start_tokens.json', seed=123)
 # state = engine.get_state()

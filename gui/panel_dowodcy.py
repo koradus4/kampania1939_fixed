@@ -54,9 +54,11 @@ class PanelDowodcy:
         self.map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
         # PanelMapa korzysta z silnika gry
+        # Przekazujemy obiekt gracza do silnika, by umożliwić filtrowanie widoczności
+        game_engine.current_player_obj = self.gracz
         self.panel_mapa = PanelMapa(
             parent=self.map_frame,
-            game_engine=self.game_engine,
+            game_engine=game_engine,
             bg_path="assets/mapa_globalna.jpg",
             player_nation=self.gracz.nation,
             width=800, height=600

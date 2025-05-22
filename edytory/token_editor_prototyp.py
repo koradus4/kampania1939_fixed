@@ -1028,6 +1028,9 @@ class TokenEditor:
         unit_size  = self.unit_size.get()
         # Pobierz numer dowódcy i skrót nacji
         commander_full = self.selected_commander.get()  # np. '2 (Polska)'
+        if not commander_full:
+            messagebox.showerror("Błąd", "Musisz wybrać dowódcę (właściciela żetonu) przed zapisem!")
+            return
         commander_num = commander_full.split()[0] if commander_full else "?"
 
         nation_short = "PL" if nation == "Polska" else ("N" if nation == "Niemcy" else nation[:2].upper())
@@ -1062,7 +1065,7 @@ class TokenEditor:
         img.save(token_dir / "token.png")
 
         # Pobierz wybranego dowódcę
-        owner = self.selected_commander.get()  # np. '2 (Polska)'
+        owner = commander_full  # np. '2 (Polska)'
 
         # ---- JSON ----
         meta = {

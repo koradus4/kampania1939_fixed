@@ -34,6 +34,8 @@ class PanelMapa(tk.Frame):
 
         # żetony
         self.token_images = {}
+        # Przekazanie obiektu gracza do panelu (potrzebne do filtrowania widoczności)
+        self.player = getattr(game_engine, 'current_player_obj', None)
         self._draw_tokens_on_map()
 
         # hover
@@ -79,14 +81,20 @@ class PanelMapa(tk.Frame):
 
     def _draw_tokens_on_map(self):
         print("[DEBUG] Start rysowania żetonów na mapie")
+        # Pobierz gracza z game_engine (musi być ustawiony przez panel)
+        player = getattr(self, 'player', None)
+        if player is not None:
+            tokens = self.game_engine.get_visible_tokens(player)
+        else:
+            tokens = self.tokens  # fallback: wszystkie
         tokens = [
-            {'id': t.id, 'q': t.q, 'r': t.r} for t in self.tokens if t.q is not None and t.r is not None
+            {'id': t.id, 'q': t.q, 'r': t.r} for t in tokens if t.q is not None and t.r is not None
         ]
         for token in tokens:
             token_id = token["id"]
             q, r = token["q"], token["r"]
             print(f"[DEBUG] Próba rysowania żetonu: id={token_id}, q={q}, r={r}")
-            token_data = next((t for t in self.tokens if t.id == token_id), None)
+            token_data = next((t for t in self.game_engine.tokens if t.id == token_id), None)
             if not token_data:
                 print(f"[DEBUG] Brak danych żetonu: {token_id}")
                 continue
