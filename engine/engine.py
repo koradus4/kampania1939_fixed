@@ -36,17 +36,22 @@ class GameEngine:
         """Zwraca listę żetonów widocznych dla danego gracza (elastyczne filtrowanie)."""
         # Przyszłościowo: obsługa pola 'visible_for', mgły wojny, szpiegów itp.
         visible = []
+        player_role = getattr(player, 'role', '').strip().lower()
+        player_nation = getattr(player, 'nation', '').strip().lower()
+        player_id = getattr(player, 'id', None)
         for token in self.tokens:
+            token_nation = str(token.stats.get('nation', '')).strip().lower()
+            token_owner = str(token.owner).strip()
             # 1. Mgła wojny i pole 'visible_for' (jeśli istnieje)
             if 'visible_for' in token.stats:
-                if player.id in token.stats['visible_for']:
+                if player_id in token.stats['visible_for']:
                     visible.append(token)
                     continue
             # 2. Generał widzi wszystkie żetony swojej nacji
-            if player.role.lower() == 'generał' and token.stats.get('nation') == player.nation:
+            if player_role == 'generał' and token_nation == player_nation:
                 visible.append(token)
             # 3. Dowódca widzi tylko swoje żetony
-            elif player.role.lower() == 'dowódca' and token.owner == f"{player.id} ({player.nation})":
+            elif player_role == 'dowódca' and token_owner == f"{player_id} ({player.nation})":
                 visible.append(token)
         return visible
 
