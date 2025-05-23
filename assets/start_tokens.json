@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "AC_Pluton__2_PL_AC_Pluton",
+    "q": 9,
+    "r": 0
+  },
+  {
+    "id": "AC_Pluton__6_N_AC_Pluton",
+    "q": 17,
+    "r": 2
+  },
+  {
+    "id": "AC_Pluton__5_N_AC_Pluton",
+    "q": 17,
+    "r": -4
+  },
+  {
+    "id": "AC_Pluton__3_PL_AC_Pluton",
+    "q": 9,
+    "r": 6
+  }
+]

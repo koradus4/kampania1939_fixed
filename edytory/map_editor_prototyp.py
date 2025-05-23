@@ -992,7 +992,8 @@ class MapEditor:
             del self.dragged_image
 
     def place_token_on_hex(self, token, clicked_hex):
-        q, r = clicked_hex           # już axial
+        # clicked_hex to hex_id jako string "q,r"
+        q, r = map(int, clicked_hex.split(","))
         hex_id = f"{q},{r}"
 
         # Jeśli wpisu brak – utwórz z domyślnym terenem

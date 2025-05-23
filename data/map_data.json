@@ -1510,7 +1510,11 @@
     "9,0": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Pluton__2_PL_AC_Pluton",
+        "image": "tokens/Polska/AC_Pluton__2_PL_AC_Pluton/token.png"
+      }
     },
     "9,1": {
       "terrain_key": "teren_płaski",
@@ -2482,11 +2486,6 @@
       "move_mod": -1,
       "defense_mod": 0
     },
-    "15,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": -1,
-      "defense_mod": 0
-    },
     "15,3": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
@@ -2800,7 +2799,11 @@
     "17,2": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Pluton__6_N_AC_Pluton",
+        "image": "tokens/Niemcy/AC_Pluton__6_N_AC_Pluton/token.png"
+      }
     },
     "17,3": {
       "terrain_key": "teren_płaski",
@@ -9650,7 +9653,11 @@
     "17,-4": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Pluton__5_N_AC_Pluton",
+        "image": "tokens/Niemcy/AC_Pluton__5_N_AC_Pluton/token.png"
+      }
     },
     "17,-3": {
       "terrain_key": "teren_płaski",
@@ -13105,7 +13112,11 @@
     "9,6": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Pluton__3_PL_AC_Pluton",
+        "image": "tokens/Polska/AC_Pluton__3_PL_AC_Pluton/token.png"
+      }
     },
     "9,4": {
       "terrain_key": "teren_płaski",
@@ -13163,6 +13174,11 @@
       "defense_mod": 0
     },
     "17,7": {
+      "terrain_key": "teren_płaski",
+      "move_mod": -1,
+      "defense_mod": 0
+    },
+    "15,2": {
       "terrain_key": "teren_płaski",
       "move_mod": -1,
       "defense_mod": 0
