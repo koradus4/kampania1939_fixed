@@ -66,23 +66,13 @@ class PanelMapa(tk.Frame):
                 if 0 <= cx <= self._bg_width and 0 <= cy <= self._bg_height:
                     verts = get_hex_vertices(cx, cy, s)
                     flat = [coord for p in verts for coord in p]
-                    # Wypełnij heks 0,0 na czerwono
-                    if q == 0 and r == 0:
-                        self.canvas.create_polygon(
-                            flat,
-                            outline="red",
-                            fill="red",
-                            width=1,
-                            tags="hex"
-                        )
-                    else:
-                        self.canvas.create_polygon(
-                            flat,
-                            outline="red",
-                            fill="",
-                            width=1,
-                            tags="hex"
-                        )
+                    self.canvas.create_polygon(
+                        flat,
+                        outline="red",
+                        fill="",
+                        width=1,
+                        tags="hex"
+                    )
 
     def _draw_tokens_on_map(self):
         print("[DEBUG] Start rysowania żetonów na mapie")
@@ -170,20 +160,12 @@ class PanelMapa(tk.Frame):
         hr = self.map_model.coords_to_hex(x, y)
         if hr:
             q, r = hr
-            tile = self.map_model.get_tile(q, r)
             # Podświetl kliknięty heks
             cx, cy = self.map_model.hex_to_pixel(q, r)
             s = self.map_model.hex_size
             verts = get_hex_vertices(cx, cy, s)
             self.canvas.delete("highlight")
             self.canvas.create_polygon(verts, outline="yellow", width=3, fill="", tags="highlight")
-            # Wyświetl atrybuty w konsoli lub messagebox
-            if tile:
-                msg = f"Heks: ({q},{r})\nTeren: {tile.terrain_key}\nMove mod: {tile.move_mod}\nDefense mod: {tile.defense_mod}"
-            else:
-                msg = f"Heks: ({q},{r})\nBrak danych o terenie."
-            import tkinter.messagebox as mb
-            mb.showinfo("Atrybuty heksu", msg)
         if hasattr(self, "_click_cb"):
             self._click_cb(*hr)
 
