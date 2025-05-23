@@ -29,10 +29,12 @@ class Board:
         # key_points, spawn_points można dodać później
 
     def hex_to_pixel(self, q: int, r: int) -> Tuple[float, float]:
-        # Axial -> pixel (dla pointy-top)
+        # Axial -> pixel (dla pointy-top) z offsetem, by heks 0,0 był w pełni widoczny
         s = self.hex_size
-        x = s * (3/2 * q)
-        y = s * (3**0.5 * (r + q/2))
+        dx = s  # przesunięcie w prawo o promień heksa
+        dy = s * (3**0.5) / 2  # przesunięcie w dół o połowę wysokości heksa
+        x = s * (3/2 * q) + dx
+        y = s * (3**0.5 * (r + q/2)) + dy
         return (x, y)
 
     def pixel_to_hex(self, x: float, y: float) -> Tuple[int, int]:

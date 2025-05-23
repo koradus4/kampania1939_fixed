@@ -103,8 +103,10 @@ def get_hex_vertices(center_x, center_y, s):
     ]
 
 def offset_to_axial(col: int, row: int) -> tuple[int, int]:
-    """Najprostszy układ – q == col, r == row (pointy‑top even‑q)."""
-    return col, row
+    # Pointy-top even-q offset: q = col, r = row - (col // 2)
+    q = col
+    r = row - (col // 2)
+    return q, r
 
 class MapEditor:
     def __init__(self, root, config):
@@ -364,15 +366,18 @@ class MapEditor:
         grid_cols = self.config.get("grid_cols")
         grid_rows = self.config.get("grid_rows")
 
+        # GENERUJEMY SIATKĘ W UKŁADZIE OFFSETOWYM EVEN-Q (prostokąt)
         for col in range(grid_cols):
-            center_x = s + col * horizontal_spacing
             for row in range(grid_rows):
+                # Konwersja offset -> axial (even-q)
+                q = col
+                r = row - (col // 2)
+                center_x = s + col * horizontal_spacing
                 center_y = (s * math.sqrt(3) / 2) + row * hex_height
                 if col % 2 == 1:
                     center_y += hex_height / 2
                 if center_x + s > self.world_width or center_y + (s * math.sqrt(3) / 2) > self.world_height:
                     continue
-                q, r = offset_to_axial(col, row)
                 hex_id = f"{q},{r}"
                 self.hex_centers[hex_id] = (center_x, center_y)
 

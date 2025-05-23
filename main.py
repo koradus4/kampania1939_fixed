@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     # Inicjalizacja silnika gry (GameEngine jako źródło prawdy)
     game_engine = GameEngine(
-        map_path="assets/mapa_dane.json",
+        map_path="data/map_data.json",
         tokens_index_path="assets/tokens/index.json",
         tokens_start_path="assets/start_tokens.json",
         seed=42

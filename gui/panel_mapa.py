@@ -1,5 +1,7 @@
 import tkinter as tk
+from engine.hex_utils import get_hex_vertices
 from PIL import Image, ImageTk
+import os
 
 class PanelMapa(tk.Frame):
     def __init__(self, parent, game_engine, bg_path: str, player_nation: str, width=800, height=600):
@@ -20,11 +22,19 @@ class PanelMapa(tk.Frame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        # tło mapy
-        bg = Image.open(bg_path)
-        self._bg = ImageTk.PhotoImage(bg)
-        self.canvas.create_image(0, 0, anchor="nw", image=self._bg)
-        self.canvas.config(scrollregion=(0, 0, bg.width, bg.height))
+        # tło mapy - jeśli nie podano lub plik nie istnieje, nie ustawiaj tła
+        if bg_path and os.path.exists(bg_path):
+            bg = Image.open(bg_path)
+            self._bg = ImageTk.PhotoImage(bg)
+            self.canvas.create_image(0, 0, anchor="nw", image=self._bg)
+            self.canvas.config(scrollregion=(0, 0, bg.width, bg.height))
+            self._bg_width = bg.width
+            self._bg_height = bg.height
+        else:
+            self._bg = None
+            self._bg_width = width
+            self._bg_height = height
+            self.canvas.config(scrollregion=(0, 0, width, height))
 
         # rysuj siatkę i etykiety
         self._draw_hex_grid()
@@ -43,41 +53,36 @@ class PanelMapa(tk.Frame):
 
     def _draw_hex_grid(self):
         self.canvas.delete("hex")
-        for verts, (cx, cy), txt in self.map_model.get_overlay_items():
-            flat = [coord for p in verts for coord in p]
-            if "spawn" in txt:
-                spawn_nation = txt.replace("spawn", "")
-                if spawn_nation == self.player_nation.lower():
-                    self.canvas.create_polygon(
-                        flat,
-                        outline="red",
-                        fill="gray",
-                        stipple="gray12",
-                        tags="hex"
-                    )
-            elif txt.startswith("key"):
-                self.canvas.create_polygon(
-                    flat,
-                    outline="red",
-                    fill="",
-                    width=1,
-                    tags="hex"
-                )
-                self.canvas.create_text(
-                    cx, cy,
-                    text=txt.replace("key", ""),
-                    anchor="center",
-                    fill="blue",
-                    tags="hex"
-                )
-            else:
-                self.canvas.create_polygon(
-                    flat,
-                    outline="red",
-                    fill="",
-                    width=1,
-                    tags="hex"
-                )
+        s = self.map_model.hex_size
+        cols = getattr(self.map_model, 'cols', 56)
+        rows = getattr(self.map_model, 'rows', 40)
+        for col in range(cols):
+            for row in range(rows):
+                # Konwersja offset -> axial (even-q)
+                q = col
+                r = row - (col // 2)
+                cx, cy = self.map_model.hex_to_pixel(q, r)
+                # Sprawdź, czy heks mieści się w obszarze mapy
+                if 0 <= cx <= self._bg_width and 0 <= cy <= self._bg_height:
+                    verts = get_hex_vertices(cx, cy, s)
+                    flat = [coord for p in verts for coord in p]
+                    # Wypełnij heks 0,0 na czerwono
+                    if q == 0 and r == 0:
+                        self.canvas.create_polygon(
+                            flat,
+                            outline="red",
+                            fill="red",
+                            width=1,
+                            tags="hex"
+                        )
+                    else:
+                        self.canvas.create_polygon(
+                            flat,
+                            outline="red",
+                            fill="",
+                            width=1,
+                            tags="hex"
+                        )
 
     def _draw_tokens_on_map(self):
         print("[DEBUG] Start rysowania żetonów na mapie")
@@ -116,7 +121,7 @@ class PanelMapa(tk.Frame):
         print("[DEBUG] Koniec rysowania żetonów na mapie")
 
     def _on_hover(self, event):
-        # Usuwa poprzedni powiększony żeton
+        # Usuwa poprzedni powiększony żetony
         self.canvas.delete("hover_zoom")
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
@@ -161,8 +166,25 @@ class PanelMapa(tk.Frame):
     def _on_click(self, ev):
         x = self.canvas.canvasx(ev.x)
         y = self.canvas.canvasy(ev.y)
+        # Znajdź heks pod kliknięciem
         hr = self.map_model.coords_to_hex(x, y)
-        if hr and hasattr(self, "_click_cb"):
+        if hr:
+            q, r = hr
+            tile = self.map_model.get_tile(q, r)
+            # Podświetl kliknięty heks
+            cx, cy = self.map_model.hex_to_pixel(q, r)
+            s = self.map_model.hex_size
+            verts = get_hex_vertices(cx, cy, s)
+            self.canvas.delete("highlight")
+            self.canvas.create_polygon(verts, outline="yellow", width=3, fill="", tags="highlight")
+            # Wyświetl atrybuty w konsoli lub messagebox
+            if tile:
+                msg = f"Heks: ({q},{r})\nTeren: {tile.terrain_key}\nMove mod: {tile.move_mod}\nDefense mod: {tile.defense_mod}"
+            else:
+                msg = f"Heks: ({q},{r})\nBrak danych o terenie."
+            import tkinter.messagebox as mb
+            mb.showinfo("Atrybuty heksu", msg)
+        if hasattr(self, "_click_cb"):
             self._click_cb(*hr)
 
     def bind_click_callback(self, cb):
