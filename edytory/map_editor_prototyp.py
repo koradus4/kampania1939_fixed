@@ -480,17 +480,23 @@ class MapEditor:
                 tags=f"tekst_{hex_id}"
             )
 
+    def get_clicked_hex(self, x, y):
+        for hex_id, (cx, cy) in self.hex_centers.items():
+            vertices = get_hex_vertices(cx, cy, self.hex_size)
+            if point_in_polygon(x, y, vertices):
+                return hex_id  # Zwracaj hex_id jako string "q,r"
+        return None
+
     def on_canvas_click(self, event):
         'Obsługuje kliknięcie myszką na canvasie - zaznacza heks i wyświetla jego dane.'
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
-        clicked_hex = self.get_clicked_hex(x, y)
-        if clicked_hex:
+        hex_id = self.get_clicked_hex(x, y)
+        if hex_id:
             if self.current_brush:
-                self.paint_hex(clicked_hex, self.current_brush)
+                q, r = map(int, hex_id.split(","))
+                self.paint_hex((q, r), self.current_brush)
                 return
-            q, r = clicked_hex
-            hex_id = f"{q},{r}"
             self.selected_hex = hex_id
             self.highlight_hex(hex_id)
             terrain = self.hex_data.get(hex_id, self.hex_defaults)
@@ -520,11 +526,9 @@ class MapEditor:
         'Wyświetla informacje o heksie przy najechaniu myszką oraz powiększa heks z żetonem.'
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
-        hovered_hex = self.get_clicked_hex(x, y)
+        hex_id = self.get_clicked_hex(x, y)
         self.canvas.delete("hover_zoom")  # Usuwa poprzedni powiększony heks
-        if hovered_hex:
-            q, r = hovered_hex
-            hex_id = f"{q},{r}"
+        if hex_id:
             terrain = self.hex_data.get(hex_id, self.hex_defaults)
             move_mod = terrain.get('move_mod', self.hex_defaults.get('move_mod', 0))
             defense_mod = terrain.get('defense_mod', self.hex_defaults.get('defense_mod', 0))
@@ -581,7 +585,7 @@ class MapEditor:
             self.spawn_info_label.config(text="Punkt wystawiania: brak")
             self.token_info_label.config(text="Żeton: brak")
         # Czyść referencje do obrazków, jeśli nie ma powiększenia
-        if not hovered_hex and hasattr(self, '_hover_zoom_images'):
+        if not hex_id and hasattr(self, '_hover_zoom_images'):
             self._hover_zoom_images.clear()
 
     def save_data(self):
@@ -1014,14 +1018,6 @@ class MapEditor:
         }
 
         self.draw_grid()   # odśwież mapę
-
-    def get_clicked_hex(self, x, y):
-        for hex_id, (cx, cy) in self.hex_centers.items():
-            vertices = get_hex_vertices(cx, cy, self.hex_size)
-            if point_in_polygon(x, y, vertices):
-                col, row = map(int, hex_id.split(','))
-                return offset_to_axial(col, row)
-        return None
 
     def toggle_brush(self, key):
         if self.current_brush == key:           # drugi klik → wyłącz
