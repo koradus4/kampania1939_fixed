@@ -75,7 +75,7 @@ class PanelMapa(tk.Frame):
                     )
 
     def _draw_tokens_on_map(self):
-        print("[DEBUG] Start rysowania żetonów na mapie")
+        # USUŃ DEBUGI: Start rysowania żetonów na mapie
         # Pobierz gracza z game_engine (musi być ustawiony przez panel)
         player = getattr(self, 'player', None)
         if player is not None:
@@ -88,33 +88,34 @@ class PanelMapa(tk.Frame):
         for token in tokens:
             token_id = token["id"]
             q, r = token["q"], token["r"]
-            print(f"[DEBUG] Próba rysowania żetonu: id={token_id}, q={q}, r={r}")
+            # USUŃ DEBUGI: Próba rysowania żetonu
             token_data = next((t for t in self.game_engine.tokens if t.id == token_id), None)
             if not token_data:
-                print(f"[DEBUG] Brak danych żetonu: {token_id}")
+                # USUŃ DEBUGI: Brak danych żetonu
                 continue
             img_path = token_data.stats.get("image")
             if not img_path:
                 nation = token_data.stats.get('nation', '')
                 img_path = f"assets/tokens/{nation}/{token_id}/token.png"
             if not os.path.exists(img_path):
-                print(f"[DEBUG] Brak pliku z obrazem żetonu {token_id}: {img_path}")
+                # USUŃ DEBUGI: Brak pliku z obrazem żetonu
                 img_path = "assets/tokens/default/token.png" if os.path.exists("assets/tokens/default/token.png") else None
                 if not img_path:
                     continue
-            print(f"[DEBUG] Ścieżka do obrazka: {img_path}")
+            # USUŃ DEBUGI: Ścieżka do obrazka
             try:
                 img = Image.open(img_path)
                 hex_size = self.map_model.hex_size
                 img = img.resize((hex_size, hex_size), Image.LANCZOS)
                 tk_img = ImageTk.PhotoImage(img)
                 x, y = self.map_model.hex_to_pixel(q, r)
-                print(f"[DEBUG] Rysuję żeton {token_id} na pikselach: x={x}, y={y}, rozmiar={hex_size}")
+                # USUŃ DEBUGI: Rysuję żeton
                 self.canvas.create_image(x, y, image=tk_img, anchor="center")
                 self.token_images[token_id] = tk_img  # referencja, by nie znikł z pamięci
             except Exception as e:
-                print(f"[DEBUG] Błąd ładowania żetonu {token_id}: {e}")
-        print("[DEBUG] Koniec rysowania żetonów na mapie")
+                # USUŃ DEBUGI: Błąd ładowania żetonu
+                pass
+        # USUŃ DEBUGI: Koniec rysowania żetonów na mapie
 
     def _on_hover(self, event):
         self.canvas.delete("hover_zoom")
