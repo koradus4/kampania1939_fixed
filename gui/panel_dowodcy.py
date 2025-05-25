@@ -14,7 +14,8 @@ class PanelDowodcy:
 
         # Tworzenie głównego okna
         self.root = tk.Tk()
-        self.root.title(f"Panel Dowódcy - {self.gracz.nation}")
+        # Ustaw tytuł z numerem dowódcy i nacją
+        self.root.title(f"Dowódca {self.gracz.id} – {self.gracz.nation}")
         self.root.state("zoomed")
 
         # Wyświetlanie numeru tury
