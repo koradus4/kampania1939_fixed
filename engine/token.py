@@ -30,24 +30,45 @@ class Token:
     def from_json(data: Dict[str, Any], pos: Optional[Dict[str, int]] = None):
         q = pos['q'] if pos else None
         r = pos['r'] if pos else None
+        # Ustalanie nacji
+        nation = data.get('nation', '')
+        if not nation:
+            if '_PL_' in data['id']:
+                nation = 'Polska'
+            elif '_N_' in data['id']:
+                nation = 'Niemcy'
+            else:
+                nation = ''
+        # Ustalanie ownera
+        owner = data.get('owner', '')
+        player_id = ''
+        if pos and 'id' in pos:
+            # Wyciągnięcie player_id z id żetonu, np. AC_Pluton__2_PL_AC_Pluton
+            parts = data['id'].split('__')
+            if len(parts) > 1:
+                player_id = parts[1].split('_')[0]
+        if not owner:
+            owner = f"{player_id} ({nation})" if player_id and nation else player_id or nation
+        stats = {
+            'move': data.get('move', 0),
+            'combat_value': data.get('combat_value', 0),
+            'maintenance': data.get('maintenance', 0),
+            'price': data.get('price', 0),
+            'sight': data.get('sight', 0),
+            'unitType': data.get('unitType', ''),
+            'unitSize': data.get('unitSize', ''),
+            'label': data.get('label', ''),
+            'attack': data.get('attack', {}).get('value', 0),
+            'image': data.get('image', ''),
+            'shape': data.get('shape', ''),
+            'w': data.get('w', 0),
+            'h': data.get('h', 0),
+            'nation': nation
+        }
         return Token(
             id=data['id'],
-            owner=data.get('owner', ''),
-            stats={
-                'move': data.get('move', 0),
-                'combat_value': data.get('combat_value', 0),
-                'maintenance': data.get('maintenance', 0),
-                'price': data.get('price', 0),
-                'sight': data.get('sight', 0),
-                'unitType': data.get('unitType', ''),
-                'unitSize': data.get('unitSize', ''),
-                'label': data.get('label', ''),
-                'attack': data.get('attack', {}).get('value', 0),
-                'image': data.get('image', ''),
-                'shape': data.get('shape', ''),
-                'w': data.get('w', 0),
-                'h': data.get('h', 0)
-            },
+            owner=owner,
+            stats=stats,
             q=q,
             r=r
         )

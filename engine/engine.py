@@ -28,13 +28,18 @@ class GameEngine:
             'tokens': [t.serialize() for t in self.tokens]
         }
 
-    def execute_action(self, action):
-        """Rejestruje i wykonuje akcję (np. ruch, walka)."""
+    def execute_action(self, action, player=None):
+        """Rejestruje i wykonuje akcję (np. ruch, walka). Weryfikuje właściciela żetonu."""
+        # Sprawdzenie właściciela żetonu
+        token = next((t for t in self.tokens if t.id == getattr(action, 'token_id', None)), None)
+        if player and token:
+            expected_owner = f"{player.id} ({player.nation})"
+            if token.owner != expected_owner:
+                return False, "Ten żeton nie należy do twojego dowódcy."
         return action.execute(self)
 
     def get_visible_tokens(self, player):
         """Zwraca listę żetonów widocznych dla danego gracza (elastyczne filtrowanie)."""
-        # Przyszłościowo: obsługa pola 'visible_for', mgły wojny, szpiegów itp.
         visible = []
         player_role = getattr(player, 'role', '').strip().lower()
         player_nation = getattr(player, 'nation', '').strip().lower()
@@ -51,7 +56,7 @@ class GameEngine:
             if player_role == 'generał' and token_nation == player_nation:
                 visible.append(token)
             # 3. Dowódca widzi tylko swoje żetony
-            elif player_role == 'dowódca' and token_owner == f"{player_id} ({player.nation})":
+            elif player_role == 'dowódca' and token_owner == f"{player_id} ({player_nation.title()})":
                 visible.append(token)
         return visible
 

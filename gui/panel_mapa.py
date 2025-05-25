@@ -95,7 +95,13 @@ class PanelMapa(tk.Frame):
                 continue
             img_path = token_data.stats.get("image")
             if not img_path:
-                img_path = f"assets/tokens/{token_data.stats.get('nation','')}/{token_id}/token.png"
+                nation = token_data.stats.get('nation', '')
+                img_path = f"assets/tokens/{nation}/{token_id}/token.png"
+            if not os.path.exists(img_path):
+                print(f"[DEBUG] Brak pliku z obrazem żetonu {token_id}: {img_path}")
+                img_path = "assets/tokens/default/token.png" if os.path.exists("assets/tokens/default/token.png") else None
+                if not img_path:
+                    continue
             print(f"[DEBUG] Ścieżka do obrazka: {img_path}")
             try:
                 img = Image.open(img_path)
@@ -111,17 +117,16 @@ class PanelMapa(tk.Frame):
         print("[DEBUG] Koniec rysowania żetonów na mapie")
 
     def _on_hover(self, event):
-        # Usuwa poprzedni powiększony żetony
         self.canvas.delete("hover_zoom")
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
-        # Znajdź heks pod kursorem
         hr = self.map_model.coords_to_hex(x, y)
         if not hr:
             return
         q, r = hr
-        # Sprawdź, czy na tym heksie jest żeton
-        for token in self.tokens:
+        # Używaj tylko widocznych żetonów
+        visible_tokens = self.game_engine.get_visible_tokens(self.player) if self.player else self.tokens
+        for token in visible_tokens:
             if token.q == q and token.r == r:
                 token_id = token.id
                 token_data = next((t for t in self.tokens if t.id == token_id), None)
@@ -129,7 +134,13 @@ class PanelMapa(tk.Frame):
                     return
                 img_path = token_data.stats.get("image")
                 if not img_path:
-                    img_path = f"assets/tokens/{token_data.stats.get('nation','')}/{token_id}/token.png"
+                    nation = token_data.stats.get('nation', '')
+                    img_path = f"assets/tokens/{nation}/{token_id}/token.png"
+                if not os.path.exists(img_path):
+                    print(f"[DEBUG] Brak pliku z obrazem żetonu {token_id}: {img_path}")
+                    img_path = "assets/tokens/default/token.png" if os.path.exists("assets/tokens/default/token.png") else None
+                    if not img_path:
+                        continue
                 try:
                     img = Image.open(img_path)
                     hex_size = self.map_model.hex_size
@@ -138,13 +149,9 @@ class PanelMapa(tk.Frame):
                     tk_img = ImageTk.PhotoImage(img)
                     x_pix, y_pix = self.map_model.hex_to_pixel(q, r)
                     self.canvas.create_image(x_pix, y_pix, image=tk_img, anchor="center", tags="hover_zoom")
-                    # Przechowuj referencję, by nie znikł z pamięci
-                    if not hasattr(self, '_hover_zoom_images'):
-                        self._hover_zoom_images = []
-                    self._hover_zoom_images.clear()
-                    self._hover_zoom_images.append(tk_img)
+                    self.token_images[f"hover_{token_id}"] = tk_img
                 except Exception as e:
-                    print(f"[DEBUG] Błąd ładowania powiększonego żetonu {token_id}: {e}")
+                    print(f"[DEBUG] Błąd ładowania żetonu {token_id}: {e}")
                 break
 
     def _bind_hover(self):
