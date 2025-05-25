@@ -116,12 +116,13 @@ class Board:
         return int((abs(aq - bq) + abs(aq + ar - bq - br) + abs(ar - br)) / 2)
 
     def coords_to_hex(self, x, y):
-        for q in range(self.cols):
-            for r in range(self.rows):
-                cx, cy = self.hex_to_pixel(q, r)
-                verts = get_hex_vertices(cx, cy, self.hex_size)
-                if point_in_polygon(x, y, verts):
-                    return q, r
+        # Nowa wersja: iteruj po wszystkich kluczach terrain (q,r mogą być ujemne)
+        for hex_id in self.terrain:
+            q, r = map(int, hex_id.split(","))
+            cx, cy = self.hex_to_pixel(q, r)
+            verts = get_hex_vertices(cx, cy, self.hex_size)
+            if point_in_polygon(x, y, verts):
+                return q, r
         return None
 
     def get_overlay_items(self):
