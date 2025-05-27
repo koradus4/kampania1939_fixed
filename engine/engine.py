@@ -1,6 +1,7 @@
 import random
 from engine.board import Board
 from engine.token import load_tokens
+from engine.save_manager import save_state
 
 class GameEngine:
     def __init__(self, map_path: str, tokens_index_path: str, tokens_start_path: str, seed: int = 42):
@@ -16,6 +17,10 @@ class GameEngine:
         self.turn += 1
         self.current_player = (self.current_player + 1) % self.get_player_count()
         # Reset ruchów, morale, pogoda itp.
+
+    def end_turn(self):
+        self.next_turn()
+        save_state(self, "saves/")
 
     def get_player_count(self):
         # Zaimplementuj zgodnie z logiką graczy

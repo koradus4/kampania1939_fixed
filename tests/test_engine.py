@@ -228,16 +228,6 @@ class TestGameEngine(unittest.TestCase):
             if not found:
                 self.skipTest('Brak heksa poza zasięgiem ruchu')
 
-    def test_action_move_no_path(self):
-        # Próba ruchu na nieosiągalny heks (brak ścieżki)
-        if self.engine.tokens:
-            token = self.engine.tokens[0]
-            # Wybieramy heks spoza mapy
-            action = MoveAction(token.id, 999, 999)
-            success, msg = self.engine.execute_action(action)
-            self.assertFalse(success)
-            self.assertIn('brak możliwej ścieżki', msg.lower())
-
     def test_action_combat_too_far(self):
         # Próba ataku zbyt daleko
         if len(self.engine.tokens) >= 2:

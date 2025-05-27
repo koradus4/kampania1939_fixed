@@ -48,9 +48,6 @@ class PanelMapa(tk.Frame):
         self.player = getattr(game_engine, 'current_player_obj', None)
         self._draw_tokens_on_map()
 
-        # hover
-        self._bind_hover()
-
     def _draw_hex_grid(self):
         self.canvas.delete("hex")
         s = self.map_model.hex_size
@@ -75,112 +72,85 @@ class PanelMapa(tk.Frame):
                     )
 
     def _draw_tokens_on_map(self):
-        # USUŃ DEBUGI: Start rysowania żetonów na mapie
-        # Pobierz gracza z game_engine (musi być ustawiony przez panel)
-        player = getattr(self, 'player', None)
-        if player is not None:
-            tokens = self.game_engine.get_visible_tokens(player)
-        else:
-            tokens = self.tokens  # fallback: wszystkie
-        tokens = [
-            {'id': t.id, 'q': t.q, 'r': t.r} for t in tokens if t.q is not None and t.r is not None
-        ]
+        self.canvas.delete("token")
+        # Filtrowanie widoczności żetonów
+        tokens = self.tokens
+        if hasattr(self, 'player') and hasattr(self.player, 'role'):
+            if self.player.role == 'Generał':
+                # Generał widzi tylko żetony swojej nacji, należące do dowódców tej nacji
+                tokens = [t for t in self.tokens if t.owner.endswith(f"({self.player.nation})") and t.owner != f"{self.player.id} ({self.player.nation})"]
+            elif self.player.role == 'Dowódca':
+                # Dowódca widzi tylko swoje żetony
+                tokens = [t for t in self.tokens if t.owner == f"{self.player.id} ({self.player.nation})"]
         for token in tokens:
-            token_id = token["id"]
-            q, r = token["q"], token["r"]
-            # USUŃ DEBUGI: Próba rysowania żetonu
-            token_data = next((t for t in self.game_engine.tokens if t.id == token_id), None)
-            if not token_data:
-                # USUŃ DEBUGI: Brak danych żetonu
-                continue
-            img_path = token_data.stats.get("image")
-            if not img_path:
-                nation = token_data.stats.get('nation', '')
-                img_path = f"assets/tokens/{nation}/{token_id}/token.png"
-            if not os.path.exists(img_path):
-                # USUŃ DEBUGI: Brak pliku z obrazem żetonu
-                img_path = "assets/tokens/default/token.png" if os.path.exists("assets/tokens/default/token.png") else None
+            if token.q is not None and token.r is not None:
+                img_path = token.stats.get("image")
                 if not img_path:
-                    continue
-            # USUŃ DEBUGI: Ścieżka do obrazka
-            try:
-                img = Image.open(img_path)
-                hex_size = self.map_model.hex_size
-                img = img.resize((hex_size, hex_size), Image.LANCZOS)
-                tk_img = ImageTk.PhotoImage(img)
-                x, y = self.map_model.hex_to_pixel(q, r)
-                # USUŃ DEBUGI: Rysuję żeton
-                self.canvas.create_image(x, y, image=tk_img, anchor="center")
-                self.token_images[token_id] = tk_img  # referencja, by nie znikł z pamięci
-            except Exception as e:
-                # USUŃ DEBUGI: Błąd ładowania żetonu
-                pass
-        # USUŃ DEBUGI: Koniec rysowania żetonów na mapie
-
-    def _on_hover(self, event):
-        self.canvas.delete("hover_zoom")
-        x = self.canvas.canvasx(event.x)
-        y = self.canvas.canvasy(event.y)
-        hr = self.map_model.coords_to_hex(x, y)
-        if not hr:
-            return
-        q, r = hr
-        # Używaj tylko widocznych żetonów
-        visible_tokens = self.game_engine.get_visible_tokens(self.player) if self.player else self.tokens
-        for token in visible_tokens:
-            if token.q == q and token.r == r:
-                token_id = token.id
-                token_data = next((t for t in self.tokens if t.id == token_id), None)
-                if not token_data:
-                    return
-                img_path = token_data.stats.get("image")
-                if not img_path:
-                    nation = token_data.stats.get('nation', '')
-                    img_path = f"assets/tokens/{nation}/{token_id}/token.png"
+                    nation = token.stats.get('nation', '')
+                    img_path = f"assets/tokens/{nation}/{token.id}/token.png"
                 if not os.path.exists(img_path):
-                    print(f"[DEBUG] Brak pliku z obrazem żetonu {token_id}: {img_path}")
                     img_path = "assets/tokens/default/token.png" if os.path.exists("assets/tokens/default/token.png") else None
                     if not img_path:
                         continue
                 try:
                     img = Image.open(img_path)
                     hex_size = self.map_model.hex_size
-                    zoom_size = int(hex_size * 2)
-                    img = img.resize((zoom_size, zoom_size), Image.LANCZOS)
+                    img = img.resize((hex_size, hex_size), Image.LANCZOS)
                     tk_img = ImageTk.PhotoImage(img)
-                    x_pix, y_pix = self.map_model.hex_to_pixel(q, r)
-                    self.canvas.create_image(x_pix, y_pix, image=tk_img, anchor="center", tags="hover_zoom")
-                    self.token_images[f"hover_{token_id}"] = tk_img
-                except Exception as e:
-                    print(f"[DEBUG] Błąd ładowania żetonu {token_id}: {e}")
-                break
-
-    def _bind_hover(self):
-        self.canvas.bind("<Motion>", self._on_hover)
-
-    def _unbind_hover(self):
-        self.canvas.unbind("<Motion>")
-
-    def _on_click(self, ev):
-        x = self.canvas.canvasx(ev.x)
-        y = self.canvas.canvasy(ev.y)
-        # Znajdź heks pod kliknięciem
-        hr = self.map_model.coords_to_hex(x, y)
-        if hr:
-            q, r = hr
-            # Podświetl kliknięty heks
-            cx, cy = self.map_model.hex_to_pixel(q, r)
-            s = self.map_model.hex_size
-            verts = get_hex_vertices(cx, cy, s)
-            self.canvas.delete("highlight")
-            self.canvas.create_polygon(verts, outline="yellow", width=3, fill="", tags="highlight")
-        if hasattr(self, "_click_cb"):
-            self._click_cb(*hr)
-
-    def bind_click_callback(self, cb):
-        self._click_cb = cb
+                    x, y = self.map_model.hex_to_pixel(token.q, token.r)
+                    self.canvas.create_image(x, y, image=tk_img, anchor="center", tags="token")
+                    self.token_images[token.id] = tk_img
+                except Exception:
+                    pass
 
     def refresh(self):
         self._draw_hex_grid()
         self._draw_tokens_on_map()
-        self._bind_hover()
+
+    def _on_click(self, event):
+        # Blokada akcji dla generała (podgląd, brak ruchu)
+        if hasattr(self, 'player') and hasattr(self.player, 'role') and self.player.role == 'Generał':
+            from tkinter import messagebox
+            messagebox.showinfo("Podgląd", "Generał nie może wykonywać akcji na żetonach.")
+            return
+        x = self.canvas.canvasx(event.x)
+        y = self.canvas.canvasy(event.y)
+        hr = self.map_model.coords_to_hex(x, y)
+        if not hasattr(self, 'selected_token_id'):
+            self.selected_token_id = None
+        # Sprawdź, czy kliknięto na żeton
+        clicked_token = None
+        for token in self.tokens:
+            if token.q is not None and token.r is not None:
+                tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
+                hex_size = self.map_model.hex_size
+                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
+                    clicked_token = token
+                    break
+        # Sprawdzenie właściciela żetonu dla dowódcy
+        if clicked_token:
+            if hasattr(self, 'player') and hasattr(self.player, 'id') and hasattr(self.player, 'nation'):
+                expected_owner = f"{self.player.id} ({self.player.nation})"
+                if clicked_token.owner != expected_owner:
+                    from tkinter import messagebox
+                    messagebox.showerror("Błąd", "Możesz ruszać tylko swoimi żetonami!")
+                    return
+            self.selected_token_id = clicked_token.id
+            print(f"Wybrano żeton: {clicked_token.id}")
+        elif hr and self.selected_token_id:
+            from engine.action import MoveAction
+            token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
+            if token:
+                action = MoveAction(token.id, hr[0], hr[1])
+                print(f"[DEBUG] Próba ruchu: {token.id} z {token.q},{token.r} na {hr[0]},{hr[1]}")
+                success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
+                print(f"[MOVE] {msg}")
+                if not success:
+                    from tkinter import messagebox
+                    messagebox.showerror("Błąd ruchu", msg)
+                if success:
+                    self.selected_token_id = None
+                self.refresh()
+        else:
+            self.selected_token_id = None
+        self.refresh()

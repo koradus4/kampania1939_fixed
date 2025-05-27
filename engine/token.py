@@ -73,6 +73,17 @@ class Token:
             r=r
         )
 
+    @staticmethod
+    def from_dict(data: Dict[str, Any]):
+        # Pozwala odtworzyć Token z serialize()
+        return Token(
+            id=data['id'],
+            owner=data['owner'],
+            stats=data['stats'],
+            q=data.get('q'),
+            r=data.get('r')
+        )
+
 
 def load_tokens(index_path: str, start_path: str):
     """Ładuje żetony z plików JSON (index + start) i zwraca listę obiektów Token."""
