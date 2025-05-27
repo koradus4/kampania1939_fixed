@@ -4,11 +4,13 @@ from engine.token import Token
 
 def save_state(engine, path):
     """Zapisuje stan gry do pliku JSON (snapshot)."""
+    # Serializujemy tylko klucze terenu, nie obiekty Tile
+    terrain_keys = list(getattr(engine.board, 'terrain', {}).keys()) if getattr(engine, 'board', None) else []
     state = {
         'turn_number': getattr(engine, 'turn_number', 0),
         'current_player': getattr(engine, 'current_player', None),
         'tokens': [t.serialize() for t in engine.tokens],
-        'map': getattr(engine.board, 'terrain', {}),
+        'map': terrain_keys,
         'logs': getattr(engine, 'logs', [])
     }
     os.makedirs(path, exist_ok=True)

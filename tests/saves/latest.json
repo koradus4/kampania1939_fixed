@@ -1,0 +1,32 @@
+{
+  "turn_number": 0,
+  "current_player": 1,
+  "tokens": [
+    {
+      "id": "T1",
+      "owner": "",
+      "stats": {
+        "move": 5,
+        "combat_value": 2,
+        "maintenance": 0,
+        "price": 0,
+        "sight": 0,
+        "unitType": "",
+        "unitSize": "",
+        "label": "",
+        "attack": 0,
+        "image": "",
+        "shape": "",
+        "w": 0,
+        "h": 0,
+        "nation": ""
+      },
+      "q": 0,
+      "r": 0
+    }
+  ],
+  "map": [
+    "0,0"
+  ],
+  "logs": []
+}
