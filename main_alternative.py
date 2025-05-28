@@ -19,10 +19,6 @@ if __name__ == "__main__":
         seed=42
     )
 
-    # Debug: sprawdź owner i nation po wczytaniu żetonów
-    for t in game_engine.tokens:
-        print(f"[DEBUG] Załadowano żeton {t.id}: owner='{t.owner}', nation='{t.stats.get('nation','')}'")
-
     # Tworzenie obiektów graczy z uwzględnieniem czasu na turę
     players = [
         Player(1, miejsca[0], "Generał", czasy[0], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Juliusz Rómmel.png"),
@@ -82,3 +78,7 @@ if __name__ == "__main__":
         # Sprawdzenie warunku zakończenia gry
         if turn_manager.is_game_over():
             break
+
+    # Debug: sprawdź owner i nation po wczytaniu żetonów
+    # for t in game_engine.tokens:
+    #     print(f"[DEBUG] Załadowano żeton {t.id}: owner='{t.owner}', nation='{t.stats.get('nation','')}'")

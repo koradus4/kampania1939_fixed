@@ -1,0 +1,1 @@
+# Plik inicjalizujący pakiet testów

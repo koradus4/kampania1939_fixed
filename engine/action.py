@@ -33,7 +33,11 @@ class MoveAction(Action):
             token.maxMovePoints = max_mp
         if token.currentMovePoints <= 0:
             return False, "Brak punktów ruchu."
+        # Blokada: nie można wejść na pole nieprzekraczalne
+        if tile.move_mod == -1:
+            return False, "Pole nieprzekraczalne (move_mod == -1)."
         path = engine.board.find_path(start, goal, max_cost=token.stats.get('move', 0))
+        print(f"[DEBUG][MOVE] path={path}")
         if not path:
             return False, "Brak możliwej ścieżki."
         if not token.can_move_to(len(path)-1):
@@ -46,11 +50,13 @@ class MoveAction(Action):
                 path_cost += 1 + tile.move_mod
             else:
                 return False, "Błąd mapy: brak pola na trasie."
+        print(f"[DEBUG][MOVE] path_cost={path_cost}, przed ruchem MP={token.currentMovePoints}")
         if token.currentMovePoints < path_cost:
             return False, f"Za mało punktów ruchu (koszt: {path_cost}, dostępne: {token.currentMovePoints})"
         # Wykonaj ruch dopiero po walidacji
         token.set_position(self.dest_q, self.dest_r)
         token.currentMovePoints -= path_cost
+        print(f"[DEBUG][MOVE] po ruchu MP={token.currentMovePoints}")
         return True, f"Ruch wykonany na {self.dest_q},{self.dest_r} (koszt: {path_cost}, pozostało MP: {token.currentMovePoints})"
 
 class CombatAction(Action):

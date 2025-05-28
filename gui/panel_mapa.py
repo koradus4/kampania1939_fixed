@@ -130,25 +130,24 @@ class PanelMapa(tk.Frame):
                     break
         # Sprawdzenie właściciela żetonu dla dowódcy
         if clicked_token:
-            print(f"[DEBUG] Kliknięto żeton: {clicked_token.id}, owner={clicked_token.owner}")
             if hasattr(self, 'player') and hasattr(self.player, 'id') and hasattr(self.player, 'nation'):
                 expected_owner = f"{self.player.id} ({self.player.nation})"
-                print(f"[DEBUG] Oczekiwany owner: {expected_owner}")
                 if clicked_token.owner != expected_owner:
                     from tkinter import messagebox
                     messagebox.showerror("Błąd", "Możesz ruszać tylko swoimi żetonami!")
-                    print(f"[DEBUG] Odrzucono wybór żetonu {clicked_token.id} - nie należy do gracza!")
                     return
             self.selected_token_id = clicked_token.id
-            print(f"[DEBUG] Wybrano żeton: {clicked_token.id}")
         elif hr and self.selected_token_id:
             from engine.action import MoveAction
             token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
             if token:
-                print(f"[DEBUG] Próba ruchu żetonem: {token.id} (owner={token.owner}) z {token.q},{token.r} na {hr[0]},{hr[1]}")
                 action = MoveAction(token.id, hr[0], hr[1])
                 success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
-                print(f"[MOVE] {msg}")
+                # Debug: punkty ruchu po ruchu
+                token_engine = next((t for t in self.game_engine.tokens if t.id == token.id), None)
+                print(f"[DEBUG] Po ruchu: {token.id} MP_GUI={getattr(token, 'currentMovePoints', '?')} MP_ENGINE={getattr(token_engine, 'currentMovePoints', '?')}")
+                # Synchronizacja żetonów po ruchu
+                self.tokens = self.game_engine.tokens
                 if not success:
                     from tkinter import messagebox
                     messagebox.showerror("Błąd ruchu", msg)

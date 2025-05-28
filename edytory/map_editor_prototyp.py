@@ -30,14 +30,14 @@ def to_rel(path: str) -> str:
 # Konfiguracja rodzajów terenu
 # ----------------------------
 TERRAIN_TYPES = {
-    "teren_płaski": {"move_mod": -1, "defense_mod": 0},
-    "mała rzeka": {"move_mod": -2, "defense_mod": 1},
-    "duża rzeka": {"move_mod": -4, "defense_mod": -1},
-    "las": {"move_mod": -2, "defense_mod": 2},
-    "bagno": {"move_mod": -3, "defense_mod": 1},
-    "mała miejscowość": {"move_mod": -2, "defense_mod": 2},
-    "miasto": {"move_mod": -2, "defense_mod": 2},
-    "most": {"move_mod": -1, "defense_mod": -1}
+    "teren_płaski": {"move_mod": 0, "defense_mod": 0},
+    "mała rzeka": {"move_mod": 2, "defense_mod": 1},
+    "duża rzeka": {"move_mod": 5, "defense_mod": -1},  # przekraczalna, koszt ruchu 6
+    "las": {"move_mod": 2, "defense_mod": 2},
+    "bagno": {"move_mod": 3, "defense_mod": 1},
+    "mała miejscowość": {"move_mod": 1, "defense_mod": 2},
+    "miasto": {"move_mod": 2, "defense_mod": 2},
+    "most": {"move_mod": 0, "defense_mod": -1}
 }
 
 # mapowanie państw → kolor mgiełki
@@ -385,7 +385,7 @@ class MapEditor:
                 if hex_id not in self.hex_data:
                     self.hex_data[hex_id] = {
                         "terrain_key": "teren_płaski",
-                        "move_mod": -1,
+                        "move_mod": 0,  # domyślnie teren przejezdny
                         "defense_mod": 0
                     }
 
@@ -548,7 +548,7 @@ class MapEditor:
             if spawn_nations:
                 self.spawn_info_label.config(text=f"Punkt wystawiania: {', '.join(spawn_nations)}")
             else:
-                self.spawn_info_label.config(text="Punkt wystawiania: brak")
+                self.spawn_info_label.config(text="Punkt wystawienia: brak")
 
             # --- POWIĘKSZENIE HEKSA Z ŻETONEM ---
             if token and "image" in token and hex_id in self.hex_centers:
@@ -596,38 +596,26 @@ class MapEditor:
             if token and "image" in token:
                 img_path = ASSET_ROOT / token["image"]
                 if not img_path.exists():
-                    # Usuń martwy wpis żetonu
                     terrain.pop("token", None)
         # --- KONIEC USUWANIA ---
-        optimized_data = {}
-        for hex_id, terrain in self.hex_data.items():
-            if (terrain.get('move_mod', 0) != self.hex_defaults.get('move_mod', 0) or
-                terrain.get('defense_mod', 0) != self.hex_defaults.get('defense_mod', 0) or
-                "token" in terrain):  # Uwzględnij dane żetonów
-                optimized_data[hex_id] = terrain
-
+        # ZAPISZ CAŁĄ SIATKĘ HEKSÓW (nie tylko zmienione)
         map_data = {
-            "terrain": optimized_data,
+            "meta": {
+                "hex_size": self.hex_size,
+                "cols": self.config.get("grid_cols"),
+                "rows": self.config.get("grid_rows"),
+                "coord_system": "axial",
+                "orientation": "pointy"
+            },
+            "terrain": self.hex_data,
             "key_points": self.key_points,
             "spawn_points": self.spawn_points
         }
         self.current_working_file = self.get_working_data_path()
         print(f"Zapisywanie danych do: {self.current_working_file}")
         with open(self.current_working_file, "w", encoding="utf-8") as f:
-            full_data = {
-                "meta": {
-                    "hex_size": self.hex_size,
-                    "cols": self.config.get("grid_cols"),
-                    "rows": self.config.get("grid_rows"),
-                    "coord_system": "axial",
-                    "orientation": "pointy"
-                },
-                "terrain": optimized_data,
-                "key_points": self.key_points,
-                "spawn_points": self.spawn_points
-            }
-
-            json.dump(full_data, f, indent=2, ensure_ascii=False)
+            import json
+            json.dump(map_data, f, indent=2, ensure_ascii=False)
         messagebox.showinfo("Zapisano", f"Dane mapy zostały zapisane w:\n{self.current_working_file}\n"
                                         f"Liczba kluczowych punktów: {len(self.key_points)}\n"
                                         f"Liczba punktów wystawienia: {sum(len(v) for v in self.spawn_points.values())}")

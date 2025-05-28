@@ -99,6 +99,8 @@ class Board:
                     continue
                 if self.is_occupied(*neighbor):
                     continue
+                if tile.move_mod == -1:
+                    continue
                 move_cost = 1 + tile.move_mod
                 new_cost = cost_so_far[current] + move_cost
                 if new_cost > max_cost:
