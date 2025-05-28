@@ -104,10 +104,10 @@ class TokenEditor:
         self.unit_maintenance = tk.StringVar()
         self.purchase_value = tk.StringVar()
         self.sight_range = tk.StringVar()  # Nowa zmienna dla zasięgu widzenia
-        # Dodajemy obsługę punktów ruchu na turę
-        self.max_move_points = tk.StringVar()
-        self.current_move_points = tk.StringVar()
-        self._max_mp_manual = False  # Flaga: czy użytkownik ręcznie ustawił maxMovePoints
+        # Usuwamy obsługę maxMovePoints i currentMovePoints z edytora
+        # self.max_move_points = tk.StringVar()
+        # self.current_move_points = tk.StringVar()
+        # self._max_mp_manual = False  # Flaga: czy użytkownik ręcznie ustawił maxMovePoints
 
         self.custom_bg_path = None
 
@@ -600,9 +600,7 @@ class TokenEditor:
             ("Zasięg Widzenia:", self.sight_range, "white", tk.NORMAL),  # Przeniesiono wyżej
             ("Wartość Bojowa:", self.combat_value, "gray", tk.NORMAL),  # Odblokowane pole
             ("Koszt Utrzymania:", self.unit_maintenance, "red", tk.NORMAL),
-            ("Wartość Zakupu:", self.purchase_value, "white", tk.NORMAL),
-            ("Max MP (na turę):", self.max_move_points, "white", tk.NORMAL),
-            ("Aktualne MP:", self.current_move_points, "white", tk.NORMAL)
+            ("Wartość Zakupu:", self.purchase_value, "white", tk.NORMAL)
         ]:
             entry_frame = tk.Frame(numeric_frame, bg="darkolivegreen")
             entry_frame.pack(fill=tk.X, padx=5, pady=2)
@@ -610,10 +608,10 @@ class TokenEditor:
             entry = tk.Entry(entry_frame, textvariable=var, width=8, state=state)
             entry.pack(side=tk.RIGHT)
             # Obsługa ręcznej zmiany maxMovePoints
-            if var is self.max_move_points:
-                def on_max_mp_change(*args):
-                    self._max_mp_manual = True
-                self.max_move_points.trace_add('write', on_max_mp_change)
+            # if var is self.max_move_points:
+            #     def on_max_mp_change(*args):
+            #         self._max_mp_manual = True
+            #     self.max_move_points.trace_add('write', on_max_mp_change)
 
     def update_support_buttons(self):
         """Aktualizuje stan przycisków wsparcia na podstawie wybranego typu jednostki"""
@@ -724,10 +722,10 @@ class TokenEditor:
         size = self.unit_size.get()
         self.movement_points.set(defaults["ruch"].get(ut, ""))
         # Synchronizacja maxMovePoints z movement_points jeśli nie było ręcznej zmiany
-        if not self._max_mp_manual:
-            self.max_move_points.set(self.movement_points.get())
+        # if not self._max_mp_manual:
+        #     self.max_move_points.set(self.movement_points.get())
         # currentMovePoints zawsze domyślnie = maxMovePoints
-        self.current_move_points.set(self.max_move_points.get())
+        # self.current_move_points.set(self.max_move_points.get())
         self.attack_range.set(defaults["range"].get(ut, ""))
         self.attack_value.set(defaults["attack"][size].get(ut, ""))
         # Ustaw domyślną wartość bojową (żywotność)
@@ -1103,9 +1101,7 @@ class TokenEditor:
             # względna ścieżka do stałej nazwy pliku
             "image": str((Path('assets') / 'tokens' / nation / token_id / 'token.png')
                          .as_posix()),
-            "w": FINAL_SIZE, "h": FINAL_SIZE,
-            "maxMovePoints": int(self.max_move_points.get() or 0),
-            "currentMovePoints": int(self.current_move_points.get() or 0)
+            "w": FINAL_SIZE, "h": FINAL_SIZE
         }
         with open(token_dir / "token.json", "w", encoding="utf-8") as fh:
             json.dump(meta, fh, indent=2, ensure_ascii=False)
@@ -1296,8 +1292,7 @@ class TokenEditor:
             self.bg_translate_x = token_data.get("bg_translate_x", 0)
             self.bg_translate_y = token_data.get("bg_translate_y", 0)
             self.variable_text_color = token_data.get("variable_text_color", "black")
-            self.max_move_points.set(token_data.get("maxMovePoints", str(token_data.get("move", ""))))
-            self.current_move_points.set(token_data.get("currentMovePoints", self.max_move_points.get()))
+            # Usuwamy maxMovePoints i currentMovePoints z edytora
                 
             # Wczytaj dźwięki z podkatalogu tokena
             for sound_type in ["sound_attack", "sound_move", "sound_destroy"]:
@@ -1373,8 +1368,7 @@ class TokenEditor:
             self.bg_translate_x = token_data.get("bg_translate_x", 0)
             self.bg_translate_y = token_data.get("bg_translate_y", 0)
             self.variable_text_color = token_data.get("variable_text_color", "black")
-            self.max_move_points.set(token_data.get("maxMovePoints", str(token_data.get("move", ""))))
-            self.current_move_points.set(token_data.get("currentMovePoints", self.max_move_points.get()))
+            # Usuwamy maxMovePoints i currentMovePoints z edytora
                 
             # Wczytaj dźwięki z podkatalogu tokena
             for sound_type in ["sound_attack", "sound_move", "sound_destroy"]:

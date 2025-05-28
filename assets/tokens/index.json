@@ -18,101 +18,28 @@
     "owner": "5 (Niemcy)",
     "image": "assets/tokens/Niemcy/AC_Kompania__5_N_AC_Kompania/token.png",
     "w": 240,
-    "h": 240,
-    "maxMovePoints": 5,
-    "currentMovePoints": 5
+    "h": 240
   },
   {
-    "id": "AP_Batalion__6_N_AP_Batalion",
+    "id": "TC_Kompania__6_N_TC_Kompania",
     "nation": "Niemcy",
-    "unitType": "AP",
-    "unitSize": "Batalion",
-    "shape": "prostokąt",
-    "label": "6_N_AP_Batalion",
-    "move": 16,
-    "attack": {
-      "range": 4,
-      "value": 9
-    },
-    "combat_value": 30,
-    "maintenance": 9,
-    "price": 54,
-    "sight": 3,
-    "owner": "6 (Niemcy)",
-    "image": "assets/tokens/Niemcy/AP_Batalion__6_N_AP_Batalion/token.png",
-    "w": 240,
-    "h": 240,
-    "maxMovePoints": 5,
-    "currentMovePoints": 5
-  },
-  {
-    "id": "P_Batalion__5_N_P_Batalion",
-    "nation": "Niemcy",
-    "unitType": "P",
-    "unitSize": "Batalion",
-    "shape": "prostokąt",
-    "label": "5_N_P_Batalion",
-    "move": 5,
-    "attack": {
-      "range": 1,
-      "value": 8
-    },
-    "combat_value": 48,
-    "maintenance": 8,
-    "price": 54,
-    "sight": 3,
-    "owner": "5 (Niemcy)",
-    "image": "assets/tokens/Niemcy/P_Batalion__5_N_P_Batalion/token.png",
-    "w": 240,
-    "h": 240,
-    "maxMovePoints": 5,
-    "currentMovePoints": 5
-  },
-  {
-    "id": "P_Pluton__6_N_P_Pluton",
-    "nation": "Niemcy",
-    "unitType": "P",
-    "unitSize": "Pluton",
-    "shape": "prostokąt",
-    "label": "6_N_P_Pluton",
-    "move": 5,
-    "attack": {
-      "range": 1,
-      "value": 2
-    },
-    "combat_value": 8,
-    "maintenance": 2,
-    "price": 18,
-    "sight": 3,
-    "owner": "6 (Niemcy)",
-    "image": "assets/tokens/Niemcy/P_Pluton__6_N_P_Pluton/token.png",
-    "w": 240,
-    "h": 240,
-    "maxMovePoints": 5,
-    "currentMovePoints": 5
-  },
-  {
-    "id": "AC_Kompania__3_PL_AC_Kompania",
-    "nation": "Polska",
-    "unitType": "AC",
+    "unitType": "TC",
     "unitSize": "Kompania",
     "shape": "prostokąt",
-    "label": "3_PL_AC_Kompania",
-    "move": 12,
+    "label": "6_N_TC_Kompania",
+    "move": 17,
     "attack": {
-      "range": 6,
-      "value": 9
+      "range": 4,
+      "value": 12
     },
-    "combat_value": 18,
-    "maintenance": 6,
-    "price": 44,
-    "sight": 3,
-    "owner": "3 (Polska)",
-    "image": "assets/tokens/Polska/AC_Kompania__3_PL_AC_Kompania/token.png",
+    "combat_value": 30,
+    "maintenance": 12,
+    "price": 58,
+    "sight": 2,
+    "owner": "6 (Niemcy)",
+    "image": "assets/tokens/Niemcy/TC_Kompania__6_N_TC_Kompania/token.png",
     "w": 240,
-    "h": 240,
-    "maxMovePoints": 5,
-    "currentMovePoints": 5
+    "h": 240
   },
   {
     "id": "P_Kompania__2_PL_P_Kompania",
@@ -133,9 +60,7 @@
     "owner": "2 (Polska)",
     "image": "assets/tokens/Polska/P_Kompania__2_PL_P_Kompania/token.png",
     "w": 240,
-    "h": 240,
-    "maxMovePoints": 5,
-    "currentMovePoints": 5
+    "h": 240
   },
   {
     "id": "P_Pluton__2_PL_P_Pluton",
@@ -156,31 +81,27 @@
     "owner": "2 (Polska)",
     "image": "assets/tokens/Polska/P_Pluton__2_PL_P_Pluton/token.png",
     "w": 240,
-    "h": 240,
-    "maxMovePoints": 5,
-    "currentMovePoints": 5
+    "h": 240
   },
   {
-    "id": "TC_Batalion__3_PL_TC_Batalion",
+    "id": "TC_Kompania__3_PL_TC_Kompania",
     "nation": "Polska",
     "unitType": "TC",
-    "unitSize": "Batalion",
+    "unitSize": "Kompania",
     "shape": "prostokąt",
-    "label": "3_PL_TC_Batalion",
+    "label": "3_PL_TC_Kompania",
     "move": 18,
     "attack": {
       "range": 3,
-      "value": 18
+      "value": 10
     },
-    "combat_value": 60,
-    "maintenance": 15,
-    "price": 72,
+    "combat_value": 30,
+    "maintenance": 10,
+    "price": 48,
     "sight": 2,
     "owner": "3 (Polska)",
-    "image": "assets/tokens/Polska/TC_Batalion__3_PL_TC_Batalion/token.png",
+    "image": "assets/tokens/Polska/TC_Kompania__3_PL_TC_Kompania/token.png",
     "w": 240,
-    "h": 240,
-    "maxMovePoints": 5,
-    "currentMovePoints": 5
+    "h": 240
   }
 ]
