@@ -18,7 +18,12 @@ class MoveAction(Action):
             return False, "Nie znaleziono żetonu."
         start = (token.q, token.r)
         goal = (self.dest_q, self.dest_r)
-        # WALIDACJA przed zmianą pozycji!
+        # WALIDACJA celu ruchu (punkt 4 checklisty)
+        tile = engine.board.get_tile(self.dest_q, self.dest_r)
+        if tile is None:
+            return False, "Pole docelowe nie istnieje na mapie."
+        # Możesz dodać tu dodatkowe warunki, np. czy pole nie jest ścianą lub inną przeszkodą
+        # ...istniejąca logika...
         path = engine.board.find_path(start, goal, max_cost=token.stats.get('move', 0))
         if not path:
             return False, "Brak możliwej ścieżki."

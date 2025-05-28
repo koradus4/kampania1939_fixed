@@ -10,21 +10,25 @@ gamedev.stackexchange.com
 .
 Obsługa wyjątków: Jeśli A* zwraca brak ścieżki lub przekroczono limit, przerwij MoveAction i np. powiadom o braku możliwości ruchu. Nie pozwól, by metoda wisiała bez odblokowania.
 Przykładowy prompt: „Jak uniknąć niekończącej się pętli w algorytmie A podczas wykonywania ruchu?”*
-2. Sprawdzanie właściciela żetonu
+
+--------
+~~2. Sprawdzanie właściciela żetonu~~
 Problem: Brak weryfikacji właściciela może pozwolić na ruch cudzymi jednostkami (cheating) lub błędy w logice gracza. Jeśli gra jest (lub będzie) sieciowa/wieloosobowa, sprawdzanie właściciela jest istotne. Jeśli gra jest jednopodmiotowa, problem nie dotyczy rozgrywki, ale warto planować sprawdzenie na przyszłość.
 Rozwiązanie:
 Dodaj pole właściciela: Zmień klasę żetonu/jednostki tak, aby miała ownerID albo wskaźnik na gracza.
 Weryfikuj przed ruchem: W kodzie wykonującym ruch (np. w metodzie MoveAction) sprawdź, czy token.owner == currentPlayer. Jeśli nie, odrzuć żądanie lub zgłoś wyjątek.
 Obsługa błędu: W tej chwili wystarczy zapisać notatkę (TODO) lub wyrzucić wyjątek/log, ponieważ ruch nieprawidłową jednostką prędzej czy później trzeba naprawić.
 Przykładowy prompt: „Dodaj weryfikację, czy żeton należy do aktualnego gracza przed wykonaniem ruchu.”
-3. Ruch na to samo pole
+--------
+~~3. Ruch na to samo pole~~
 Problem: Próba ruchu na pole, na którym jednostka już stoi, jest bezsensowna i może powodować niepotrzebne wywołania A*.
 Rozwiązanie:
 Sprawdź pozycję: Przed rozpoczęciem wyszukiwania ścieżki porównaj współrzędne (lub referencje) pola docelowego z polem aktualnym jednostki.
 Przerwij, jeśli takie samo: Jeśli są identyczne, zakończ funkcję ruchu od razu (np. zwróć informację „brak ruchu”). Nie wykonuj dalszych operacji.
 Log/komunikat: Opcjonalnie możesz logować takie zdarzenie lub poinformować użytkownika, że ruch był zbędny.
 Przykładowy prompt: „Jak sprawdzić w kodzie, czy cel ruchu jest taki sam jak aktualna pozycja jednostki, aby anulować niepotrzebny ruch?”
-4. Brak płytkiej walidacji celu
+--------
+~~4. Brak płytkiej walidacji celu~~
 Problem: Jeśli kod nie sprawdza na wstępie, czy cel ruchu jest poprawny (np. w granicach planszy, niezasłonięty ścianą, itp.), mogą wystąpić późniejsze błędy lub nieoczekiwane zachowanie. Brak wstępnej walidacji danych wejściowych jest ogólnie ryzykowny.
 Rozwiązanie:
 Podstawowa weryfikacja: Zanim puścisz A*, sprawdź natychmiast, czy podana pozycja jest prawidłowa: czy np. mieści się w wymiarach mapy i czy pole istnieje.
@@ -34,7 +38,8 @@ Ogólna zasada: Walidację wejścia warto robić jak najwcześniej w przepływie
 cheatsheetseries.owasp.org
  – nawet jeśli teraz cel jest „wewnętrzny”, to warto na przyszłość traktować go jak zewnętrzne dane.
 Przykładowy prompt: „Dodaj weryfikację poprawności celu ruchu przed uruchomieniem algorytmu A.”*
-5. Brak aktualizacji punktów ruchu w czasie tury
+--------
+~~5. Brak aktualizacji punktów ruchu w czasie tury~~
 Problem: Jeżeli jednostka nie traci punktów ruchu (MP) po przesunięciu, może się poruszać wbrew ograniczeniom (nieograniczony ruch). W grze turowej każdy ruch powinien zmniejszać MP jednostki.
 Rozwiązanie:
 Dodaj pola MP: Każda jednostka powinna mieć maxMovePoints (MP na początek tury) i aktualne currentMovePoints.
@@ -43,7 +48,8 @@ Zredukuj MP: Po udanym ruchu zmniejsz currentMovePoints o koszt ruchu. Jeśli MP
 Sprawdzanie przed ruchem: Upewnij się, że przed wykonaniem ruchu currentMovePoints >= kosztRuchu. Jeśli nie, zakończ MoveAction lub pozwól na ruch tylko do maksymalnej odległości.
 Przełóż na kod: W metodzie wykonującej ruch odejmuj punkty, np. unit.currentMovePoints -= pathCost;.
 Przykładowy prompt: „Jak zaimplementować śledzenie i zmniejszanie punktów ruchu jednostki po przejściu na kolejne pole?”
-6. Reset stanu w metodzie next_turn()
+--------
+~~6. Reset stanu w metodzie next_turn()~~
 Problem: Po zakończeniu tury należy przywrócić stan jednostek (i innych elementów gry) do ustawień startowych następnej tury. Często oznacza to reset punktów ruchu, ale mogą być też inne zmienne do wyczyszczenia.
 Rozwiązanie:
 Reset MP: W next_turn() ustaw currentMovePoints = maxMovePoints dla każdej jednostki. To najważniejsze przywrócenie.
@@ -51,6 +57,7 @@ Flagi i stany: Zresetuj także inne jednorazowe flagi, np. czy jednostka już wy
 Dodatkowe elementy: Jeśli gra ma inne zasoby (np. punkty akcji, użyte czary, odnowienie tarczy), przywróć je tu do wartości startowych.
 Czyszczenie akcji: Upewnij się, że kolejka akcji jest pusta lub przygotowana na następny gracz. W razie potrzeb odblokuj interfejs dla następnego gracza.
 Przykładowy prompt: „Co dodatkowo zresetować w metodzie next_turn() oprócz punktów ruchu jednostek?”
+--------
 7. Ujemne modyfikatory kosztu terenu
 Problem: Jeśli koszt przejścia przez pewien teren jest ustawiony na wartość ujemną, standardowy algorytm A* (oparty na algorytmie Dijkstry) może działać nieprawidłowo – może rozpoczynać nieskończone pętle lub wybierać „dziurę” kosztową. A* nie obsługuje ujemnych wag ścieżek
 stackoverflow.com
@@ -60,6 +67,7 @@ Usuń ujemne wartości: Zmień definicje kosztów terenu tak, żeby były nieuje
 Dostosuj algorytm: Jeśli naprawdę potrzebujesz „bonusu” za teren, dodaj osobny mechanizm (np. zwiększ punkty ruchu zamiast ujemnego kosztu). Nie pozwalaj ujemnym liczbom trafiać do A*.
 Testy: Dodaj test lub assert, które sprawdzą, że nigdzie w mapie nie ma ujemnych kosztów. To zapobiegnie przypadkowej degradacji do ujemnych wartości.
 Przykładowy prompt: „Jak poprawić działanie A, aby obsługiwał sytuację, gdy modyfikator kosztu terenu jest ujemny?”*
+--------
 8. Obsługa wyjątków zamiast komunikatów tekstowych
 Problem: Wysyłanie błędów jako teksty logów może być niewystarczające – nie wymusza przerwania operacji i trudno je przetestować. Lepszym podejściem jest rzucenie wyjątku w razie nieoczekiwanego stanu, a następnie napisanie testów, które go wyłapią. W literaturze mówi się, że “obsługa wyjątków to kwestia czasu wykonania, a testy jednostkowe to kwestia kompilacji/budowania”
 softwareengineering.stackexchange.com
@@ -72,6 +80,7 @@ Zbalansowanie rozwiązań: Używaj wyjątków do nieoczekiwanych błędów, a te
 softwareengineering.stackexchange.com
 .
 Przykładowy prompt: „Czy lepiej użyć wyjątków czy komunikatów tekstowych do zgłaszania błędów w logice ruchu? Napisz krótki przykład obsługi wyjątku.”
+--------
 9. Implementacja rozgrywki turowej (next_turn())
 Problem: Gra turowa wymaga cyklicznego przełączania gracza i aktualizacji stanu gry na początku każdej tury. Metoda next_turn() powinna przeprowadzać te czynności.
 Rozwiązanie:
@@ -81,6 +90,7 @@ Informowanie interfejsu: Zaktualizuj UI: pokaż, kto jest teraz aktywny, odbloku
 Warunki końca gry: Jeśli zmiana tury wiąże się z potencjalną wygraną/przegraną, sprawdź warunki zakończenia gry tutaj.
 Przełóż na kod: Przykładowo w next_turn() możesz mieć: zmień currentPlayer = (currentPlayer+1) % playerCount, ustaw roundCount++ jeśli wróciłeś do pierwszego gracza i wywołaj resetAllUnits() itp.
 Przykładowy prompt: „Jakie operacje powinny się wykonywać w metodzie next_turn() w grze turowej?”
+--------
 10. Zawieszanie gry przy przesuwaniu żetonów
 Problem: Jeśli gra zawiesza się przy ruchu żetonu, to najczęściej oznacza błąd w logice ruchu lub nieskończoną pętlę (np. w A*). Może to być trudne do wykrycia w trakcie gry.
 Rozwiązanie:
