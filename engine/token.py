@@ -8,6 +8,9 @@ class Token:
         self.stats = stats  # np. {'move': 12, 'combat_value': 6, ...}
         self.q = q
         self.r = r
+        # Inicjalizacja punktów ruchu
+        self.maxMovePoints = getattr(self, 'maxMovePoints', stats.get('move', 0))
+        self.currentMovePoints = getattr(self, 'currentMovePoints', self.maxMovePoints)
 
     def can_move_to(self, dist: int) -> bool:
         """Sprawdza, czy żeton może się ruszyć na daną odległość (uwzględnia limit ruchu)."""
@@ -23,7 +26,9 @@ class Token:
             'owner': self.owner,
             'stats': self.stats,
             'q': self.q,
-            'r': self.r
+            'r': self.r,
+            'maxMovePoints': getattr(self, 'maxMovePoints', self.stats.get('move', 0)),
+            'currentMovePoints': getattr(self, 'currentMovePoints', getattr(self, 'maxMovePoints', self.stats.get('move', 0)))
         }
 
     @staticmethod
@@ -65,24 +70,31 @@ class Token:
             'h': data.get('h', 0),
             'nation': nation
         }
-        return Token(
+        token = Token(
             id=data['id'],
             owner=owner,
             stats=stats,
             q=q,
             r=r
         )
+        # Odczytaj punkty ruchu jeśli są w pliku
+        token.maxMovePoints = data.get('maxMovePoints', stats.get('move', 0))
+        token.currentMovePoints = data.get('currentMovePoints', token.maxMovePoints)
+        return token
 
     @staticmethod
     def from_dict(data: Dict[str, Any]):
         # Pozwala odtworzyć Token z serialize()
-        return Token(
+        token = Token(
             id=data['id'],
             owner=data['owner'],
             stats=data['stats'],
             q=data.get('q'),
             r=data.get('r')
         )
+        token.maxMovePoints = data.get('maxMovePoints', token.stats.get('move', 0))
+        token.currentMovePoints = data.get('currentMovePoints', token.maxMovePoints)
+        return token
 
 
 def load_tokens(index_path: str, start_path: str):

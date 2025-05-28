@@ -16,7 +16,12 @@ class GameEngine:
     def next_turn(self):
         self.turn += 1
         self.current_player = (self.current_player + 1) % self.get_player_count()
-        # Reset ruchów, morale, pogoda itp.
+        # Reset punktów ruchu dla wszystkich żetonów
+        for token in self.tokens:
+            max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', 0))
+            token.maxMovePoints = max_mp
+            token.currentMovePoints = max_mp
+        # Reset morale, pogoda itp. (jeśli dotyczy)
 
     def end_turn(self):
         self.next_turn()
