@@ -64,7 +64,8 @@ class Board:
         return self.terrain.get(f"{q},{r}")
 
     def set_tokens(self, tokens: List):
-        """Przypisz listę żetonów do planszy (do obsługi kolizji, pathfindingu itp.)."""
+        """Przypisz listę żetonów do planszy (do obsługi kolizji, pathfindingu itp.).
+        UWAGA: Jeśli zmieniasz pozycje żetonów ręcznie (np. w testach), wywołaj ponownie set_tokens po zmianie!"""
         self.tokens = tokens
 
     def is_occupied(self, q: int, r: int) -> bool:
@@ -96,7 +97,7 @@ class Board:
                 tile = self.get_tile(*neighbor)
                 if not tile:
                     continue
-                if self.is_occupied(*neighbor) and neighbor != goal:
+                if self.is_occupied(*neighbor):
                     continue
                 move_cost = 1 + tile.move_mod
                 new_cost = cost_so_far[current] + move_cost

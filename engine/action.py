@@ -24,13 +24,14 @@ class MoveAction(Action):
             return False, "Pole docelowe nie istnieje na mapie."
         # Możesz dodać tu dodatkowe warunki, np. czy pole nie jest ścianą lub inną przeszkodą
         # ...istniejąca logika...
+        # Blokada: nie można wejść na pole zajęte przez inny żeton (nie ten sam)
+        if engine.board.is_occupied(self.dest_q, self.dest_r) and not (token.q == self.dest_q and token.r == self.dest_r):
+            return False, "Pole zajęte przez inny żeton."
         path = engine.board.find_path(start, goal, max_cost=token.stats.get('move', 0))
         if not path:
             return False, "Brak możliwej ścieżki."
         if not token.can_move_to(len(path)-1):
             return False, "Za daleko."
-        if engine.board.is_occupied(self.dest_q, self.dest_r):
-            return False, "Pole zajęte."
         # Oblicz koszt ruchu po ścieżce (suma kosztów terenu)
         path_cost = 0
         for step in path[1:]:  # pomijamy start

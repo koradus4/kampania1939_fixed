@@ -41,6 +41,7 @@ class PanelMapa(tk.Frame):
 
         # kliknięcia
         self.canvas.bind("<Button-1>", self._on_click)
+        self.canvas.bind("<Button-3>", self._on_right_click)  # Dodaj obsługę prawego przycisku
 
         # żetony
         self.token_images = {}
@@ -129,20 +130,23 @@ class PanelMapa(tk.Frame):
                     break
         # Sprawdzenie właściciela żetonu dla dowódcy
         if clicked_token:
+            print(f"[DEBUG] Kliknięto żeton: {clicked_token.id}, owner={clicked_token.owner}")
             if hasattr(self, 'player') and hasattr(self.player, 'id') and hasattr(self.player, 'nation'):
                 expected_owner = f"{self.player.id} ({self.player.nation})"
+                print(f"[DEBUG] Oczekiwany owner: {expected_owner}")
                 if clicked_token.owner != expected_owner:
                     from tkinter import messagebox
                     messagebox.showerror("Błąd", "Możesz ruszać tylko swoimi żetonami!")
+                    print(f"[DEBUG] Odrzucono wybór żetonu {clicked_token.id} - nie należy do gracza!")
                     return
             self.selected_token_id = clicked_token.id
-            print(f"Wybrano żeton: {clicked_token.id}")
+            print(f"[DEBUG] Wybrano żeton: {clicked_token.id}")
         elif hr and self.selected_token_id:
             from engine.action import MoveAction
             token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
             if token:
+                print(f"[DEBUG] Próba ruchu żetonem: {token.id} (owner={token.owner}) z {token.q},{token.r} na {hr[0]},{hr[1]}")
                 action = MoveAction(token.id, hr[0], hr[1])
-                print(f"[DEBUG] Próba ruchu: {token.id} z {token.q},{token.r} na {hr[0]},{hr[1]}")
                 success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
                 print(f"[MOVE] {msg}")
                 if not success:
@@ -154,3 +158,37 @@ class PanelMapa(tk.Frame):
         else:
             self.selected_token_id = None
         self.refresh()
+
+    def _on_right_click(self, event):
+        x = self.canvas.canvasx(event.x)
+        y = self.canvas.canvasy(event.y)
+        clicked_token = None
+        for token in self.tokens:
+            if token.q is not None and token.r is not None:
+                tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
+                hex_size = self.map_model.hex_size
+                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
+                    clicked_token = token
+                    break
+        if clicked_token:
+            img_path = clicked_token.stats.get("image")
+            if not img_path:
+                nation = clicked_token.stats.get('nation', '')
+                img_path = f"assets/tokens/{nation}/{clicked_token.id}/token.png"
+            if not os.path.exists(img_path):
+                img_path = "assets/tokens/default/token.png" if os.path.exists("assets/tokens/default/token.png") else None
+            if img_path and os.path.exists(img_path):
+                from PIL import Image, ImageTk
+                img = Image.open(img_path)
+                hex_size = self.map_model.hex_size
+                scale = 3
+                img = img.resize((hex_size*scale, hex_size*scale), Image.LANCZOS)
+                tk_img = ImageTk.PhotoImage(img)
+                # Wyświetl w nowym oknie
+                top = tk.Toplevel(self)
+                top.title(f"Powiększony żeton: {clicked_token.id}")
+                label = tk.Label(top, image=tk_img)
+                label.image = tk_img  # Trzymaj referencję
+                label.pack()
+                # Zamknij okno po kliknięciu
+                label.bind("<Button-1>", lambda e: top.destroy())

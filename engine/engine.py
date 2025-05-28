@@ -1,17 +1,42 @@
 import random
+import os
+import json
 from engine.board import Board
-from engine.token import load_tokens
-from engine.save_manager import save_state
+from engine.token import load_tokens, Token
 
 class GameEngine:
     def __init__(self, map_path: str, tokens_index_path: str, tokens_start_path: str, seed: int = 42):
         self.random = random.Random(seed)
         self.board = Board(map_path)
-        self.tokens = load_tokens(tokens_index_path, tokens_start_path)
-        self.board.set_tokens(self.tokens)
-        self.turn = 1
-        self.current_player = 0
+        state_path = os.path.join("saves", "latest.json")
+        if os.path.exists(state_path):
+            self.load_state(state_path)
+        else:
+            self.tokens = load_tokens(tokens_index_path, tokens_start_path)
+            self.board.set_tokens(self.tokens)
+            self.turn = 1
+            self.current_player = 0
         # Możesz dodać listę graczy, pogodę, itp.
+
+    def save_state(self, filepath: str):
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        state = {
+            "tokens": [t.serialize() for t in self.tokens],
+            "turn": self.turn,
+            "current_player": self.current_player
+        }
+        tmp_file = filepath + ".tmp"
+        with open(tmp_file, "w", encoding="utf-8") as f:
+            json.dump(state, f, indent=2, ensure_ascii=False)
+        os.replace(tmp_file, filepath)
+
+    def load_state(self, filepath: str):
+        with open(filepath, "r", encoding="utf-8") as f:
+            state = json.load(f)
+        self.tokens = [Token.from_dict(t) for t in state["tokens"]]
+        self.board.set_tokens(self.tokens)
+        self.turn = state["turn"]
+        self.current_player = state["current_player"]
 
     def next_turn(self):
         self.turn += 1
@@ -25,7 +50,7 @@ class GameEngine:
 
     def end_turn(self):
         self.next_turn()
-        save_state(self, "saves/")
+        self.save_state(os.path.join("saves", "latest.json"))
 
     def get_player_count(self):
         # Zaimplementuj zgodnie z logiką graczy
