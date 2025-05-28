@@ -22,11 +22,17 @@ class MoveAction(Action):
         tile = engine.board.get_tile(self.dest_q, self.dest_r)
         if tile is None:
             return False, "Pole docelowe nie istnieje na mapie."
-        # Możesz dodać tu dodatkowe warunki, np. czy pole nie jest ścianą lub inną przeszkodą
-        # ...istniejąca logika...
         # Blokada: nie można wejść na pole zajęte przez inny żeton (nie ten sam)
         if engine.board.is_occupied(self.dest_q, self.dest_r) and not (token.q == self.dest_q and token.r == self.dest_r):
             return False, "Pole zajęte przez inny żeton."
+        # NOWA WALIDACJA: brak punktów ruchu
+        max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', 0))
+        if not hasattr(token, 'currentMovePoints'):
+            token.currentMovePoints = max_mp
+        if not hasattr(token, 'maxMovePoints'):
+            token.maxMovePoints = max_mp
+        if token.currentMovePoints <= 0:
+            return False, "Brak punktów ruchu."
         path = engine.board.find_path(start, goal, max_cost=token.stats.get('move', 0))
         if not path:
             return False, "Brak możliwej ścieżki."
@@ -40,12 +46,6 @@ class MoveAction(Action):
                 path_cost += 1 + tile.move_mod
             else:
                 return False, "Błąd mapy: brak pola na trasie."
-        # Obsługa punktów ruchu
-        max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', 0))
-        if not hasattr(token, 'currentMovePoints'):
-            token.currentMovePoints = max_mp
-        if not hasattr(token, 'maxMovePoints'):
-            token.maxMovePoints = max_mp
         if token.currentMovePoints < path_cost:
             return False, f"Za mało punktów ruchu (koszt: {path_cost}, dostępne: {token.currentMovePoints})"
         # Wykonaj ruch dopiero po walidacji
