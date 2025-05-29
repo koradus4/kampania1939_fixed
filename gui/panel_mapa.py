@@ -4,12 +4,13 @@ from PIL import Image, ImageTk
 import os
 
 class PanelMapa(tk.Frame):
-    def __init__(self, parent, game_engine, bg_path: str, player_nation: str, width=800, height=600):
+    def __init__(self, parent, game_engine, bg_path: str, player_nation: str, width=800, height=600, token_info_panel=None):
         super().__init__(parent)
         self.game_engine = game_engine
         self.map_model = self.game_engine.board
         self.player_nation = player_nation
         self.tokens = self.game_engine.tokens
+        self.token_info_panel = token_info_panel
 
         # Canvas + Scrollbary
         self.canvas = tk.Canvas(self, width=width, height=height)
@@ -108,6 +109,14 @@ class PanelMapa(tk.Frame):
         self._draw_hex_grid()
         self._draw_tokens_on_map()
 
+    def clear_token_info_panel(self):
+        parent = self.master
+        while parent is not None:
+            if hasattr(parent, 'token_info_panel'):
+                parent.token_info_panel.clear()
+                break
+            parent = getattr(parent, 'master', None)
+
     def _on_click(self, event):
         # Blokada akcji dla generała (podgląd, brak ruchu)
         if hasattr(self, 'player') and hasattr(self.player, 'role') and self.player.role == 'Generał':
@@ -143,9 +152,6 @@ class PanelMapa(tk.Frame):
             if token:
                 action = MoveAction(token.id, hr[0], hr[1])
                 success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
-                # Debug: punkty ruchu po ruchu
-                token_engine = next((t for t in self.game_engine.tokens if t.id == token.id), None)
-                print(f"[DEBUG] Po ruchu: {token.id} MP_GUI={getattr(token, 'currentMovePoints', '?')} MP_ENGINE={getattr(token_engine, 'currentMovePoints', '?')}")
                 # Synchronizacja żetonów po ruchu
                 self.tokens = self.game_engine.tokens
                 if not success:
@@ -156,6 +162,9 @@ class PanelMapa(tk.Frame):
                 self.refresh()
         else:
             self.selected_token_id = None
+        # Po kliknięciu w puste miejsce wyczyść panel info
+        if clicked_token is None:
+            self.clear_token_info_panel()
         self.refresh()
 
     def _on_right_click(self, event):
@@ -170,24 +179,11 @@ class PanelMapa(tk.Frame):
                     clicked_token = token
                     break
         if clicked_token:
-            img_path = clicked_token.stats.get("image")
-            if not img_path:
-                nation = clicked_token.stats.get('nation', '')
-                img_path = f"assets/tokens/{nation}/{clicked_token.id}/token.png"
-            if not os.path.exists(img_path):
-                img_path = "assets/tokens/default/token.png" if os.path.exists("assets/tokens/default/token.png") else None
-            if img_path and os.path.exists(img_path):
-                from PIL import Image, ImageTk
-                img = Image.open(img_path)
-                hex_size = self.map_model.hex_size
-                scale = 3
-                img = img.resize((hex_size*scale, hex_size*scale), Image.LANCZOS)
-                tk_img = ImageTk.PhotoImage(img)
-                # Wyświetl w nowym oknie
-                top = tk.Toplevel(self)
-                top.title(f"Powiększony żeton: {clicked_token.id}")
-                label = tk.Label(top, image=tk_img)
-                label.image = tk_img  # Trzymaj referencję
-                label.pack()
-                # Zamknij okno po kliknięciu
-                label.bind("<Button-1>", lambda e: top.destroy())
+            pass
+        else:
+            pass
+        # Przekazanie bezpośrednio do panelu bocznego
+        if self.token_info_panel is not None:
+            self.token_info_panel.show_token(clicked_token)
+        else:
+            pass

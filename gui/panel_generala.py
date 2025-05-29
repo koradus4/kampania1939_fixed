@@ -7,6 +7,7 @@ from gui.panel_gracza import PanelGracza
 from gui.zarzadzanie_punktami_ekonomicznymi import ZarzadzaniePunktamiEkonomicznymi
 from engine.board import Board
 from gui.panel_mapa import PanelMapa
+from gui.token_info_panel import TokenInfoPanel
 
 class PanelGenerala:
     def __init__(self, turn_number, ekonomia, gracz, gracze, game_engine):
@@ -38,6 +39,10 @@ class PanelGenerala:
         panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path)
         panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
+        # Panel informacyjny o żetonie
+        self.token_info_panel = TokenInfoPanel(self.left_frame)
+        self.token_info_panel.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+
         # Sekcja odliczania czasu
         minutes = self.gracz.time_limit
         self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {minutes}:00", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
@@ -49,8 +54,8 @@ class PanelGenerala:
         # Punkty ekonomiczne
         self.points_frame = tk.Label(self.left_frame, text="Punkty ekonomiczne: 0", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
         self.points_frame.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
-        # Dodanie obsługi kliknięcia na "Punkty ekonomiczne" do otwierania suwaków wsparcia
-        self.points_frame.bind("<Button-1>", lambda e: self.show_support_sliders())
+        self.points_frame.bind("<Button-1>", self.toggle_support_sliders)
+        self._support_sliders_visible = False  # Stan toggle
 
         # Dodanie sekcji raportu ekonomicznego
         self.economy_panel = PanelEkonomiczny(self.left_frame)
@@ -68,7 +73,8 @@ class PanelGenerala:
         self.zarzadzanie_punktami_widget = ZarzadzaniePunktamiEkonomicznymi(
             self.left_frame,
             available_points=self.ekonomia.get_points()['economic_points'],
-            commanders=[dowodca.id for dowodca in commanders]
+            commanders=[dowodca.id for dowodca in commanders],
+            on_points_change=self._update_points_label_in_sliders
         )
         self.zarzadzanie_punktami_widget.pack_forget()  # Ukrycie suwaków na początku
 
@@ -83,7 +89,8 @@ class PanelGenerala:
             game_engine=game_engine,
             bg_path="assets/mapa_globalna.jpg",
             player_nation=self.gracz.nation,
-            width=800, height=600
+            width=800, height=600,
+            token_info_panel=self.token_info_panel
         )
         self.panel_mapa.pack(fill="both", expand=True)
 
@@ -108,6 +115,8 @@ class PanelGenerala:
 
         # Aktualizacja tekstu w sekcji punktów ekonomicznych
         self.points_frame.config(text=f"Punkty ekonomiczne: {points}")
+        if hasattr(self, '_support_sliders_visible') and not self._support_sliders_visible:
+            self.points_frame.config(text=f"Punkty ekonomiczne: {points}")
 
     def zarzadzanie_punktami(self, available_points):
         """Zarządza punktami ekonomicznymi i aktualizuje interfejs."""
@@ -123,47 +132,45 @@ class PanelGenerala:
             # Aktualizacja dostępnych punktów w istniejącym widgetcie
             self.zarzadzanie_punktami_widget.refresh_available_points(available_points)
 
-    def show_support_sliders(self):
-        """Wyświetla suwaki do zarządzania punktami wsparcia dowódców."""
-        # Ukrycie klawisza "Wsparcie dowódców"
-        if hasattr(self, 'support_button'):
-            self.support_button.pack_forget()
+    def _update_points_label_in_sliders(self, new_value):
+        if self._support_sliders_visible:
+            self.points_frame.config(text=f"Zaakceptuj (pozostało: {new_value})")
 
-        # Resetowanie wartości suwaków do 0 przy każdym otwarciu sekcji
-        if hasattr(self, 'zarzadzanie_punktami_widget'):
+    def toggle_support_sliders(self, event=None):
+        if not self._support_sliders_visible:
+            # Otwórz panel suwaków
+            print(f"[DEBUG][SLIDERS] Otwieram suwaki. Dostępne punkty ekonomiczne generała: {self.ekonomia.get_points()['economic_points']}")
             for commander in self.zarzadzanie_punktami_widget.commander_points.keys():
                 slider = getattr(self.zarzadzanie_punktami_widget, f"{commander}_slider", None)
                 if slider:
                     slider.set(0)
                 self.zarzadzanie_punktami_widget.commander_points[commander] = 0
-
-            # Wyświetlenie suwaków
             self.zarzadzanie_punktami_widget.pack(pady=10, fill=tk.BOTH, expand=False)
-
-        # Dodanie przycisku "Akceptuj" tylko raz
-        if not hasattr(self, 'accept_button'):
-            self.accept_button = tk.Button(self.zarzadzanie_punktami_widget, text="Akceptuj", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", command=self.accept_support)
-            self.accept_button.pack(pady=10, fill=tk.BOTH, expand=False)
-
-    def accept_support(self):
-        """Akceptuje przydzielone punkty wsparcia i aktualizuje ekonomię."""
-        # Przekazanie punktów do dowódców
-        for commander_id, pts in self.zarzadzanie_punktami_widget.commander_points.items():
-            if pts > 0:
-                for player in self.gracze:  # Iteracja po liście graczy
-                    if player.id == commander_id and player.role == "Dowódca":
-                        player.economy.economic_points += pts
-
-        # Aktualizacja raportu ekonomicznego po rozdysponowaniu punktów
-        self.ekonomia.subtract_points(sum(self.zarzadzanie_punktami_widget.commander_points.values()))
-        self.update_economy()
-
-        # Ukrycie suwaków
-        self.zarzadzanie_punktami_widget.pack_forget()
-
-        # Przywrócenie klawisza "Wsparcie dowódców"
-        if hasattr(self, 'support_button'):
-            self.support_button.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+            left = self.ekonomia.get_points()['economic_points']
+            self._support_sliders_visible = True  # <-- PRZED callbackiem!
+            if self.zarzadzanie_punktami_widget.on_points_change:
+                self.zarzadzanie_punktami_widget.on_points_change(left)
+            self.points_frame.config(text=f"Zaakceptuj (pozostało: {left})")
+            print(f"[DEBUG][SLIDERS] Po otwarciu suwaków można rozdzielić: {left}")
+        else:
+            # Akceptuj i zamknij panel suwaków
+            print(f"[DEBUG][SLIDERS] Akceptuję i zamykam suwaki. Punkty do przekazania: {self.zarzadzanie_punktami_widget.commander_points}")
+            self.zarzadzanie_punktami_widget.accept_final_points()
+            for commander_id, pts in self.zarzadzanie_punktami_widget.commander_points.items():
+                if pts > 0:
+                    for player in self.gracze:
+                        if player.id == commander_id and player.role == "Dowódca":
+                            player.economy.economic_points += pts
+            przekazane = sum(self.zarzadzanie_punktami_widget.commander_points.values())
+            print(f"[DEBUG][SLIDERS] Suma przekazanych punktów: {przekazane}")
+            self.ekonomia.subtract_points(przekazane)
+            print(f"[DEBUG][SLIDERS] Po akceptacji, punkty ekonomiczne generała: {self.ekonomia.get_points()['economic_points']}")
+            self.update_economy()
+            self.zarzadzanie_punktami_widget.pack_forget()
+            self._support_sliders_visible = False
+            # Przywróć etykietę z aktualną wartością
+            points = self.ekonomia.get_points()['economic_points']
+            self.points_frame.config(text=f"Punkty ekonomiczne: {points}")
 
     def update_timer(self):
         """Aktualizuje odliczanie czasu."""
@@ -185,6 +192,10 @@ class PanelGenerala:
                 if slider:
                     slider.set(0)
                 self.zarzadzanie_punktami_widget.commander_points[commander] = 0
+        self.zarzadzanie_punktami_widget.pack_forget()
+        self._support_sliders_visible = False
+        points = self.ekonomia.get_points()['economic_points']
+        self.points_frame.config(text=f"Punkty ekonomiczne: {points}")
 
     def end_turn(self):
         """Kończy podturę i zamyka panel."""

@@ -36,6 +36,13 @@ class TurnManager:
             self.current_player_index = 0
             self.current_turn += 1
 
+            # Reset punktów ruchu wszystkich żetonów na początku nowej tury
+            if self.game_engine is not None and hasattr(self.game_engine, 'tokens'):
+                for token in self.game_engine.tokens:
+                    max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', 0))
+                    token.maxMovePoints = max_mp
+                    token.currentMovePoints = max_mp
+
             if self.current_turn % 6 == 0:  # Co 6 tur generujemy nowy raport pogodowy
                 self.weather.generuj_pogode()
                 self.current_weather = self.weather.generuj_raport_pogodowy()

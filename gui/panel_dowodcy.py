@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from gui.panel_pogodowy import PanelPogodowy
 from gui.panel_gracza import PanelGracza
 from gui.panel_mapa import PanelMapa
+from gui.token_info_panel import TokenInfoPanel
 
 class PanelDowodcy:
     def __init__(self, turn_number, remaining_time, gracz, game_engine):
@@ -35,6 +36,10 @@ class PanelDowodcy:
         panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path)
         panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
+        # Panel informacyjny o żetonie
+        self.token_info_panel = TokenInfoPanel(self.left_frame)
+        self.token_info_panel.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+
         # Sekcja odliczania czasu
         self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
         self.timer_frame.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
@@ -62,7 +67,8 @@ class PanelDowodcy:
             game_engine=game_engine,
             bg_path="assets/mapa_globalna.jpg",
             player_nation=self.gracz.nation,
-            width=800, height=600
+            width=800, height=600,
+            token_info_panel=self.token_info_panel
         )
         self.panel_mapa.pack(fill="both", expand=True)
 
