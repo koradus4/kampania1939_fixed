@@ -224,6 +224,13 @@ class PanelMapa(tk.Frame):
             pass
         # Przekazanie bezpośrednio do panelu bocznego
         if self.token_info_panel is not None:
-            self.token_info_panel.show_token(clicked_token)
+            # Pozwól pokazać statystyki tylko jeśli żeton jest widoczny dla gracza
+            if clicked_token and hasattr(self, 'player') and hasattr(self.player, 'visible_tokens'):
+                if clicked_token.id in self.player.visible_tokens:
+                    self.token_info_panel.show_token(clicked_token)
+                else:
+                    self.token_info_panel.clear()
+            else:
+                self.token_info_panel.clear()
         else:
             pass

@@ -41,9 +41,34 @@ class MoveAction(Action):
             return False, "Brak punktów ruchu."
         if tile.move_mod == -1:
             return False, "Pole nieprzekraczalne (move_mod == -1)."
+        # Jeśli pole docelowe jest zajęte przez wroga, znajdź najdalsze możliwe pole przed wrogiem
         path = engine.board.find_path(start, goal, max_cost=token.stats.get('move', 0))
         if not path:
-            return False, "Brak możliwej ścieżki."
+            # Spróbuj znaleźć najdalsze możliwe pole na trasie do celu, które NIE jest zajęte przez wroga
+            # (czyli zatrzymaj się przed wrogiem, jeśli nie można wejść na jego pole)
+            for dist in range(1, token.stats.get('move', 0)+1)[::-1]:
+                # Sprawdź kolejne pola na trasie od końca
+                partial_goal = None
+                if abs(goal[0] - start[0]) + abs(goal[1] - start[1]) >= dist:
+                    # Spróbuj znaleźć pole w odległości 'dist' od startu w kierunku goal
+                    # (prosty heurystyczny wybór: idź po linii prostej)
+                    dq = goal[0] - start[0]
+                    dr = goal[1] - start[1]
+                    step_q = start[0] + int(round(dq * dist / max(1, abs(dq) + abs(dr))))
+                    step_r = start[1] + int(round(dr * dist / max(1, abs(dq) + abs(dr))))
+                    partial_goal = (step_q, step_r)
+                else:
+                    continue
+                if partial_goal == start:
+                    continue
+                if engine.board.is_occupied(*partial_goal):
+                    continue
+                partial_path = engine.board.find_path(start, partial_goal, max_cost=token.stats.get('move', 0))
+                if partial_path:
+                    path = partial_path
+                    break
+            if not path:
+                return False, "Nie można wejść na pole zajęte przez wroga. Ruch zatrzymany przed przeciwnikiem."
         if not token.can_move_to(len(path)-1):
             return False, "Za daleko."
         path_cost = 0
@@ -70,7 +95,6 @@ class MoveAction(Action):
                 if t.q == step[0] and t.r == step[1] and t.id != token.id and t.owner != token.owner:
                     enemy_on_tile = True
             if enemy_on_tile:
-                # Zatrzymaj ruch na poprzednim polu
                 break
             # Czy w zasięgu widzenia jest wróg? Jeśli tak, zatrzymaj ruch na tym polu
             for t in engine.tokens:
