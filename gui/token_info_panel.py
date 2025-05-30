@@ -26,9 +26,18 @@ class TokenInfoPanel(tk.Frame):
         current_mp = getattr(token, 'currentMovePoints', None)
         if current_mp is None:
             current_mp = token.stats.get('move', '-')
+        sight = token.stats.get('sight', '-')
         self.labels["nacja"].config(text=f"Nacja: {nation}")
         self.labels["jednostka"].config(text=f"Jednostka: {unit_name}")
         self.labels["punkty_ruchu"].config(text=f"Punkty ruchu: {current_mp}")
+        # Dodaj zasięg widzenia
+        if "zasięg_widzenia" not in self.labels:
+            font = ("Arial", 11)
+            label = tk.Label(self, text=f"Zasięg widzenia: {sight}", font=font, anchor="w")
+            label.grid(row=3, column=0, sticky="w", padx=4, pady=2)
+            self.labels["zasięg_widzenia"] = label
+        else:
+            self.labels["zasięg_widzenia"].config(text=f"Zasięg widzenia: {sight}")
 
     def clear(self):
         for key, label in self.labels.items():
