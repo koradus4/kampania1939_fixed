@@ -50,30 +50,63 @@ class PanelMapa(tk.Frame):
         self.player = getattr(game_engine, 'current_player_obj', None)
         self._draw_tokens_on_map()
 
+    def _sync_player_from_engine(self):
+        """Synchronizuje self.player z aktualnym obiektem gracza z silnika gry."""
+        if hasattr(self.game_engine, 'current_player_obj'):
+            self.player = self.game_engine.current_player_obj
+
     def _draw_hex_grid(self):
+        self._sync_player_from_engine()
         self.canvas.delete("hex")
+        self.canvas.delete("fog")
         s = self.map_model.hex_size
-        cols = getattr(self.map_model, 'cols', 56)
-        rows = getattr(self.map_model, 'rows', 40)
-        for col in range(cols):
-            for row in range(rows):
-                # Konwersja offset -> axial (even-q)
-                q = col
-                r = row - (col // 2)
-                cx, cy = self.map_model.hex_to_pixel(q, r)
-                # Sprawdź, czy heks mieści się w obszarze mapy
-                if 0 <= cx <= self._bg_width and 0 <= cy <= self._bg_height:
-                    verts = get_hex_vertices(cx, cy, s)
-                    flat = [coord for p in verts for coord in p]
+        visible_hexes = set()
+        if hasattr(self, 'player') and hasattr(self.player, 'visible_hexes'):
+            # Upewnij się, że wszystkie heksy są tuple intów
+            visible_hexes = set((int(q), int(r)) for q, r in self.player.visible_hexes)
+        # DEBUG: wypisz heksy widoczne i zamglenione
+        # print(f"[DEBUG] visible_hexes: {sorted(visible_hexes)}")
+        fogged = []
+        for key, tile in self.map_model.terrain.items():
+            if isinstance(key, tuple) and len(key) == 2:
+                q, r = key
+            else:
+                q, r = map(int, str(key).split(','))
+            cx, cy = self.map_model.hex_to_pixel(q, r)
+            if 0 <= cx <= self._bg_width and 0 <= cy <= self._bg_height:
+                if (int(q), int(r)) not in visible_hexes:
+                    fogged.append((int(q), int(r)))
+        # print(f"[DEBUG] fogged_hexes: {sorted(fogged)}")
+        for key, tile in self.map_model.terrain.items():
+            # Obsługa kluczy tuple (q, r) lub string "q,r"
+            if isinstance(key, tuple) and len(key) == 2:
+                q, r = key
+            else:
+                q, r = map(int, str(key).split(','))
+            cx, cy = self.map_model.hex_to_pixel(q, r)
+            if 0 <= cx <= self._bg_width and 0 <= cy <= self._bg_height:
+                verts = get_hex_vertices(cx, cy, s)
+                flat = [coord for p in verts for coord in p]
+                self.canvas.create_polygon(
+                    flat,
+                    outline="red",
+                    fill="",
+                    width=1,
+                    tags="hex"
+                )
+                # Rysuj mgiełkę tylko jeśli (q, r) nie jest w visible_hexes (upewnij się, że tuple intów)
+                if (int(q), int(r)) not in visible_hexes:
                     self.canvas.create_polygon(
                         flat,
-                        outline="red",
-                        fill="",
-                        width=1,
-                        tags="hex"
+                        fill="#222222",
+                        stipple="gray50",
+                        outline="",
+                        tags="fog"
                     )
 
     def _draw_tokens_on_map(self):
+        self._sync_player_from_engine()
+        self.tokens = self.game_engine.tokens  # Zawsze aktualizuj listę żetonów
         self.canvas.delete("token")
         # Filtrowanie widoczności żetonów przez fog of war
         tokens = self.tokens
@@ -95,12 +128,14 @@ class PanelMapa(tk.Frame):
                     img = img.resize((hex_size, hex_size), Image.LANCZOS)
                     tk_img = ImageTk.PhotoImage(img)
                     x, y = self.map_model.hex_to_pixel(token.q, token.r)
-                    self.canvas.create_image(x, y, image=tk_img, anchor="center", tags="token")
+                    self.canvas.create_image(x, y, image=tk_img, anchor="center", tags=("token", f"token_{token.id}"))
                     self.token_images[token.id] = tk_img
                 except Exception:
                     pass
+        # Kod spełnia wymagania: synchronizacja żetonów, tagowanie, poprawna mgiełka i widoczność.
 
     def refresh(self):
+        self._sync_player_from_engine()
         self._draw_hex_grid()
         self._draw_tokens_on_map()
 

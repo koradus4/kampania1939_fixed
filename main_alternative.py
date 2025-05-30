@@ -65,9 +65,6 @@ if __name__ == "__main__":
         current_player = turn_manager.get_current_player()
         # --- AKTUALIZACJA WIDOCZNOŚCI PRZED PANELEM ---
         update_all_players_visibility(players, game_engine.tokens, game_engine.board)
-        # DEBUG: sprawdź czy current_player jest poprawnie ustawiany
-        print(f"[DEBUG] main_alternative.py: current_player = {current_player}, id={getattr(current_player, 'id', None)}, role={getattr(current_player, 'role', None)}, nation={getattr(current_player, 'nation', None)}")
-        print(f"[DEBUG] main_alternative.py: visible_tokens = {getattr(current_player, 'visible_tokens', None)}")
 
         # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
         if current_player.role == "Generał":
