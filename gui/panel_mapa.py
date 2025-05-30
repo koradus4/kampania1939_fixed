@@ -189,10 +189,6 @@ class PanelMapa(tk.Frame):
                     from engine.engine import update_all_players_visibility
                     if hasattr(self.game_engine, 'players'):
                         update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
-                        # DEBUG: wypisz widoczne heksy i żetony dla aktualnego gracza
-                        print(f"[DEBUG] Po ruchu: player={getattr(self.player, 'id', None)}, role={getattr(self.player, 'role', None)}, nation={getattr(self.player, 'nation', None)}")
-                        print(f"[DEBUG] visible_hexes: {getattr(self.player, 'visible_hexes', None)}")
-                        print(f"[DEBUG] visible_tokens: {getattr(self.player, 'visible_tokens', None)}")
                 if not success:
                     from tkinter import messagebox
                     messagebox.showerror("Błąd ruchu", msg)
