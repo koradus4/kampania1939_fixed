@@ -1,5 +1,26 @@
 [
   {
+    "id": "AC_Batalion__5_N_AC_Batalion",
+    "nation": "Niemcy",
+    "unitType": "AC",
+    "unitSize": "Batalion",
+    "shape": "prostokąt",
+    "label": "5_N_AC_Batalion",
+    "move": 14,
+    "attack": {
+      "range": 7,
+      "value": 16
+    },
+    "combat_value": 36,
+    "maintenance": 20,
+    "price": 91,
+    "sight": 3,
+    "owner": "5 (Niemcy)",
+    "image": "assets/tokens/Niemcy/AC_Batalion__5_N_AC_Batalion/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
     "id": "AC_Kompania__5_N_AC_Kompania",
     "nation": "Niemcy",
     "unitType": "AC",
@@ -17,6 +38,132 @@
     "sight": 3,
     "owner": "5 (Niemcy)",
     "image": "assets/tokens/Niemcy/AC_Kompania__5_N_AC_Kompania/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "AC_Pluton__6_N_AC_Pluton",
+    "nation": "Niemcy",
+    "unitType": "AC",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "6_N_AC_Pluton",
+    "move": 11,
+    "attack": {
+      "range": 7,
+      "value": 12
+    },
+    "combat_value": 6,
+    "maintenance": 9,
+    "price": 57,
+    "sight": 3,
+    "owner": "6 (Niemcy)",
+    "image": "assets/tokens/Niemcy/AC_Pluton__6_N_AC_Pluton/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "AP_Pluton__6_N_AP_Pluton",
+    "nation": "Niemcy",
+    "unitType": "AP",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "6_N_AP_Pluton",
+    "move": 18,
+    "attack": {
+      "range": 4,
+      "value": 3
+    },
+    "combat_value": 5,
+    "maintenance": 4,
+    "price": 18,
+    "sight": 3,
+    "owner": "6 (Niemcy)",
+    "image": "assets/tokens/Niemcy/AP_Pluton__6_N_AP_Pluton/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "P_Batalion__6_N_P_Batalion_20250530173126",
+    "nation": "Niemcy",
+    "unitType": "P",
+    "unitSize": "Batalion",
+    "shape": "prostokąt",
+    "label": "6_N_P_Batalion",
+    "move": 6,
+    "attack": {
+      "range": 2,
+      "value": 14
+    },
+    "combat_value": 48,
+    "maintenance": 14,
+    "price": 84,
+    "sight": 3,
+    "owner": "6 (Niemcy)",
+    "image": "assets/tokens/Niemcy/P_Batalion__6_N_P_Batalion_20250530173126/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "P_Kompania__5_N_P_Kompania",
+    "nation": "Niemcy",
+    "unitType": "P",
+    "unitSize": "Kompania",
+    "shape": "prostokąt",
+    "label": "5_N_P_Kompania",
+    "move": 5,
+    "attack": {
+      "range": 1,
+      "value": 4
+    },
+    "combat_value": 24,
+    "maintenance": 4,
+    "price": 36,
+    "sight": 3,
+    "owner": "5 (Niemcy)",
+    "image": "assets/tokens/Niemcy/P_Kompania__5_N_P_Kompania/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "TC_Batalion__5_N_TC_Batalion",
+    "nation": "Niemcy",
+    "unitType": "TC",
+    "unitSize": "Batalion",
+    "shape": "prostokąt",
+    "label": "5_N_TC_Batalion",
+    "move": 18,
+    "attack": {
+      "range": 3,
+      "value": 18
+    },
+    "combat_value": 60,
+    "maintenance": 16,
+    "price": 77,
+    "sight": 2,
+    "owner": "5 (Niemcy)",
+    "image": "assets/tokens/Niemcy/TC_Batalion__5_N_TC_Batalion/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "TC_Batalion__6_N_TC_Batalion",
+    "nation": "Niemcy",
+    "unitType": "TC",
+    "unitSize": "Batalion",
+    "shape": "prostokąt",
+    "label": "6_N_TC_Batalion",
+    "move": 18,
+    "attack": {
+      "range": 3,
+      "value": 18
+    },
+    "combat_value": 60,
+    "maintenance": 15,
+    "price": 72,
+    "sight": 2,
+    "owner": "6 (Niemcy)",
+    "image": "assets/tokens/Niemcy/TC_Batalion__6_N_TC_Batalion/token.png",
     "w": 240,
     "h": 240
   },
@@ -42,6 +189,90 @@
     "h": 240
   },
   {
+    "id": "AC_Batalion__3_PL_AC_Batalion",
+    "nation": "Polska",
+    "unitType": "AC",
+    "unitSize": "Batalion",
+    "shape": "prostokąt",
+    "label": "3_PL_AC_Batalion",
+    "move": 17,
+    "attack": {
+      "range": 6,
+      "value": 12
+    },
+    "combat_value": 36,
+    "maintenance": 15,
+    "price": 66,
+    "sight": 3,
+    "owner": "3 (Polska)",
+    "image": "assets/tokens/Polska/AC_Batalion__3_PL_AC_Batalion/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "AP_Batalion__3_PL_AP_Batalion",
+    "nation": "Polska",
+    "unitType": "AP",
+    "unitSize": "Batalion",
+    "shape": "prostokąt",
+    "label": "3_PL_AP_Batalion",
+    "move": 21,
+    "attack": {
+      "range": 4,
+      "value": 9
+    },
+    "combat_value": 30,
+    "maintenance": 13,
+    "price": 59,
+    "sight": 3,
+    "owner": "3 (Polska)",
+    "image": "assets/tokens/Polska/AP_Batalion__3_PL_AP_Batalion/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "AP_Kompania__2_PL_AP_Kompania",
+    "nation": "Polska",
+    "unitType": "AP",
+    "unitSize": "Kompania",
+    "shape": "prostokąt",
+    "label": "2_PL_AP_Kompania",
+    "move": 18,
+    "attack": {
+      "range": 4,
+      "value": 6
+    },
+    "combat_value": 15,
+    "maintenance": 7,
+    "price": 36,
+    "sight": 3,
+    "owner": "2 (Polska)",
+    "image": "assets/tokens/Polska/AP_Kompania__2_PL_AP_Kompania/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "P_Batalion__2_PL_P_Batalion",
+    "nation": "Polska",
+    "unitType": "P",
+    "unitSize": "Batalion",
+    "shape": "prostokąt",
+    "label": "2_PL_P_Batalion",
+    "move": 5,
+    "attack": {
+      "range": 1,
+      "value": 8
+    },
+    "combat_value": 48,
+    "maintenance": 8,
+    "price": 54,
+    "sight": 3,
+    "owner": "2 (Polska)",
+    "image": "assets/tokens/Polska/P_Batalion__2_PL_P_Batalion/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
     "id": "P_Kompania__2_PL_P_Kompania",
     "nation": "Polska",
     "unitType": "P",
@@ -63,6 +294,48 @@
     "h": 240
   },
   {
+    "id": "P_Kompania__2_PL_P_Kompania_20250530172703",
+    "nation": "Polska",
+    "unitType": "P",
+    "unitSize": "Kompania",
+    "shape": "prostokąt",
+    "label": "2_PL_P_Kompania",
+    "move": 5,
+    "attack": {
+      "range": 1,
+      "value": 4
+    },
+    "combat_value": 24,
+    "maintenance": 4,
+    "price": 36,
+    "sight": 3,
+    "owner": "2 (Polska)",
+    "image": "assets/tokens/Polska/P_Kompania__2_PL_P_Kompania_20250530172703/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "P_Kompania__3_PL_P_Kompania",
+    "nation": "Polska",
+    "unitType": "P",
+    "unitSize": "Kompania",
+    "shape": "prostokąt",
+    "label": "3_PL_P_Kompania",
+    "move": 5,
+    "attack": {
+      "range": 1,
+      "value": 4
+    },
+    "combat_value": 24,
+    "maintenance": 4,
+    "price": 36,
+    "sight": 3,
+    "owner": "3 (Polska)",
+    "image": "assets/tokens/Polska/P_Kompania__3_PL_P_Kompania/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
     "id": "P_Pluton__2_PL_P_Pluton",
     "nation": "Polska",
     "unitType": "P",
@@ -80,6 +353,48 @@
     "sight": 3,
     "owner": "2 (Polska)",
     "image": "assets/tokens/Polska/P_Pluton__2_PL_P_Pluton/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "TC_Batalion__3_PL_TC_Batalion",
+    "nation": "Polska",
+    "unitType": "TC",
+    "unitSize": "Batalion",
+    "shape": "prostokąt",
+    "label": "3_PL_TC_Batalion",
+    "move": 18,
+    "attack": {
+      "range": 3,
+      "value": 18
+    },
+    "combat_value": 60,
+    "maintenance": 15,
+    "price": 72,
+    "sight": 2,
+    "owner": "3 (Polska)",
+    "image": "assets/tokens/Polska/TC_Batalion__3_PL_TC_Batalion/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "TC_Kompania__2_PL_TC_Kompania",
+    "nation": "Polska",
+    "unitType": "TC",
+    "unitSize": "Kompania",
+    "shape": "prostokąt",
+    "label": "2_PL_TC_Kompania",
+    "move": 18,
+    "attack": {
+      "range": 3,
+      "value": 10
+    },
+    "combat_value": 30,
+    "maintenance": 10,
+    "price": 48,
+    "sight": 2,
+    "owner": "2 (Polska)",
+    "image": "assets/tokens/Polska/TC_Kompania__2_PL_TC_Kompania/token.png",
     "w": 240,
     "h": 240
   },

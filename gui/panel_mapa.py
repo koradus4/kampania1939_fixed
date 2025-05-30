@@ -75,15 +75,10 @@ class PanelMapa(tk.Frame):
 
     def _draw_tokens_on_map(self):
         self.canvas.delete("token")
-        # Filtrowanie widoczności żetonów
+        # Filtrowanie widoczności żetonów przez fog of war
         tokens = self.tokens
-        if hasattr(self, 'player') and hasattr(self.player, 'role'):
-            if self.player.role == 'Generał':
-                # Generał widzi tylko żetony swojej nacji, należące do dowódców tej nacji
-                tokens = [t for t in self.tokens if t.owner.endswith(f"({self.player.nation})") and t.owner != f"{self.player.id} ({self.player.nation})"]
-            elif self.player.role == 'Dowódca':
-                # Dowódca widzi tylko swoje żetony
-                tokens = [t for t in self.tokens if t.owner == f"{self.player.id} ({self.player.nation})"]
+        if hasattr(self, 'player') and hasattr(self.player, 'visible_tokens'):
+            tokens = [t for t in self.tokens if t.id in self.player.visible_tokens]
         for token in tokens:
             if token.q is not None and token.r is not None:
                 img_path = token.stats.get("image")
@@ -131,7 +126,7 @@ class PanelMapa(tk.Frame):
         # Sprawdź, czy kliknięto na żeton
         clicked_token = None
         for token in self.tokens:
-            if token.q is not None and token.r is not None:
+            if token.q is not None and token.r is not None and token.id in getattr(self.player, 'visible_tokens', set()):
                 tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
                 hex_size = self.map_model.hex_size
                 if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:

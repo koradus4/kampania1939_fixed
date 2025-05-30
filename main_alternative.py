@@ -3,7 +3,7 @@ from engine.player import Player
 from gui.panel_generala import PanelGenerala
 from gui.panel_dowodcy import PanelDowodcy
 from core.ekonomia import EconomySystem
-from engine.engine import GameEngine
+from engine.engine import GameEngine, update_all_players_visibility
 
 # Funkcja główna
 if __name__ == "__main__":
@@ -34,6 +34,9 @@ if __name__ == "__main__":
         if not hasattr(p, 'economy') or p.economy is None:
             p.economy = EconomySystem()
 
+    # --- AKTUALIZACJA WIDOCZNOŚCI NA START ---
+    update_all_players_visibility(players, game_engine.tokens, game_engine.board)
+
     # Inicjalizacja menedżera tur
     turn_manager = TurnManager(players, game_engine=game_engine)
 
@@ -41,6 +44,11 @@ if __name__ == "__main__":
     while True:
         # Pobranie aktualnego gracza
         current_player = turn_manager.get_current_player()
+        # --- AKTUALIZACJA WIDOCZNOŚCI PRZED PANELEM ---
+        update_all_players_visibility(players, game_engine.tokens, game_engine.board)
+        # DEBUG: sprawdź czy current_player jest poprawnie ustawiany
+        print(f"[DEBUG] main_alternative.py: current_player = {current_player}, id={getattr(current_player, 'id', None)}, role={getattr(current_player, 'role', None)}, nation={getattr(current_player, 'nation', None)}")
+        print(f"[DEBUG] main_alternative.py: visible_tokens = {getattr(current_player, 'visible_tokens', None)}")
 
         # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
         if current_player.role == "Generał":
@@ -75,10 +83,6 @@ if __name__ == "__main__":
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()
 
-        # Sprawdzenie warunku zakończenia gry
-        if turn_manager.is_game_over():
-            break
-
-    # Debug: sprawdź owner i nation po wczytaniu żetonów
-    # for t in game_engine.tokens:
-    #     print(f"[DEBUG] Załadowano żeton {t.id}: owner='{t.owner}', nation='{t.stats.get('nation','')}'")
+        # Debug: sprawdź owner i nation po wczytaniu żetonów
+        # for t in game_engine.tokens:
+        #     print(f"[DEBUG] Załadowano żeton {t.id}: owner='{t.owner}', nation='{t.stats.get('nation','')}'")

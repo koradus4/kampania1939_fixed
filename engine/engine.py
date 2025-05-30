@@ -95,6 +95,69 @@ class GameEngine:
                 visible.append(token)
         return visible
 
+def get_token_vision_hexes(token, board):
+    """
+    Zwraca zbiór (q, r) heksów w zasięgu widzenia żetonu na podstawie pola 'sight'.
+    Używa dystansu heksagonalnego (axial/cube).
+    """
+    if token.q is None or token.r is None:
+        return set()
+    vision_range = token.stats.get('sight', 0)
+    visible = set()
+    for dq in range(-vision_range, vision_range + 1):
+        for dr in range(-vision_range, vision_range + 1):
+            q = token.q + dq
+            r = token.r + dr
+            if board.hex_distance((token.q, token.r), (q, r)) <= vision_range:
+                if board.get_tile(q, r) is not None:
+                    visible.add((q, r))
+    return visible
+
+def update_player_visibility(player, all_tokens, board):
+    """
+    Aktualizuje widoczność gracza: zbiera wszystkie heksy w zasięgu widzenia jego żetonów
+    oraz żetony znajdujące się na tych heksach.
+    """
+    visible_hexes = set()
+    # Dowódca: tylko własne żetony; Generał: sumuje widoczność dowódców swojej nacji
+    if player.role.lower() == 'dowódca':
+        own_tokens = [t for t in all_tokens if t.owner == f"{player.id} ({player.nation})"]
+    elif player.role.lower() == 'generał':
+        # Generał: sumuje widoczność wszystkich dowódców tej nacji
+        own_tokens = [t for t in all_tokens if t.owner.endswith(f"({player.nation})")]
+    else:
+        own_tokens = []
+    for token in own_tokens:
+        visible_hexes |= get_token_vision_hexes(token, board)
+    player.visible_hexes = visible_hexes
+    # Zbierz żetony widoczne na tych heksach
+    visible_tokens = set()
+    for t in all_tokens:
+        if (t.q, t.r) in visible_hexes:
+            visible_tokens.add(t.id)
+    player.visible_tokens = visible_tokens
+
+def update_general_visibility(general, all_players):
+    """
+    Sumuje visible_hexes i visible_tokens wszystkich dowódców tej samej nacji i przypisuje do generała.
+    """
+    nation = general.nation
+    dowodcy = [p for p in all_players if p.role.lower() == 'dowódca' and p.nation == nation]
+    all_hexes = set()
+    all_tokens = set()
+    for d in dowodcy:
+        all_hexes |= getattr(d, 'visible_hexes', set())
+        all_tokens |= getattr(d, 'visible_tokens', set())
+    general.visible_hexes = all_hexes
+    general.visible_tokens = all_tokens
+
+def update_all_players_visibility(players, all_tokens, board):
+    for player in players:
+        update_player_visibility(player, all_tokens, board)
+        # Dodatkowa aktualizacja dla generałów
+        if player.role.lower() == 'generał':
+            update_general_visibility(player, players)
+
 # Przykład użycia:
 # engine = GameEngine('data/map_data.json', 'data/tokens_index.json', 'data/start_tokens.json', seed=123)
 # state = engine.get_state()

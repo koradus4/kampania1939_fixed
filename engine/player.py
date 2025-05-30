@@ -64,6 +64,9 @@ class Player:
         else:
             self.name = f"Player {self.id}"
 
+        self.visible_hexes = set()  # Heksy widoczne dla gracza
+        self.visible_tokens = set()  # ID żetonów widocznych dla gracza
+
     def serialize(self):
         return {
             'id': self.id,
