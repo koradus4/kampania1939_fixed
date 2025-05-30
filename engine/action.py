@@ -45,13 +45,9 @@ class MoveAction(Action):
         path = engine.board.find_path(start, goal, max_cost=token.stats.get('move', 0))
         if not path:
             # Spróbuj znaleźć najdalsze możliwe pole na trasie do celu, które NIE jest zajęte przez wroga
-            # (czyli zatrzymaj się przed wrogiem, jeśli nie można wejść na jego pole)
             for dist in range(1, token.stats.get('move', 0)+1)[::-1]:
-                # Sprawdź kolejne pola na trasie od końca
                 partial_goal = None
                 if abs(goal[0] - start[0]) + abs(goal[1] - start[1]) >= dist:
-                    # Spróbuj znaleźć pole w odległości 'dist' od startu w kierunku goal
-                    # (prosty heurystyczny wybór: idź po linii prostej)
                     dq = goal[0] - start[0]
                     dr = goal[1] - start[1]
                     step_q = start[0] + int(round(dq * dist / max(1, abs(dq) + abs(dr))))
@@ -73,11 +69,13 @@ class MoveAction(Action):
             return False, "Za daleko."
         path_cost = 0
         final_pos = start
+        # --- Poprawiona pętla: aktualizuj widoczność tylko do faktycznego zatrzymania ---
         for i, step in enumerate(path[1:]):  # pomijamy start
             tile = engine.board.get_tile(*step)
             if not tile:
                 return False, "Błąd mapy: brak pola na trasie."
             temp_q, temp_r = step
+            # Oblicz widoczność z tej pozycji
             vision_range = token.stats.get('sight', 0)
             visible_hexes = set()
             for dq in range(-vision_range, vision_range + 1):
@@ -101,22 +99,19 @@ class MoveAction(Action):
             if enemy_on_tile:
                 break
             # Czy w zasięgu widzenia jest wróg? Jeśli tak, zatrzymaj ruch na tym polu
+            enemy_in_vision = False
             for t in engine.tokens:
                 if t.id != token.id and t.owner != token.owner and (t.q, t.r) in visible_hexes:
-                    final_pos = step
-                    path_cost += 1 + tile.move_mod
-                    token.set_position(*final_pos)
-                    token.currentMovePoints -= path_cost
-                    return True, f"Ruch zatrzymany: wykryto wroga w zasięgu widzenia na polu {final_pos} (koszt: {path_cost}, pozostało MP: {token.currentMovePoints})"
-            # Blokada na sojusznika na polu docelowym
-            for t in engine.tokens:
-                if t.q == step[0] and t.r == step[1] and t.id != token.id:
-                    if t.owner == token.owner:
-                        return False, "Pole zajęte przez sojuszniczy żeton."
-            path_cost += 1 + tile.move_mod
+                    enemy_in_vision = True
+            # Oblicz koszt ruchu
+            move_cost = 1 + tile.move_mod
+            if token.currentMovePoints < path_cost + move_cost:
+                break  # nie stać na kolejny krok
+            path_cost += move_cost
             final_pos = step
-        if token.currentMovePoints < path_cost:
-            return False, f"Za mało punktów ruchu (koszt: {path_cost}, dostępne: {token.currentMovePoints})"
+            if enemy_in_vision:
+                break
+        # Ustaw żeton na ostatniej osiągniętej pozycji
         token.set_position(*final_pos)
         token.currentMovePoints -= path_cost
         return True, f"Ruch wykonany na {final_pos} (koszt: {path_cost}, pozostało MP: {token.currentMovePoints})"
