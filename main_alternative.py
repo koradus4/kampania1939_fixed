@@ -19,15 +19,34 @@ if __name__ == "__main__":
         seed=42
     )
 
-    # Tworzenie obiektów graczy z uwzględnieniem czasu na turę
-    players = [
-        Player(1, miejsca[0], "Generał", czasy[0], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Juliusz Rómmel.png"),
-        Player(2, miejsca[1], "Dowódca", czasy[1], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Tadeusz Kutrzeba.png"),
-        Player(3, miejsca[2], "Dowódca", czasy[2], "c:/Users/klif/kampania1939_fixed/gui/images/Marszałek Polski Edward Rydz-Śmigły.png"),
-        Player(4, miejsca[3], "Generał", czasy[3], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Fedor von Bock.png"),
-        Player(5, miejsca[4], "Dowódca", czasy[4], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Walther von Reichenau.png"),
-        Player(6, miejsca[5], "Dowódca", czasy[5], "c:/Users/klif/kampania1939_fixed/gui/images/Generał pułkownik Walther von Brauchitsch.png"),
-    ]
+    # Automatyczne przypisanie id dowódców zgodnie z ownerami żetonów
+    # Polska: dowódcy id=2,3; Niemcy: dowódcy id=5,6
+    # Ustal kolejność graczy na podstawie miejsc i ról, aby pierwszym był generał wybranej nacji
+    polska_gen = miejsca.index("Polska")
+    polska_dow1 = miejsca.index("Polska", polska_gen+1)
+    polska_dow2 = miejsca.index("Polska", polska_dow1+1)
+    niemcy_gen = miejsca.index("Niemcy")
+    niemcy_dow1 = miejsca.index("Niemcy", niemcy_gen+1)
+    niemcy_dow2 = miejsca.index("Niemcy", niemcy_dow1+1)
+
+    if niemcy_gen < polska_gen:
+        players = [
+            Player(4, "Niemcy", "Generał", czasy[niemcy_gen], "c:/Users/klif/kampania1939_fixed/gui/images/Generał pułkownik Walther von Brauchitsch.png"),
+            Player(5, "Niemcy", "Dowódca", czasy[niemcy_dow1], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Fedor von Bock.png"),
+            Player(6, "Niemcy", "Dowódca", czasy[niemcy_dow2], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Walther von Reichenau.png"),
+            Player(1, "Polska", "Generał", czasy[polska_gen], "c:/Users/klif/kampania1939_fixed/gui/images/Marszałek Polski Edward Rydz-Śmigły.png"),
+            Player(2, "Polska", "Dowódca", czasy[polska_dow1], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Juliusz Rómmel.png"),
+            Player(3, "Polska", "Dowódca", czasy[polska_dow2], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Tadeusz Kutrzeba.png"),
+        ]
+    else:
+        players = [
+            Player(1, "Polska", "Generał", czasy[polska_gen], "c:/Users/klif/kampania1939_fixed/gui/images/Marszałek Polski Edward Rydz-Śmigły.png"),
+            Player(2, "Polska", "Dowódca", czasy[polska_dow1], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Juliusz Rómmel.png"),
+            Player(3, "Polska", "Dowódca", czasy[polska_dow2], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Tadeusz Kutrzeba.png"),
+            Player(4, "Niemcy", "Generał", czasy[niemcy_gen], "c:/Users/klif/kampania1939_fixed/gui/images/Generał pułkownik Walther von Brauchitsch.png"),
+            Player(5, "Niemcy", "Dowódca", czasy[niemcy_dow1], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Fedor von Bock.png"),
+            Player(6, "Niemcy", "Dowódca", czasy[niemcy_dow2], "c:/Users/klif/kampania1939_fixed/gui/images/Generał Walther von Reichenau.png"),
+        ]
 
     # Uzupełnij economy dla wszystkich graczy (Generał i Dowódca)
     for p in players:
