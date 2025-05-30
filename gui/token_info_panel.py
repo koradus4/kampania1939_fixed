@@ -18,6 +18,9 @@ class TokenInfoPanel(tk.Frame):
             self.labels[key] = label
 
     def show_token(self, token):
+        if token is None:
+            # Bezpieczne wyjście jeśli nie przekazano żetonu
+            return
         nation = token.stats.get('nation', '-')
         unit_name = token.stats.get('label', token.id)
         current_mp = getattr(token, 'currentMovePoints', None)

@@ -137,9 +137,12 @@ class PanelGenerala:
             self.points_frame.config(text=f"Zaakceptuj (pozostało: {new_value})")
 
     def toggle_support_sliders(self, event=None):
+        aktualne_punkty = self.ekonomia.get_points()['economic_points']
+        if hasattr(self, 'zarzadzanie_punktami_widget'):
+            self.zarzadzanie_punktami_widget.refresh_available_points(aktualne_punkty)
         if not self._support_sliders_visible:
             # Otwórz panel suwaków
-            print(f"[DEBUG][SLIDERS] Otwieram suwaki. Dostępne punkty ekonomiczne generała: {self.ekonomia.get_points()['economic_points']}")
+            dostepne = self.ekonomia.get_points()['economic_points']
             for commander in self.zarzadzanie_punktami_widget.commander_points.keys():
                 slider = getattr(self.zarzadzanie_punktami_widget, f"{commander}_slider", None)
                 if slider:
@@ -151,20 +154,16 @@ class PanelGenerala:
             if self.zarzadzanie_punktami_widget.on_points_change:
                 self.zarzadzanie_punktami_widget.on_points_change(left)
             self.points_frame.config(text=f"Zaakceptuj (pozostało: {left})")
-            print(f"[DEBUG][SLIDERS] Po otwarciu suwaków można rozdzielić: {left}")
         else:
             # Akceptuj i zamknij panel suwaków
-            print(f"[DEBUG][SLIDERS] Akceptuję i zamykam suwaki. Punkty do przekazania: {self.zarzadzanie_punktami_widget.commander_points}")
             self.zarzadzanie_punktami_widget.accept_final_points()
+            przekazane = sum(self.zarzadzanie_punktami_widget.commander_points.values())
             for commander_id, pts in self.zarzadzanie_punktami_widget.commander_points.items():
                 if pts > 0:
                     for player in self.gracze:
                         if player.id == commander_id and player.role == "Dowódca":
                             player.economy.economic_points += pts
-            przekazane = sum(self.zarzadzanie_punktami_widget.commander_points.values())
-            print(f"[DEBUG][SLIDERS] Suma przekazanych punktów: {przekazane}")
             self.ekonomia.subtract_points(przekazane)
-            print(f"[DEBUG][SLIDERS] Po akceptacji, punkty ekonomiczne generała: {self.ekonomia.get_points()['economic_points']}")
             self.update_economy()
             self.zarzadzanie_punktami_widget.pack_forget()
             self._support_sliders_visible = False
