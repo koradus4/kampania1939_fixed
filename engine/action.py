@@ -16,13 +16,22 @@ class MoveAction(Action):
         token = next((t for t in engine.tokens if t.id == self.token_id), None)
         if not token:
             return False, "Nie znaleziono żetonu."
+        player = None
+        for p in getattr(engine, 'players', []):
+            if hasattr(token, 'owner') and token.owner == f"{p.id} ({p.nation})":
+                player = p
+                break
         start = (token.q, token.r)
         goal = (self.dest_q, self.dest_r)
         tile = engine.board.get_tile(self.dest_q, self.dest_r)
         if tile is None:
             return False, "Pole docelowe nie istnieje na mapie."
-        if engine.board.is_occupied(self.dest_q, self.dest_r) and not (token.q == self.dest_q and token.r == self.dest_r):
-            return False, "Pole zajęte przez inny żeton."
+        # Usuwamy blokadę na wejście na pole z wrogiem, ale nie pozwalamy wejść na pole z sojusznikiem
+        if engine.board.is_occupied(self.dest_q, self.dest_r):
+            for t in engine.tokens:
+                if t.q == self.dest_q and t.r == self.dest_r and t.id != token.id:
+                    if t.owner == token.owner:
+                        return False, "Pole zajęte przez sojuszniczy żeton."
         max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', 0))
         if not hasattr(token, 'currentMovePoints'):
             token.currentMovePoints = max_mp
@@ -37,14 +46,12 @@ class MoveAction(Action):
             return False, "Brak możliwej ścieżki."
         if not token.can_move_to(len(path)-1):
             return False, "Za daleko."
-        # Nowa logika: zatrzymaj ruch, jeśli w zasięgu widzenia pojawi się wróg
         path_cost = 0
         final_pos = start
-        for step in path[1:]:  # pomijamy start
+        for i, step in enumerate(path[1:]):  # pomijamy start
             tile = engine.board.get_tile(*step)
             if not tile:
                 return False, "Błąd mapy: brak pola na trasie."
-            # Przesuń tymczasowo żeton na to pole (do obliczenia widzenia)
             temp_q, temp_r = step
             vision_range = token.stats.get('sight', 0)
             visible_hexes = set()
@@ -55,7 +62,17 @@ class MoveAction(Action):
                     if engine.board.hex_distance((temp_q, temp_r), (q, r)) <= vision_range:
                         if engine.board.get_tile(q, r) is not None:
                             visible_hexes.add((q, r))
-            # Czy w zasięgu widzenia jest wróg?
+            if player is not None:
+                player.temp_visible_hexes |= visible_hexes
+            # Czy na tym polu jest wróg? Jeśli tak, zatrzymaj ruch na poprzednim polu
+            enemy_on_tile = False
+            for t in engine.tokens:
+                if t.q == step[0] and t.r == step[1] and t.id != token.id and t.owner != token.owner:
+                    enemy_on_tile = True
+            if enemy_on_tile:
+                # Zatrzymaj ruch na poprzednim polu
+                break
+            # Czy w zasięgu widzenia jest wróg? Jeśli tak, zatrzymaj ruch na tym polu
             for t in engine.tokens:
                 if t.id != token.id and t.owner != token.owner and (t.q, t.r) in visible_hexes:
                     final_pos = step
@@ -63,7 +80,7 @@ class MoveAction(Action):
                     token.set_position(*final_pos)
                     token.currentMovePoints -= path_cost
                     return True, f"Ruch zatrzymany: wykryto wroga w zasięgu widzenia na polu {final_pos} (koszt: {path_cost}, pozostało MP: {token.currentMovePoints})"
-            # Dodatkowo: blokada na sojusznika na polu docelowym
+            # Blokada na sojusznika na polu docelowym
             for t in engine.tokens:
                 if t.q == step[0] and t.r == step[1] and t.id != token.id:
                     if t.owner == token.owner:

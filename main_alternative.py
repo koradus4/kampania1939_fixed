@@ -3,7 +3,7 @@ from engine.player import Player
 from gui.panel_generala import PanelGenerala
 from gui.panel_dowodcy import PanelDowodcy
 from core.ekonomia import EconomySystem
-from engine.engine import GameEngine, update_all_players_visibility
+from engine.engine import GameEngine, update_all_players_visibility, clear_temp_visibility
 
 # Funkcja główna
 if __name__ == "__main__":
@@ -101,7 +101,8 @@ if __name__ == "__main__":
 
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()
-
+        # Wyczyść tymczasową widoczność po zakończeniu tury
+        clear_temp_visibility(players)
         # Debug: sprawdź owner i nation po wczytaniu żetonów
         # for t in game_engine.tokens:
         #     print(f"[DEBUG] Załadowano żeton {t.id}: owner='{t.owner}', nation='{t.stats.get('nation','')}'")

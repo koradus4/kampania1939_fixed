@@ -161,6 +161,11 @@ def update_all_players_visibility(players, all_tokens, board):
         if player.role.lower() == 'generał':
             update_general_visibility(player, players, all_tokens)
 
+def clear_temp_visibility(players):
+    for p in players:
+        if hasattr(p, 'temp_visible_hexes'):
+            p.temp_visible_hexes.clear()
+
 # Przykład użycia:
 # engine = GameEngine('data/map_data.json', 'data/tokens_index.json', 'data/start_tokens.json', seed=123)
 # state = engine.get_state()

@@ -62,8 +62,10 @@ class PanelMapa(tk.Frame):
         s = self.map_model.hex_size
         visible_hexes = set()
         if hasattr(self, 'player') and hasattr(self.player, 'visible_hexes'):
-            # Upewnij się, że wszystkie heksy są tuple intów
             visible_hexes = set((int(q), int(r)) for q, r in self.player.visible_hexes)
+        # Dodaj tymczasową widoczność (odkryte w tej turze)
+        if hasattr(self.player, 'temp_visible_hexes'):
+            visible_hexes |= set((int(q), int(r)) for q, r in self.player.temp_visible_hexes)
         # DEBUG: wypisz heksy widoczne i zamglenione
         # print(f"[DEBUG] visible_hexes: {sorted(visible_hexes)}")
         fogged = []
@@ -161,7 +163,10 @@ class PanelMapa(tk.Frame):
         # Sprawdź, czy kliknięto na żeton
         clicked_token = None
         for token in self.tokens:
-            if token.q is not None and token.r is not None and token.id in getattr(self.player, 'visible_tokens', set()):
+            if token.q is not None and token.r is not None:
+                # Pozwól kliknąć tylko jeśli żeton jest widoczny dla gracza
+                if token.id not in getattr(self.player, 'visible_tokens', set()):
+                    continue
                 tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
                 hex_size = self.map_model.hex_size
                 if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:

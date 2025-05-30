@@ -66,6 +66,7 @@ class Player:
 
         self.visible_hexes = set()  # Heksy widoczne dla gracza
         self.visible_tokens = set()  # ID żetonów widocznych dla gracza
+        self.temp_visible_hexes = set()  # Heksy odkryte tymczasowo w tej turze
 
     def serialize(self):
         return {
