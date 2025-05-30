@@ -80,7 +80,7 @@ class PanelMapa(tk.Frame):
         for key, tile in self.map_model.terrain.items():
             # Obsługa kluczy tuple (q, r) lub string "q,r"
             if isinstance(key, tuple) and len(key) == 2:
-                q, r = key
+                q, r = int(key[0]), int(key[1])
             else:
                 q, r = map(int, str(key).split(','))
             cx, cy = self.map_model.hex_to_pixel(q, r)
@@ -95,7 +95,7 @@ class PanelMapa(tk.Frame):
                     tags="hex"
                 )
                 # Rysuj mgiełkę tylko jeśli (q, r) nie jest w visible_hexes (upewnij się, że tuple intów)
-                if (int(q), int(r)) not in visible_hexes:
+                if (q, r) not in visible_hexes:
                     self.canvas.create_polygon(
                         flat,
                         fill="#222222",
