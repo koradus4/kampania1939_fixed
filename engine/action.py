@@ -89,6 +89,10 @@ class MoveAction(Action):
                             visible_hexes.add((q, r))
             if player is not None:
                 player.temp_visible_hexes |= visible_hexes
+                # Dodaj do tymczasowej widoczności żetony przeciwnika widoczne z tej pozycji
+                for t in engine.tokens:
+                    if t.id != token.id and t.owner != token.owner and (t.q, t.r) in visible_hexes:
+                        player.temp_visible_tokens.add(t.id)
             # Czy na tym polu jest wróg? Jeśli tak, zatrzymaj ruch na poprzednim polu
             enemy_on_tile = False
             for t in engine.tokens:

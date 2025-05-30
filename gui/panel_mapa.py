@@ -110,9 +110,11 @@ class PanelMapa(tk.Frame):
         self._sync_player_from_engine()
         self.tokens = self.game_engine.tokens  # Zawsze aktualizuj listę żetonów
         self.canvas.delete("token")
-        # Filtrowanie widoczności żetonów przez fog of war
+        # Filtrowanie widoczności żetonów przez fog of war (uwzględnij temp_visible_tokens)
         tokens = self.tokens
-        if hasattr(self, 'player') and hasattr(self.player, 'visible_tokens'):
+        if hasattr(self, 'player') and hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
+            tokens = [t for t in self.tokens if t.id in (self.player.visible_tokens | self.player.temp_visible_tokens)]
+        elif hasattr(self, 'player') and hasattr(self.player, 'visible_tokens'):
             tokens = [t for t in self.tokens if t.id in self.player.visible_tokens]
         for token in tokens:
             if token.q is not None and token.r is not None:
@@ -164,8 +166,13 @@ class PanelMapa(tk.Frame):
         clicked_token = None
         for token in self.tokens:
             if token.q is not None and token.r is not None:
-                # Pozwól kliknąć tylko jeśli żeton jest widoczny dla gracza
-                if token.id not in getattr(self.player, 'visible_tokens', set()):
+                # Pozwól kliknąć tylko jeśli żeton jest widoczny dla gracza (uwzględnij temp_visible_tokens)
+                visible_ids = set()
+                if hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
+                    visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
+                elif hasattr(self.player, 'visible_tokens'):
+                    visible_ids = self.player.visible_tokens
+                if token.id not in visible_ids:
                     continue
                 tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
                 hex_size = self.map_model.hex_size
@@ -216,21 +223,28 @@ class PanelMapa(tk.Frame):
                 tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
                 hex_size = self.map_model.hex_size
                 if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
+                    # Pozwól kliknąć tylko jeśli żeton jest widoczny dla gracza (uwzględnij temp_visible_tokens)
+                    visible_ids = set()
+                    if hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
+                        visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
+                    elif hasattr(self.player, 'visible_tokens'):
+                        visible_ids = self.player.visible_tokens
+                    if token.id not in visible_ids:
+                        continue
                     clicked_token = token
                     break
-        if clicked_token:
-            pass
-        else:
-            pass
         # Przekazanie bezpośrednio do panelu bocznego
         if self.token_info_panel is not None:
-            # Pozwól pokazać statystyki tylko jeśli żeton jest widoczny dla gracza
             if clicked_token and hasattr(self, 'player') and hasattr(self.player, 'visible_tokens'):
-                if clicked_token.id in self.player.visible_tokens:
+                visible_ids = set()
+                if hasattr(self.player, 'temp_visible_tokens'):
+                    visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
+                else:
+                    visible_ids = self.player.visible_tokens
+                if clicked_token.id in visible_ids:
                     self.token_info_panel.show_token(clicked_token)
                 else:
                     self.token_info_panel.clear()
             else:
                 self.token_info_panel.clear()
-        else:
-            pass
+        # ...existing code...

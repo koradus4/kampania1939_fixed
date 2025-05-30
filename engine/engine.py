@@ -165,6 +165,8 @@ def clear_temp_visibility(players):
     for p in players:
         if hasattr(p, 'temp_visible_hexes'):
             p.temp_visible_hexes.clear()
+        if hasattr(p, 'temp_visible_tokens'):
+            p.temp_visible_tokens.clear()
 
 # Przykład użycia:
 # engine = GameEngine('data/map_data.json', 'data/tokens_index.json', 'data/start_tokens.json', seed=123)
