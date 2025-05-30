@@ -137,26 +137,29 @@ def update_player_visibility(player, all_tokens, board):
             visible_tokens.add(t.id)
     player.visible_tokens = visible_tokens
 
-def update_general_visibility(general, all_players):
+def update_general_visibility(general, all_players, all_tokens):
     """
-    Sumuje visible_hexes i visible_tokens wszystkich dowódców tej samej nacji i przypisuje do generała.
+    Generał widzi WSZYSTKIE żetony swojej nacji (niezależnie od dowódcy) oraz WSZYSTKIE żetony przeciwnika, które są na heksach widocznych przez jego dowódców.
     """
     nation = general.nation
     dowodcy = [p for p in all_players if p.role.lower() == 'dowódca' and p.nation == nation]
     all_hexes = set()
-    all_tokens = set()
     for d in dowodcy:
         all_hexes |= getattr(d, 'visible_hexes', set())
-        all_tokens |= getattr(d, 'visible_tokens', set())
     general.visible_hexes = all_hexes
-    general.visible_tokens = all_tokens
+    # Generał widzi wszystkie żetony swojej nacji
+    own_tokens = {t.id for t in all_tokens if t.owner.endswith(f"({nation})")}
+    # Oraz wszystkie żetony przeciwnika, które są na widocznych heksach
+    enemy_tokens = {t.id for t in all_tokens if t.owner and not t.owner.endswith(f"({nation})") and (t.q, t.r) in all_hexes}
+    general.visible_tokens = own_tokens | enemy_tokens
 
 def update_all_players_visibility(players, all_tokens, board):
     for player in players:
         update_player_visibility(player, all_tokens, board)
-        # Dodatkowa aktualizacja dla generałów
+    # Dodatkowa aktualizacja dla generałów (po wszystkich dowódcach!)
+    for player in players:
         if player.role.lower() == 'generał':
-            update_general_visibility(player, players)
+            update_general_visibility(player, players, all_tokens)
 
 # Przykład użycia:
 # engine = GameEngine('data/map_data.json', 'data/tokens_index.json', 'data/start_tokens.json', seed=123)
