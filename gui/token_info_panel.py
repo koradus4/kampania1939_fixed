@@ -5,10 +5,10 @@ __all__ = ["TokenInfoPanel"]
 class TokenInfoPanel(tk.Frame):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)
-        self.config(width=260, height=120)  # Stała wysokość
+        self.config(width=260, height=80)  # Stała wysokość
         self.pack_propagate(False)
         # Canvas + scrollbar
-        self.canvas = tk.Canvas(self, width=260, height=120, highlightthickness=0)
+        self.canvas = tk.Canvas(self, width=260, height=80, highlightthickness=0)
         self.scrollbar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
         self.inner_frame = tk.Frame(self.canvas)
         self.inner_frame.bind(

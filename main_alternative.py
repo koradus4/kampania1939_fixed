@@ -53,6 +53,9 @@ if __name__ == "__main__":
         if not hasattr(p, 'economy') or p.economy is None:
             p.economy = EconomySystem()
 
+    # --- UDOSTĘPNIJ LISTĘ GRACZY W GAME_ENGINE ---
+    game_engine.players = players
+
     # --- AKTUALIZACJA WIDOCZNOŚCI NA START ---
     update_all_players_visibility(players, game_engine.tokens, game_engine.board)
 
