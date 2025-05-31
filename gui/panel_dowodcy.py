@@ -118,13 +118,36 @@ class PanelDowodcy:
         import tkinter as tk
         win = tk.Toplevel(self.root)
         win.title(f"Tankowanie: {token.stats.get('label', token.id)}")
-        win.geometry("320x180")
-        tk.Label(win, text=f"Tankowanie żetonu: {token.stats.get('label', token.id)}", font=("Arial", 12)).pack(pady=8)
+        win.geometry("340x200")
+        win.configure(bg="darkolivegreen")
+        # Nagłówek
+        tk.Label(
+            win,
+            text=f"Tankowanie żetonu: {token.stats.get('label', token.id)}",
+            font=("Arial", 13, "bold"),
+            bg="darkolivegreen",
+            fg="white"
+        ).pack(pady=10)
         current = getattr(token, 'currentFuel', token.maxFuel)
         max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', 0))
         ile_mozna = min(max_fuel - current, max_do_tankowania)
         var = tk.IntVar(value=ile_mozna)
-        slider = tk.Scale(win, from_=0, to=ile_mozna, orient=tk.HORIZONTAL, label="Ilość paliwa do uzupełnienia", variable=var)
+        slider = tk.Scale(
+            win,
+            from_=0,
+            to=ile_mozna,
+            orient=tk.HORIZONTAL,
+            label="Ilość paliwa do uzupełnienia",
+            variable=var,
+            bg="darkolivegreen",
+            fg="white",
+            font=("Arial", 11, "bold"),
+            troughcolor="#556B2F",
+            highlightthickness=0,
+            relief=tk.RAISED,
+            borderwidth=3,
+            length=240
+        )
         slider.pack(pady=10, fill=tk.X, padx=20)
         def zatwierdz():
             ile = var.get()
@@ -132,7 +155,18 @@ class PanelDowodcy:
             if callback:
                 callback(ile)
             win.destroy()
-        btn = tk.Button(win, text="Akceptuj", command=zatwierdz)
+        btn = tk.Button(
+            win,
+            text="Akceptuj",
+            command=zatwierdz,
+            font=("Arial", 12, "bold"),
+            bg="saddlebrown",
+            fg="white",
+            relief=tk.RAISED,
+            borderwidth=4,
+            activebackground="#8B5A2B",
+            activeforeground="white"
+        )
         btn.pack(pady=10)
         win.transient(self.root)
         win.grab_set()
@@ -140,7 +174,17 @@ class PanelDowodcy:
 
     def dodaj_przycisk_tankowania(self):
         # Przycisk tankowania w panelu dowódcy
-        btn = tk.Button(self.left_frame, text="Tankuj żeton", font=("Arial", 12, "bold"), bg="#e6e600", fg="black")
+        btn = tk.Button(
+            self.left_frame,
+            text="Tankuj żeton",
+            font=("Arial", 14, "bold"),
+            bg="#6B8E23",
+            fg="white",
+            relief=tk.RAISED,
+            borderwidth=4,
+            activebackground="#556B2F",
+            activeforeground="white"
+        )
         btn.pack(pady=8, fill=tk.X)
         def on_tankuj():
             # Pobierz wybrany żeton (np. z panelu info lub mapy)
