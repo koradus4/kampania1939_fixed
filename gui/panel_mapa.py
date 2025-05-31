@@ -4,13 +4,14 @@ from PIL import Image, ImageTk
 import os
 
 class PanelMapa(tk.Frame):
-    def __init__(self, parent, game_engine, bg_path: str, player_nation: str, width=800, height=600, token_info_panel=None):
+    def __init__(self, parent, game_engine, bg_path: str, player_nation: str, width=800, height=600, token_info_panel=None, panel_dowodcy=None):
         super().__init__(parent)
         self.game_engine = game_engine
         self.map_model = self.game_engine.board
         self.player_nation = player_nation
         self.tokens = self.game_engine.tokens
         self.token_info_panel = token_info_panel
+        self.panel_dowodcy = panel_dowodcy  # <--- dodane
 
         # Canvas + Scrollbary
         self.canvas = tk.Canvas(self, width=width, height=height)
@@ -181,13 +182,14 @@ class PanelMapa(tk.Frame):
                     break
         # Sprawdzenie właściciela żetonu dla dowódcy
         if clicked_token:
-            if hasattr(self, 'player') and hasattr(self.player, 'id') and hasattr(self.player, 'nation'):
-                expected_owner = f"{self.player.id} ({self.player.nation})"
-                if clicked_token.owner != expected_owner:
-                    from tkinter import messagebox
-                    messagebox.showerror("Błąd", "Możesz ruszać tylko swoimi żetonami!")
-                    return
-            self.selected_token_id = clicked_token.id
+            if self.panel_dowodcy is not None:
+                self.panel_dowodcy.wybrany_token = clicked_token
+                print(f"[DEBUG] PanelMapa ustawił wybrany_token: {clicked_token}")
+                # Ustaw także selected_token_id, by umożliwić ruch
+                self.selected_token_id = clicked_token.id
+            # --- USTAWIAMY WYBRANY ŻETON DLA PANELU DOWÓDCY ---
+            if self.token_info_panel is not None:
+                self.token_info_panel.show_token(clicked_token)
         elif hr and self.selected_token_id:
             from engine.action import MoveAction
             token = next((t for t in self.tokens if t.id == self.selected_token_id), None)

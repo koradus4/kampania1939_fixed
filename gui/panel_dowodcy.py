@@ -13,6 +13,8 @@ class PanelDowodcy:
         self.gracz = gracz
         self.game_engine = game_engine
 
+        self.wybrany_token = None  # INICJALIZACJA NA POCZĄTKU!
+
         # Tworzenie głównego okna
         self.root = tk.Tk()
         # Ustaw tytuł z numerem dowódcy i nacją
@@ -68,11 +70,13 @@ class PanelDowodcy:
             bg_path="assets/mapa_globalna.jpg",
             player_nation=self.gracz.nation,
             width=800, height=600,
-            token_info_panel=self.token_info_panel
+            token_info_panel=self.token_info_panel,
+            panel_dowodcy=self  # <--- przekazanie referencji
         )
         self.panel_mapa.pack(fill="both", expand=True)
 
         self.update_timer()
+        self.dodaj_przycisk_tankowania()
 
     def update_timer(self):
         if self.root.winfo_exists():
@@ -108,3 +112,69 @@ class PanelDowodcy:
 
     def mainloop(self):
         self.root.mainloop()
+
+    def tankuj_zeton(self, token, max_do_tankowania, callback=None):
+        """Wywołuje okno tankowania dla wybranego żetonu. max_do_tankowania = ile można dolać (ograniczone przez maxFuel i punkty ekonomiczne dowódcy)."""
+        import tkinter as tk
+        win = tk.Toplevel(self.root)
+        win.title(f"Tankowanie: {token.stats.get('label', token.id)}")
+        win.geometry("320x180")
+        tk.Label(win, text=f"Tankowanie żetonu: {token.stats.get('label', token.id)}", font=("Arial", 12)).pack(pady=8)
+        current = getattr(token, 'currentFuel', token.maxFuel)
+        max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', 0))
+        ile_mozna = min(max_fuel - current, max_do_tankowania)
+        var = tk.IntVar(value=ile_mozna)
+        slider = tk.Scale(win, from_=0, to=ile_mozna, orient=tk.HORIZONTAL, label="Ilość paliwa do uzupełnienia", variable=var)
+        slider.pack(pady=10, fill=tk.X, padx=20)
+        def zatwierdz():
+            ile = var.get()
+            token.currentFuel += ile
+            if callback:
+                callback(ile)
+            win.destroy()
+        btn = tk.Button(win, text="Akceptuj", command=zatwierdz)
+        btn.pack(pady=10)
+        win.transient(self.root)
+        win.grab_set()
+        win.wait_window()
+
+    def dodaj_przycisk_tankowania(self):
+        # Przycisk tankowania w panelu dowódcy
+        btn = tk.Button(self.left_frame, text="Tankuj żeton", font=("Arial", 12, "bold"), bg="#e6e600", fg="black")
+        btn.pack(pady=8, fill=tk.X)
+        def on_tankuj():
+            # Pobierz wybrany żeton (np. z panelu info lub mapy)
+            token = getattr(self, 'wybrany_token', None)
+            print(f"[DEBUG] wybrany_token: {token}")
+            if token:
+                print(f"[DEBUG] token.id={token.id}, token.owner={token.owner}, gracz.id={self.gracz.id}, gracz.nation={self.gracz.nation}")
+            if not token:
+                from tkinter import messagebox
+                messagebox.showinfo("Tankowanie", "Najpierw wybierz żeton do tankowania!")
+                return
+            # Sprawdź czy to żeton tego dowódcy
+            expected_owner = f"{self.gracz.id} ({self.gracz.nation})"
+            if token.owner != expected_owner:
+                print(f"[DEBUG] Nie możesz tankować żetonu: owner={token.owner}, expected_owner={expected_owner}")
+                from tkinter import messagebox
+                messagebox.showinfo("Tankowanie", f"Możesz tankować tylko własne żetony! (owner={token.owner}, expected={expected_owner})")
+                return
+            # Punkty ekonomiczne dowódcy
+            punkty = getattr(self.gracz, 'punkty_ekonomiczne', 0)
+            max_do_tankowania = min(token.maxFuel - token.currentFuel, punkty)
+            print(f"[DEBUG] max_do_tankowania={max_do_tankowania}, punkty={punkty}, maxFuel={token.maxFuel}, currentFuel={token.currentFuel}")
+            if max_do_tankowania <= 0:
+                from tkinter import messagebox
+                messagebox.showinfo("Tankowanie", "Brak możliwości tankowania (pełny bak lub brak punktów)")
+                return
+            def callback(ile):
+                self.gracz.punkty_ekonomiczne -= ile
+                # Odśwież panel punktów ekonomicznych
+                if hasattr(self, 'points_frame'):
+                    self.points_frame.config(text=f"Punkty do odbioru: {self.gracz.punkty_ekonomiczne}")
+                # Odśwież panel info żetonu
+                if hasattr(self, 'token_info_panel'):
+                    self.token_info_panel.show_token(token)
+            self.tankuj_zeton(token, max_do_tankowania, callback)
+        btn.config(command=on_tankuj)
+        self.btn_tankuj = btn

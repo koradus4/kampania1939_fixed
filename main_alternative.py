@@ -59,6 +59,11 @@ if __name__ == "__main__":
     # --- AKTUALIZACJA WIDOCZNOŚCI NA START ---
     update_all_players_visibility(players, game_engine.tokens, game_engine.board)
 
+    # --- SYNCHRONIZACJA PUNKTÓW EKONOMICZNYCH DOWÓDCÓW Z SYSTEMEM EKONOMII ---
+    for p in players:
+        if hasattr(p, 'punkty_ekonomiczne'):
+            p.punkty_ekonomiczne = p.economy.get_points()['economic_points']
+
     # Inicjalizacja menedżera tur
     turn_manager = TurnManager(players, game_engine=game_engine)
 
@@ -93,6 +98,8 @@ if __name__ == "__main__":
         if isinstance(app, PanelDowodcy):
             przydzielone_punkty = current_player.economy.get_points()['economic_points']
             app.update_economy(przydzielone_punkty)  # Aktualizacja interfejsu dowódcy
+            # --- Synchronizacja punktów ekonomicznych dowódcy z systemem ekonomii ---
+            current_player.punkty_ekonomiczne = przydzielone_punkty
 
         try:
             app.mainloop()  # Uruchomienie panelu

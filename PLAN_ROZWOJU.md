@@ -9,11 +9,18 @@
 - Testy: walka, zużycie amunicji, brak amunicji
 
 ### 2. Paliwo
-- Dodanie parametru paliwa do żetonów
-- Zużycie paliwa podczas ruchu
-- Blokada ruchu bez paliwa
-- Możliwość tankowania (np. przez rozkaz lub na określonych polach)
-- Testy: ruch z paliwem, brak paliwa, tankowanie
+- Wartość paliwa żetonu to pole `maintenance` (pojemność baku i max fuel)
+- Każdy żeton ma dynamiczne pole `current_fuel` (aktualny stan paliwa, inicjalizowany na poziom `maintenance`)
+- Zużycie paliwa podczas ruchu: 1 punkt za każdy ruch (możliwość modyfikacji za teren/pogodę)
+- Blokada ruchu bez paliwa (`current_fuel == 0` blokuje MoveAction)
+- Tankowanie tylko przez panel dowódcy: przycisk „Tankuj” otwiera suwak z ilością do uzupełnienia (max do `maintenance`, nie więcej niż dostępne punkty ekonomiczne dowódcy)
+- Po akceptacji punkty ekonomiczne są odejmowane, a żetonowi zwiększa się paliwo
+- Akcję tankowania można powtarzać wielokrotnie w turze, aż do wyczerpania punktów ekonomicznych lub pełnego baku
+- Testy: ruch z paliwem, brak paliwa, tankowanie, blokada ruchu bez paliwa
+- GUI: przycisk tankowania, suwak, aktualizacja punktów ekonomicznych dowódcy
+- Pole `maintenance` traktujemy jako pojemność baku (max fuel), a `current_fuel` jako aktualny stan paliwa
+- Koszt tankowania: 1 punkt ekonomiczny za 1 punkt paliwa (możliwość zmiany przelicznika)
+- GUI: wykorzystać istniejący system suwaków z panelu ekonomicznego jako wzór
 
 ### 3. Wystawianie jednostek
 - Mechanizm wystawiania nowych żetonów na mapę (np. za punkty ekonomiczne)

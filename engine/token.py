@@ -11,10 +11,13 @@ class Token:
         # Inicjalizacja punktów ruchu
         self.maxMovePoints = getattr(self, 'maxMovePoints', stats.get('move', 0))
         self.currentMovePoints = getattr(self, 'currentMovePoints', self.maxMovePoints)
+        # --- PALIWO ---
+        self.maxFuel = stats.get('maintenance', 0)
+        self.currentFuel = getattr(self, 'currentFuel', self.maxFuel)
 
     def can_move_to(self, dist: int) -> bool:
-        """Sprawdza, czy żeton może się ruszyć na daną odległość (uwzględnia limit ruchu)."""
-        return dist <= self.stats.get('move', 0)
+        """Sprawdza, czy żeton może się ruszyć na daną odległość (uwzględnia limit ruchu i paliwa)."""
+        return dist <= self.stats.get('move', 0) and self.currentFuel > 0
 
     def set_position(self, q: int, r: int):
         self.q = q
@@ -28,7 +31,9 @@ class Token:
             'q': self.q,
             'r': self.r,
             'maxMovePoints': getattr(self, 'maxMovePoints', self.stats.get('move', 0)),
-            'currentMovePoints': getattr(self, 'currentMovePoints', getattr(self, 'maxMovePoints', self.stats.get('move', 0)))
+            'currentMovePoints': getattr(self, 'currentMovePoints', getattr(self, 'maxMovePoints', self.stats.get('move', 0))),
+            'maxFuel': getattr(self, 'maxFuel', self.stats.get('maintenance', 0)),
+            'currentFuel': getattr(self, 'currentFuel', getattr(self, 'maxFuel', self.stats.get('maintenance', 0)))
         }
 
     @staticmethod
@@ -77,9 +82,11 @@ class Token:
             q=q,
             r=r
         )
-        # Odczytaj punkty ruchu jeśli są w pliku
+        # Odczytaj punkty ruchu i paliwa jeśli są w pliku
         token.maxMovePoints = data.get('maxMovePoints', stats.get('move', 0))
         token.currentMovePoints = data.get('currentMovePoints', token.maxMovePoints)
+        token.maxFuel = data.get('maxFuel', stats.get('maintenance', 0))
+        token.currentFuel = data.get('currentFuel', token.maxFuel)
         return token
 
     @staticmethod
@@ -94,6 +101,8 @@ class Token:
         )
         token.maxMovePoints = data.get('maxMovePoints', token.stats.get('move', 0))
         token.currentMovePoints = data.get('currentMovePoints', token.maxMovePoints)
+        token.maxFuel = data.get('maxFuel', token.stats.get('maintenance', 0))
+        token.currentFuel = data.get('currentFuel', token.maxFuel)
         return token
 
 

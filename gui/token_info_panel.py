@@ -23,7 +23,7 @@ class TokenInfoPanel(tk.Frame):
 
     def _build(self):
         font = ("Arial", 11)
-        for i, key in enumerate(["nacja", "jednostka", "punkty_ruchu", "zasięg_widzenia"]):
+        for i, key in enumerate(["nacja", "jednostka", "punkty_ruchu", "paliwo", "zasięg_widzenia"]):
             label = tk.Label(self.inner_frame, text=f"{key.capitalize()}: -", font=font, anchor="w")
             label.grid(row=i, column=0, sticky="w", padx=4, pady=2)
             self.labels[key] = label
@@ -37,9 +37,12 @@ class TokenInfoPanel(tk.Frame):
         if current_mp is None:
             current_mp = token.stats.get('move', '-')
         sight = token.stats.get('sight', '-')
+        current_fuel = getattr(token, 'currentFuel', token.stats.get('maintenance', '-'))
+        max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', '-'))
         self.labels["nacja"].config(text=f"Nacja: {nation}")
         self.labels["jednostka"].config(text=f"Jednostka: {unit_name}")
         self.labels["punkty_ruchu"].config(text=f"Punkty ruchu: {current_mp}")
+        self.labels["paliwo"].config(text=f"Paliwo: {current_fuel}/{max_fuel}")
         self.labels["zasięg_widzenia"].config(text=f"Zasięg widzenia: {sight}")
 
     def clear(self):

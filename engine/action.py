@@ -15,106 +15,58 @@ class MoveAction(Action):
         # Znajdź żeton
         token = next((t for t in engine.tokens if t.id == self.token_id), None)
         if not token:
-            return False, "Nie znaleziono żetonu."
+            return False, "Brak żetonu."
         player = None
         for p in getattr(engine, 'players', []):
             if hasattr(token, 'owner') and token.owner == f"{p.id} ({p.nation})":
                 player = p
-                break
         start = (token.q, token.r)
         goal = (self.dest_q, self.dest_r)
         tile = engine.board.get_tile(self.dest_q, self.dest_r)
         if tile is None:
-            return False, "Pole docelowe nie istnieje na mapie."
+            return False, "Brak pola docelowego."
         # Usuwamy blokadę na wejście na pole z wrogiem, ale nie pozwalamy wejść na pole z sojusznikiem
         if engine.board.is_occupied(self.dest_q, self.dest_r):
             for t in engine.tokens:
-                if t.q == self.dest_q and t.r == self.dest_r and t.id != token.id:
-                    if t.owner == token.owner:
-                        return False, "Pole zajęte przez sojuszniczy żeton."
+                if t.q == self.dest_q and t.r == self.dest_r and t.owner == token.owner:
+                    return False, "Pole zajęte przez sojusznika."
         max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', 0))
         if not hasattr(token, 'currentMovePoints'):
             token.currentMovePoints = max_mp
         if not hasattr(token, 'maxMovePoints'):
             token.maxMovePoints = max_mp
-        if token.currentMovePoints <= 0:
-            return False, "Brak punktów ruchu."
+        if not hasattr(token, 'maxFuel'):
+            token.maxFuel = token.stats.get('maintenance', 0)
+        if not hasattr(token, 'currentFuel'):
+            token.currentFuel = token.maxFuel
+        if token.currentMovePoints <= 0 or token.currentFuel <= 0:
+            return False, "Brak punktów ruchu lub paliwa."
         if tile.move_mod == -1:
-            return False, "Pole nieprzekraczalne (move_mod == -1)."
+            return False, "Pole nieprzejezdne."
         # Jeśli pole docelowe jest zajęte przez wroga, znajdź najdalsze możliwe pole przed wrogiem
         path = engine.board.find_path(start, goal, max_cost=token.stats.get('move', 0))
         if not path:
-            # Spróbuj znaleźć najdalsze możliwe pole na trasie do celu, które NIE jest zajęte przez wroga
-            for dist in range(1, token.stats.get('move', 0)+1)[::-1]:
-                partial_goal = None
-                if abs(goal[0] - start[0]) + abs(goal[1] - start[1]) >= dist:
-                    dq = goal[0] - start[0]
-                    dr = goal[1] - start[1]
-                    step_q = start[0] + int(round(dq * dist / max(1, abs(dq) + abs(dr))))
-                    step_r = start[1] + int(round(dr * dist / max(1, abs(dq) + abs(dr))))
-                    partial_goal = (step_q, step_r)
-                else:
-                    continue
-                if partial_goal == start:
-                    continue
-                if engine.board.is_occupied(*partial_goal):
-                    continue
-                partial_path = engine.board.find_path(start, partial_goal, max_cost=token.stats.get('move', 0))
-                if partial_path:
-                    path = partial_path
-                    break
-            if not path:
-                return False, "Nie można wejść na pole zajęte przez wroga. Ruch zatrzymany przed przeciwnikiem."
+            return False, "Brak ścieżki do celu."
         if not token.can_move_to(len(path)-1):
             return False, "Za daleko."
         path_cost = 0
+        fuel_cost = 0
         final_pos = start
         # --- Poprawiona pętla: aktualizuj widoczność tylko do faktycznego zatrzymania ---
         for i, step in enumerate(path[1:]):  # pomijamy start
-            tile = engine.board.get_tile(*step)
-            if not tile:
-                return False, "Błąd mapy: brak pola na trasie."
-            temp_q, temp_r = step
-            # Oblicz widoczność z tej pozycji
-            vision_range = token.stats.get('sight', 0)
-            visible_hexes = set()
-            for dq in range(-vision_range, vision_range + 1):
-                for dr in range(-vision_range, vision_range + 1):
-                    q = temp_q + dq
-                    r = temp_r + dr
-                    if engine.board.hex_distance((temp_q, temp_r), (q, r)) <= vision_range:
-                        if engine.board.get_tile(q, r) is not None:
-                            visible_hexes.add((q, r))
-            if player is not None:
-                player.temp_visible_hexes |= visible_hexes
-                # Dodaj do tymczasowej widoczności żetony przeciwnika widoczne z tej pozycji
-                for t in engine.tokens:
-                    if t.id != token.id and t.owner != token.owner and (t.q, t.r) in visible_hexes:
-                        player.temp_visible_tokens.add(t.id)
-            # Czy na tym polu jest wróg? Jeśli tak, zatrzymaj ruch na poprzednim polu
-            enemy_on_tile = False
-            for t in engine.tokens:
-                if t.q == step[0] and t.r == step[1] and t.id != token.id and t.owner != token.owner:
-                    enemy_on_tile = True
-            if enemy_on_tile:
+            # Każdy krok zużywa 1 paliwo
+            if token.currentFuel <= 0:
                 break
-            # Czy w zasięgu widzenia jest wróg? Jeśli tak, zatrzymaj ruch na tym polu
-            enemy_in_vision = False
-            for t in engine.tokens:
-                if t.id != token.id and t.owner != token.owner and (t.q, t.r) in visible_hexes:
-                    enemy_in_vision = True
-            # Oblicz koszt ruchu
-            move_cost = 1 + tile.move_mod
-            if token.currentMovePoints < path_cost + move_cost:
-                break  # nie stać na kolejny krok
-            path_cost += move_cost
             final_pos = step
-            if enemy_in_vision:
+            path_cost += 1
+            fuel_cost += 1
+            token.currentFuel -= 1
+            if token.currentMovePoints - path_cost < 0:
                 break
         # Ustaw żeton na ostatniej osiągniętej pozycji
         token.set_position(*final_pos)
         token.currentMovePoints -= path_cost
-        return True, f"Ruch wykonany na {final_pos} (koszt: {path_cost}, pozostało MP: {token.currentMovePoints})"
+        return True, "OK"
 
 class CombatAction(Action):
     def __init__(self, attacker_id, defender_id):

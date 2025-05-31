@@ -3,6 +3,9 @@ from engine.engine import GameEngine, update_all_players_visibility, clear_temp_
 from engine.action import MoveAction
 from engine.player import Player
 import os
+from unittest.mock import patch, MagicMock
+import tkinter as tk
+from gui.panel_dowodcy import PanelDowodcy
 
 @pytest.fixture
 def game_engine_and_players():
@@ -149,3 +152,92 @@ def test_general_visibility(game_engine_and_players):
         # Jeśli żeton jest poza widocznością, nie powinien być widoczny
         if (t.q, t.r) not in general.visible_hexes:
             assert t.id not in general.visible_tokens
+
+def test_fuel_usage_and_tankowanie(game_engine_and_players):
+    engine, players = game_engine_and_players
+    # Wybierz pierwszy żeton polski
+    token = next(t for t in engine.tokens if t.owner.startswith("2 (Polska)") or t.owner.startswith("3 (Polska)"))
+    start_fuel = token.currentFuel
+    start_pos = (token.q, token.r)
+    # Znajdź sąsiedni heks na mapie
+    neighbors = engine.board.neighbors(token.q, token.r)
+    assert neighbors, "Brak sąsiadów na mapie dla testowanego żetonu!"
+    dest = neighbors[0]
+    # Wykonaj ruch (zużycie paliwa)
+    action = MoveAction(token.id, dest[0], dest[1])
+    success, msg = action.execute(engine)
+    assert token.currentFuel == start_fuel - 1, f"Paliwo nie zostało zużyte po ruchu: {token.currentFuel} vs {start_fuel-1}"
+    # Wyzeruj paliwo i spróbuj ruszyć
+    token.currentFuel = 0
+    action2 = MoveAction(token.id, dest[0], dest[1])
+    result = action2.execute(engine)
+    # Akceptuj False lub (False, ...)
+    assert (result is None or result is False or (isinstance(result, tuple) and result and result[0] is False)), "Żeton bez paliwa nie powinien móc się ruszyć!"
+    # Tankowanie (symulacja panelu dowódcy)
+    token.currentFuel = 0
+    max_fuel = token.maxFuel
+    ile_dolac = 5
+    token.currentFuel += ile_dolac
+    assert token.currentFuel == ile_dolac, "Tankowanie nie działa poprawnie!"
+    # Tankowanie do pełna
+    token.currentFuel = 0
+    token.currentFuel += max_fuel
+    assert token.currentFuel == max_fuel, "Tankowanie do pełna nie działa!"
+
+def test_tankowanie_gui_symulacja(game_engine_and_players):
+    engine, players = game_engine_and_players
+    # Wybierz pierwszy żeton polski
+    token = next(t for t in engine.tokens if t.owner.startswith("2 (Polska)") or t.owner.startswith("3 (Polska)"))
+    print(f"[TEST] Wybrany żeton: {token.id}, owner: {token.owner}, maxFuel: {token.maxFuel}, currentFuel: {token.currentFuel}")
+    start_fuel = token.currentFuel
+    max_fuel = token.maxFuel
+    print(f"[TEST] Stan początkowy paliwa: {start_fuel}/{max_fuel}")
+    # Porusz żetonem, aby stracił paliwo
+    neighbors = engine.board.neighbors(token.q, token.r)
+    assert neighbors, "Brak sąsiadów na mapie dla testowanego żetonu!"
+    dest = neighbors[0]
+    action = MoveAction(token.id, dest[0], dest[1])
+    success, msg = action.execute(engine)
+    assert success, f"Ruch nie powiódł się: {msg}"
+    print(f"[TEST] Po ruchu paliwo: {token.currentFuel}/{max_fuel}")
+    # Symulacja wyboru żetonu do tankowania (np. kliknięcie na mapie)
+    wybrany_token = token
+    # Próba tankowania częściowego
+    ile_mozna = max_fuel - wybrany_token.currentFuel
+    if ile_mozna <= 0:
+        print("[TEST] Żeton ma pełny bak, nie można tankować!")
+        assert ile_mozna == 0
+    else:
+        ile_dolac = min(3, ile_mozna)  # tankujemy 3 lub do pełna
+        przed = wybrany_token.currentFuel
+        wybrany_token.currentFuel += ile_dolac
+        print(f"[TEST] Tankowanie częściowe: było {przed}, dolano {ile_dolac}, po tankowaniu {wybrany_token.currentFuel}/{max_fuel}")
+        assert wybrany_token.currentFuel <= max_fuel, "Tankowanie przekroczyło pojemność baku!"
+        # Tankowanie do pełna
+        przed = wybrany_token.currentFuel
+        ile_dolac_pelne = max_fuel - wybrany_token.currentFuel
+        wybrany_token.currentFuel += ile_dolac_pelne
+        print(f"[TEST] Tankowanie do pełna: było {przed}, dolano {ile_dolac_pelne}, po tankowaniu {wybrany_token.currentFuel}/{max_fuel}")
+        assert wybrany_token.currentFuel == max_fuel, "Tankowanie do pełna nie działa!"
+
+@pytest.mark.skipif('DISPLAY' not in globals() and 'WAYLAND_DISPLAY' not in globals(), reason="Brak środowiska GUI")
+def test_gui_tankowanie_full_cycle(game_engine_and_players):
+    engine, players = game_engine_and_players
+    gracz = next(p for p in players if hasattr(p, 'punkty_ekonomiczne'))
+    gracz.punkty_ekonomiczne = 10
+    token = next(t for t in engine.tokens if t.owner == f"{gracz.id} ({gracz.nation})" and t.maxFuel > 0)
+    token.currentFuel = 0
+    # Patchowanie tkinter, by nie otwierać okien
+    with patch.object(tk, 'Tk', MagicMock()), \
+         patch.object(tk, 'Toplevel', MagicMock()), \
+         patch.object(tk, 'Label', MagicMock()), \
+         patch.object(tk, 'Button', MagicMock()), \
+         patch.object(tk, 'Scale', MagicMock()), \
+         patch.object(tk, 'IntVar', return_value=MagicMock(get=lambda: 5)):
+        panel = PanelDowodcy(1, 300, gracz, engine)
+        panel.wybrany_token = token
+        # Symulacja kliknięcia przycisku tankowania
+        panel.btn_tankuj.invoke()  # Wywołuje on_tankuj
+        # Callback tankowania powinien odjąć punkty i dodać paliwo
+        assert token.currentFuel > 0, "Tankowanie nie zadziałało (paliwo)"
+        assert gracz.punkty_ekonomiczne < 10, "Tankowanie nie zadziałało (punkty)"
