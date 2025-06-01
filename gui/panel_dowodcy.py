@@ -64,7 +64,14 @@ class PanelDowodcy:
 
         # Panel pogodowy
         self.weather_panel = PanelPogodowy(self.left_frame)
-        self.weather_panel.pack(pady=10, side=tk.BOTTOM, fill=tk.BOTH, expand=False)
+        self.weather_panel.pack(pady=(10, 0), side=tk.BOTTOM, fill=tk.BOTH, expand=False)
+
+        # Przycisk uzupełniania żetonu tuż nad panelem pogodowym
+        self.btn_tankuj = None
+        self.dodaj_przycisk_tankowania()
+        if self.btn_tankuj is not None:
+            self.btn_tankuj.pack_forget()
+            self.btn_tankuj.pack(side=tk.BOTTOM, fill=tk.X, pady=(0, 1), before=self.weather_panel)
 
         # Prawy panel (mapa)
         self.map_frame = tk.Frame(self.main_frame)
@@ -85,7 +92,6 @@ class PanelDowodcy:
         self.panel_mapa.pack(fill="both", expand=True)
 
         self.update_timer()
-        self.dodaj_przycisk_tankowania()
 
     def update_timer(self):
         if self.root.winfo_exists():
