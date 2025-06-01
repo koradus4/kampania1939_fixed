@@ -24,15 +24,17 @@ class TokenInfoPanel(tk.Frame):
 
     def _build(self):
         font = ("Arial", 11)
-        # Dodajemy pole na tryb ruchu, mnożnik obrony i mnożnik ruchu
-        keys = ["nacja", "jednostka", "punkty_ruchu", "wartość_obrony", "tryb_ruchu", "mnożnik_obrony", "mnożnik_ruchu", "paliwo", "zasięg_widzenia", "wartość_bojowa"]
+        # Usunięto pola na efektywną obronę i efektywny ruch
+        keys = ["nacja", "jednostka", "punkty_ruchu", "wartość_obrony", "tryb_ruchu", "paliwo", "zasięg_widzenia", "wartość_bojowa"]
         for i, key in enumerate(keys):
             label = tk.Label(self.inner_frame, text=f"{key.capitalize()}: -", font=font, anchor="w")
-            label.grid(row=i, column=0, sticky="w", padx=4, pady=2)
+            label.grid(row=i, column=0, sticky="w", padx=4, pady=1)
             self.labels[key] = label
 
     def show_token(self, token):
         if token is None:
+            for key in self.labels:
+                self.labels[key].config(text=f"{key.capitalize()}: -")
             return
         nation = token.stats.get('nation', '-')
         unit_name = token.stats.get('unit_full_name') or token.stats.get('label', token.id)
@@ -46,16 +48,11 @@ class TokenInfoPanel(tk.Frame):
         combat_value = getattr(token, 'combat_value', token.stats.get('combat_value', '-'))
         movement_mode = getattr(token, 'movement_mode', 'combat')
         mode_label = {'combat': 'Bojowy', 'march': 'Marsz', 'recon': 'Zwiad'}.get(movement_mode, movement_mode)
-        # Nowe: dynamiczne mnożniki
-        effective_def = getattr(token, 'effective_defense', defense)
-        effective_move = getattr(token, 'effective_move', move)
         self.labels["nacja"].config(text=f"Nacja: {nation}")
         self.labels["jednostka"].config(text=f"Jednostka: {unit_name}")
         self.labels["punkty_ruchu"].config(text=f"Punkty ruchu: {move} (bazowo: {base_move})")
         self.labels["wartość_obrony"].config(text=f"Wartość obrony: {defense} (bazowo: {base_defense})")
         self.labels["tryb_ruchu"].config(text=f"Tryb ruchu: {mode_label}")
-        self.labels["mnożnik_obrony"].config(text=f"Efektywna obrona: {effective_def}")
-        self.labels["mnożnik_ruchu"].config(text=f"Efektywny ruch: {effective_move}")
         self.labels["paliwo"].config(text=f"Paliwo: {current_fuel}/{max_fuel}")
         self.labels["zasięg_widzenia"].config(text=f"Zasięg widzenia: {sight}")
         self.labels["wartość_bojowa"].config(text=f"Zasoby bojowe: {combat_value}")

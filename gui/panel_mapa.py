@@ -256,5 +256,5 @@ class PanelMapa(tk.Frame):
                 clicked_token.movement_mode = 'recon'
             else:
                 clicked_token.movement_mode = 'combat'
-            clicked_token.apply_movement_mode(reset_mp=True)  # Aktualizuj wartości i resetuj MP po zmianie trybu
+            clicked_token.apply_movement_mode(reset_mp=False)  # NIE resetuj punktów ruchu przy zmianie trybu!
             self.refresh()

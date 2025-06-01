@@ -120,25 +120,36 @@ class Token:
     def apply_movement_mode(self, reset_mp: bool = False):
         base_move = self.stats.get('move', 0)
         base_def = self.stats.get('defense_value', 0)
+        # Ustal mnożniki
         if self.movement_mode == 'combat':
-            move = base_move
-            defense = base_def
+            move_mult = 1.0
+            def_mult = 1.0
         elif self.movement_mode == 'march':
-            move = int(round(base_move * 1.5))
-            defense = int(round(base_def * 0.5))
+            move_mult = 1.5
+            def_mult = 0.5
         elif self.movement_mode == 'recon':
-            move = int(round(base_move * 0.5))
-            defense = int(round(base_def * 1.25))
+            move_mult = 0.5
+            def_mult = 1.25
         else:
-            move = base_move
-            defense = base_def
-        self.maxMovePoints = move
-        self.defense_value = defense
+            move_mult = 1.0
+            def_mult = 1.0
+        move = base_move * move_mult
+        defense = base_def * def_mult
+        prev_max = getattr(self, 'maxMovePoints', base_move)
+        prev_current = getattr(self, 'currentMovePoints', prev_max)
+        self.maxMovePoints = int(round(move))
+        self.defense_value = int(round(defense))
         self.base_move = base_move
         self.base_defense = base_def
-        # Reset currentMovePoints tylko jeśli reset_mp=True (np. przy zmianie trybu lub na pocz. tury)
         if reset_mp:
             self.currentMovePoints = self.maxMovePoints
+        else:
+            if prev_max > 0:
+                used_ratio = 1 - (prev_current / prev_max)
+                new_current = int(round(self.maxMovePoints * (1 - used_ratio)))
+                self.currentMovePoints = max(0, min(self.maxMovePoints, new_current))
+            else:
+                self.currentMovePoints = self.maxMovePoints
 
 
 def load_tokens(index_path: str, start_path: str):
