@@ -139,39 +139,57 @@ class PanelGenerala:
             self.points_frame.config(text=f"Zaakceptuj (pozostało: {new_value})")
 
     def toggle_support_sliders(self, event=None):
-        aktualne_punkty = self.ekonomia.get_points()['economic_points']
-        if hasattr(self, 'zarzadzanie_punktami_widget'):
-            self.zarzadzanie_punktami_widget.refresh_available_points(aktualne_punkty)
-        if not self._support_sliders_visible:
-            # Otwórz panel suwaków
-            dostepne = self.ekonomia.get_points()['economic_points']
-            for commander in self.zarzadzanie_punktami_widget.commander_points.keys():
-                slider = getattr(self.zarzadzanie_punktami_widget, f"{commander}_slider", None)
-                if slider:
-                    slider.set(0)
-                self.zarzadzanie_punktami_widget.commander_points[commander] = 0
-            self.zarzadzanie_punktami_widget.pack(pady=10, fill=tk.BOTH, expand=False)
-            left = self.ekonomia.get_points()['economic_points']
-            self._support_sliders_visible = True  # <-- PRZED callbackiem!
-            if self.zarzadzanie_punktami_widget.on_points_change:
-                self.zarzadzanie_punktami_widget.on_points_change(left)
-            self.points_frame.config(text=f"Zaakceptuj (pozostało: {left})")
-        else:
-            # Akceptuj i zamknij panel suwaków
-            self.zarzadzanie_punktami_widget.accept_final_points()
-            przekazane = sum(self.zarzadzanie_punktami_widget.commander_points.values())
-            for commander_id, pts in self.zarzadzanie_punktami_widget.commander_points.items():
-                if pts > 0:
-                    for player in self.gracze:
-                        if player.id == commander_id and player.role == "Dowódca":
-                            player.economy.economic_points += pts
-            self.ekonomia.subtract_points(przekazane)
-            self.update_economy()
-            self.zarzadzanie_punktami_widget.pack_forget()
-            self._support_sliders_visible = False
-            # Przywróć etykietę z aktualną wartością
-            points = self.ekonomia.get_points()['economic_points']
-            self.points_frame.config(text=f"Punkty ekonomiczne: {points}")
+        # Otwieraj okno modalne z suwakami zamiast sekcji pod przyciskiem
+        import tkinter as tk
+        win = tk.Toplevel(self.root)
+        win.title("Przydziel punkty ekonomiczne dowódcom")
+        win.configure(bg="darkolivegreen")
+        suwak_vars = {}
+        dowodcy = [g for g in self.gracze if g.role == "Dowódca" and g.nation == self.gracz.nation]
+        max_points = self.ekonomia.get_points()['economic_points']
+        suma_var = tk.IntVar(value=0)
+
+        def update_sum(*_):
+            suma = sum(var.get() for var in suwak_vars.values())
+            suma_var.set(suma)
+            left = max_points - suma
+            label_left.config(text=f"Pozostało do przydzielenia: {left}")
+            btn_ok.config(state="normal" if left >= 0 else "disabled")
+
+        for i, d in enumerate(dowodcy):
+            tk.Label(win, text=f"{d.name}", bg="darkolivegreen", fg="white", font=("Arial", 12, "bold")).pack(pady=(10 if i==0 else 2, 2))
+            var = tk.IntVar(value=0)
+            suwak = tk.Scale(win, from_=0, to=max_points, orient=tk.HORIZONTAL, variable=var, bg="darkolivegreen", fg="white", font=("Arial", 11, "bold"), troughcolor="#556B2F", highlightthickness=0, relief=tk.RAISED, borderwidth=3, length=240)
+            suwak.pack()
+            suwak_vars[d.id] = var
+            var.trace_add("write", update_sum)
+
+        label_left = tk.Label(win, text=f"Pozostało do przydzielenia: {max_points}", bg="darkolivegreen", fg="white", font=("Arial", 11, "bold"))
+        label_left.pack(pady=8)
+
+        def zatwierdz():
+            for d in dowodcy:
+                przydzielone = suwak_vars[d.id].get()
+                # Synchronizuj z systemem ekonomii dowódcy
+                if not hasattr(d, 'economy') or d.economy is None:
+                    from core.ekonomia import EconomySystem
+                    d.economy = EconomySystem()
+                d.economy.economic_points += przydzielone
+                # Dla kompatybilności: synchronizuj atrybut punkty_ekonomiczne
+                if not hasattr(d, 'punkty_ekonomiczne') or d.punkty_ekonomiczne is None:
+                    d.punkty_ekonomiczne = 0
+                d.punkty_ekonomiczne = d.economy.economic_points
+            self.ekonomia.subtract_points(sum(var.get() for var in suwak_vars.values()))
+            self.update_economy(self.ekonomia.get_points()['economic_points'])
+            win.destroy()
+
+        btn_ok = tk.Button(win, text="Akceptuj", command=zatwierdz, font=("Arial", 12, "bold"),
+                           bg="#6B8E23", fg="white", activebackground="#7CA942", relief=tk.RAISED, borderwidth=3)
+        btn_ok.pack(pady=10)
+
+        win.transient(self.root)
+        win.grab_set()
+        win.wait_window()
 
     def update_timer(self):
         """Aktualizuje odliczanie czasu."""
