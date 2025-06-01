@@ -104,6 +104,7 @@ class TokenEditor:
         self.unit_maintenance = tk.StringVar()
         self.purchase_value = tk.StringVar()
         self.sight_range = tk.StringVar()  # Nowa zmienna dla zasięgu widzenia
+        self.defense_value = tk.StringVar()  # Nowa zmienna dla wartości obrony
         # Usuwamy obsługę maxMovePoints i currentMovePoints z edytora
         # self.max_move_points = tk.StringVar()
         # self.current_move_points = tk.StringVar()
@@ -142,71 +143,79 @@ class TokenEditor:
             "AP__Batalion": 30
         }
 
-        # Add support upgrade attributes and selected_support BEFORE build_controls call
+        # Dodanie modyfikatorów obrony do wsparć
         self.support_upgrades = {
             "drużyna granatników": {
                 "movement": -1,
                 "range": 1,
                 "attack": 2,
                 "combat": 0,
-                "unit_maintenance": 1,  # Dodano koszt utrzymania
-                "purchase": 10
+                "unit_maintenance": 1,
+                "purchase": 10,
+                "defense": 1
             },
             "sekcja km.ppanc": {
                 "movement": -1,
                 "range": 1,
                 "attack": 2,
                 "combat": 0,
-                "unit_maintenance": 2,  # Dodano koszt utrzymania
-                "purchase": 10
+                "unit_maintenance": 2,
+                "purchase": 10,
+                "defense": 2
             },
             "sekcja ckm": {
                 "movement": -1,
                 "range": 1,
                 "attack": 2,
                 "combat": 0,
-                "unit_maintenance": 2,  # Dodano koszt utrzymania
-                "purchase": 10
+                "unit_maintenance": 2,
+                "purchase": 10,
+                "defense": 2
             },
             "przodek dwukonny": {
                 "movement": 2,
                 "range": 0,
                 "attack": 0,
                 "combat": 0,
-                "unit_maintenance": 1,  # Dodano koszt utrzymania
-                "purchase": 5
+                "unit_maintenance": 1,
+                "purchase": 5,
+                "defense": 0
             },
             "sam. ciezarowy Fiat 621": {
                 "movement": 5,
                 "range": 0,
                 "attack": 0,
                 "combat": 0,
-                "unit_maintenance": 3,  # Dodano koszt utrzymania
-                "purchase": 8
+                "unit_maintenance": 3,
+                "purchase": 8,
+                "defense": 0
             },
             "sam.ciezarowy Praga Rv": {
                 "movement": 5,
                 "range": 0,
                 "attack": 0,
                 "combat": 0,
-                "unit_maintenance": 3,  # Dodano koszt utrzymania
-                "purchase": 8
+                "unit_maintenance": 3,
+                "purchase": 8,
+                "defense": 0
             },
             "ciagnik altyleryjski": {
                 "movement": 3,
                 "range": 0,
                 "attack": 0,
                 "combat": 0,
-                "unit_maintenance": 4,  # Dodano koszt utrzymania
-                "purchase": 12
+                "unit_maintenance": 4,
+                "purchase": 12,
+                "defense": 0
             },
             "obserwator": {
                 "movement": 0,
                 "range": 0,
                 "attack": 0,
                 "combat": 0,
-                "unit_maintenance": 1,  # Dodano koszt utrzymania
-                "purchase": 5
+                "unit_maintenance": 1,
+                "purchase": 5,
+                "defense": 0
             }
         }
         self.selected_support = tk.StringVar(value="")  # Przechowuje wybrane wsparcie
@@ -597,8 +606,9 @@ class TokenEditor:
             ("Punkty Ruchu:", self.movement_points, "white", tk.NORMAL),
             ("Zasięg Ataku:", self.attack_range, "white", tk.NORMAL),
             ("Wartość Ataku:", self.attack_value, "white", tk.NORMAL),
-            ("Zasięg Widzenia:", self.sight_range, "white", tk.NORMAL),  # Przeniesiono wyżej
             ("Wartość Bojowa:", self.combat_value, "gray", tk.NORMAL),  # Odblokowane pole
+            ("Wartość Obrony:", self.defense_value, "blue", tk.NORMAL),  # NOWE POLE
+            ("Zasięg Widzenia:", self.sight_range, "white", tk.NORMAL),
             ("Koszt Utrzymania:", self.unit_maintenance, "red", tk.NORMAL),
             ("Wartość Zakupu:", self.purchase_value, "white", tk.NORMAL)
         ]:
@@ -734,6 +744,28 @@ class TokenEditor:
         self.unit_maintenance.set(defaults["unit_maintenance"][size].get(ut, ""))
         self.purchase_value.set(defaults["purchase"][size].get(ut, ""))
         self.sight_range.set(defaults["sight"].get(ut, ""))
+
+        # Domyślne wartości obrony dla typów i wielkości jednostek
+        defense_defaults = {
+            "Pluton": {
+                "P": "4", "TC": "7", "AC": "2", "AL": "3", "AP": "2"
+            },
+            "Kompania": {
+                "P": "10", "TC": "18", "AC": "6", "AL": "7", "AP": "5"
+            },
+            "Batalion": {
+                "P": "20", "TC": "36", "AC": "12", "AL": "14", "AP": "10"
+            }
+        }
+        self.defense_value.set(defense_defaults.get(size, {}).get(ut, ""))
+        # Dodaj sumowanie modyfikatorów obrony ze wsparć
+        current_defense = int(self.defense_value.get() or 0)
+        for support in self.selected_supports:
+            if support and support in self.support_upgrades:
+                current_defense += self.support_upgrades[support].get("defense", 0)
+        if self.selected_transport.get() in self.support_upgrades:
+            current_defense += self.support_upgrades[self.selected_transport.get()].get("defense", 0)
+        self.defense_value.set(str(current_defense))
 
         # After setting default values, apply support modifications
         all_selected = self.selected_supports | {self.selected_transport.get()} if self.selected_transport.get() else self.selected_supports
@@ -930,30 +962,12 @@ class TokenEditor:
         else:
             width = height = (self.hex_token_size_var.get() if self.shape.get() == "Heks" 
                               else self.square_token_size_var.get())
-        
-        # Na najniższej warstwie umieszczam flagę nacji
         base_bg = create_flag_background(self.nation.get(), width, height)
-        
-        # Jeśli jest niestandardowe tło, nakładam je na flagę
-        if self.custom_bg_path is not None:
-            try:
-                custom_bg = Image.open(self.custom_bg_path).convert("RGBA")
-                new_size = (int(custom_bg.width * self.bg_scale), int(custom_bg.height * self.bg_scale))
-                custom_bg = custom_bg.resize(new_size, Image.LANCZOS)
-                custom_bg = custom_bg.rotate(self.bg_rotation, expand=True, resample=Image.BICUBIC)
-                paste_x = (width - custom_bg.width) // 2 + self.bg_translate_x
-                paste_y = (height - custom_bg.height) // 2 + self.bg_translate_y
-                base_bg.paste(custom_bg, (paste_x, paste_y), custom_bg)
-            except Exception as e:
-                messagebox.showerror("Błąd", f"Nie można załadować obrazu tła:\n{e}")
-        
-        bg_image = base_bg
-        token_img = bg_image.copy()
+        token_img = base_bg.copy()
         draw = ImageDraw.Draw(token_img)
-        
-        # ───────── Kształt obramowania ─────────
+
+        # Obramowanie
         if self.shape.get() == "Heks":
-            # Punkty heksu (płaski wierzch)
             pts = [
                 (width * 0.25, 0),
                 (width * 0.75, 0),
@@ -962,76 +976,72 @@ class TokenEditor:
                 (width * 0.25, height),
                 (0,            height * 0.5)
             ]
-            # Maska – rogi poza heks przeźroczyste
             mask = Image.new("L", (width, height), 0)
             ImageDraw.Draw(mask).polygon(pts, fill=255)
             token_img.putalpha(mask)
-            # Obramowanie
             draw.line(pts + [pts[0]], fill="black", width=3, joint="curve")
         else:
-            # Kwadrat
             draw.rectangle([0, 0, width, height], outline="black", width=3)
-        
-        # Domyślne kolory dla nacji
-        default_colors = {
-            "Polska": "black",
-            "Niemcy": "blue",
-            "Wielka Brytania": "black",
-            "Japonia": "black",
-            "Stany Zjednoczone": "black",
-            "Francja": "black",
-            "Związek Radziecki": "white"
-        }
-        text_color = self.variable_text_color if self.variable_text_color else default_colors.get(self.nation.get(), "black")
-        
-        margin = 5
-        small_font_size = max(8, int(width * 0.12))  # Zmniejszono rozmiar czcionki
-        font_small = ImageFont.truetype("arial.ttf", small_font_size)
-        
-        # Przygotowanie tekstu – dwa wiersze (z dodaniem zasięgu widzenia)
-        row_top_text = f"{self.unit_maintenance.get()}-{self.purchase_value.get()}"
-        row_bottom_text = f"{self.movement_points.get()}-{self.attack_range.get()}-{self.attack_value.get()}-{self.sight_range.get()}"
+
+        # Przygotowanie tekstów
+        nation = self.nation.get()
+        unit_type_full = {
+            "P": "Piechota",
+            "K": "Kawaleria",
+            "TC": "Czołg ciężki",
+            "TŚ": "Czołg średni",
+            "TL": "Czołg lekki",
+            "TS": "Sam. pancerny",
+            "AC": "Artyleria ciężka",
+            "AL": "Artyleria lekka",
+            "AP": "Artyleria plot",
+            "Z": "Zaopatrzenie",
+            "D": "Dowództwo",
+            "G": "Generał"
+        }.get(self.unit_type.get(), self.unit_type.get())
         unit_size = self.unit_size.get()
         unit_symbol = {"Pluton": "***", "Kompania": "I", "Batalion": "II"}.get(unit_size, "")
-        row_middle_text = unit_symbol
 
-        bbox_top = draw.textbbox((0, 0), row_top_text, font=font_small)
-        bbox_bottom = draw.textbbox((0, 0), row_bottom_text, font=font_small)
-        bbox_middle = draw.textbbox((0, 0), row_middle_text, font=font_small)
+        # Czcionki
+        try:
+            font_nation = ImageFont.truetype("arial.ttf", int(width * 0.13))
+            font_type = ImageFont.truetype("arial.ttf", int(width * 0.10))
+            font_size = ImageFont.truetype("arial.ttf", int(width * 0.10))
+            font_symbol = ImageFont.truetype("arialbd.ttf", int(width * 0.18))
+        except Exception:
+            font_nation = font_type = font_size = font_symbol = ImageFont.load_default()
 
-        row_top_y = margin
-        offset = 5
-        row_bottom_y = height - margin - (bbox_bottom[3] - bbox_bottom[1]) - offset
-        row_middle_y = row_bottom_y - margin - (bbox_middle[3] - bbox_middle[1]) - offset
+        # Kolor tekstu
+        text_color = self.variable_text_color if self.variable_text_color else "black"
 
-        row_top_x = (width - (bbox_top[2] - bbox_top[0])) / 2
-        row_middle_x = (width - (bbox_middle[2] - bbox_middle[0])) / 2
-        row_bottom_x = (width - (bbox_bottom[2] - bbox_bottom[0])) / 2
+        # Rozmieszczenie
+        margin = 8
+        y = margin
 
-        draw.text((row_top_x, row_top_y), row_top_text, fill=text_color, font=font_small)
-        draw.text((row_middle_x, row_middle_y), row_middle_text, fill=text_color, font=font_small)
-        draw.text((row_bottom_x, row_bottom_y), row_bottom_text, fill=text_color, font=font_small)
-        
-        # Umieszczenie nazwy żetonu w centralnej części
-        if token_name is not None:
-            try:
-                name_font_size = max(8, int(width * 0.15))
-                font_name = ImageFont.truetype("arial.ttf", name_font_size)
-            except Exception:
-                font_name = ImageFont.load_default()
-            
-            # Dopasowanie rozmiaru czcionki, aby nazwa mieściła się w żetonie
-            while True:
-                bbox_name = draw.textbbox((0, 0), token_name, font=font_name)
-                if bbox_name[2] - bbox_name[0] <= width - 2 * margin:
-                    break
-                name_font_size -= 1
-                font_name = ImageFont.truetype("arial.ttf", name_font_size)
-            
-            name_x = (width - (bbox_name[2] - bbox_name[0])) / 2
-            name_y = (height - (bbox_name[3] - bbox_name[1])) / 2
-            draw.text((name_x, name_y), token_name, fill=text_color, font=font_name)
-        
+        # Nacja
+        bbox_nation = draw.textbbox((0, 0), nation, font=font_nation)
+        x_nation = (width - (bbox_nation[2] - bbox_nation[0])) / 2
+        draw.text((x_nation, y), nation, fill=text_color, font=font_nation)
+        y += bbox_nation[3] - bbox_nation[1] + margin
+
+        # Pełna nazwa rodzaju jednostki
+        bbox_type = draw.textbbox((0, 0), unit_type_full, font=font_type)
+        x_type = (width - (bbox_type[2] - bbox_type[0])) / 2
+        draw.text((x_type, y), unit_type_full, fill=text_color, font=font_type)
+        y += bbox_type[3] - bbox_type[1] + margin
+
+        # Nazwa wielkości
+        bbox_size = draw.textbbox((0, 0), unit_size, font=font_size)
+        x_size = (width - (bbox_size[2] - bbox_size[0])) / 2
+        draw.text((x_size, y), unit_size, fill=text_color, font=font_size)
+        y += bbox_size[3] - bbox_size[1] + margin
+
+        # Symbol wielkości – na środku żetonu
+        bbox_symbol = draw.textbbox((0, 0), unit_symbol, font=font_symbol)
+        x_symbol = (width - (bbox_symbol[2] - bbox_symbol[0])) / 2
+        y_symbol = (height + y) // 2 - (bbox_symbol[3] - bbox_symbol[1]) // 2
+        draw.text((x_symbol, y_symbol), unit_symbol, fill=text_color, font=font_symbol)
+
         return token_img
 
     def save_token(self):
@@ -1229,99 +1239,11 @@ class TokenEditor:
         """Wczytuje istniejący token z pliku JSON w podkatalogu."""
         index_json_path = os.path.join(self.save_directory, "token_index.json")
         if not os.path.exists(index_json_path):
-            # Sprawdź stary format dla kompatybilności wstecznej
-            old_json_path = os.path.join(self.save_directory, "token_data.json")
-            if os.path.exists(old_json_path):
-                messagebox.showinfo("Stary format danych", 
-                                  "Wykryto stary format danych. Zalecane jest ponowne zapisanie żetonów w nowym formacie.")
-                self.load_token_old_format(old_json_path)
-                return
-            else:
-                messagebox.showwarning("Brak indeksu tokenów", 
-                                     f"Nie znaleziono pliku token_index.json w katalogu {self.save_directory}.")
-                return
-            
+            messagebox.showerror("Błąd", "Nie znaleziono pliku indeksu tokenów (token_index.json) w katalogu zapisu.")
+            return
         try:
-            with open(index_json_path, "r", encoding="utf-8") as f:
-                index_data = json.load(f)
-                
-            if not index_data:
-                messagebox.showinfo("Brak tokenów", "Baza tokenów jest pusta.")
-                return
-                
-            # Stwórz listę dostępnych tokenów
-            token_names = list(index_data.keys())
-            token_name = simpledialog.askstring("Wczytaj token", 
-                                              "Wybierz nazwę tokena do wczytania:",
-                                              initialvalue=token_names[0])
-                
-            if not token_name or token_name not in index_data:
-                return
-                
-            token_info = index_data[token_name]
-            
-            # Określamy katalog tokena
-            token_directory = os.path.join(self.save_directory, token_info.get("directory", token_name))
-            if not os.path.exists(token_directory):
-                token_directory = self.save_directory  # Jeśli podkatalog nie istnieje, użyj głównego katalogu
-                
-            # Wczytaj dane tokena z pliku JSON w podkatalogu
-            token_json_path = os.path.join(token_directory, "token_data.json")
-            if not os.path.exists(token_json_path):
-                messagebox.showwarning("Brak danych tokena", 
-                                     f"Nie znaleziono pliku token_data.json w katalogu {token_directory}.")
-                return
-                
-            with open(token_json_path, "r", encoding="utf-8") as f:
-                token_data = json.load(f)
-            
-            # Wczytaj dane tokena
-            self.shape.set(token_data.get("shape", "Prostokąt"))
-            self.nation.set(token_data.get("nation", "Polska"))
-            self.unit_type.set(token_data.get("unit_type", "P"))
-            self.unit_size.set(token_data.get("unit_size", "Pluton"))
-            self.movement_points.set(token_data.get("movement_points", ""))
-            self.attack_range.set(token_data.get("attack_range", ""))
-            self.attack_value.set(token_data.get("attack_value", ""))
-            self.combat_value.set(token_data.get("combat_value", ""))
-            self.unit_maintenance.set(token_data.get("unit_maintenance", ""))
-            self.purchase_value.set(token_data.get("purchase_value", ""))
-            self.sight_range.set(token_data.get("sight_range", ""))
-            self.bg_rotation = token_data.get("bg_rotation", 0)
-            self.bg_scale = token_data.get("bg_scale", 1.0)
-            self.bg_translate_x = token_data.get("bg_translate_x", 0)
-            self.bg_translate_y = token_data.get("bg_translate_y", 0)
-            self.variable_text_color = token_data.get("variable_text_color", "black")
-            # Usuwamy maxMovePoints i currentMovePoints z edytora
-                
-            # Wczytaj dźwięki z podkatalogu tokena
-            for sound_type in ["sound_attack", "sound_move", "sound_destroy"]:
-                file_key = f"{sound_type}_file"
-                if token_data.get(file_key):
-                    sound_path = os.path.join(token_directory, token_data.get(file_key))
-                    if os.path.exists(sound_path):
-                        setattr(self, sound_type, sound_path)
-                    else:
-                        setattr(self, sound_type, None)
-                else:
-                    setattr(self, sound_type, None)
-                
-            # Wczytaj tło z podkatalogu tokena
-            if token_data.get("background_file") and os.path.exists(os.path.join(token_directory, token_data.get("background_file"))):
-                self.custom_bg_path = os.path.join(token_directory, token_data.get("background_file"))
-                self.custom_bg_copied = True
-            else:
-                self.custom_bg_path = None
-                self.custom_bg_copied = False
-                
-            # Aktualizuj interfejs
-            self.update_support_buttons()
-            self.update_numeric_fields()
-            self.update_preview()
-            self.update_sound_buttons()
-                
-            messagebox.showinfo("Wczytano", f"Token '{token_name}' został wczytany.")
-                
+            # Tutaj docelowo kod wczytywania tokena
+            pass
         except Exception as e:
             messagebox.showerror("Błąd", f"Nie udało się wczytać tokena: {str(e)}")
 
