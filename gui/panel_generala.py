@@ -93,6 +93,8 @@ class PanelGenerala:
             token_info_panel=self.token_info_panel
         )
         self.panel_mapa.pack(fill="both", expand=True)
+        # Dodaj obsługę podglądu żetonu prawym przyciskiem myszy (tylko dla generała)
+        self.panel_mapa.canvas.bind("<Button-3>", self._on_right_click_token)
 
         # Przeliczenie czasu z minut na sekundy i zapisanie w zmiennej remaining_time
         self.remaining_time = self.gracz.time_limit * 60
@@ -218,3 +220,25 @@ class PanelGenerala:
 
     def mainloop(self):
         self.root.mainloop()
+
+    def _on_right_click_token(self, event):
+        # Podgląd żetonu pod prawym przyciskiem myszy (nie zmienia zaznaczenia do akcji)
+        x = self.panel_mapa.canvas.canvasx(event.x)
+        y = self.panel_mapa.canvas.canvasy(event.y)
+        tokens = self.panel_mapa.tokens
+        for token in tokens:
+            if token.q is not None and token.r is not None:
+                visible_ids = set()
+                player = getattr(self.panel_mapa, 'player', None)
+                if player and hasattr(player, 'visible_tokens') and hasattr(player, 'temp_visible_tokens'):
+                    visible_ids = player.visible_tokens | player.temp_visible_tokens
+                elif player and hasattr(player, 'visible_tokens'):
+                    visible_ids = player.visible_tokens
+                if token.id not in visible_ids:
+                    continue
+                tx, ty = self.panel_mapa.map_model.hex_to_pixel(token.q, token.r)
+                hex_size = self.panel_mapa.map_model.hex_size
+                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
+                    if self.token_info_panel is not None:
+                        self.token_info_panel.show_token(token)
+                    break
