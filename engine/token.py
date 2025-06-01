@@ -125,7 +125,7 @@ class Token:
         elif mode == 'march':
             return base * 1.5
         elif mode == 'recon':
-            return base * 2.0
+            return base * 0.5  # Poprawka: zwiad = wolniej
         return base
 
     @property
@@ -137,7 +137,7 @@ class Token:
         elif mode == 'march':
             return base * 0.5
         elif mode == 'recon':
-            return base * 0.3
+            return base * 1.25  # Poprawka: zwiad = lepsza obrona
         return base
 
 

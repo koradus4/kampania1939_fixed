@@ -39,8 +39,8 @@ class MoveAction(Action):
             move_mult = 1.5  # marsz: szybciej
             defense_mult = 0.5  # marsz: słabsza obrona
         elif movement_mode == 'recon':
-            move_mult = 2.0  # zwiad: najszybciej
-            defense_mult = 0.3  # zwiad: bardzo słaba obrona
+            move_mult = 0.5  # zwiad: wolniej
+            defense_mult = 1.25  # zwiad: lepsza obrona
         else:
             move_mult = 1.0
             defense_mult = 1.0
