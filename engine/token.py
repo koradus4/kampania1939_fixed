@@ -74,6 +74,7 @@ class Token:
             'unitType': data.get('unitType', ''),
             'unitSize': data.get('unitSize', ''),
             'label': data.get('label', ''),
+            'unit_full_name': data.get('unit_full_name', ''),  # NOWE POLE
             'attack': data.get('attack', {}).get('value', 0),
             'image': data.get('image', ''),
             'shape': data.get('shape', ''),
@@ -116,7 +117,7 @@ class Token:
         token.movement_mode = data.get('movement_mode', 'combat')
         return token
 
-    def apply_movement_mode(self):
+    def apply_movement_mode(self, reset_mp: bool = False):
         base_move = self.stats.get('move', 0)
         base_def = self.stats.get('defense_value', 0)
         if self.movement_mode == 'combat':
@@ -131,10 +132,13 @@ class Token:
         else:
             move = base_move
             defense = base_def
-        self.currentMovePoints = move
+        self.maxMovePoints = move
         self.defense_value = defense
         self.base_move = base_move
         self.base_defense = base_def
+        # Reset currentMovePoints tylko jeśli reset_mp=True (np. przy zmianie trybu lub na pocz. tury)
+        if reset_mp:
+            self.currentMovePoints = self.maxMovePoints
 
 
 def load_tokens(index_path: str, start_path: str):

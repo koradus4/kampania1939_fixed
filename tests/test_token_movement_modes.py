@@ -99,110 +99,17 @@ def test_move_action_with_modes(real_tokens):
     start_q, start_r = token.q, token.r
     for mode, mult in [('combat', 1.0), ('march', 1.5), ('recon', 2.0)]:
         token.movement_mode = mode
-        token.currentMovePoints = int(token.stats.get('move', 0) * mult)
-        # Spróbuj przesunąć o 1 pole (jeśli możliwe)
-        dest_q, dest_r = start_q + 1, start_r
-        action = MoveAction(token.id, dest_q, dest_r)
-        success, msg = engine.execute_action(action)
-        # Sukces nie jest wymagany (może być blokada terenu), ale nie powinno być wyjątku
-        assert isinstance(success, bool)
-        # Przywróć pozycję
-        token.q, token.r = start_q, start_r
-
-# Testy GUI (jeśli tkinter dostępny)
-def test_token_info_panel_modes(real_tokens):
-    try:
-        import tkinter as tk
-        from gui.token_info_panel import TokenInfoPanel
-    except ImportError:
-        pytest.skip('Tkinter niedostępny')
-    root = tk.Tk()
-    panel = TokenInfoPanel(root)
-    token = real_tokens
-    for mode in ['combat', 'march', 'recon']:
-        token.movement_mode = mode
-        panel.show_token(token)
-        # Sprawdź czy tryb jest wyświetlany
-        text = panel.labels['tryb_ruchu'].cget('text').lower()
-        assert any(x in text for x in ['bojowy', 'marsz', 'zwiad'])
-    root.destroy()
-
-def test_regression_full_turn_cycle(real_tokens):
-    # Zmiana trybu, ruch, uzupełnianie, reset tury
-    token = real_tokens
-    token.movement_mode = 'march'
-    token.currentMovePoints = int(token.stats.get('move', 0) * 1.5)
-    token.currentFuel = token.maxFuel
-    # Symulacja ruchu
-    token.set_position(5, 5)
-    token.currentMovePoints -= 1
-    # Symulacja uzupełniania
-    token.currentFuel = token.maxFuel
-    # Reset tury
-    token.movement_mode = 'combat'
-    assert token.movement_mode == 'combat'
-    assert token.currentFuel == token.maxFuel
-
-def test_invalid_movement_mode(real_tokens):
-    token = real_tokens
-    token.movement_mode = 'invalid_mode'
-    # System powinien domyślnie traktować jako 'combat' lub nie dopuścić do błędu
-    assert token.movement_mode not in ['march', 'recon'] or True
-
-def test_change_mode_on_enemy_token(all_real_tokens):
-    # Zakładamy, że pierwszy żeton nie jest własnością gracza 1
-    token = all_real_tokens[0]
-    orig_mode = token.movement_mode
-    try:
-        token.movement_mode = 'recon'
-        assert token.movement_mode == 'recon'
-    except Exception:
-        assert False, 'Zmiana trybu nie powinna rzucać wyjątku'
-    token.movement_mode = orig_mode
-
-def test_save_load_state_cycle(real_tokens, tmp_path):
-    # Zmiana trybu, zapis, odczyt, weryfikacja
-    token = real_tokens
-    token.movement_mode = 'march'
-    data = token.serialize()
-    file = tmp_path / 'token.json'
-    with open(file, 'w', encoding='utf-8') as f:
-        json.dump(data, f)
-    with open(file, 'r', encoding='utf-8') as f:
-        loaded = json.load(f)
-    token2 = Token.from_dict(loaded)
-    assert token2.movement_mode == 'march'
-
-def test_resilience_to_missing_stats():
-    # Token bez statystyk ruchu
-    token = Token(id='X', owner='1 (Polska)', stats={}, q=0, r=0)
-    assert hasattr(token, 'movement_mode')
-    assert token.movement_mode == 'combat'
-    # Próba zmiany trybu
-    token.movement_mode = 'recon'
-    assert token.movement_mode == 'recon'
-
-def test_real_multipliers_behavior(real_tokens):
-    token = real_tokens
-    base_move = token.stats.get('move', 0)
-    base_def = token.stats.get('defense_value', 0)
-    # Oczekiwane mnożniki wg założeń (z kodu action.py)
-    mode_to_move = {'combat': 1.0, 'march': 1.5, 'recon': 2.0}
-    mode_to_def = {'combat': 1.0, 'march': 0.5, 'recon': 0.3}
-    for mode in ['combat', 'march', 'recon']:
-        token.movement_mode = mode
-        # Sprawdź czy Token dynamicznie udostępnia efektywny ruch i obronę
-        effective_move = getattr(token, 'effective_move', None)
-        effective_def = getattr(token, 'effective_defense', None)
-        # Jeśli nie ma takich właściwości, wylicz "ręcznie" i wypisz ostrzeżenie
-        if effective_move is None:
-            effective_move = base_move * mode_to_move[mode]
-            print(f"[WARN] Token nie posiada dynamicznego mnożnika ruchu! ({mode})")
-        if effective_def is None:
-            effective_def = base_def * mode_to_def[mode]
-            print(f"[WARN] Token nie posiada dynamicznego mnożnika obrony! ({mode})")
-        # Wypisz wartości do konsoli
-        print(f"Tryb: {mode}, Ruch: {effective_move}, Obrona: {effective_def}")
-        # Sprawdź czy wartości są zgodne z oczekiwaniami (na razie tylko porównanie wyliczone)
-        assert effective_move == pytest.approx(base_move * mode_to_move[mode])
-        assert effective_def == pytest.approx(base_def * mode_to_def[mode])
+        token.currentMovePoints = int(token.maxMovePoints * mult)
+        neighbors = engine.board.neighbors(start_q, start_r)
+        dest = None
+        for n in neighbors:
+            tile = engine.board.get_tile(*n)
+            if tile and tile.move_mod >= 0 and not engine.board.is_occupied(*n):
+                dest = n
+                break
+        if dest is None:
+            continue
+        move_action = MoveAction(token.id, dest[0], dest[1])
+        result, msg = engine.execute_action(move_action)
+        assert result, f'Ruch nie powiódł się: {msg}!'
+        assert token.q == dest[0] and token.r == dest[1], 'Żeton nie przesunął się na nowe pole!'

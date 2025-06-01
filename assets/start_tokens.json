@@ -1,152 +1,87 @@
 [
   {
-    "id": "P_Kompania__2_PL_P_Kompania",
-    "q": 3,
-    "r": 5
-  },
-  {
-    "id": "AP_Kompania__2_PL_AP_Kompania",
-    "q": 3,
-    "r": 6
-  },
-  {
-    "id": "AC_Kompania__3_PL_AC_Kompania",
-    "q": 3,
-    "r": 20
-  },
-  {
-    "id": "AP_Kompania__3_PL_AP_Kompania",
-    "q": 3,
-    "r": 23
-  },
-  {
-    "id": "TC_Batalion__3_PL_TC_Batalion",
-    "q": 3,
-    "r": 30
-  },
-  {
-    "id": "AC_Kompania__2_PL_AC_Kompania",
-    "q": 4,
-    "r": 5
-  },
-  {
-    "id": "AC_Batalion__3_PL_AC_Batalion",
-    "q": 4,
-    "r": 16
-  },
-  {
-    "id": "P_Kompania__3_PL_P_Kompania_20250601175914",
-    "q": 4,
-    "r": 23
-  },
-  {
-    "id": "P_Pluton__3_PL_P_Pluton_20250601175928",
-    "q": 4,
-    "r": 30
-  },
-  {
     "id": "P_Kompania__3_PL_P_Kompania",
-    "q": 5,
-    "r": 21
-  },
-  {
-    "id": "TC_Kompania__3_PL_TC_Kompania",
-    "q": 5,
-    "r": 27
-  },
-  {
-    "id": "P_Pluton__3_PL_P_Pluton",
     "q": 5,
     "r": 29
   },
   {
-    "id": "TC_Kompania__2_PL_TC_Kompania",
+    "id": "TC_Batalion__3_PL_TC_Batalion",
     "q": 6,
-    "r": 7
+    "r": 21
   },
   {
-    "id": "P_Pluton__3_PL_P_Pluton_20250601175940",
+    "id": "AC_Batalion__3_PL_AC_Batalion",
+    "q": 6,
+    "r": 26
+  },
+  {
+    "id": "AP_Batalion__3_PL_AP_Batalion",
     "q": 6,
     "r": 27
   },
   {
-    "id": "AC_Batalion__2_PL_AC_Batalion",
+    "id": "TC_Batalion__2_PL_TC_Batalion",
     "q": 7,
-    "r": 1
+    "r": -3
   },
   {
-    "id": "P_Pluton__2_PL_P_Pluton",
+    "id": "AP_Batalion__2_PL_AP_Batalion",
+    "q": 8,
+    "r": -3
+  },
+  {
+    "id": "AC_Batalion__2_PL_AC_Batalion",
     "q": 9,
     "r": -3
   },
   {
-    "id": "P_Pluton__5_N_P_Pluton_20250601180212",
-    "q": 43,
-    "r": -14
+    "id": "P_Kompania__2_PL_P_Kompania",
+    "q": 10,
+    "r": -2
   },
   {
-    "id": "P_Pluton__5_N_P_Pluton_20250601180216",
-    "q": 43,
-    "r": -12
-  },
-  {
-    "id": "P_Pluton__5_N_P_Pluton",
-    "q": 44,
+    "id": "TC_Batalion__5_N_TC_Batalion",
+    "q": 45,
     "r": -15
   },
   {
-    "id": "AC_Pluton__5_N_AC_Pluton",
-    "q": 47,
-    "r": -13
+    "id": "P_Kompania__5_N_P_Kompania",
+    "q": 49,
+    "r": -15
   },
   {
-    "id": "AC_Kompania__5_N_AC_Kompania",
-    "q": 47,
-    "r": -12
-  },
-  {
-    "id": "AC_Kompania__6_N_AC_Kompania",
-    "q": 47,
-    "r": 2
-  },
-  {
-    "id": "TC_Kompania__5_N_TC_Kompania",
+    "id": "AC_Batalion__5_N_AC_Batalion",
     "q": 49,
     "r": -11
   },
   {
-    "id": "AP_Kompania__6_N_AP_Kompania",
-    "q": 49,
-    "r": 2
-  },
-  {
-    "id": "TC_Batalion__6_N_TC_Batalion",
+    "id": "AC_Batalion__6_N_AC_Batalion",
     "q": 49,
     "r": 8
   },
   {
-    "id": "TC_Batalion__5_N_TC_Batalion_20250601180321",
-    "q": 50,
-    "r": -17
-  },
-  {
-    "id": "AP_Kompania__5_N_AP_Kompania",
+    "id": "AP_Batalion__5_N_AP_Batalion",
     "q": 50,
     "r": -11
   },
   {
-    "id": "P_Pluton__6_N_P_Pluton",
-    "q": 50,
+    "id": "P_Batalion__5_N_P_Batalion",
+    "q": 51,
+    "r": -13
+  },
+  {
+    "id": "AP_Batalion__6_N_AP_Batalion",
+    "q": 54,
+    "r": 1
+  },
+  {
+    "id": "TC_Kompania__6_N_TC_Kompania",
+    "q": 54,
     "r": 4
   },
   {
-    "id": "TC_Batalion__5_N_TC_Batalion",
-    "q": 51,
-    "r": -17
-  },
-  {
-    "id": "P_Kompania__6_N_P_Kompania",
-    "q": 51,
-    "r": 3
+    "id": "P_Pluton__6_N_P_Pluton",
+    "q": 54,
+    "r": 5
   }
 ]

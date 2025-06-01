@@ -1089,8 +1089,26 @@ class TokenEditor:
                                       token_name=token_name_on_img)
         img.save(token_dir / "token.png")
 
-        # Pobierz wybranego dowódcę
+        # Pobierz wybranego dowódzcę
         owner = commander_full  # np. '2 (Polska)'
+
+        # Przygotuj pełną nazwę jednostki do zapisu w JSON
+        unit_type_full = {
+            "P": "Piechota",
+            "K": "Kawaleria",
+            "TC": "Czołg ciężki",
+            "TŚ": "Czołg średni",
+            "TL": "Czołg lekki",
+            "TS": "Sam. pancerny",
+            "AC": "Artyleria ciężka",
+            "AL": "Artyleria lekka",
+            "AP": "Artyleria plot",
+            "Z": "Zaopatrzenie",
+            "D": "Dowództwo",
+            "G": "Generał"
+        }.get(unit_type, unit_type)
+        unit_symbol = {"Pluton": "***", "Kompania": "I", "Batalion": "II"}.get(unit_size, "")
+        unit_full_name = f"{nation} {unit_type_full} {unit_size} {unit_symbol}".strip()
 
         # ---- JSON ----
         meta = {
@@ -1100,6 +1118,7 @@ class TokenEditor:
             "unitSize":  unit_size,
             "shape":     self.shape.get().lower(),   # "heks" lub "prostokąt"
             "label":     user_label,            # ← nowe pole
+            "unit_full_name": unit_full_name,   # ← NOWE POLE
             "move":      int(self.movement_points.get() or 0),
             "attack":    { "range": int(self.attack_range.get() or 0),
                            "value": int(self.attack_value.get() or 0) },

@@ -35,7 +35,7 @@ class TokenInfoPanel(tk.Frame):
         if token is None:
             return
         nation = token.stats.get('nation', '-')
-        unit_name = token.stats.get('label', token.id)
+        unit_name = token.stats.get('unit_full_name') or token.stats.get('label', token.id)
         move = getattr(token, 'currentMovePoints', token.stats.get('move', '-'))
         base_move = getattr(token, 'base_move', token.stats.get('move', '-'))
         defense = getattr(token, 'defense_value', token.stats.get('defense_value', '-'))

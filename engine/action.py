@@ -46,26 +46,26 @@ class MoveAction(Action):
             return False, "Brak punktów ruchu lub paliwa."
         if tile.move_mod == -1:
             return False, "Pole nieprzejezdne."
-        # Jeśli pole docelowe jest zajęte przez wroga, znajdź najdalsze możliwe pole przed wrogiem
-        path = engine.board.find_path(start, goal, max_cost=max_mp)
+        # Pathfinding
+        path = engine.board.find_path(start, goal, max_cost=token.currentMovePoints)
         if not path:
             return False, "Brak ścieżki do celu."
-        if not token.can_move_to(len(path)-1):
-            return False, "Za daleko."
+        # Oblicz koszt ruchu i paliwa po ścieżce
         path_cost = 0
         fuel_cost = 0
         final_pos = start
         for i, step in enumerate(path[1:]):  # pomijamy start
-            if token.currentFuel <= 0:
-                break
+            if token.currentMovePoints - (path_cost + 1) < 0 or token.currentFuel - (fuel_cost + 1) < 0:
+                break  # nie stać na kolejny krok
             final_pos = step
             path_cost += 1
             fuel_cost += 1
-            if token.currentMovePoints - path_cost < 0:
-                break
+        if final_pos == start:
+            return False, "Brak wystarczających punktów ruchu lub paliwa na ruch."
         # Ustaw żeton na ostatniej osiągniętej pozycji
         token.set_position(*final_pos)
         token.currentMovePoints -= path_cost
+        token.currentFuel -= fuel_cost
         return True, "OK"
 
 class CombatAction(Action):
