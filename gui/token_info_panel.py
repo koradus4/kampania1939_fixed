@@ -48,5 +48,9 @@ class TokenInfoPanel(tk.Frame):
         self.labels["wartość_bojowa"].config(text=f"Zasoby bojowe: {combat_value}")
 
     def clear(self):
+        # Czyści wszystkie etykiety panelu do wartości domyślnych
         for key, label in self.labels.items():
-            label.config(text=f"{key.capitalize()}: -")
+            if key == "paliwo":
+                label.config(text="Paliwo: -/-")
+            else:
+                label.config(text=f"{key.capitalize()}: -")

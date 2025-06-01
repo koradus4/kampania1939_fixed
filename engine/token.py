@@ -14,6 +14,8 @@ class Token:
         # --- PALIWO ---
         self.maxFuel = stats.get('maintenance', 0)
         self.currentFuel = getattr(self, 'currentFuel', self.maxFuel)
+        # --- ZASOBY BOJOWE ---
+        self.combat_value = getattr(self, 'combat_value', stats.get('combat_value', 0))
 
     def can_move_to(self, dist: int) -> bool:
         """Sprawdza, czy żeton może się ruszyć na daną odległość (uwzględnia limit ruchu i paliwa)."""

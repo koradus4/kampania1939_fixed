@@ -38,20 +38,29 @@ class PanelDowodcy:
         panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path)
         panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
+        # Pozostały czas NAD sekcją właściwości żetonu
+        self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        self.timer_frame.pack(pady=(1, 8), fill=tk.BOTH, expand=False)
+        self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
+
+        # Punkty do odbioru NAD sekcją właściwości żetonu
+        self.points_frame = tk.Label(self.left_frame, text="Punkty do odbioru: 0", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        self.points_frame.pack(pady=(1, 8), fill=tk.BOTH, expand=False)
+
         # Panel informacyjny o żetonie
         self.token_info_panel = TokenInfoPanel(self.left_frame)
         self.token_info_panel.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
-        self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
-        self.timer_frame.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
+        # self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        # self.timer_frame.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
 
         # Dodanie obsługi kliknięcia na ramkę z czasem
-        self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
+        # self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
 
         # Punkty ekonomiczne
-        self.points_frame = tk.Label(self.left_frame, text="Punkty do odbioru: 0", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
-        self.points_frame.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+        # self.points_frame = tk.Label(self.left_frame, text="Punkty do odbioru: 0", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        # self.points_frame.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
 
         # Panel pogodowy
         self.weather_panel = PanelPogodowy(self.left_frame)
