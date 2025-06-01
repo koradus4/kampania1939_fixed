@@ -1104,6 +1104,7 @@ class TokenEditor:
             "attack":    { "range": int(self.attack_range.get() or 0),
                            "value": int(self.attack_value.get() or 0) },
             "combat_value": int(self.combat_value.get() or 0),  # Dodane pole
+            "defense_value": int(self.defense_value.get() or 0),  # NOWE POLE
             "maintenance": int(self.unit_maintenance.get() or 0),
             "price":       int(self.purchase_value.get() or 0),
             "sight":       int(self.sight_range.get() or 0),
