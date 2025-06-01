@@ -48,8 +48,8 @@ class PanelDowodcy:
         self.points_frame.pack(pady=(1, 8), fill=tk.BOTH, expand=False)
 
         # Panel informacyjny o żetonie
-        self.token_info_panel = TokenInfoPanel(self.left_frame)
-        self.token_info_panel.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+        self.token_info_panel = TokenInfoPanel(self.left_frame, height=120)
+        self.token_info_panel.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
 
         # Sekcja odliczania czasu
         # self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)

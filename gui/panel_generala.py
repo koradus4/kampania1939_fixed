@@ -46,8 +46,8 @@ class PanelGenerala:
         self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
 
         # Panel informacyjny o żetonie
-        self.token_info_panel = TokenInfoPanel(self.left_frame)
-        self.token_info_panel.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
+        self.token_info_panel = TokenInfoPanel(self.left_frame, height=120)
+        self.token_info_panel.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
 
         # Dodanie sekcji raportu ekonomicznego
         self.economy_panel = PanelEkonomiczny(self.left_frame)

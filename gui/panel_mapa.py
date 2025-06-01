@@ -196,7 +196,6 @@ class PanelMapa(tk.Frame):
         if clicked_token:
             if self.panel_dowodcy is not None:
                 self.panel_dowodcy.wybrany_token = clicked_token
-                print(f"[DEBUG] PanelMapa ustawił wybrany_token: {clicked_token}")
                 # Ustaw także selected_token_id, by umożliwić ruch
                 self.selected_token_id = clicked_token.id
             # --- USTAWIAMY WYBRANY ŻETON DLA PANELU DOWÓDCY ---
