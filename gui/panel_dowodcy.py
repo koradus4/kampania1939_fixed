@@ -71,7 +71,7 @@ class PanelDowodcy:
         self.dodaj_przycisk_tankowania()
         if self.btn_tankuj is not None:
             self.btn_tankuj.pack_forget()
-            self.btn_tankuj.pack(side=tk.BOTTOM, fill=tk.X, pady=(0, 1), before=self.weather_panel)
+            self.btn_tankuj.pack(side=tk.BOTTOM, fill=tk.X)
 
         # Prawy panel (mapa)
         self.map_frame = tk.Frame(self.main_frame)
