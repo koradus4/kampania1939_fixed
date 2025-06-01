@@ -113,32 +113,52 @@ class PanelDowodcy:
     def mainloop(self):
         self.root.mainloop()
 
-    def tankuj_zeton(self, token, max_do_tankowania, callback=None):
-        """Wywołuje okno tankowania dla wybranego żetonu. max_do_tankowania = ile można dolać (ograniczone przez maxFuel i punkty ekonomiczne dowódcy)."""
+    def uzupelnij_zeton(self, token, max_fuel_do_uzupelnienia, max_combat_do_uzupelnienia, max_punkty, callback=None):
+        """Okno uzupełniania żetonu: dwa suwaki (paliwo, zasoby bojowe), łączny koszt nie przekracza punktów ekonomicznych."""
         import tkinter as tk
         win = tk.Toplevel(self.root)
-        win.title(f"Tankowanie: {token.stats.get('label', token.id)}")
-        win.geometry("340x200")
+        win.title(f"Uzupełnianie: {token.stats.get('label', token.id)}")
+        win.geometry("370x270")
         win.configure(bg="darkolivegreen")
         # Nagłówek
         tk.Label(
             win,
-            text=f"Tankowanie żetonu: {token.stats.get('label', token.id)}",
+            text=f"Uzupełnianie żetonu: {token.stats.get('label', token.id)}",
             font=("Arial", 13, "bold"),
             bg="darkolivegreen",
             fg="white"
         ).pack(pady=10)
-        current = getattr(token, 'currentFuel', token.maxFuel)
+        # Aktualne wartości
+        current_fuel = getattr(token, 'currentFuel', token.maxFuel)
         max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', 0))
-        ile_mozna = min(max_fuel - current, max_do_tankowania)
-        var = tk.IntVar(value=ile_mozna)
-        slider = tk.Scale(
+        current_combat = getattr(token, 'combat_value', token.stats.get('combat_value', 0))
+        max_combat = token.stats.get('combat_value', 0)
+        # Suwaki
+        var_fuel = tk.IntVar(value=max_fuel_do_uzupelnienia)
+        var_combat = tk.IntVar(value=max_combat_do_uzupelnienia)
+        # Funkcja ograniczająca sumę
+        def on_slider_change(*_):
+            fuel = var_fuel.get()
+            combat = var_combat.get()
+            suma = fuel + combat
+            if suma > max_punkty:
+                # Cofnij ostatnią zmianę
+                if fuel > prev_fuel[0]:
+                    var_fuel.set(max(0, max_punkty - combat))
+                else:
+                    var_combat.set(max(0, max_punkty - fuel))
+            prev_fuel[0] = var_fuel.get()
+            prev_combat[0] = var_combat.get()
+            label_sum.config(text=f"Łączny koszt: {var_fuel.get() + var_combat.get()} / {max_punkty}")
+        prev_fuel = [var_fuel.get()]
+        prev_combat = [var_combat.get()]
+        slider_fuel = tk.Scale(
             win,
             from_=0,
-            to=ile_mozna,
+            to=max_fuel_do_uzupelnienia,
             orient=tk.HORIZONTAL,
-            label="Ilość paliwa do uzupełnienia",
-            variable=var,
+            label="Paliwo do uzupełnienia",
+            variable=var_fuel,
             bg="darkolivegreen",
             fg="white",
             font=("Arial", 11, "bold"),
@@ -146,14 +166,40 @@ class PanelDowodcy:
             highlightthickness=0,
             relief=tk.RAISED,
             borderwidth=3,
-            length=240
+            length=240,
+            command=lambda _: on_slider_change()
         )
-        slider.pack(pady=10, fill=tk.X, padx=20)
+        slider_fuel.pack(pady=(5,0), fill=tk.X, padx=20)
+        slider_combat = tk.Scale(
+            win,
+            from_=0,
+            to=max_combat_do_uzupelnienia,
+            orient=tk.HORIZONTAL,
+            label="Zasoby bojowe do uzupełnienia",
+            variable=var_combat,
+            bg="darkolivegreen",
+            fg="white",
+            font=("Arial", 11, "bold"),
+            troughcolor="#556B2F",
+            highlightthickness=0,
+            relief=tk.RAISED,
+            borderwidth=3,
+            length=240,
+            command=lambda _: on_slider_change()
+        )
+        slider_combat.pack(pady=(5,0), fill=tk.X, padx=20)
+        label_sum = tk.Label(win, text=f"Łączny koszt: {var_fuel.get() + var_combat.get()} / {max_punkty}", font=("Arial", 11, "bold"), bg="darkolivegreen", fg="white")
+        label_sum.pack(pady=(5,0))
         def zatwierdz():
-            ile = var.get()
-            token.currentFuel += ile
+            ile_fuel = var_fuel.get()
+            ile_combat = var_combat.get()
+            token.currentFuel += ile_fuel
+            if hasattr(token, 'combat_value'):
+                token.combat_value += ile_combat
+            else:
+                token.combat_value = ile_combat
             if callback:
-                callback(ile)
+                callback(ile_fuel, ile_combat)
             win.destroy()
         btn = tk.Button(
             win,
@@ -173,10 +219,10 @@ class PanelDowodcy:
         win.wait_window()
 
     def dodaj_przycisk_tankowania(self):
-        # Przycisk tankowania w panelu dowódcy
+        # Przycisk uzupełniania w panelu dowódcy
         btn = tk.Button(
             self.left_frame,
-            text="Tankuj żeton",
+            text="Uzupełnij żeton",
             font=("Arial", 14, "bold"),
             bg="#6B8E23",
             fg="white",
@@ -186,39 +232,31 @@ class PanelDowodcy:
             activeforeground="white"
         )
         btn.pack(pady=8, fill=tk.X)
-        def on_tankuj():
-            # Pobierz wybrany żeton (np. z panelu info lub mapy)
+        def on_uzupelnij():
             token = getattr(self, 'wybrany_token', None)
-            print(f"[DEBUG] wybrany_token: {token}")
-            if token:
-                print(f"[DEBUG] token.id={token.id}, token.owner={token.owner}, gracz.id={self.gracz.id}, gracz.nation={self.gracz.nation}")
             if not token:
-                from tkinter import messagebox
-                messagebox.showinfo("Tankowanie", "Najpierw wybierz żeton do tankowania!")
+                messagebox.showinfo("Uzupełnianie", "Najpierw wybierz żeton do uzupełnienia!")
                 return
-            # Sprawdź czy to żeton tego dowódcy
             expected_owner = f"{self.gracz.id} ({self.gracz.nation})"
             if token.owner != expected_owner:
-                print(f"[DEBUG] Nie możesz tankować żetonu: owner={token.owner}, expected_owner={expected_owner}")
-                from tkinter import messagebox
-                messagebox.showinfo("Tankowanie", f"Możesz tankować tylko własne żetony! (owner={token.owner}, expected={expected_owner})")
+                messagebox.showinfo("Uzupełnianie", f"Możesz uzupełniać tylko własne żetony! (owner={token.owner}, expected={expected_owner})")
                 return
-            # Punkty ekonomiczne dowódcy
             punkty = getattr(self.gracz, 'punkty_ekonomiczne', 0)
-            max_do_tankowania = min(token.maxFuel - token.currentFuel, punkty)
-            print(f"[DEBUG] max_do_tankowania={max_do_tankowania}, punkty={punkty}, maxFuel={token.maxFuel}, currentFuel={token.currentFuel}")
-            if max_do_tankowania <= 0:
-                from tkinter import messagebox
-                messagebox.showinfo("Tankowanie", "Brak możliwości tankowania (pełny bak lub brak punktów)")
+            max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', 0))
+            max_fuel_do_uzupelnienia = max(0, min(max_fuel - getattr(token, 'currentFuel', max_fuel), punkty))
+            max_combat = token.stats.get('combat_value', 0)
+            current_combat = getattr(token, 'combat_value', max_combat)
+            max_combat_do_uzupelnienia = max(0, min(max_combat - current_combat, punkty))
+            max_lacznie = min(punkty, max_fuel_do_uzupelnienia + max_combat_do_uzupelnienia)
+            if max_lacznie <= 0:
+                messagebox.showinfo("Uzupełnianie", "Brak możliwości uzupełnienia (pełny bak, pełne zasoby lub brak punktów)")
                 return
-            def callback(ile):
-                self.gracz.punkty_ekonomiczne -= ile
-                # Odśwież panel punktów ekonomicznych
+            def callback(ile_fuel, ile_combat):
+                self.gracz.punkty_ekonomiczne -= (ile_fuel + ile_combat)
                 if hasattr(self, 'points_frame'):
                     self.points_frame.config(text=f"Punkty do odbioru: {self.gracz.punkty_ekonomiczne}")
-                # Odśwież panel info żetonu
                 if hasattr(self, 'token_info_panel'):
                     self.token_info_panel.show_token(token)
-            self.tankuj_zeton(token, max_do_tankowania, callback)
-        btn.config(command=on_tankuj)
+            self.uzupelnij_zeton(token, max_fuel_do_uzupelnienia, max_combat_do_uzupelnienia, max_lacznie, callback)
+        btn.config(command=on_uzupelnij)
         self.btn_tankuj = btn
