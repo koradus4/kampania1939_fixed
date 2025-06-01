@@ -116,29 +116,25 @@ class Token:
         token.movement_mode = data.get('movement_mode', 'combat')
         return token
 
-    @property
-    def effective_move(self):
-        base = self.stats.get('move', 0)
-        mode = getattr(self, 'movement_mode', 'combat')
-        if mode == 'combat':
-            return base * 1.0
-        elif mode == 'march':
-            return base * 1.5
-        elif mode == 'recon':
-            return base * 0.5  # Poprawka: zwiad = wolniej
-        return base
-
-    @property
-    def effective_defense(self):
-        base = self.stats.get('defense_value', 0)
-        mode = getattr(self, 'movement_mode', 'combat')
-        if mode == 'combat':
-            return base * 1.0
-        elif mode == 'march':
-            return base * 0.5
-        elif mode == 'recon':
-            return base * 1.25  # Poprawka: zwiad = lepsza obrona
-        return base
+    def apply_movement_mode(self):
+        base_move = self.stats.get('move', 0)
+        base_def = self.stats.get('defense_value', 0)
+        if self.movement_mode == 'combat':
+            move = base_move
+            defense = base_def
+        elif self.movement_mode == 'march':
+            move = int(round(base_move * 1.5))
+            defense = int(round(base_def * 0.5))
+        elif self.movement_mode == 'recon':
+            move = int(round(base_move * 0.5))
+            defense = int(round(base_def * 1.25))
+        else:
+            move = base_move
+            defense = base_def
+        self.currentMovePoints = move
+        self.defense_value = defense
+        self.base_move = base_move
+        self.base_defense = base_def
 
 
 def load_tokens(index_path: str, start_path: str):

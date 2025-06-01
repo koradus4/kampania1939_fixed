@@ -202,6 +202,7 @@ class PanelMapa(tk.Frame):
                     break
         # Sprawdzenie właściciela żetonu dla dowódcy
         if clicked_token:
+            clicked_token.apply_movement_mode()  # Aktualizuj wartości po kliknięciu
             if self.panel_dowodcy is not None:
                 self.panel_dowodcy.wybrany_token = clicked_token
                 # Ustaw także selected_token_id, by umożliwić ruch
@@ -255,4 +256,5 @@ class PanelMapa(tk.Frame):
                 clicked_token.movement_mode = 'recon'
             else:
                 clicked_token.movement_mode = 'combat'
+            clicked_token.apply_movement_mode()  # Aktualizuj wartości po zmianie trybu
             self.refresh()

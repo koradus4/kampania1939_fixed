@@ -32,19 +32,8 @@ class MoveAction(Action):
                     return False, "Pole zajęte przez sojusznika."
         # --- MNOŻNIKI TRYBÓW RUCHU ---
         movement_mode = getattr(token, 'movement_mode', 'combat')
-        if movement_mode == 'combat':
-            move_mult = 1.0
-            defense_mult = 1.0
-        elif movement_mode == 'march':
-            move_mult = 1.5  # marsz: szybciej
-            defense_mult = 0.5  # marsz: słabsza obrona
-        elif movement_mode == 'recon':
-            move_mult = 0.5  # zwiad: wolniej
-            defense_mult = 1.25  # zwiad: lepsza obrona
-        else:
-            move_mult = 1.0
-            defense_mult = 1.0
-        max_mp = int(getattr(token, 'maxMovePoints', token.stats.get('move', 0)) * move_mult)
+        token.apply_movement_mode()  # Ustaw aktualne wartości ruchu i obrony
+        max_mp = token.currentMovePoints
         if not hasattr(token, 'currentMovePoints'):
             token.currentMovePoints = max_mp
         if not hasattr(token, 'maxMovePoints'):
@@ -77,8 +66,6 @@ class MoveAction(Action):
         # Ustaw żeton na ostatniej osiągniętej pozycji
         token.set_position(*final_pos)
         token.currentMovePoints -= path_cost
-        # --- ZAPISZ MNOŻNIK OBRONY DO ŻETONU (do odczytu np. w walce) ---
-        token.defense_multiplier = defense_mult
         return True, "OK"
 
 class CombatAction(Action):
