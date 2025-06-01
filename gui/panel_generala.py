@@ -39,23 +39,15 @@ class PanelGenerala:
         panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path)
         panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
+        # Przycisk zmiany tury (timer) NAD sekcję charakterystyki żetonu
+        minutes = self.gracz.time_limit
+        self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {minutes}:00", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        self.timer_frame.pack(pady=(1, 8), fill=tk.BOTH, expand=False)
+        self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
+
         # Panel informacyjny o żetonie
         self.token_info_panel = TokenInfoPanel(self.left_frame)
         self.token_info_panel.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
-
-        # Sekcja odliczania czasu
-        minutes = self.gracz.time_limit
-        self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {minutes}:00", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
-        self.timer_frame.pack(pady=(1, 15), fill=tk.BOTH, expand=False)
-
-        # Dodanie obsługi kliknięcia na ramkę z czasem jako przycisk zakończenia tury
-        self.timer_frame.bind("<Button-1>", self.confirm_end_turn)
-
-        # Punkty ekonomiczne
-        self.points_frame = tk.Label(self.left_frame, text="Punkty ekonomiczne: 0", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
-        self.points_frame.pack(pady=(1, 10), fill=tk.BOTH, expand=False)
-        self.points_frame.bind("<Button-1>", self.toggle_support_sliders)
-        self._support_sliders_visible = False  # Stan toggle
 
         # Dodanie sekcji raportu ekonomicznego
         self.economy_panel = PanelEkonomiczny(self.left_frame)
@@ -67,6 +59,12 @@ class PanelGenerala:
         self.weather_panel = PanelPogodowy(self.left_frame)
         self.weather_panel.pack_forget()
         self.weather_panel.pack(side=tk.BOTTOM, pady=1, fill=tk.BOTH, expand=False)
+
+        # Przycisk 'punkty ekonomiczne' tuż nad panelem pogodowym (1px odstępu)
+        self.points_frame = tk.Label(self.left_frame, text="Punkty ekonomiczne: 0", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)
+        self.points_frame.pack(side=tk.BOTTOM, pady=(0, 1), fill=tk.BOTH, expand=False)
+        self.points_frame.bind("<Button-1>", self.toggle_support_sliders)
+        self._support_sliders_visible = False  # Stan toggle
 
         # Inicjalizacja suwaków wsparcia dowódców
         commanders = [gracz for gracz in self.gracze if gracz.nation == self.gracz.nation and gracz.role == "Dowódca"]
