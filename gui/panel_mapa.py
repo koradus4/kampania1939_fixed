@@ -43,7 +43,7 @@ class PanelMapa(tk.Frame):
 
         # kliknięcia
         self.canvas.bind("<Button-1>", self._on_click)
-        self.canvas.bind("<Button-3>", self._on_right_click)  # Dodaj obsługę prawego przycisku
+        # self.canvas.bind("<Button-3>", self._on_right_click)  # Usunięto obsługę prawego przycisku
 
         # żetony
         self.token_images = {}
@@ -111,6 +111,7 @@ class PanelMapa(tk.Frame):
         self._sync_player_from_engine()
         self.tokens = self.game_engine.tokens  # Zawsze aktualizuj listę żetonów
         self.canvas.delete("token")
+        self.canvas.delete("token_sel")  # Usuwamy stare obwódki
         # Filtrowanie widoczności żetonów przez fog of war (uwzględnij temp_visible_tokens)
         tokens = self.tokens
         if hasattr(self, 'player') and hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
@@ -135,6 +136,17 @@ class PanelMapa(tk.Frame):
                     x, y = self.map_model.hex_to_pixel(token.q, token.r)
                     self.canvas.create_image(x, y, image=tk_img, anchor="center", tags=("token", f"token_{token.id}"))
                     self.token_images[token.id] = tk_img
+                    # Jeśli to wybrany żeton, dorysuj zieloną obwódkę
+                    if hasattr(self, 'selected_token_id') and token.id == self.selected_token_id:
+                        verts = get_hex_vertices(x, y, hex_size)
+                        flat = [coord for p in verts for coord in p]
+                        self.canvas.create_polygon(
+                            flat,
+                            outline="limegreen",
+                            width=1,
+                            fill="",
+                            tags="token_sel"
+                        )
                 except Exception:
                     pass
         # Kod spełnia wymagania: synchronizacja żetonów, tagowanie, poprawna mgiełka i widoczność.
@@ -215,38 +227,3 @@ class PanelMapa(tk.Frame):
         if clicked_token is None:
             self.clear_token_info_panel()
         self.refresh()
-
-    def _on_right_click(self, event):
-        x = self.canvas.canvasx(event.x)
-        y = self.canvas.canvasy(event.y)
-        clicked_token = None
-        for token in self.tokens:
-            if token.q is not None and token.r is not None:
-                tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
-                hex_size = self.map_model.hex_size
-                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
-                    # Pozwól kliknąć tylko jeśli żeton jest widoczny dla gracza (uwzględnij temp_visible_tokens)
-                    visible_ids = set()
-                    if hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
-                        visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
-                    elif hasattr(self.player, 'visible_tokens'):
-                        visible_ids = self.player.visible_tokens
-                    if token.id not in visible_ids:
-                        continue
-                    clicked_token = token
-                    break
-        # Przekazanie bezpośrednio do panelu bocznego
-        if self.token_info_panel is not None:
-            if clicked_token and hasattr(self, 'player') and hasattr(self.player, 'visible_tokens'):
-                visible_ids = set()
-                if hasattr(self.player, 'temp_visible_tokens'):
-                    visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
-                else:
-                    visible_ids = self.player.visible_tokens
-                if clicked_token.id in visible_ids:
-                    self.token_info_panel.show_token(clicked_token)
-                else:
-                    self.token_info_panel.clear()
-            else:
-                self.token_info_panel.clear()
-        # ...existing code...
