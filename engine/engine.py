@@ -116,25 +116,30 @@ def get_token_vision_hexes(token, board):
 def update_player_visibility(player, all_tokens, board):
     """
     Aktualizuje widoczność gracza: zbiera wszystkie heksy w zasięgu widzenia jego żetonów
-    oraz żetony znajdujące się na tych heksach.
+    oraz żetony znajdujące się na tych heksach. Uwzględnia tymczasową widoczność (temp_visible_hexes, temp_visible_tokens).
     """
     visible_hexes = set()
     # Dowódca: tylko własne żetony; Generał: sumuje widoczność dowódców swojej nacji
     if player.role.lower() == 'dowódca':
         own_tokens = [t for t in all_tokens if t.owner == f"{player.id} ({player.nation})"]
     elif player.role.lower() == 'generał':
-        # Generał: sumuje widoczność wszystkich dowódców tej nacji
         own_tokens = [t for t in all_tokens if t.owner.endswith(f"({player.nation})")]
     else:
         own_tokens = []
     for token in own_tokens:
         visible_hexes |= get_token_vision_hexes(token, board)
+    # Dodaj tymczasową widoczność
+    if hasattr(player, 'temp_visible_hexes'):
+        visible_hexes |= player.temp_visible_hexes
     player.visible_hexes = visible_hexes
     # Zbierz żetony widoczne na tych heksach
     visible_tokens = set()
     for t in all_tokens:
         if (t.q, t.r) in visible_hexes:
             visible_tokens.add(t.id)
+    # Dodaj tymczasowo widoczne żetony
+    if hasattr(player, 'temp_visible_tokens'):
+        visible_tokens |= player.temp_visible_tokens
     player.visible_tokens = visible_tokens
 
 def update_general_visibility(general, all_players, all_tokens):
