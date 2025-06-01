@@ -64,6 +64,7 @@ class Token:
         stats = {
             'move': data.get('move', 0),
             'combat_value': data.get('combat_value', 0),
+            'defense_value': data.get('defense_value', 0),  # <-- dodane!
             'maintenance': data.get('maintenance', 0),
             'price': data.get('price', 0),
             'sight': data.get('sight', 0),
