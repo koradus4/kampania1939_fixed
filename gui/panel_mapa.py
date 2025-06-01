@@ -43,7 +43,7 @@ class PanelMapa(tk.Frame):
 
         # kliknięcia
         self.canvas.bind("<Button-1>", self._on_click)
-        # self.canvas.bind("<Button-3>", self._on_right_click)  # Usunięto obsługę prawego przycisku
+        self.canvas.bind("<Button-3>", self._on_right_click_token)
 
         # żetony
         self.token_images = {}
@@ -136,14 +136,22 @@ class PanelMapa(tk.Frame):
                     x, y = self.map_model.hex_to_pixel(token.q, token.r)
                     self.canvas.create_image(x, y, image=tk_img, anchor="center", tags=("token", f"token_{token.id}"))
                     self.token_images[token.id] = tk_img
-                    # Jeśli to wybrany żeton, dorysuj zieloną obwódkę
+                    # Obwódka zależna od trybu ruchu
+                    border_color = "limegreen"  # domyślnie bojowy
+                    if hasattr(token, 'movement_mode'):
+                        if token.movement_mode == 'combat':
+                            border_color = "limegreen"
+                        elif token.movement_mode == 'march':
+                            border_color = "red"
+                        elif token.movement_mode == 'recon':
+                            border_color = "yellow"
                     if hasattr(self, 'selected_token_id') and token.id == self.selected_token_id:
                         verts = get_hex_vertices(x, y, hex_size)
                         flat = [coord for p in verts for coord in p]
                         self.canvas.create_polygon(
                             flat,
-                            outline="limegreen",
-                            width=1,
+                            outline=border_color,
+                            width=2,
                             fill="",
                             tags="token_sel"
                         )
@@ -226,3 +234,25 @@ class PanelMapa(tk.Frame):
         if clicked_token is None:
             self.clear_token_info_panel()
         self.refresh()
+
+    def _on_right_click_token(self, event):
+        x = self.canvas.canvasx(event.x)
+        y = self.canvas.canvasy(event.y)
+        clicked_token = None
+        for token in self.tokens:
+            if token.q is not None and token.r is not None:
+                tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
+                hex_size = self.map_model.hex_size
+                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
+                    clicked_token = token
+                    break
+        if clicked_token is not None:
+            # Zmień tryb ruchu cyklicznie: combat -> march -> recon -> combat
+            current = getattr(clicked_token, 'movement_mode', 'combat')
+            if current == 'combat':
+                clicked_token.movement_mode = 'march'
+            elif current == 'march':
+                clicked_token.movement_mode = 'recon'
+            else:
+                clicked_token.movement_mode = 'combat'
+            self.refresh()

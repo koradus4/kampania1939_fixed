@@ -30,7 +30,21 @@ class MoveAction(Action):
             for t in engine.tokens:
                 if t.q == self.dest_q and t.r == self.dest_r and t.owner == token.owner:
                     return False, "Pole zajęte przez sojusznika."
-        max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', 0))
+        # --- MNOŻNIKI TRYBÓW RUCHU ---
+        movement_mode = getattr(token, 'movement_mode', 'combat')
+        if movement_mode == 'combat':
+            move_mult = 1.0
+            defense_mult = 1.0
+        elif movement_mode == 'march':
+            move_mult = 1.5  # marsz: szybciej
+            defense_mult = 0.5  # marsz: słabsza obrona
+        elif movement_mode == 'recon':
+            move_mult = 2.0  # zwiad: najszybciej
+            defense_mult = 0.3  # zwiad: bardzo słaba obrona
+        else:
+            move_mult = 1.0
+            defense_mult = 1.0
+        max_mp = int(getattr(token, 'maxMovePoints', token.stats.get('move', 0)) * move_mult)
         if not hasattr(token, 'currentMovePoints'):
             token.currentMovePoints = max_mp
         if not hasattr(token, 'maxMovePoints'):
@@ -44,7 +58,7 @@ class MoveAction(Action):
         if tile.move_mod == -1:
             return False, "Pole nieprzejezdne."
         # Jeśli pole docelowe jest zajęte przez wroga, znajdź najdalsze możliwe pole przed wrogiem
-        path = engine.board.find_path(start, goal, max_cost=token.stats.get('move', 0))
+        path = engine.board.find_path(start, goal, max_cost=max_mp)
         if not path:
             return False, "Brak ścieżki do celu."
         if not token.can_move_to(len(path)-1):
@@ -52,20 +66,19 @@ class MoveAction(Action):
         path_cost = 0
         fuel_cost = 0
         final_pos = start
-        # --- Poprawiona pętla: aktualizuj widoczność tylko do faktycznego zatrzymania ---
         for i, step in enumerate(path[1:]):  # pomijamy start
-            # Każdy krok zużywa 1 paliwo
             if token.currentFuel <= 0:
                 break
             final_pos = step
             path_cost += 1
             fuel_cost += 1
-            token.currentFuel -= 1
             if token.currentMovePoints - path_cost < 0:
                 break
         # Ustaw żeton na ostatniej osiągniętej pozycji
         token.set_position(*final_pos)
         token.currentMovePoints -= path_cost
+        # --- ZAPISZ MNOŻNIK OBRONY DO ŻETONU (do odczytu np. w walce) ---
+        token.defense_multiplier = defense_mult
         return True, "OK"
 
 class CombatAction(Action):

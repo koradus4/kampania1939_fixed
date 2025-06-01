@@ -24,8 +24,8 @@ class TokenInfoPanel(tk.Frame):
 
     def _build(self):
         font = ("Arial", 11)
-        # Kolejność: nacja, jednostka, punkty_ruchu, wartość_obrony, paliwo, zasięg_widzenia, wartość_bojowa
-        keys = ["nacja", "jednostka", "punkty_ruchu", "wartość_obrony", "paliwo", "zasięg_widzenia", "wartość_bojowa"]
+        # Dodajemy pole na tryb ruchu, mnożnik obrony i mnożnik ruchu
+        keys = ["nacja", "jednostka", "punkty_ruchu", "wartość_obrony", "tryb_ruchu", "mnożnik_obrony", "mnożnik_ruchu", "paliwo", "zasięg_widzenia", "wartość_bojowa"]
         for i, key in enumerate(keys):
             label = tk.Label(self.inner_frame, text=f"{key.capitalize()}: -", font=font, anchor="w")
             label.grid(row=i, column=0, sticky="w", padx=4, pady=2)
@@ -44,10 +44,18 @@ class TokenInfoPanel(tk.Frame):
         current_fuel = getattr(token, 'currentFuel', token.stats.get('maintenance', '-'))
         max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', '-'))
         combat_value = getattr(token, 'combat_value', token.stats.get('combat_value', '-'))
+        movement_mode = getattr(token, 'movement_mode', 'combat')
+        mode_label = {'combat': 'Bojowy', 'march': 'Marsz', 'recon': 'Zwiad'}.get(movement_mode, movement_mode)
+        # Nowe: dynamiczne mnożniki
+        effective_def = getattr(token, 'effective_defense', defense_value)
+        effective_move = getattr(token, 'effective_move', current_mp)
         self.labels["nacja"].config(text=f"Nacja: {nation}")
         self.labels["jednostka"].config(text=f"Jednostka: {unit_name}")
         self.labels["punkty_ruchu"].config(text=f"Punkty ruchu: {current_mp}")
         self.labels["wartość_obrony"].config(text=f"Wartość obrony: {defense_value}")
+        self.labels["tryb_ruchu"].config(text=f"Tryb ruchu: {mode_label}")
+        self.labels["mnożnik_obrony"].config(text=f"Efektywna obrona: {effective_def}")
+        self.labels["mnożnik_ruchu"].config(text=f"Efektywny ruch: {effective_move}")
         self.labels["paliwo"].config(text=f"Paliwo: {current_fuel}/{max_fuel}")
         self.labels["zasięg_widzenia"].config(text=f"Zasięg widzenia: {sight}")
         self.labels["wartość_bojowa"].config(text=f"Zasoby bojowe: {combat_value}")

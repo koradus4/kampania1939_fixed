@@ -2,7 +2,7 @@ import json
 from typing import Any, Dict, Optional
 
 class Token:
-    def __init__(self, id: str, owner: str, stats: Dict[str, Any], q: int = None, r: int = None):
+    def __init__(self, id: str, owner: str, stats: Dict[str, Any], q: int = None, r: int = None, movement_mode: str = 'combat'):
         self.id = id
         self.owner = owner
         self.stats = stats  # np. {'move': 12, 'combat_value': 6, ...}
@@ -16,6 +16,8 @@ class Token:
         self.currentFuel = getattr(self, 'currentFuel', self.maxFuel)
         # --- ZASOBY BOJOWE ---
         self.combat_value = getattr(self, 'combat_value', stats.get('combat_value', 0))
+        # --- TRYB RUCHU ---
+        self.movement_mode = getattr(self, 'movement_mode', movement_mode)
 
     def can_move_to(self, dist: int) -> bool:
         """Sprawdza, czy żeton może się ruszyć na daną odległość (uwzględnia limit ruchu i paliwa)."""
@@ -35,7 +37,8 @@ class Token:
             'maxMovePoints': getattr(self, 'maxMovePoints', self.stats.get('move', 0)),
             'currentMovePoints': getattr(self, 'currentMovePoints', getattr(self, 'maxMovePoints', self.stats.get('move', 0))),
             'maxFuel': getattr(self, 'maxFuel', self.stats.get('maintenance', 0)),
-            'currentFuel': getattr(self, 'currentFuel', getattr(self, 'maxFuel', self.stats.get('maintenance', 0)))
+            'currentFuel': getattr(self, 'currentFuel', getattr(self, 'maxFuel', self.stats.get('maintenance', 0))),
+            'movement_mode': getattr(self, 'movement_mode', 'combat'),
         }
 
     @staticmethod
@@ -64,7 +67,7 @@ class Token:
         stats = {
             'move': data.get('move', 0),
             'combat_value': data.get('combat_value', 0),
-            'defense_value': data.get('defense_value', 0),  # <-- dodane!
+            'defense_value': data.get('defense_value', 0),
             'maintenance': data.get('maintenance', 0),
             'price': data.get('price', 0),
             'sight': data.get('sight', 0),
@@ -78,18 +81,21 @@ class Token:
             'h': data.get('h', 0),
             'nation': nation
         }
+        movement_mode = data.get('movement_mode', 'combat')
         token = Token(
             id=data['id'],
             owner=owner,
             stats=stats,
             q=q,
-            r=r
+            r=r,
+            movement_mode=movement_mode
         )
         # Odczytaj punkty ruchu i paliwa jeśli są w pliku
         token.maxMovePoints = data.get('maxMovePoints', stats.get('move', 0))
         token.currentMovePoints = data.get('currentMovePoints', token.maxMovePoints)
         token.maxFuel = data.get('maxFuel', stats.get('maintenance', 0))
         token.currentFuel = data.get('currentFuel', token.maxFuel)
+        token.movement_mode = data.get('movement_mode', 'combat')
         return token
 
     @staticmethod
@@ -100,13 +106,39 @@ class Token:
             owner=data['owner'],
             stats=data['stats'],
             q=data.get('q'),
-            r=data.get('r')
+            r=data.get('r'),
+            movement_mode=data.get('movement_mode', 'combat')
         )
         token.maxMovePoints = data.get('maxMovePoints', token.stats.get('move', 0))
         token.currentMovePoints = data.get('currentMovePoints', token.maxMovePoints)
         token.maxFuel = data.get('maxFuel', token.stats.get('maintenance', 0))
         token.currentFuel = data.get('currentFuel', token.maxFuel)
+        token.movement_mode = data.get('movement_mode', 'combat')
         return token
+
+    @property
+    def effective_move(self):
+        base = self.stats.get('move', 0)
+        mode = getattr(self, 'movement_mode', 'combat')
+        if mode == 'combat':
+            return base * 1.0
+        elif mode == 'march':
+            return base * 1.5
+        elif mode == 'recon':
+            return base * 2.0
+        return base
+
+    @property
+    def effective_defense(self):
+        base = self.stats.get('defense_value', 0)
+        mode = getattr(self, 'movement_mode', 'combat')
+        if mode == 'combat':
+            return base * 1.0
+        elif mode == 'march':
+            return base * 0.5
+        elif mode == 'recon':
+            return base * 0.3
+        return base
 
 
 def load_tokens(index_path: str, start_path: str):
