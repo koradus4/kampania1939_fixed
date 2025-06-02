@@ -24,6 +24,38 @@ class PanelGracza(tk.Frame):
         self.photo_label.image = self.photo  # Referencja, aby obraz nie został usunięty przez GC
         self.photo_label.pack()
 
+        # Przyciski ZAPISZ/WCZYTAJ GRĘ pod zdjęciem
+        btn_frame = tk.Frame(self, bg="white")
+        btn_frame.pack(pady=8)
+
+        from tkinter import messagebox, filedialog
+        from engine.save_manager import save_game, load_game
+
+        def on_save():
+            path = filedialog.asksaveasfilename(defaultextension='.json', filetypes=[('Plik zapisu', '*.json')])
+            if path:
+                try:
+                    save_game(path, self.master.game_engine)
+                    messagebox.showinfo("Zapis gry", "Gra została zapisana!")
+                except Exception as e:
+                    messagebox.showerror("Błąd zapisu", str(e))
+
+        def on_load():
+            path = filedialog.askopenfilename(filetypes=[('Plik zapisu', '*.json')])
+            if path:
+                try:
+                    load_game(path, self.master.game_engine)
+                    if hasattr(self.master, 'panel_mapa'):
+                        self.master.panel_mapa.refresh()
+                    messagebox.showinfo("Wczytanie gry", "Gra została wczytana!")
+                except Exception as e:
+                    messagebox.showerror("Błąd wczytywania", str(e))
+
+        btn_save = tk.Button(btn_frame, text="Zapisz grę", command=on_save, bg="saddlebrown", fg="white", font=("Arial", 11, "bold"), width=12)
+        btn_save.pack(side=tk.LEFT, padx=6)
+        btn_load = tk.Button(btn_frame, text="Wczytaj grę", command=on_load, bg="saddlebrown", fg="white", font=("Arial", 11, "bold"), width=12)
+        btn_load.pack(side=tk.LEFT, padx=6)
+
 # Testowanie modułu
 if __name__ == "__main__":
     root = tk.Tk()
