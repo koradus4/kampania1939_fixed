@@ -66,6 +66,28 @@ class MoveAction(Action):
         token.set_position(*final_pos)
         token.currentMovePoints -= path_cost
         token.currentFuel -= fuel_cost
+
+        # --- ODKRYWANIE CAŁEGO POLA WIDZENIA NA TRASIE RUCHU ---
+        if player is not None:
+            board = engine.board
+            sight = token.stats.get('sight', 0)
+            for hex_coords in path:
+                # Wyznacz pole widzenia z tego heksu
+                visible_hexes = set()
+                for dq in range(-sight, sight + 1):
+                    for dr in range(-sight, sight + 1):
+                        q = hex_coords[0] + dq
+                        r = hex_coords[1] + dr
+                        if board.hex_distance(hex_coords, (q, r)) <= sight:
+                            if board.get_tile(q, r) is not None:
+                                visible_hexes.add((q, r))
+                player.temp_visible_hexes.update(visible_hexes)
+                # Dodaj żetony przeciwnika z tych heksów
+                for vh in visible_hexes:
+                    for t in getattr(engine, 'tokens', []):
+                        if (t.q, t.r) == vh and t.owner != token.owner:
+                            player.temp_visible_tokens.add(t.id)
+
         return True, "OK"
 
 class CombatAction(Action):
