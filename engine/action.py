@@ -54,12 +54,34 @@ class MoveAction(Action):
         path_cost = 0
         fuel_cost = 0
         final_pos = start
+        board = engine.board
+        sight = token.stats.get('sight', 0)
         for i, step in enumerate(path[1:]):  # pomijamy start
             if token.currentMovePoints - (path_cost + 1) < 0 or token.currentFuel - (fuel_cost + 1) < 0:
                 break  # nie stać na kolejny krok
+            # Wyznacz pole widzenia z tego heksu
+            visible_hexes = set()
+            for dq in range(-sight, sight + 1):
+                for dr in range(-sight, sight + 1):
+                    q = step[0] + dq
+                    r = step[1] + dr
+                    if board.hex_distance(step, (q, r)) <= sight:
+                        if board.get_tile(q, r) is not None:
+                            visible_hexes.add((q, r))
+            # Sprawdź, czy w polu widzenia jest przeciwnik
+            enemy_in_sight = False
+            for t in engine.tokens:
+                if (t.q, t.r) in visible_hexes and hasattr(t, 'owner') and hasattr(token, 'owner'):
+                    nation1 = t.owner.split('(')[-1].replace(')','').strip()
+                    nation2 = token.owner.split('(')[-1].replace(')','').strip()
+                    if nation1 != nation2:
+                        enemy_in_sight = True
+                        break
             final_pos = step
             path_cost += 1
             fuel_cost += 1
+            if enemy_in_sight:
+                break  # Zatrzymaj ruch natychmiast
         if final_pos == start:
             return False, "Brak wystarczających punktów ruchu lub paliwa na ruch."
         # Ustaw żeton na ostatniej osiągniętej pozycji
@@ -69,9 +91,7 @@ class MoveAction(Action):
 
         # --- ODKRYWANIE CAŁEGO POLA WIDZENIA NA TRASIE RUCHU ---
         if player is not None:
-            board = engine.board
-            sight = token.stats.get('sight', 0)
-            for hex_coords in path:
+            for hex_coords in path[:path.index(final_pos)+1]:
                 # Wyznacz pole widzenia z tego heksu
                 visible_hexes = set()
                 for dq in range(-sight, sight + 1):
@@ -85,8 +105,11 @@ class MoveAction(Action):
                 # Dodaj żetony przeciwnika z tych heksów
                 for vh in visible_hexes:
                     for t in getattr(engine, 'tokens', []):
-                        if (t.q, t.r) == vh and t.owner != token.owner:
-                            player.temp_visible_tokens.add(t.id)
+                        if (t.q, t.r) == vh and hasattr(t, 'owner') and hasattr(token, 'owner'):
+                            nation1 = t.owner.split('(')[-1].replace(')','').strip()
+                            nation2 = token.owner.split('(')[-1].replace(')','').strip()
+                            if nation1 != nation2:
+                                player.temp_visible_tokens.add(t.id)
 
         return True, "OK"
 

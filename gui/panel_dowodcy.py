@@ -267,7 +267,10 @@ class PanelDowodcy:
                 messagebox.showinfo("Uzupełnianie", "Brak możliwości uzupełnienia (pełny bak, pełne zasoby lub brak punktów)")
                 return
             def callback(ile_fuel, ile_combat):
+                # Odejmij punkty zarówno z gracz.punkty_ekonomiczne, jak i gracz.economy.economic_points
                 self.gracz.punkty_ekonomiczne -= (ile_fuel + ile_combat)
+                if hasattr(self.gracz, 'economy') and self.gracz.economy is not None:
+                    self.gracz.economy.economic_points = self.gracz.punkty_ekonomiczne
                 if hasattr(self, 'points_frame'):
                     self.points_frame.config(text=f"Punkty do odbioru: {self.gracz.punkty_ekonomiczne}")
                 if hasattr(self, 'token_info_panel'):
