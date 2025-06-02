@@ -12,8 +12,14 @@
 - [ ] Rozbudowa paneli info o prezentację efektów walki
 
 ### 2. Zapis i odczyt gry
-- [ ] System zapisu i wczytywania stanu gry (cały silnik, żetony, mapa, punkty, tura, historia)
-- [ ] Testy: poprawność serializacji i deserializacji, odporność na błędy
+- [ ] Serializacja i deserializacja pełnego stanu gry (silnik, żetony, plansza, gracze, ekonomia, tura, pogoda, historia)
+- [ ] Dodanie metod to_dict()/from_dict() lub serialize/deserialize do kluczowych klas (GameEngine, Token, Player, Board, EconomySystem, TurnManager, Pogoda)
+- [ ] Stworzenie modułu save_manager.py z funkcjami save_game(path, engine) i load_game(path)
+- [ ] Zapis i odczyt do pliku (np. JSON)
+- [ ] Integracja z GUI: przyciski "Zapisz grę" i "Wczytaj grę"
+- [ ] Testy: poprawność serializacji i deserializacji, odporność na błędy (np. brak pliku, niezgodność wersji)
+- [ ] Testy na realnych danych (mapa, żetony, tury)
+- [ ] Dokumentacja procesu zapisu/odczytu w README.md
 
 ### 3. Dźwięki akcji żetonów
 - [ ] Odtwarzanie dźwięków akcji (ruch, atak, zniszczenie, wsparcie, tankowanie)
