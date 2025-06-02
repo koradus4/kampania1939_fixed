@@ -36,7 +36,7 @@ class PanelGenerala:
         self.left_frame.pack_propagate(False)
 
         # Panel gracza
-        panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path)
+        panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path, self.game_engine, player=self.gracz)
         panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
         # Przycisk zmiany tury (timer) NAD sekcję charakterystyki żetonu

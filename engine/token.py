@@ -144,12 +144,9 @@ class Token:
         if reset_mp:
             self.currentMovePoints = self.maxMovePoints
         else:
-            if prev_max > 0:
-                used_ratio = 1 - (prev_current / prev_max)
-                new_current = int(round(self.maxMovePoints * (1 - used_ratio)))
-                self.currentMovePoints = max(0, min(self.maxMovePoints, new_current))
-            else:
-                self.currentMovePoints = self.maxMovePoints
+            # Zachowaj liczbę zużytych punktów ruchu (nowy max - zużyte)
+            used = prev_max - prev_current
+            self.currentMovePoints = max(0, min(self.maxMovePoints, self.maxMovePoints - used))
 
 
 def load_tokens(index_path: str, start_path: str):

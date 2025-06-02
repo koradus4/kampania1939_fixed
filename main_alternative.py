@@ -4,6 +4,7 @@ from gui.panel_generala import PanelGenerala
 from gui.panel_dowodcy import PanelDowodcy
 from core.ekonomia import EconomySystem
 from engine.engine import GameEngine, update_all_players_visibility, clear_temp_visibility
+from gui.panel_gracza import PanelGracza
 
 # Funkcja główna
 if __name__ == "__main__":
@@ -68,22 +69,67 @@ if __name__ == "__main__":
     turn_manager = TurnManager(players, game_engine=game_engine)
 
     # Pętla tur
+    last_loaded_player_info = None  # Przechowuj info o aktywnym graczu po wczytaniu save
     while True:
-        # Pobranie aktualnego gracza
-        current_player = turn_manager.get_current_player()
-        # --- AKTUALIZACJA WIDOCZNOŚCI PRZED PANELEM ---
+        # Jeśli po wczytaniu save jest info o aktywnym graczu, przełącz na niego
+        if last_loaded_player_info:
+            found = None
+            for p in players:
+                if (str(p.id) == str(last_loaded_player_info.get('id')) and
+                    p.role == last_loaded_player_info.get('role') and
+                    p.nation == last_loaded_player_info.get('nation')):
+                    found = p
+                    break
+            if found:
+                current_player = found
+                turn_manager.current_player_index = players.index(found)
+            last_loaded_player_info = None
+        else:
+            current_player = turn_manager.get_current_player()
         update_all_players_visibility(players, game_engine.tokens, game_engine.board)
-
-        # Otwieranie odpowiedniego panelu z numerem tury i czasem na turę
         if current_player.role == "Generał":
             app = PanelGenerala(turn_number=turn_manager.current_turn, ekonomia=current_player.economy, gracz=current_player, gracze=players, game_engine=game_engine)
         elif current_player.role == "Dowódca":
             app = PanelDowodcy(turn_number=turn_manager.current_turn, remaining_time=current_player.time_limit * 60, gracz=current_player, game_engine=game_engine)
+        # Patch: podmień funkcję on_load w PanelGracza, by ustawiać last_loaded_player_info
+        def patch_on_load(panel_gracza):
+            def new_on_load():
+                import os
+                from tkinter import filedialog, messagebox
+                saves_dir = os.path.join(os.getcwd(), 'saves')
+                os.makedirs(saves_dir, exist_ok=True)
+                path = filedialog.askopenfilename(
+                    filetypes=[('Plik zapisu', '*.json')],
+                    initialdir=saves_dir
+                )
+                if path:
+                    try:
+                        from engine.save_manager import load_game
+                        global last_loaded_player_info
+                        last_loaded_player_info = load_game(path, game_engine)
+                        if hasattr(panel_gracza.master, 'panel_mapa'):
+                            panel_gracza.master.panel_mapa.refresh()
+                        if last_loaded_player_info:
+                            msg = f"Gra została wczytana!\nAktywny gracz: {last_loaded_player_info.get('role','?')} {last_loaded_player_info.get('id','?')} ({last_loaded_player_info.get('nation','?')})"
+                            messagebox.showinfo("Wczytanie gry", msg)
+                        else:
+                            messagebox.showinfo("Wczytanie gry", "Gra została wczytana!")
+                        panel_gracza.winfo_toplevel().destroy()  # Zamknij całe okno, nie tylko ramkę
+                    except Exception as e:
+                        messagebox.showerror("Błąd wczytywania", str(e))
+            panel_gracza.on_load = new_on_load
+            if hasattr(panel_gracza, 'btn_load'):
+                panel_gracza.btn_load.config(command=panel_gracza.on_load)
+
+        # DEBUG: sprawdź dzieci left_frame
+        if hasattr(app, 'left_frame'):
+            for child in app.left_frame.winfo_children():
+                if isinstance(child, PanelGracza):
+                    patch_on_load(child)
 
         # Aktualizacja pogody dla panelu
         if hasattr(app, 'update_weather'):
             app.update_weather(turn_manager.current_weather)
-
         # Aktualizacja punktów ekonomicznych dla paneli generałów
         if isinstance(app, PanelGenerala):
             current_player.economy.generate_economic_points()
@@ -108,7 +154,6 @@ if __name__ == "__main__":
 
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()
-        # Wyczyść tymczasową widoczność po zakończeniu tury
         clear_temp_visibility(players)
         # Debug: sprawdź owner i nation po wczytaniu żetonów
         # for t in game_engine.tokens:
