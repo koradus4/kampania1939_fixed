@@ -24,8 +24,10 @@ class TokenInfoPanel(tk.Frame):
 
     def _build(self):
         font = ("Arial", 11)
-        # Usunięto pola na efektywną obronę i efektywny ruch
-        keys = ["nacja", "jednostka", "punkty_ruchu", "wartość_obrony", "tryb_ruchu", "paliwo", "zasięg_widzenia", "wartość_bojowa"]
+        keys = [
+            "nacja", "jednostka", "punkty_ruchu", "wartość_obrony", "tryb_ruchu",
+            "paliwo", "zasięg_widzenia", "wartość_bojowa", "zasięg_ataku", "siła_ataku"
+        ]
         for i, key in enumerate(keys):
             label = tk.Label(self.inner_frame, text=f"{key.capitalize()}: -", font=font, anchor="w")
             label.grid(row=i, column=0, sticky="w", padx=4, pady=1)
@@ -48,6 +50,18 @@ class TokenInfoPanel(tk.Frame):
         combat_value = getattr(token, 'combat_value', token.stats.get('combat_value', '-'))
         movement_mode = getattr(token, 'movement_mode', 'combat')
         mode_label = {'combat': 'Bojowy', 'march': 'Marsz', 'recon': 'Zwiad'}.get(movement_mode, movement_mode)
+        attack = token.stats.get('attack', '-')
+        if isinstance(attack, dict):
+            attack_range = attack.get('range', '-')
+            attack_value = attack.get('value', '-')
+        elif isinstance(attack, int):
+            attack_range = '-'
+            attack_value = attack
+        else:
+            attack_range = '-'
+            attack_value = '-'
+        # DEBUG: pokaż w konsoli pobrane wartości ataku
+        print(f"[DEBUG][TokenInfoPanel] Żeton: {unit_name}, attack: {attack}, range: {attack_range}, value: {attack_value}")
         self.labels["nacja"].config(text=f"Nacja: {nation}")
         self.labels["jednostka"].config(text=f"Jednostka: {unit_name}")
         self.labels["punkty_ruchu"].config(text=f"Punkty ruchu: {move} (bazowo: {base_move})")
@@ -56,6 +70,8 @@ class TokenInfoPanel(tk.Frame):
         self.labels["paliwo"].config(text=f"Paliwo: {current_fuel}/{max_fuel}")
         self.labels["zasięg_widzenia"].config(text=f"Zasięg widzenia: {sight}")
         self.labels["wartość_bojowa"].config(text=f"Zasoby bojowe: {combat_value}")
+        self.labels["zasięg_ataku"].config(text=f"Zasięg ataku: {attack_range}")
+        self.labels["siła_ataku"].config(text=f"Siła ataku: {attack_value}")
 
     def clear(self):
         # Czyści wszystkie etykiety panelu do wartości domyślnych

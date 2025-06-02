@@ -75,7 +75,7 @@ class Token:
             'unitSize': data.get('unitSize', ''),
             'label': data.get('label', ''),
             'unit_full_name': data.get('unit_full_name', ''),  # NOWE POLE
-            'attack': data.get('attack', {}).get('value', 0),
+            'attack': data.get('attack', 0),  # <-- poprawka: zachowaj dict jeśli jest
             'image': data.get('image', ''),
             'shape': data.get('shape', ''),
             'w': data.get('w', 0),
