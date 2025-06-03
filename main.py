@@ -3,7 +3,7 @@ from core.tura import TurnManager
 from engine.player import Player
 from gui.panel_generala import PanelGenerala
 from gui.panel_dowodcy import PanelDowodcy
-from engine.engine import GameEngine, update_all_players_visibility
+from engine.engine import GameEngine, update_all_players_visibility, clear_temp_visibility
 from gui.panel_gracza import PanelGracza
 import tkinter as tk
 
@@ -64,6 +64,9 @@ if __name__ == "__main__":
     for p in players:
         if not hasattr(p, 'economy') or p.economy is None:
             p.economy = EconomySystem()
+
+    # --- UDOSTĘPNIJ LISTĘ GRACZY W GAME_ENGINE ---
+    game_engine.players = players
 
     # --- AKTUALIZACJA WIDOCZNOŚCI NA START ---
     update_all_players_visibility(players, game_engine.tokens, game_engine.board)
@@ -152,15 +155,18 @@ if __name__ == "__main__":
         if isinstance(app, PanelDowodcy):
             przydzielone_punkty = current_player.economy.get_points()['economic_points']
             app.update_economy(przydzielone_punkty)
+            # --- Synchronizacja punktów ekonomicznych dowódcy z systemem ekonomii ---
+            current_player.punkty_ekonomiczne = przydzielone_punkty
 
         app.mainloop()  # Uruchomienie panelu
 
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()
+        clear_temp_visibility(players)
         # --- AKTUALIZACJA WIDOCZNOŚCI PO KAŻDEJ TURZE ---
         # (możesz zostawić, ale nie jest już konieczne, bo i tak jest na początku każdej tury)
         # update_all_players_visibility(players, game_engine.tokens, game_engine.board)
 
         # Sprawdzenie warunku zakończenia gry
-        if turn_manager.is_game_over():
+        if hasattr(turn_manager, 'is_game_over') and turn_manager.is_game_over():
             break
