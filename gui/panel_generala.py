@@ -109,8 +109,22 @@ class PanelGenerala:
             points = self.ekonomia.get_points()['economic_points']
         special_points = self.ekonomia.get_points()['special_points']
 
+        # --- DODANE: lista dowódców i ich punkty ---
+        commanders = [g for g in self.gracze if g.nation == self.gracz.nation and g.role == "Dowódca"]
+        commanders_report = ""
+        for dowodca in commanders:
+            # Pobierz aktualne punkty ekonomiczne dowódcy
+            punkty = getattr(dowodca, 'punkty_ekonomiczne', None)
+            if punkty is None and hasattr(dowodca, 'economy') and dowodca.economy is not None:
+                punkty = dowodca.economy.get_points()['economic_points']
+            commanders_report += f"\nDowódca {dowodca.id}: {punkty} pkt"
+
         # Aktualizacja tekstu w panelu ekonomicznym
-        economy_report = f"Punkty ekonomiczne: {points}\nPunkty specjalne: {special_points}"
+        economy_report = (
+            f"Punkty ekonomiczne: {points}\n"
+            f"Punkty specjalne: {special_points}\n"
+            f"--- Dowódcy ({self.gracz.nation}) ---{commanders_report}"
+        )
         self.economy_panel.update_economy(economy_report)
 
         # Aktualizacja tekstu w sekcji punktów ekonomicznych
