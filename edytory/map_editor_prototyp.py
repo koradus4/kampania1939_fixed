@@ -616,9 +616,9 @@ class MapEditor:
         with open(self.current_working_file, "w", encoding="utf-8") as f:
             import json
             json.dump(map_data, f, indent=2, ensure_ascii=False)
-        messagebox.showinfo("Zapisano", f"Dane mapy zostały zapisane w:\n{self.current_working_file}\n"
-                                        f"Liczba kluczowych punktów: {len(self.key_points)}\n"
-                                        f"Liczba punktów wystawienia: {sum(len(v) for v in self.spawn_points.values())}")
+        # messagebox.showinfo("Zapisano", f"Dane mapy zostały zapisane w:\n{self.current_working_file}\n"
+        #                                 f"Liczba kluczowych punktów: {len(self.key_points)}\n"
+        #                                 f"Liczba punktów wystawienia: {sum(len(v) for v in self.spawn_points.values())}")
 
     def load_data(self):
         'Wczytuje dane z pliku roboczego (teren, kluczowe i spawn).'

@@ -18,29 +18,29 @@
       "defense_mod": 0
     },
     "0,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "0,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "0,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "0,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "0,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "0,7": {
       "terrain_key": "teren_płaski",
@@ -83,14 +83,14 @@
       "defense_mod": 0
     },
     "0,15": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "0,16": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "0,17": {
       "terrain_key": "teren_płaski",
@@ -177,20 +177,15 @@
       "move_mod": 0,
       "defense_mod": 0
     },
-    "1,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
-    },
     "1,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "1,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "1,3": {
       "terrain_key": "teren_płaski",
@@ -203,9 +198,9 @@
       "defense_mod": 0
     },
     "1,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "1,6": {
       "terrain_key": "teren_płaski",
@@ -213,14 +208,14 @@
       "defense_mod": 0
     },
     "1,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "1,8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "1,9": {
       "terrain_key": "teren_płaski",
@@ -243,14 +238,18 @@
       "defense_mod": 0
     },
     "1,13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "AC_Kompania__3_PL_AC_Kompania",
+        "image": "tokens/Polska/AC_Kompania__3_PL_AC_Kompania/token.png"
+      }
     },
     "1,14": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "1,15": {
       "terrain_key": "teren_płaski",
@@ -258,9 +257,9 @@
       "defense_mod": 0
     },
     "1,16": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "1,17": {
       "terrain_key": "teren_płaski",
@@ -368,29 +367,29 @@
       "defense_mod": 0
     },
     "2,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "2,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "2,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "2,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "2,8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "2,9": {
       "terrain_key": "teren_płaski",
@@ -398,29 +397,29 @@
       "defense_mod": 0
     },
     "2,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "2,11": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "2,12": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "2,13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "2,14": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "2,15": {
       "terrain_key": "teren_płaski",
@@ -428,9 +427,9 @@
       "defense_mod": 0
     },
     "2,16": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "2,17": {
       "terrain_key": "teren_płaski",
@@ -533,9 +532,9 @@
       "defense_mod": 0
     },
     "3,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "3,4": {
       "terrain_key": "teren_płaski",
@@ -543,19 +542,14 @@
       "defense_mod": 0
     },
     "3,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
-    },
-    "3,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "3,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "3,8": {
       "terrain_key": "teren_płaski",
@@ -573,9 +567,9 @@
       "defense_mod": 0
     },
     "3,11": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "3,12": {
       "terrain_key": "teren_płaski",
@@ -588,9 +582,9 @@
       "defense_mod": 0
     },
     "3,14": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "3,15": {
       "terrain_key": "teren_płaski",
@@ -598,14 +592,14 @@
       "defense_mod": 0
     },
     "3,16": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "3,17": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "3,18": {
       "terrain_key": "teren_płaski",
@@ -678,9 +672,9 @@
       "defense_mod": 0
     },
     "4,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "4,-1": {
       "terrain_key": "teren_płaski",
@@ -698,14 +692,18 @@
       "defense_mod": 0
     },
     "4,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1,
+      "token": {
+        "unit": "AC_Kompania__2_PL_AC_Kompania",
+        "image": "tokens/Polska/AC_Kompania__2_PL_AC_Kompania/token.png"
+      }
     },
     "4,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "4,4": {
       "terrain_key": "teren_płaski",
@@ -738,9 +736,9 @@
       "defense_mod": 0
     },
     "4,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "4,11": {
       "terrain_key": "teren_płaski",
@@ -753,14 +751,14 @@
       "defense_mod": 0
     },
     "4,13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "4,14": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "4,15": {
       "terrain_key": "teren_płaski",
@@ -768,9 +766,9 @@
       "defense_mod": 0
     },
     "4,16": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "4,17": {
       "terrain_key": "teren_płaski",
@@ -848,24 +846,24 @@
       "defense_mod": 0
     },
     "5,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "5,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "5,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "5,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "5,2": {
       "terrain_key": "teren_płaski",
@@ -883,9 +881,9 @@
       "defense_mod": 0
     },
     "5,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "5,6": {
       "terrain_key": "teren_płaski",
@@ -908,9 +906,9 @@
       "defense_mod": 0
     },
     "5,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "5,11": {
       "terrain_key": "teren_płaski",
@@ -933,9 +931,9 @@
       "defense_mod": 0
     },
     "5,15": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "5,16": {
       "terrain_key": "teren_płaski",
@@ -1005,11 +1003,7 @@
     "5,29": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "P_Kompania__3_PL_P_Kompania",
-        "image": "tokens/Polska/P_Kompania__3_PL_P_Kompania/token.png"
-      }
+      "defense_mod": 0
     },
     "5,30": {
       "terrain_key": "teren_płaski",
@@ -1019,12 +1013,16 @@
     "6,-3": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Batalion__2_PL_AC_Batalion",
+        "image": "tokens/Polska/AC_Batalion__2_PL_AC_Batalion/token.png"
+      }
     },
     "6,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "6,-1": {
       "terrain_key": "teren_płaski",
@@ -1032,14 +1030,14 @@
       "defense_mod": 0
     },
     "6,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "6,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "6,2": {
       "terrain_key": "teren_płaski",
@@ -1047,9 +1045,9 @@
       "defense_mod": 0
     },
     "6,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "6,4": {
       "terrain_key": "teren_płaski",
@@ -1067,9 +1065,9 @@
       "defense_mod": 0
     },
     "6,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "6,8": {
       "terrain_key": "teren_płaski",
@@ -1077,9 +1075,9 @@
       "defense_mod": 0
     },
     "6,9": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "6,10": {
       "terrain_key": "teren_płaski",
@@ -1107,9 +1105,9 @@
       "defense_mod": 0
     },
     "6,15": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "6,16": {
       "terrain_key": "teren_płaski",
@@ -1139,11 +1137,7 @@
     "6,21": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "TC_Batalion__3_PL_TC_Batalion",
-        "image": "tokens/Polska/TC_Batalion__3_PL_TC_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "6,22": {
       "terrain_key": "teren_płaski",
@@ -1168,20 +1162,12 @@
     "6,26": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "AC_Batalion__3_PL_AC_Batalion",
-        "image": "tokens/Polska/AC_Batalion__3_PL_AC_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "6,27": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "AP_Batalion__3_PL_AP_Batalion",
-        "image": "tokens/Polska/AP_Batalion__3_PL_AP_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "6,28": {
       "terrain_key": "teren_płaski",
@@ -1199,18 +1185,14 @@
       "defense_mod": 0
     },
     "7,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "TC_Batalion__2_PL_TC_Batalion",
-        "image": "tokens/Polska/TC_Batalion__2_PL_TC_Batalion/token.png"
-      }
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "7,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "7,-1": {
       "terrain_key": "teren_płaski",
@@ -1223,24 +1205,24 @@
       "defense_mod": 0
     },
     "7,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "7,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "7,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "7,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "7,5": {
       "terrain_key": "teren_płaski",
@@ -1248,9 +1230,9 @@
       "defense_mod": 0
     },
     "7,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "7,7": {
       "terrain_key": "teren_płaski",
@@ -1263,19 +1245,23 @@
       "defense_mod": 0
     },
     "7,9": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "7,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "7,11": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2,
+      "token": {
+        "unit": "AP_Kompania__3_PL_AP_Kompania_20250603203152",
+        "image": "tokens/Polska/AP_Kompania__3_PL_AP_Kompania_20250603203152/token.png"
+      }
     },
     "7,12": {
       "terrain_key": "teren_płaski",
@@ -1288,9 +1274,9 @@
       "defense_mod": 0
     },
     "7,14": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "7,15": {
       "terrain_key": "teren_płaski",
@@ -1368,23 +1354,19 @@
       "defense_mod": 0
     },
     "8,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "8,-3": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "AP_Batalion__2_PL_AP_Batalion",
-        "image": "tokens/Polska/AP_Batalion__2_PL_AP_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "8,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "8,-1": {
       "terrain_key": "teren_płaski",
@@ -1397,14 +1379,14 @@
       "defense_mod": 0
     },
     "8,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "8,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "8,3": {
       "terrain_key": "teren_płaski",
@@ -1412,14 +1394,14 @@
       "defense_mod": 0
     },
     "8,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "8,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "8,6": {
       "terrain_key": "teren_płaski",
@@ -1442,9 +1424,9 @@
       "defense_mod": 0
     },
     "8,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "8,11": {
       "terrain_key": "teren_płaski",
@@ -1462,9 +1444,9 @@
       "defense_mod": 0
     },
     "8,14": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "8,15": {
       "terrain_key": "teren_płaski",
@@ -1542,23 +1524,19 @@
       "defense_mod": 0
     },
     "9,-4": {
-      "terrain_key": "teren_płaski",
+      "terrain_key": "most",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": -1
     },
     "9,-3": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "AC_Batalion__2_PL_AC_Batalion",
-        "image": "tokens/Polska/AC_Batalion__2_PL_AC_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "9,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "9,-1": {
       "terrain_key": "teren_płaski",
@@ -1571,9 +1549,9 @@
       "defense_mod": 0
     },
     "9,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "9,2": {
       "terrain_key": "teren_płaski",
@@ -1596,9 +1574,9 @@
       "defense_mod": 0
     },
     "9,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "9,7": {
       "terrain_key": "teren_płaski",
@@ -1636,14 +1614,18 @@
       "defense_mod": 0
     },
     "9,14": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "9,15": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AP_Kompania__3_PL_AP_Kompania",
+        "image": "tokens/Polska/AP_Kompania__3_PL_AP_Kompania/token.png"
+      }
     },
     "9,16": {
       "terrain_key": "teren_płaski",
@@ -1716,9 +1698,9 @@
       "defense_mod": 0
     },
     "10,-4": {
-      "terrain_key": "teren_płaski",
+      "terrain_key": "most",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": -1
     },
     "10,-3": {
       "terrain_key": "teren_płaski",
@@ -1726,13 +1708,9 @@
       "defense_mod": 0
     },
     "10,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "P_Kompania__2_PL_P_Kompania",
-        "image": "tokens/Polska/P_Kompania__2_PL_P_Kompania/token.png"
-      }
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "10,-1": {
       "terrain_key": "teren_płaski",
@@ -1745,14 +1723,14 @@
       "defense_mod": 0
     },
     "10,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "10,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "10,3": {
       "terrain_key": "teren_płaski",
@@ -1760,9 +1738,9 @@
       "defense_mod": 0
     },
     "10,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "10,5": {
       "terrain_key": "teren_płaski",
@@ -1770,9 +1748,9 @@
       "defense_mod": 0
     },
     "10,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "10,7": {
       "terrain_key": "teren_płaski",
@@ -1885,9 +1863,9 @@
       "defense_mod": 0
     },
     "11,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "11,-4": {
       "terrain_key": "teren_płaski",
@@ -1900,14 +1878,22 @@
       "defense_mod": 0
     },
     "11,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "TC_Batalion__2_PL_TC_Batalion",
+        "image": "tokens/Polska/TC_Batalion__2_PL_TC_Batalion/token.png"
+      }
     },
     "11,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "TC_Kompania__2_PL_TC_Kompania",
+        "image": "tokens/Polska/TC_Kompania__2_PL_TC_Kompania/token.png"
+      }
     },
     "11,0": {
       "terrain_key": "teren_płaski",
@@ -1920,24 +1906,24 @@
       "defense_mod": 0
     },
     "11,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "11,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "11,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "11,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "11,6": {
       "terrain_key": "teren_płaski",
@@ -1945,9 +1931,9 @@
       "defense_mod": 0
     },
     "11,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "11,8": {
       "terrain_key": "teren_płaski",
@@ -1975,9 +1961,13 @@
       "defense_mod": 0
     },
     "11,13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "TC_Kompania__3_PL_TC_Kompania",
+        "image": "tokens/Polska/TC_Kompania__3_PL_TC_Kompania/token.png"
+      }
     },
     "11,14": {
       "terrain_key": "teren_płaski",
@@ -2055,9 +2045,9 @@
       "defense_mod": 0
     },
     "12,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "12,-4": {
       "terrain_key": "teren_płaski",
@@ -2065,14 +2055,18 @@
       "defense_mod": 0
     },
     "12,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "12,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2,
+      "token": {
+        "unit": "P_Batalion__2_PL_P_Batalion",
+        "image": "tokens/Polska/P_Batalion__2_PL_P_Batalion/token.png"
+      }
     },
     "12,-1": {
       "terrain_key": "teren_płaski",
@@ -2105,9 +2099,9 @@
       "defense_mod": 0
     },
     "12,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "12,6": {
       "terrain_key": "teren_płaski",
@@ -2117,7 +2111,11 @@
     "12,7": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Batalion__3_PL_P_Batalion",
+        "image": "tokens/Polska/P_Batalion__3_PL_P_Batalion/token.png"
+      }
     },
     "12,8": {
       "terrain_key": "teren_płaski",
@@ -2140,9 +2138,9 @@
       "defense_mod": 0
     },
     "12,12": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "12,13": {
       "terrain_key": "teren_płaski",
@@ -2220,9 +2218,9 @@
       "defense_mod": 0
     },
     "13,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "13,-5": {
       "terrain_key": "teren_płaski",
@@ -2230,24 +2228,28 @@
       "defense_mod": 0
     },
     "13,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "13,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "13,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "13,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2,
+      "token": {
+        "unit": "P_Kompania__2_PL_P_Kompania",
+        "image": "tokens/Polska/P_Kompania__2_PL_P_Kompania/token.png"
+      }
     },
     "13,0": {
       "terrain_key": "teren_płaski",
@@ -2255,9 +2257,13 @@
       "defense_mod": 0
     },
     "13,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2,
+      "token": {
+        "unit": "P_Kompania__2_PL_P_Kompania_20250603203026",
+        "image": "tokens/Polska/P_Kompania__2_PL_P_Kompania_20250603203026/token.png"
+      }
     },
     "13,2": {
       "terrain_key": "teren_płaski",
@@ -2265,19 +2271,19 @@
       "defense_mod": 0
     },
     "13,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "13,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "13,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "13,6": {
       "terrain_key": "teren_płaski",
@@ -2305,9 +2311,9 @@
       "defense_mod": 0
     },
     "13,11": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "13,12": {
       "terrain_key": "teren_płaski",
@@ -2390,9 +2396,9 @@
       "defense_mod": 0
     },
     "14,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "14,-5": {
       "terrain_key": "teren_płaski",
@@ -2400,24 +2406,24 @@
       "defense_mod": 0
     },
     "14,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "14,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "14,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "14,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "14,0": {
       "terrain_key": "teren_płaski",
@@ -2445,9 +2451,9 @@
       "defense_mod": 0
     },
     "14,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "14,6": {
       "terrain_key": "teren_płaski",
@@ -2470,9 +2476,9 @@
       "defense_mod": 0
     },
     "14,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "14,11": {
       "terrain_key": "teren_płaski",
@@ -2555,34 +2561,34 @@
       "defense_mod": 0
     },
     "15,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "15,-6": {
-      "terrain_key": "teren_płaski",
+      "terrain_key": "most",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": -1
     },
     "15,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "15,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "15,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "15,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "15,-1": {
       "terrain_key": "teren_płaski",
@@ -2595,9 +2601,9 @@
       "defense_mod": 0
     },
     "15,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "15,2": {
       "terrain_key": "teren_płaski",
@@ -2605,19 +2611,23 @@
       "defense_mod": 0
     },
     "15,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "15,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "15,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2,
+      "token": {
+        "unit": "P_Kompania__3_PL_P_Kompania",
+        "image": "tokens/Polska/P_Kompania__3_PL_P_Kompania/token.png"
+      }
     },
     "15,6": {
       "terrain_key": "teren_płaski",
@@ -2640,9 +2650,9 @@
       "defense_mod": 0
     },
     "15,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "15,11": {
       "terrain_key": "teren_płaski",
@@ -2730,9 +2740,9 @@
       "defense_mod": 0
     },
     "16,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "16,-5": {
       "terrain_key": "teren_płaski",
@@ -2750,9 +2760,9 @@
       "defense_mod": 0
     },
     "16,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "16,-1": {
       "terrain_key": "teren_płaski",
@@ -2760,14 +2770,14 @@
       "defense_mod": 0
     },
     "16,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "16,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "16,2": {
       "terrain_key": "teren_płaski",
@@ -2785,14 +2795,14 @@
       "defense_mod": 0
     },
     "16,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "16,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "16,7": {
       "terrain_key": "teren_płaski",
@@ -2805,9 +2815,9 @@
       "defense_mod": 0
     },
     "16,9": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "16,10": {
       "terrain_key": "teren_płaski",
@@ -2900,9 +2910,9 @@
       "defense_mod": 0
     },
     "17,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "17,-5": {
       "terrain_key": "teren_płaski",
@@ -2915,9 +2925,9 @@
       "defense_mod": 0
     },
     "17,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "17,-2": {
       "terrain_key": "teren_płaski",
@@ -2925,9 +2935,9 @@
       "defense_mod": 0
     },
     "17,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "17,0": {
       "terrain_key": "teren_płaski",
@@ -2960,9 +2970,9 @@
       "defense_mod": 0
     },
     "17,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "17,7": {
       "terrain_key": "teren_płaski",
@@ -2975,14 +2985,18 @@
       "defense_mod": 0
     },
     "17,9": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "17,10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "TC_Batalion__3_PL_TC_Batalion",
+        "image": "tokens/Polska/TC_Batalion__3_PL_TC_Batalion/token.png"
+      }
     },
     "17,11": {
       "terrain_key": "teren_płaski",
@@ -2992,7 +3006,11 @@
     "17,12": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Pluton__3_PL_P_Pluton",
+        "image": "tokens/Polska/P_Pluton__3_PL_P_Pluton/token.png"
+      }
     },
     "17,13": {
       "terrain_key": "teren_płaski",
@@ -3070,19 +3088,19 @@
       "defense_mod": 0
     },
     "18,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "18,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "18,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "18,-3": {
       "terrain_key": "teren_płaski",
@@ -3100,14 +3118,14 @@
       "defense_mod": 0
     },
     "18,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "18,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "18,2": {
       "terrain_key": "teren_płaski",
@@ -3130,24 +3148,19 @@
       "defense_mod": 0
     },
     "18,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
-    },
-    "18,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "18,8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "18,9": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "18,10": {
       "terrain_key": "teren_płaski",
@@ -3230,9 +3243,9 @@
       "defense_mod": 0
     },
     "19,-8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "19,-7": {
       "terrain_key": "teren_płaski",
@@ -3240,14 +3253,14 @@
       "defense_mod": 0
     },
     "19,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "19,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "19,-4": {
       "terrain_key": "teren_płaski",
@@ -3260,24 +3273,24 @@
       "defense_mod": 0
     },
     "19,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "19,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "19,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "19,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "19,2": {
       "terrain_key": "teren_płaski",
@@ -3300,19 +3313,19 @@
       "defense_mod": 0
     },
     "19,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "19,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "19,8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "19,9": {
       "terrain_key": "teren_płaski",
@@ -3395,19 +3408,19 @@
       "defense_mod": 0
     },
     "20,-9": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "20,-8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "20,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "20,-6": {
       "terrain_key": "teren_płaski",
@@ -3415,9 +3428,9 @@
       "defense_mod": 0
     },
     "20,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "20,-4": {
       "terrain_key": "teren_płaski",
@@ -3425,19 +3438,19 @@
       "defense_mod": 0
     },
     "20,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "20,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "20,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "20,0": {
       "terrain_key": "teren_płaski",
@@ -3455,9 +3468,9 @@
       "defense_mod": 0
     },
     "20,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "20,4": {
       "terrain_key": "teren_płaski",
@@ -3470,19 +3483,19 @@
       "defense_mod": 0
     },
     "20,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "20,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "20,8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "20,9": {
       "terrain_key": "teren_płaski",
@@ -3575,34 +3588,34 @@
       "defense_mod": 0
     },
     "21,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "21,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "21,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "21,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "21,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "21,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "21,-1": {
       "terrain_key": "teren_płaski",
@@ -3610,9 +3623,9 @@
       "defense_mod": 0
     },
     "21,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "21,1": {
       "terrain_key": "teren_płaski",
@@ -3635,24 +3648,24 @@
       "defense_mod": 0
     },
     "21,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "21,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "21,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "21,8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "21,9": {
       "terrain_key": "teren_płaski",
@@ -3745,14 +3758,18 @@
       "defense_mod": 0
     },
     "22,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "22,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2,
+      "token": {
+        "unit": "P_Batalion__5_N_P_Batalion",
+        "image": "tokens/Niemcy/P_Batalion__5_N_P_Batalion/token.png"
+      }
     },
     "22,-5": {
       "terrain_key": "teren_płaski",
@@ -3760,19 +3777,23 @@
       "defense_mod": 0
     },
     "22,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "22,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "22,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2,
+      "token": {
+        "unit": "P_Kompania__5_N_P_Kompania",
+        "image": "tokens/Niemcy/P_Kompania__5_N_P_Kompania/token.png"
+      }
     },
     "22,-1": {
       "terrain_key": "teren_płaski",
@@ -3780,14 +3801,14 @@
       "defense_mod": 0
     },
     "22,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "22,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "22,2": {
       "terrain_key": "teren_płaski",
@@ -3810,14 +3831,14 @@
       "defense_mod": 0
     },
     "22,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "22,7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "22,8": {
       "terrain_key": "teren_płaski",
@@ -3910,14 +3931,18 @@
       "defense_mod": 0
     },
     "23,-8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "23,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1,
+      "token": {
+        "unit": "TC_Batalion__5_N_TC_Batalion",
+        "image": "tokens/Niemcy/TC_Batalion__5_N_TC_Batalion/token.png"
+      }
     },
     "23,-6": {
       "terrain_key": "teren_płaski",
@@ -3930,14 +3955,18 @@
       "defense_mod": 0
     },
     "23,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "23,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "TC_Kompania__5_N_TC_Kompania_20250603203310",
+        "image": "tokens/Niemcy/TC_Kompania__5_N_TC_Kompania_20250603203310/token.png"
+      }
     },
     "23,-2": {
       "terrain_key": "teren_płaski",
@@ -3955,9 +3984,9 @@
       "defense_mod": 0
     },
     "23,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "23,2": {
       "terrain_key": "teren_płaski",
@@ -3980,9 +4009,9 @@
       "defense_mod": 0
     },
     "23,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "23,7": {
       "terrain_key": "teren_płaski",
@@ -4080,19 +4109,23 @@
       "defense_mod": 0
     },
     "24,-8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "24,-7": {
-      "terrain_key": "teren_płaski",
+      "terrain_key": "most",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": -1,
+      "token": {
+        "unit": "TC_Kompania__5_N_TC_Kompania",
+        "image": "tokens/Niemcy/TC_Kompania__5_N_TC_Kompania/token.png"
+      }
     },
     "24,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "24,-5": {
       "terrain_key": "teren_płaski",
@@ -4100,19 +4133,23 @@
       "defense_mod": 0
     },
     "24,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "24,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "24,-2": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Pluton__5_N_P_Pluton",
+        "image": "tokens/Niemcy/P_Pluton__5_N_P_Pluton/token.png"
+      }
     },
     "24,-1": {
       "terrain_key": "teren_płaski",
@@ -4125,9 +4162,9 @@
       "defense_mod": 0
     },
     "24,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "24,2": {
       "terrain_key": "teren_płaski",
@@ -4150,9 +4187,9 @@
       "defense_mod": 0
     },
     "24,6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "24,7": {
       "terrain_key": "teren_płaski",
@@ -4247,7 +4284,11 @@
     "25,-9": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Batalion__5_N_AC_Batalion",
+        "image": "tokens/Niemcy/AC_Batalion__5_N_AC_Batalion/token.png"
+      }
     },
     "25,-8": {
       "terrain_key": "teren_płaski",
@@ -4260,14 +4301,18 @@
       "defense_mod": 0
     },
     "25,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1,
+      "token": {
+        "unit": "AC_Batalion__5_N_AC_Batalion_20250603203322",
+        "image": "tokens/Niemcy/AC_Batalion__5_N_AC_Batalion_20250603203322/token.png"
+      }
     },
     "25,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "25,-4": {
       "terrain_key": "teren_płaski",
@@ -4280,9 +4325,9 @@
       "defense_mod": 0
     },
     "25,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "25,-1": {
       "terrain_key": "teren_płaski",
@@ -4295,14 +4340,14 @@
       "defense_mod": 0
     },
     "25,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "25,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "25,3": {
       "terrain_key": "teren_płaski",
@@ -4315,9 +4360,9 @@
       "defense_mod": 0
     },
     "25,5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "25,6": {
       "terrain_key": "teren_płaski",
@@ -4395,14 +4440,14 @@
       "defense_mod": 0
     },
     "26,-13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,-12": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,-11": {
       "terrain_key": "teren_płaski",
@@ -4425,19 +4470,19 @@
       "defense_mod": 0
     },
     "26,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "26,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,-4": {
       "terrain_key": "teren_płaski",
@@ -4450,9 +4495,9 @@
       "defense_mod": 0
     },
     "26,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,-1": {
       "terrain_key": "teren_płaski",
@@ -4465,24 +4510,24 @@
       "defense_mod": 0
     },
     "26,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "26,5": {
       "terrain_key": "teren_płaski",
@@ -4565,14 +4610,14 @@
       "defense_mod": 0
     },
     "27,-13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "27,-12": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "27,-11": {
       "terrain_key": "teren_płaski",
@@ -4595,44 +4640,44 @@
       "defense_mod": 0
     },
     "27,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "27,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "27,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "27,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "27,-3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "27,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "27,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "27,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "27,1": {
       "terrain_key": "teren_płaski",
@@ -4647,12 +4692,16 @@
     "27,3": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Kompania__6_N_P_Kompania",
+        "image": "tokens/Niemcy/P_Kompania__6_N_P_Kompania/token.png"
+      }
     },
     "27,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "27,5": {
       "terrain_key": "teren_płaski",
@@ -4750,9 +4799,9 @@
       "defense_mod": 0
     },
     "28,-10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "28,-9": {
       "terrain_key": "teren_płaski",
@@ -4760,29 +4809,29 @@
       "defense_mod": 0
     },
     "28,-8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "28,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "28,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "28,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "28,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "28,-3": {
       "terrain_key": "teren_płaski",
@@ -4815,14 +4864,18 @@
       "defense_mod": 0
     },
     "28,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "TC_Kompania__6_N_TC_Kompania_20250603203403",
+        "image": "tokens/Niemcy/TC_Kompania__6_N_TC_Kompania_20250603203403/token.png"
+      }
     },
     "28,4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2
     },
     "28,5": {
       "terrain_key": "teren_płaski",
@@ -4915,44 +4968,44 @@
       "defense_mod": 0
     },
     "29,-11": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "29,-10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "29,-9": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "29,-8": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "29,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "29,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "29,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "29,-4": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "29,-3": {
       "terrain_key": "teren_płaski",
@@ -4972,12 +5025,20 @@
     "29,0": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Batalion__6_N_P_Batalion",
+        "image": "tokens/Niemcy/P_Batalion__6_N_P_Batalion/token.png"
+      }
     },
     "29,1": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "TC_Batalion__6_N_TC_Batalion",
+        "image": "tokens/Niemcy/TC_Batalion__6_N_TC_Batalion/token.png"
+      }
     },
     "29,2": {
       "terrain_key": "teren_płaski",
@@ -4985,9 +5046,9 @@
       "defense_mod": 0
     },
     "29,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "29,4": {
       "terrain_key": "teren_płaski",
@@ -5075,9 +5136,9 @@
       "defense_mod": 0
     },
     "30,-13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "30,-12": {
       "terrain_key": "teren_płaski",
@@ -5090,9 +5151,9 @@
       "defense_mod": 0
     },
     "30,-10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "30,-9": {
       "terrain_key": "teren_płaski",
@@ -5110,14 +5171,14 @@
       "defense_mod": 0
     },
     "30,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "30,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "30,-4": {
       "terrain_key": "teren_płaski",
@@ -5130,19 +5191,23 @@
       "defense_mod": 0
     },
     "30,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "30,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "30,0": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Kompania__6_N_AC_Kompania",
+        "image": "tokens/Niemcy/AC_Kompania__6_N_AC_Kompania/token.png"
+      }
     },
     "30,1": {
       "terrain_key": "teren_płaski",
@@ -5150,14 +5215,14 @@
       "defense_mod": 0
     },
     "30,2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "30,3": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "30,4": {
       "terrain_key": "teren_płaski",
@@ -5235,9 +5300,9 @@
       "defense_mod": 0
     },
     "31,-15": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "31,-14": {
       "terrain_key": "teren_płaski",
@@ -5245,9 +5310,9 @@
       "defense_mod": 0
     },
     "31,-13": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "31,-12": {
       "terrain_key": "teren_płaski",
@@ -5255,14 +5320,18 @@
       "defense_mod": 0
     },
     "31,-11": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "31,-10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "AP_Kompania__5_N_AP_Kompania",
+        "image": "tokens/Niemcy/AP_Kompania__5_N_AP_Kompania/token.png"
+      }
     },
     "31,-9": {
       "terrain_key": "teren_płaski",
@@ -5275,19 +5344,19 @@
       "defense_mod": 0
     },
     "31,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "las",
+      "move_mod": 2,
+      "defense_mod": 2
     },
     "31,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "31,-5": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "31,-4": {
       "terrain_key": "teren_płaski",
@@ -5300,14 +5369,18 @@
       "defense_mod": 0
     },
     "31,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "31,-1": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AC_Batalion__6_N_AC_Batalion",
+        "image": "tokens/Niemcy/AC_Batalion__6_N_AC_Batalion/token.png"
+      }
     },
     "31,0": {
       "terrain_key": "teren_płaski",
@@ -5315,9 +5388,9 @@
       "defense_mod": 0
     },
     "31,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "31,2": {
       "terrain_key": "teren_płaski",
@@ -5430,9 +5503,9 @@
       "defense_mod": 0
     },
     "32,-10": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "32,-9": {
       "terrain_key": "teren_płaski",
@@ -5445,14 +5518,14 @@
       "defense_mod": 0
     },
     "32,-7": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "duża rzeka",
+      "move_mod": 5,
+      "defense_mod": -1
     },
     "32,-6": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "bagno",
+      "move_mod": 3,
+      "defense_mod": 1
     },
     "32,-5": {
       "terrain_key": "teren_płaski",
@@ -5470,9 +5543,9 @@
       "defense_mod": 0
     },
     "32,-2": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "32,-1": {
       "terrain_key": "teren_płaski",
@@ -5480,14 +5553,14 @@
       "defense_mod": 0
     },
     "32,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "32,1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
     },
     "32,2": {
       "terrain_key": "teren_płaski",
@@ -5497,7 +5570,11 @@
     "32,3": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AP_Kompania__6_N_AP_Kompania_20250603203344",
+        "image": "tokens/Niemcy/AP_Kompania__6_N_AP_Kompania_20250603203344/token.png"
+      }
     },
     "32,4": {
       "terrain_key": "teren_płaski",
@@ -5667,7 +5744,11 @@
     "33,3": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "TC_Kompania__6_N_TC_Kompania",
+        "image": "tokens/Niemcy/TC_Kompania__6_N_TC_Kompania/token.png"
+      }
     },
     "33,4": {
       "terrain_key": "teren_płaski",
@@ -5972,7 +6053,11 @@
     "35,-4": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "AP_Kompania__6_N_AP_Kompania",
+        "image": "tokens/Niemcy/AP_Kompania__6_N_AP_Kompania/token.png"
+      }
     },
     "35,-3": {
       "terrain_key": "teren_płaski",
@@ -7617,11 +7702,7 @@
     "45,-15": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "TC_Batalion__5_N_TC_Batalion",
-        "image": "tokens/Niemcy/TC_Batalion__5_N_TC_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "45,-14": {
       "terrain_key": "teren_płaski",
@@ -8301,11 +8382,7 @@
     "49,-15": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "P_Kompania__5_N_P_Kompania",
-        "image": "tokens/Niemcy/P_Kompania__5_N_P_Kompania/token.png"
-      }
+      "defense_mod": 0
     },
     "49,-14": {
       "terrain_key": "teren_płaski",
@@ -8325,11 +8402,7 @@
     "49,-11": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "AC_Batalion__5_N_AC_Batalion",
-        "image": "tokens/Niemcy/AC_Batalion__5_N_AC_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "49,-10": {
       "terrain_key": "teren_płaski",
@@ -8424,11 +8497,7 @@
     "49,8": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "AC_Batalion__6_N_AC_Batalion",
-        "image": "tokens/Niemcy/AC_Batalion__6_N_AC_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "50,-25": {
       "terrain_key": "teren_płaski",
@@ -8503,11 +8572,7 @@
     "50,-11": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "AP_Batalion__5_N_AP_Batalion",
-        "image": "tokens/Niemcy/AP_Batalion__5_N_AP_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "50,-10": {
       "terrain_key": "teren_płaski",
@@ -8667,11 +8732,7 @@
     "51,-13": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "P_Batalion__5_N_P_Batalion",
-        "image": "tokens/Niemcy/P_Batalion__5_N_P_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "51,-12": {
       "terrain_key": "teren_płaski",
@@ -9251,11 +9312,7 @@
     "54,1": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "AP_Batalion__6_N_AP_Batalion",
-        "image": "tokens/Niemcy/AP_Batalion__6_N_AP_Batalion/token.png"
-      }
+      "defense_mod": 0
     },
     "54,2": {
       "terrain_key": "teren_płaski",
@@ -9270,20 +9327,12 @@
     "54,4": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "TC_Kompania__6_N_TC_Kompania",
-        "image": "tokens/Niemcy/TC_Kompania__6_N_TC_Kompania/token.png"
-      }
+      "defense_mod": 0
     },
     "54,5": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0,
-      "token": {
-        "unit": "P_Pluton__6_N_P_Pluton",
-        "image": "tokens/Niemcy/P_Pluton__6_N_P_Pluton/token.png"
-      }
+      "defense_mod": 0
     },
     "54,6": {
       "terrain_key": "teren_płaski",
@@ -9454,6 +9503,25 @@
       "terrain_key": "teren_płaski",
       "move_mod": 0,
       "defense_mod": 0
+    },
+    "18,7": {
+      "terrain_key": "teren_płaski",
+      "move_mod": 0,
+      "defense_mod": 0
+    },
+    "1,0": {
+      "terrain_key": "mała rzeka",
+      "move_mod": 2,
+      "defense_mod": 1
+    },
+    "3,6": {
+      "terrain_key": "mała miejscowość",
+      "move_mod": 1,
+      "defense_mod": 2,
+      "token": {
+        "unit": "AP_Pluton__2_PL_AP_Pluton",
+        "image": "tokens/Polska/AP_Pluton__2_PL_AP_Pluton/token.png"
+      }
     }
   },
   "key_points": {},
