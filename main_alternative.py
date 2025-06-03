@@ -155,6 +155,3 @@ if __name__ == "__main__":
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()
         clear_temp_visibility(players)
-        # Debug: sprawdź owner i nation po wczytaniu żetonów
-        # for t in game_engine.tokens:
-        #     print(f"[DEBUG] Załadowano żeton {t.id}: owner='{t.owner}', nation='{t.stats.get('nation','')}'")

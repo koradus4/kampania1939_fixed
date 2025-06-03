@@ -200,14 +200,23 @@ class PanelMapa(tk.Frame):
                 if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
                     clicked_token = token
                     break
-        # Sprawdzenie właściciela żetonu dla dowódcy
+        # Nowa logika: cykliczna zmiana trybu ruchem lewym klikiem na już zaznaczonym żetonie
         if clicked_token:
-            clicked_token.apply_movement_mode()  # Aktualizuj wartości po kliknięciu
+            if self.selected_token_id == clicked_token.id:
+                # Zmień tryb ruchu cyklicznie: combat -> march -> recon -> combat
+                current = getattr(clicked_token, 'movement_mode', 'combat')
+                if current == 'combat':
+                    clicked_token.movement_mode = 'march'
+                elif current == 'march':
+                    clicked_token.movement_mode = 'recon'
+                else:
+                    clicked_token.movement_mode = 'combat'
+                clicked_token.apply_movement_mode(reset_mp=False)  # NIE resetuj punktów ruchu przy zmianie trybu!
+            else:
+                # Zaznacz żeton (pierwszy klik)
+                self.selected_token_id = clicked_token.id
             if self.panel_dowodcy is not None:
                 self.panel_dowodcy.wybrany_token = clicked_token
-                # Ustaw także selected_token_id, by umożliwić ruch
-                self.selected_token_id = clicked_token.id
-            # --- USTAWIAMY WYBRANY ŻETON DLA PANELU DOWÓDCY ---
             if self.token_info_panel is not None:
                 self.token_info_panel.show_token(clicked_token)
         elif hr and self.selected_token_id:
@@ -216,10 +225,8 @@ class PanelMapa(tk.Frame):
             if token:
                 action = MoveAction(token.id, hr[0], hr[1])
                 success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
-                # Synchronizacja żetonów po ruchu
                 self.tokens = self.game_engine.tokens
                 if success:
-                    # --- AKTUALIZACJA WIDOCZNOŚCI PO RUCHU ---
                     from engine.engine import update_all_players_visibility
                     if hasattr(self.game_engine, 'players'):
                         update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
@@ -237,24 +244,5 @@ class PanelMapa(tk.Frame):
         self.refresh()
 
     def _on_right_click_token(self, event):
-        x = self.canvas.canvasx(event.x)
-        y = self.canvas.canvasy(event.y)
-        clicked_token = None
-        for token in self.tokens:
-            if token.q is not None and token.r is not None:
-                tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
-                hex_size = self.map_model.hex_size
-                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
-                    clicked_token = token
-                    break
-        if clicked_token is not None:
-            # Zmień tryb ruchu cyklicznie: combat -> march -> recon -> combat
-            current = getattr(clicked_token, 'movement_mode', 'combat')
-            if current == 'combat':
-                clicked_token.movement_mode = 'march'
-            elif current == 'march':
-                clicked_token.movement_mode = 'recon'
-            else:
-                clicked_token.movement_mode = 'combat'
-            clicked_token.apply_movement_mode(reset_mp=False)  # NIE resetuj punktów ruchu przy zmianie trybu!
-            self.refresh()
+        # Prawy klik nie wykonuje żadnej akcji (uwolniony)
+        pass

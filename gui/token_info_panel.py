@@ -60,8 +60,6 @@ class TokenInfoPanel(tk.Frame):
         else:
             attack_range = '-'
             attack_value = '-'
-        # DEBUG: pokaż w konsoli pobrane wartości ataku
-        print(f"[DEBUG][TokenInfoPanel] Żeton: {unit_name}, attack: {attack}, range: {attack_range}, value: {attack_value}")
         self.labels["nacja"].config(text=f"Nacja: {nation}")
         self.labels["jednostka"].config(text=f"Jednostka: {unit_name}")
         self.labels["punkty_ruchu"].config(text=f"Punkty ruchu: {move} (bazowo: {base_move})")
