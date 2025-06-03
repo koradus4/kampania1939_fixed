@@ -244,5 +244,116 @@ class PanelMapa(tk.Frame):
         self.refresh()
 
     def _on_right_click_token(self, event):
-        # Prawy klik nie wykonuje żadnej akcji (uwolniony)
-        pass
+        # Obsługa ataku na żeton przeciwnika
+        x = self.canvas.canvasx(event.x)
+        y = self.canvas.canvasy(event.y)
+        clicked_token = None
+        for token in self.tokens:
+            if token.q is not None and token.r is not None:
+                visible_ids = set()
+                if hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
+                    visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
+                elif hasattr(self.player, 'visible_tokens'):
+                    visible_ids = self.player.visible_tokens
+                if token.id not in visible_ids:
+                    continue
+                tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
+                hex_size = self.map_model.hex_size
+                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
+                    clicked_token = token
+                    break
+        # Sprawdź, czy kliknięto w żeton przeciwnika (nie swój, nie sojusznika)
+        if clicked_token and self.selected_token_id:
+            attacker = next((t for t in self.tokens if t.id == self.selected_token_id), None)
+            if not attacker:
+                return
+            # Sprawdź, czy to przeciwnik
+            nation1 = str(attacker.stats.get('nation', ''))
+            nation2 = str(clicked_token.stats.get('nation', ''))
+            if nation1 == nation2:
+                return  # Nie atakuj sojusznika
+            from tkinter import messagebox
+            answer = messagebox.askyesno("Potwierdź atak", f"Czy chcesz zaatakować żeton {clicked_token.id}?\n({clicked_token.stats.get('unit','')})")
+            if not answer:
+                return
+            # Wywołaj CombatAction
+            from engine.action import CombatAction
+            action = CombatAction(attacker.id, clicked_token.id)
+            success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
+            self.tokens = self.game_engine.tokens
+            # Efekty wizualne (szkielet): podświetlenie pól, miganie, usuwanie, cofanie
+            self._visualize_combat(attacker, clicked_token, msg)
+            # Komunikat zwrotny
+            if not success:
+                messagebox.showerror("Błąd ataku", msg)
+            else:
+                messagebox.showinfo("Wynik walki", msg)
+            # Odśwież mapę i panele
+            self.selected_token_id = None
+            self.refresh()
+
+    def _visualize_combat(self, attacker, defender, msg):
+        # 1. Podświetlenie pól atakującego i broniącego (mgiełka)
+        ax, ay = self.map_model.hex_to_pixel(attacker.q, attacker.r)
+        dx, dy = self.map_model.hex_to_pixel(defender.q, defender.r)
+        hex_size = self.map_model.hex_size
+        verts_a = get_hex_vertices(ax, ay, hex_size)
+        verts_d = get_hex_vertices(dx, dy, hex_size)
+        # Poprawione kolory: jasnozielony i jasnoczerwony (bez przezroczystości)
+        self.canvas.create_polygon([c for p in verts_a for c in p], fill='#90ee90', outline='', tags='combat_fx')
+        self.canvas.create_polygon([c for p in verts_d for c in p], fill='#ff7f7f', outline='', tags='combat_fx')
+        self.canvas.after(400, lambda: self.canvas.delete('combat_fx'))
+
+        # 2. Miganie żetonów, usuwanie, cofanie (na podstawie msg)
+        def blink_token(token_id, color, times=4, delay=120, on_end=None):
+            tag = f"token_{token_id}"
+            def blink(i):
+                if i % 2 == 0:
+                    self.canvas.itemconfig(tag, state='hidden')
+                else:
+                    self.canvas.itemconfig(tag, state='normal')
+                if i < times * 2:
+                    self.canvas.after(delay, lambda: blink(i + 1))
+                elif on_end:
+                    on_end()
+            blink(0)
+
+        def animate_remove(token_id):
+            self.canvas.after(350, self.refresh)
+
+        def animate_retreat(token, old_q, old_r, new_q, new_r):
+            steps = 6
+            x0, y0 = self.map_model.hex_to_pixel(old_q, old_r)
+            x1, y1 = self.map_model.hex_to_pixel(new_q, new_r)
+            dx = (x1 - x0) / steps
+            dy = (y1 - y0) / steps
+            tag = f"token_{token.id}"
+            def move_step(i):
+                if i > steps:
+                    self.refresh()
+                    return
+                self.canvas.move(tag, dx, dy)
+                self.canvas.after(40, lambda: move_step(i + 1))
+            move_step(1)
+
+        # Rozpoznanie efektu na podstawie komunikatu msg
+        msg_l = msg.lower()
+        # Eliminacja obrońcy
+        if 'obrońca został zniszczony' in msg_l or 'obrońca nie mógł się cofnąć' in msg_l:
+            blink_token(defender.id, color='red', times=4, delay=100, on_end=lambda: animate_remove(defender.id))
+        # Eliminacja atakującego
+        elif 'atakujący został zniszczony' in msg_l:
+            blink_token(attacker.id, color='red', times=4, delay=100, on_end=lambda: animate_remove(attacker.id))
+        # Cofanie obrońcy
+        elif 'cofnął się na' in msg_l:
+            import re
+            m = re.search(r'cofnął się na \(([-\d]+),([\-\d]+)\)', msg)
+            if m:
+                new_q, new_r = int(m.group(1)), int(m.group(2))
+                old_q, old_r = defender.q, defender.r
+                animate_retreat(defender, old_q, old_r, new_q, new_r)
+                blink_token(defender.id, color='red', times=2, delay=120)
+        # Domyślnie: krótkie miganie obu żetonów
+        else:
+            blink_token(attacker.id, color='orange', times=2, delay=100)
+            blink_token(defender.id, color='orange', times=2, delay=100)
