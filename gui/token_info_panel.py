@@ -63,6 +63,7 @@ class TokenInfoPanel(tk.Frame):
         current_fuel = getattr(token, 'currentFuel', token.stats.get('maintenance', '-'))
         max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', '-'))
         combat_value = getattr(token, 'combat_value', token.stats.get('combat_value', '-'))
+        base_combat_value = token.stats.get('combat_value', '-')
         movement_mode = getattr(token, 'movement_mode', 'combat')
         mode_label = {'combat': 'Bojowy', 'march': 'Marsz', 'recon': 'Zwiad'}.get(movement_mode, movement_mode)
         attack = token.stats.get('attack', '-')
@@ -82,7 +83,7 @@ class TokenInfoPanel(tk.Frame):
         self.labels["tryb_ruchu"].config(text=f"Tryb ruchu: {mode_label}")
         self.labels["paliwo"].config(text=f"Paliwo: {current_fuel}/{max_fuel}")
         self.labels["zasięg_widzenia"].config(text=f"Zasięg widzenia: {sight}")
-        self.labels["wartość_bojowa"].config(text=f"Zasoby bojowe: {combat_value}")
+        self.labels["wartość_bojowa"].config(text=f"Zasoby bojowe: {combat_value} (bazowo: {base_combat_value})")
         self.labels["zasięg_ataku"].config(text=f"Zasięg ataku: {attack_range}")
         self.labels["siła_ataku"].config(text=f"Siła ataku: {attack_value}")
 
