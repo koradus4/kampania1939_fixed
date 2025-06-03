@@ -39,6 +39,21 @@ class TokenInfoPanel(tk.Frame):
                 self.labels[key].config(text=f"{key.capitalize()}: -")
             return
         nation = token.stats.get('nation', '-')
+        # Dodaj informację o właścicielu/dowódcy w formacie 'Dowódca X'
+        owner_info = ''
+        # Próbuj wyciągnąć numer dowódcy z owner lub commander_id
+        dowodca_id = None
+        if hasattr(token, 'commander_id') and token.commander_id:
+            dowodca_id = token.commander_id
+        elif hasattr(token, 'owner') and token.owner:
+            # Spróbuj wyciągnąć numer z owner, np. '5 (Niemcy)' lub '2 (Polska)'
+            import re
+            m = re.match(r"(\d+)", str(token.owner))
+            if m:
+                dowodca_id = m.group(1)
+        if dowodca_id:
+            owner_info = f" / Dowódca {dowodca_id}"
+        nation_label = f"Nacja: {nation}{owner_info}"
         unit_name = token.stats.get('unit_full_name') or token.stats.get('label', token.id)
         move = getattr(token, 'currentMovePoints', token.stats.get('move', '-'))
         base_move = getattr(token, 'base_move', token.stats.get('move', '-'))
@@ -60,7 +75,7 @@ class TokenInfoPanel(tk.Frame):
         else:
             attack_range = '-'
             attack_value = '-'
-        self.labels["nacja"].config(text=f"Nacja: {nation}")
+        self.labels["nacja"].config(text=nation_label)
         self.labels["jednostka"].config(text=f"Jednostka: {unit_name}")
         self.labels["punkty_ruchu"].config(text=f"Punkty ruchu: {move} (bazowo: {base_move})")
         self.labels["wartość_obrony"].config(text=f"Wartość obrony: {defense} (bazowo: {base_defense})")
