@@ -119,19 +119,66 @@ class CombatAction(Action):
         self.defender_id = defender_id
 
     def execute(self, engine):
-        # Prosty szkic: walka dwóch żetonów
+        import random
         attacker = next((t for t in engine.tokens if t.id == self.token_id), None)
         defender = next((t for t in engine.tokens if t.id == self.defender_id), None)
         if not attacker or not defender:
             return False, "Brak żetonu atakującego lub broniącego."
-        # Sprawdź dystans
+        # Sprawdź dystans (zasięg ataku)
+        attack_range = attacker.stats.get('attack', {}).get('range', 1)
         dist = engine.board.hex_distance((attacker.q, attacker.r), (defender.q, defender.r))
-        if dist > 1:
-            return False, "Za daleko do ataku."
-        # Prosta mechanika walki
-        if attacker.stats.get('combat_value', 0) > defender.stats.get('combat_value', 0):
-            # Usuwamy obrońcę
-            engine.tokens.remove(defender)
-            return True, "Obrońca zniszczony."
+        if dist > attack_range:
+            return False, f"Za daleko do ataku (zasięg: {attack_range})."
+        # Sprawdź punkty ruchu
+        if getattr(attacker, 'currentMovePoints', 0) <= 0:
+            return False, "Brak punktów ruchu do ataku."
+        # Odejmij punkt ruchu
+        attacker.currentMovePoints -= 1
+        # --- Rozstrzyganie walki ---
+        # Atakujący
+        attack_val = attacker.stats.get('attack', {}).get('value', 0)
+        attack_mult = random.uniform(0.8, 1.2)
+        attack_result = int(round(attack_val * attack_mult))
+        # Obrońca
+        defense_val = defender.stats.get('defense_value', 0)
+        tile = engine.board.get_tile(defender.q, defender.r)
+        defense_mod = tile.defense_mod if tile else 0
+        defense_total = defense_val + defense_mod
+        defense_mult = random.uniform(0.8, 1.2)
+        defense_result = int(round(defense_total * defense_mult))
+        # Odejmij straty
+        defender.combat_value = max(0, getattr(defender, 'combat_value', 0) - attack_result)
+        attacker.combat_value = max(0, getattr(attacker, 'combat_value', 0) - defense_result)
+        # Zaktualizuj w stats (dla spójności z GUI)
+        defender.stats['combat_value'] = defender.combat_value
+        attacker.stats['combat_value'] = attacker.combat_value
+        # Eliminacja obrońcy
+        if defender.combat_value <= 0:
+            if random.random() < 0.5:
+                defender.combat_value = 1
+                defender.stats['combat_value'] = 1
+                # Cofnij obrońcę o 1 pole (prosty algorytm: odsuń od atakującego)
+                dq = defender.q - attacker.q
+                dr = defender.r - attacker.r
+                new_q = defender.q + (1 if dq > 0 else -1 if dq < 0 else 0)
+                new_r = defender.r + (1 if dr > 0 else -1 if dr < 0 else 0)
+                # Sprawdź czy pole jest wolne
+                if not engine.board.is_occupied(new_q, new_r) and engine.board.get_tile(new_q, new_r):
+                    defender.set_position(new_q, new_r)
+                    msg = f"Obrońca przeżył z 1 punktem i cofnął się na ({new_q},{new_r})!"
+                else:
+                    # Jeśli nie można się cofnąć, żeton ginie
+                    engine.tokens.remove(defender)
+                    msg = "Obrońca nie mógł się cofnąć i został zniszczony!"
+            else:
+                engine.tokens.remove(defender)
+                msg = "Obrońca został zniszczony!"
         else:
-            return True, "Atak nieudany."
+            msg = f"Obrońca stracił {attack_result} punktów, pozostało: {defender.combat_value}"
+        # Eliminacja atakującego
+        if attacker.combat_value <= 0:
+            engine.tokens.remove(attacker)
+            msg += "\nAtakujący został zniszczony!"
+        else:
+            msg += f"\nAtakujący stracił {defense_result} punktów, pozostało: {attacker.combat_value}"
+        return True, msg

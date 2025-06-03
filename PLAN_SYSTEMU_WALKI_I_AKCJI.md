@@ -1,50 +1,52 @@
-# PLAN SYSTEMU WALKI I AKCJI
+# Plan systemu walki – wersja 1 (zatwierdzony)
 
-## 1. Oznaczanie jednostek walczących
-- [x] ~~Dodaj pole `is_fighting` lub `in_combat` (bool) do obiektu żetonu, ustawiane na czas rozstrzygania walki.~~
-- [x] ~~W silniku gry trzymaj listę aktywnych walk jako tupla `(attacker, defender)` na czas rozstrzygania.~~
-- [x] ~~Dodaj oznaczenie graficzne na mapie (ikona, obramowanie, kolor tła) dla żetonów biorących udział w walce.~~
-- [x] ~~W panelu info żetonu wyświetl status tekstowy „WALCZY!”, jeśli bierze udział w walce.~~
+## 1. Warunki ataku
+- Atakujący widzi i ma w zasięgu ataku jednostkę przeciwnika.
+- Atak inicjuje się prawym przyciskiem myszy na żetonie przeciwnika.
 
-## 2. Reakcja wroga na wejście w zasięg widzenia i ataku
-- [x] ~~Po ruchu żetonu sprawdź, które wrogie żetony widzą go i mają go w swoim zasięgu ataku.~~
-- [x] ~~Każdy taki wróg może oddać strzał (atak reakcyjny/obronny).~~
-- [ ] Możliwość ograniczenia liczby reakcji (np. raz na turę, tylko jeśli wróg nie atakował w tej turze).
+## 2. Liczba ataków
+- Atakujący może wykonać tyle ataków, ile ma niewykorzystanych punktów ruchu (`move`).
+- Każdy atak kosztuje 1 punkt ruchu żetonu atakującego.
 
-## 3. Atak aktywny i wsparcie sojuszników
-- [x] ~~Po ruchu żeton może zaatakować dowolny żeton wroga w swoim zasięgu ataku.~~
-- [x] ~~Sojusznicy (inne żetony tego samego dowódcy), które widzą wroga i mają go w swoim zasięgu ataku, mogą również przeprowadzić atak wsparcia (np. ogień krzyżowy).~~
+## 3. Rozstrzyganie pojedynczego ataku
+- **Atakujący:**
+  - Bierze swój `attack.value`, losuje mnożnik z zakresu 0,8–1,2 i mnoży.
+  - Wynik to liczba ran zadanych obrońcy (odejmowane od `combat_value` obrońcy).
+- **Obrońca:**
+  - Suma: `defense_value` + modyfikator terenu (`defense_mod` z mapy).
+  - Wynik mnoży przez losowy mnożnik 0,8–1,2.
+  - Wynik to liczba ran zadanych atakującemu (odejmowane od `combat_value` atakującego).
 
-## 4. Logika rozstrzygania ataku
-- [x] ~~Oblicz siłę ataku i obrony (uwzględnij tryb ruchu, morale, wsparcie, modyfikatory terenu itp.).~~
-- [x] ~~Dodaj współczynnik losowy (np. rzut kością 1-6, albo losowy procent ±20%).~~
-- [x] ~~Porównaj wynik ataku i obrony:~~
-    - [x] ~~Jeśli atak > obrona → atak udany.~~
-    - [x] ~~Jeśli atak ≤ obrona → atak nieudany.~~
-- [x] ~~Wylicz straty:~~
-    - [x] ~~Prosta tabela strat (np. atak udany: obrońca traci X, atakujący Y; atak nieudany: atakujący traci X, obrońca Y).~~
-    - [x] ~~Efekt „zniszczenia” jeśli różnica jest duża.~~
+## 4. Kolejne ataki i ruch
+- Jeśli atakującemu zostały punkty ruchu, może atakować ponownie lub ruszyć się.
 
-## 5. System akcji i zużycie punktów ruchu
-- [x] ~~Każda jednostka posiada pulę punktów ruchu na turę (np. 10).~~
-- [x] ~~Punkty ruchu są zużywane nie tylko na ruch, ale także na inne akcje (atak, wsparcie, wycofanie się itp.).~~
-- [x] ~~Przykład: jeśli jednostka zużyje 5 punktów na ruch, zostaje jej 5 na ataki lub inne akcje.~~
-- [x] ~~Każdy atak kosztuje 1 punkt ruchu (lub więcej, jeśli zdecydujemy się na różnicowanie kosztów akcji).~~
-- [x] ~~Jednostka może wykonać tyle ataków, ile ma pozostałych punktów ruchu.~~
-- [x] ~~Jeśli po atakach zostaną punkty ruchu, może je wykorzystać np. na wycofanie się lub dalszy ruch.~~
-- [x] ~~Punkty ruchu przeciwnika resetują się na początku jego tury.~~
+## 5. Eliminacja żetonu
+- Jeśli `combat_value` obrońcy spadnie do 0 lub poniżej:
+  - Losowanie 50% szans:
+    - Jeśli się uda – obrońca przeżywa z 1 punktem `combat_value` i cofa się o 1 pole.
+    - Jeśli nie – żeton jest usuwany z planszy.
+- Jeśli `combat_value` atakującego spadnie do 0 lub poniżej:
+  - Atakujący nie przeprowadza żadnych testów – żeton jest natychmiast eliminowany z planszy.
 
-## 6. Wpływ terenu na walkę i ruch
-- [x] ~~Każdy heks ma określony typ terenu (np. las, miasto, pole, wzgórze) – obecnie w mapie tylko `teren_płaski`, ale edytor map pozwoli wprowadzić inne wartości.~~
-- [x] ~~Teren wpływa na koszt ruchu (`move_mod` z mapy, np. las = +2, pole = +1, miasto = +3) – koszt ruchu = 1 + move_mod, w pełni wdrożone w silniku i testach.~~
-- [x] ~~Teren wpływa na obronę (`defense_mod` z mapy, np. las +30% do obrony, miasto +50%, pole brak bonusu).~~
-- [ ] Teren może wpływać na zasięg widzenia i ataku (np. las ogranicza zasięg widzenia do 1, wzgórze zwiększa zasięg ataku o 1).
-- [x] ~~Efekty terenu są uwzględniane przy rozstrzyganiu walki i planowaniu ruchu.~~
+## 6. Wizualizacja ataku
+- Po kliknięciu na żeton przeciwnika pojawia się okno potwierdzenia ataku (np. "Czy chcesz zaatakować ten żeton?" z przyciskami TAK/NIE).
+- Po potwierdzeniu ataku:
+  - Pole z atakującym żetonem podświetla się na zielono (delikatna mgiełka).
+  - Pole z broniącym żetonem podświetla się na czerwono (delikatna mgiełka).
+- Po rozstrzygnięciu ataku:
+  - Jeśli broniący zostaje wyeliminowany: żeton broniącego miga kilka razy na czerwono, po czym znika z planszy.
+  - Jeśli broniący przeżywa z 1 punktem combat_value: żeton broniącego miga na czerwono, po czym automatycznie cofa się o jedno pole i wraca do normalnego wyglądu.
+  - Jeśli atakujący zostaje wyeliminowany: żeton atakującego miga kilka razy na czerwono, po czym znika z planszy.
+- Po zakończeniu animacji wszystkie pola i żetony wracają do normalnego wyglądu.
 
-## 7. Testy i GUI
-- [x] ~~Testy jednostkowe: zużycie punktów ruchu na akcje, wpływ terenu na koszt ruchu i obronę (pełny coverage, testy przechodzą na realnych danych mapy).~~
-- [x] ~~Wyświetlanie efektów terenu na mapie i w panelu info.~~
+---
 
-## 8. Playtesty i walidacja
-- [x] Przeprowadzono pełne playtesty systemu walki, ruchu, wsparcia, reakcji i efektów terenu na realnej mapie – brak regresji, mechanika zgodna z założeniami.
-- [x] Testy regresji (pytest) przechodzą w całości po zmianie logiki kosztu ruchu.
+**Zalety:**
+- Prosty, dynamiczny system.
+- Każdy atak to wymiana strat.
+- Teren ma realny wpływ na obronę.
+- Możliwość „ostatniej szansy” dla obrońcy.
+
+---
+
+*Plan zaakceptowany do realizacji. W razie potrzeby będzie rozbudowywany o kolejne szczegóły.*
