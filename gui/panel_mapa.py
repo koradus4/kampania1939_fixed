@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk, simpledialog
 from engine.hex_utils import get_hex_vertices
 from PIL import Image, ImageTk
 import os
@@ -50,6 +51,8 @@ class PanelMapa(tk.Frame):
         # Przekazanie obiektu gracza do panelu (potrzebne do filtrowania widoczności)
         self.player = getattr(game_engine, 'current_player_obj', None)
         self._draw_tokens_on_map()
+
+        self.current_path = None  # Ścieżka do wizualizacji
 
     def _sync_player_from_engine(self):
         """Synchronizuje self.player z aktualnym obiektem gracza z silnika gry."""
@@ -163,10 +166,22 @@ class PanelMapa(tk.Frame):
                     pass
         # Kod spełnia wymagania: synchronizacja żetonów, tagowanie, poprawna mgiełka i widoczność.
 
+    def _draw_path_on_map(self):
+        if self.current_path:
+            coords = []
+            for q, r in self.current_path:
+                x, y = self.map_model.hex_to_pixel(q, r)
+                coords.append((x, y))
+            if len(coords) > 1:
+                for i in range(len(coords)-1):
+                    self.canvas.create_line(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1], fill='blue', width=4, tags='path')
+
     def refresh(self):
+        self.canvas.delete('path')
         self._sync_player_from_engine()
         self._draw_hex_grid()
         self._draw_tokens_on_map()
+        self._draw_path_on_map()
 
     def clear_token_info_panel(self):
         parent = self.master
@@ -191,7 +206,6 @@ class PanelMapa(tk.Frame):
         clicked_token = None
         for token in self.tokens:
             if token.q is not None and token.r is not None:
-                # Pozwól kliknąć tylko jeśli żeton jest widoczny dla gracza (uwzględnij temp_visible_tokens)
                 visible_ids = set()
                 if hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
                     visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
@@ -204,45 +218,91 @@ class PanelMapa(tk.Frame):
                 if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
                     clicked_token = token
                     break
-        # Nowa logika: cykliczna zmiana trybu ruchem lewym klikiem na już zaznaczonym żetonie
         if clicked_token:
-            if self.selected_token_id == clicked_token.id:
-                # Zmień tryb ruchu cyklicznie: combat -> march -> recon -> combat
-                current = getattr(clicked_token, 'movement_mode', 'combat')
-                if current == 'combat':
-                    clicked_token.movement_mode = 'march'
-                elif current == 'march':
-                    clicked_token.movement_mode = 'recon'
-                else:
-                    clicked_token.movement_mode = 'combat'
-                clicked_token.apply_movement_mode(reset_mp=False)  # NIE resetuj punktów ruchu przy zmianie trybu!
-            else:
-                # Zaznacz żeton (pierwszy klik)
+            # Sprawdź, czy kliknięty żeton należy do aktywnego gracza
+            if clicked_token:
+                # Sprawdź właściciela żetonu (owner może być np. '2 (Polska)')
+                expected_owner = f"{getattr(self.player, 'id', '?')} ({getattr(self.player, 'nation', '?')})"
+                if getattr(clicked_token, 'owner', None) != expected_owner:
+                    # Kliknięto żeton przeciwnika lub sojusznika – nie pokazuj wyboru trybu ruchu
+                    self.selected_token_id = None
+                    self.current_path = None
+                    if self.token_info_panel is not None:
+                        self.token_info_panel.clear()
+                    self.refresh()
+                    return
+                # ...reszta logiki wyboru trybu ruchu i blokady...
+                if hasattr(clicked_token, 'movement_mode_locked') and clicked_token.movement_mode_locked:
+                    self.selected_token_id = clicked_token.id
+                    if self.panel_dowodcy is not None:
+                        self.panel_dowodcy.wybrany_token = clicked_token
+                    if self.token_info_panel is not None:
+                        self.token_info_panel.show_token(clicked_token)
+                    self.current_path = None
+                    self.refresh()
+                    return
+                # Okno wyboru trybu ruchu przez combobox (tylko jeśli nie zablokowany)
+                class ModeDialog(simpledialog.Dialog):
+                    def body(self, master):
+                        tk.Label(master, text="Wybierz tryb ruchu:").pack()
+                        self.combo = ttk.Combobox(master, values=["Bojowy", "Marsz", "Zwiad"], state="readonly")
+                        mode_map = {'combat': 0, 'marsz': 1, 'recon': 2}
+                        idx = mode_map.get(getattr(clicked_token, 'movement_mode', 'combat'), 0)
+                        self.combo.current(idx)
+                        self.combo.pack()
+                        return self.combo
+                    def apply(self):
+                        self.result = self.combo.get()
+                dialog = ModeDialog(self)
+                mode = dialog.result
+                if mode == "Bojowy":
+                    clicked_token.movement_mode = "combat"
+                elif mode == "Marsz":
+                    clicked_token.movement_mode = "march"
+                elif mode == "Zwiad":
+                    clicked_token.movement_mode = "recon"
+                clicked_token.apply_movement_mode(reset_mp=False)
+                clicked_token.movement_mode_locked = True  # Blokada zmiany trybu do końca tury
                 self.selected_token_id = clicked_token.id
-            if self.panel_dowodcy is not None:
-                self.panel_dowodcy.wybrany_token = clicked_token
-            if self.token_info_panel is not None:
-                self.token_info_panel.show_token(clicked_token)
+                if self.panel_dowodcy is not None:
+                    self.panel_dowodcy.wybrany_token = clicked_token
+                if self.token_info_panel is not None:
+                    self.token_info_panel.show_token(clicked_token)
+                self.current_path = None
+                self.refresh()
+                return
         elif hr and self.selected_token_id:
-            from engine.action import MoveAction
             token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
             if token:
-                action = MoveAction(token.id, hr[0], hr[1])
-                success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
-                self.tokens = self.game_engine.tokens
-                if success:
-                    from engine.engine import update_all_players_visibility
-                    if hasattr(self.game_engine, 'players'):
-                        update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
-                if not success:
+                path = self.game_engine.board.find_path((token.q, token.r), hr, max_cost=token.currentMovePoints)
+                if path:
+                    self.current_path = path
+                    self.refresh()
                     from tkinter import messagebox
-                    messagebox.showerror("Błąd ruchu", msg)
-                if success:
-                    self.selected_token_id = None
-                self.refresh()
+                    if messagebox.askyesno("Ruch", f"Czy wykonać ruch do {hr}?\nKoszt: {len(path)-1}"):
+                        from engine.action import MoveAction
+                        action = MoveAction(token.id, hr[0], hr[1])
+                        success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
+                        self.tokens = self.game_engine.tokens
+                        if success:
+                            from engine.engine import update_all_players_visibility
+                            if hasattr(self.game_engine, 'players'):
+                                update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
+                        if not success:
+                            from tkinter import messagebox
+                            messagebox.showerror("Błąd ruchu", msg)
+                        if success:
+                            self.selected_token_id = None
+                        self.current_path = None
+                        self.refresh()
+                    else:
+                        pass
+                else:
+                    from tkinter import messagebox
+                    messagebox.showerror("Błąd", "Brak możliwej ścieżki do celu!")
         else:
             self.selected_token_id = None
-        # Po kliknięciu w puste miejsce wyczyść panel info
+            self.current_path = None
         if clicked_token is None:
             self.clear_token_info_panel()
         self.refresh()
@@ -370,9 +430,11 @@ class PanelMapa(tk.Frame):
         self.canvas.after(600, print_after_refresh)
 
     def refresh(self):
+        self.canvas.delete('path')
         self._sync_player_from_engine()
         self._draw_hex_grid()
         self._draw_tokens_on_map()
+        self._draw_path_on_map()
 
     def clear_token_info_panel(self):
         parent = self.master
@@ -397,7 +459,6 @@ class PanelMapa(tk.Frame):
         clicked_token = None
         for token in self.tokens:
             if token.q is not None and token.r is not None:
-                # Pozwól kliknąć tylko jeśli żeton jest widoczny dla gracza (uwzględnij temp_visible_tokens)
                 visible_ids = set()
                 if hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
                     visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
@@ -410,251 +471,91 @@ class PanelMapa(tk.Frame):
                 if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
                     clicked_token = token
                     break
-        # Nowa logika: cykliczna zmiana trybu ruchem lewym klikiem na już zaznaczonym żetonie
         if clicked_token:
-            if self.selected_token_id == clicked_token.id:
-                # Zmień tryb ruchu cyklicznie: combat -> march -> recon -> combat
-                current = getattr(clicked_token, 'movement_mode', 'combat')
-                if current == 'combat':
-                    clicked_token.movement_mode = 'march'
-                elif current == 'march':
-                    clicked_token.movement_mode = 'recon'
-                else:
-                    clicked_token.movement_mode = 'combat'
-                clicked_token.apply_movement_mode(reset_mp=False)  # NIE resetuj punktów ruchu przy zmianie trybu!
-            else:
-                # Zaznacz żeton (pierwszy klik)
-                self.selected_token_id = clicked_token.id
-            if self.panel_dowodcy is not None:
-                self.panel_dowodcy.wybrany_token = clicked_token
-            if self.token_info_panel is not None:
-                self.token_info_panel.show_token(clicked_token)
-        elif hr and self.selected_token_id:
-            from engine.action import MoveAction
-            token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
-            if token:
-                action = MoveAction(token.id, hr[0], hr[1])
-                success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
-                self.tokens = self.game_engine.tokens
-                if success:
-                    from engine.engine import update_all_players_visibility
-                    if hasattr(self.game_engine, 'players'):
-                        update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
-                if not success:
-                    from tkinter import messagebox
-                    messagebox.showerror("Błąd ruchu", msg)
-                if success:
+            # Sprawdź, czy kliknięty żeton należy do aktywnego gracza
+            if clicked_token:
+                # Sprawdź właściciela żetonu (owner może być np. '2 (Polska)')
+                expected_owner = f"{getattr(self.player, 'id', '?')} ({getattr(self.player, 'nation', '?')})"
+                if getattr(clicked_token, 'owner', None) != expected_owner:
+                    # Kliknięto żeton przeciwnika lub sojusznika – nie pokazuj wyboru trybu ruchu
                     self.selected_token_id = None
-                self.refresh()
-        else:
-            self.selected_token_id = None
-        # Po kliknięciu w puste miejsce wyczyść panel info
-        if clicked_token is None:
-            self.clear_token_info_panel()
-        self.refresh()
-
-    def _on_right_click_token(self, event):
-        # Obsługa ataku na żeton przeciwnika
-        x = self.canvas.canvasx(event.x)
-        y = self.canvas.canvasy(event.y)
-        clicked_token = None
-        for token in self.tokens:
-            if token.q is not None and token.r is not None:
-                visible_ids = set()
-                if hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
-                    visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
-                elif hasattr(self.player, 'visible_tokens'):
-                    visible_ids = self.player.visible_tokens
-                if token.id not in visible_ids:
-                    continue
-                tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
-                hex_size = self.map_model.hex_size
-                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
-                    clicked_token = token
-                    break
-        # Sprawdź, czy kliknięto w żeton przeciwnika (nie swój, nie sojusznika)
-        if clicked_token and self.selected_token_id:
-            attacker = next((t for t in self.tokens if t.id == self.selected_token_id), None)
-            if not attacker:
-                return
-            # Sprawdź, czy to przeciwnik
-            nation1 = str(attacker.stats.get('nation', ''))
-            nation2 = str(clicked_token.stats.get('nation', ''))
-            if nation1 == nation2:
-                return  # Nie atakuj sojusznika
-            from tkinter import messagebox
-            answer = messagebox.askyesno("Potwierdź atak", f"Czy chcesz zaatakować żeton {clicked_token.id}?\n({clicked_token.stats.get('unit','')})")
-            if not answer:
-                return
-            # Wywołaj CombatAction
-            from engine.action import CombatAction
-            action = CombatAction(attacker.id, clicked_token.id)
-            success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
-            self.tokens = self.game_engine.tokens
-            # Efekty wizualne (szkielet): podświetlenie pól, miganie, usuwanie, cofanie
-            self._visualize_combat(attacker, clicked_token, msg)
-            # Komunikat zwrotny
-            if not success:
-                messagebox.showerror("Błąd ataku", msg)
-            else:
-                messagebox.showinfo("Wynik walki", msg)
-            # Odśwież mapę i panele
-            self.selected_token_id = None
-            self.refresh()
-
-    def _visualize_combat(self, attacker, defender, msg):
-        print(f"[DEBUG] Przed walką: attacker {attacker.id} combat_value={getattr(attacker, 'combat_value', '?')}, defender {defender.id} combat_value={getattr(defender, 'combat_value', '?')}")
-        # 1. Podświetlenie pól atakującego i broniącego (mgiełka)
-        ax, ay = self.map_model.hex_to_pixel(attacker.q, attacker.r)
-        dx, dy = self.map_model.hex_to_pixel(defender.q, defender.r)
-        hex_size = self.map_model.hex_size
-        verts_a = get_hex_vertices(ax, ay, hex_size)
-        verts_d = get_hex_vertices(dx, dy, hex_size)
-        # Poprawione kolory: jasnozielony i jasnoczerwony (bez przezroczystości)
-        self.canvas.create_polygon([c for p in verts_a for c in p], fill='#90ee90', outline='', tags='combat_fx')
-        self.canvas.create_polygon([c for p in verts_d for c in p], fill='#ff7f7f', outline='', tags='combat_fx')
-        self.canvas.after(400, lambda: self.canvas.delete('combat_fx'))
-
-        # 2. Miganie żetonów, usuwanie, cofanie (na podstawie msg)
-        def blink_token(token_id, color, times=4, delay=120, on_end=None):
-            tag = f"token_{token_id}"
-            def blink(i):
-                if i % 2 == 0:
-                    self.canvas.itemconfig(tag, state='hidden')
-                else:
-                    self.canvas.itemconfig(tag, state='normal')
-                if i < times * 2:
-                    self.canvas.after(delay, lambda: blink(i + 1))
-                elif on_end:
-                    on_end()
-            blink(0)
-
-        def animate_remove(token_id):
-            self.canvas.after(350, self.refresh)
-
-        def animate_retreat(token, old_q, old_r, new_q, new_r):
-            steps = 6
-            x0, y0 = self.map_model.hex_to_pixel(old_q, old_r)
-            x1, y1 = self.map_model.hex_to_pixel(new_q, new_r)
-            dx = (x1 - x0) / steps
-            dy = (y1 - y0) / steps
-            tag = f"token_{token.id}"
-            def move_step(i):
-                if i > steps:
+                    self.current_path = None
+                    if self.token_info_panel is not None:
+                        self.token_info_panel.clear()
                     self.refresh()
                     return
-                self.canvas.move(tag, dx, dy)
-                self.canvas.after(40, lambda: move_step(i + 1))
-            move_step(1)
-
-        # Rozpoznanie efektu na podstawie komunikatu msg
-        msg_l = msg.lower()
-        # Eliminacja obrońcy
-        if 'obrońca został zniszczony' in msg_l or 'obrońca nie mógł się cofnąć' in msg_l:
-            blink_token(defender.id, color='red', times=4, delay=100, on_end=lambda: animate_remove(defender.id))
-        # Eliminacja atakującego
-        elif 'atakujący został zniszczony' in msg_l:
-            blink_token(attacker.id, color='red', times=4, delay=100, on_end=lambda: animate_remove(attacker.id))
-        # Cofanie obrońcy
-        elif 'cofnął się na' in msg_l:
-            import re
-            m = re.search(r'cofnął się na \(([-\d]+),([\-\d]+)\)', msg)
-            if m:
-                new_q, new_r = int(m.group(1)), int(m.group(2))
-                old_q, old_r = defender.q, defender.r
-                animate_retreat(defender, old_q, old_r, new_q, new_r)
-                blink_token(defender.id, color='red', times=2, delay=120)
-        # Domyślnie: krótkie miganie obu żetonów
-        else:
-            blink_token(attacker.id, color='orange', times=2, delay=100)
-            blink_token(defender.id, color='orange', times=2, delay=100)
-        # Po animacjach, po odświeżeniu mapy, wypisz wartości po walce
-        def print_after_refresh():
-            att = next((t for t in self.tokens if t.id == attacker.id), None)
-            defn = next((t for t in self.tokens if t.id == defender.id), None)
-            print(f"[DEBUG] Po walce: attacker {attacker.id} combat_value={getattr(att, 'combat_value', '?') if att else 'X'}, defender {defender.id} combat_value={getattr(defn, 'combat_value', '?') if defn else 'X'}")
-        self.canvas.after(600, print_after_refresh)
-
-    def refresh(self):
-        self._sync_player_from_engine()
-        self._draw_hex_grid()
-        self._draw_tokens_on_map()
-
-    def clear_token_info_panel(self):
-        parent = self.master
-        while parent is not None:
-            if hasattr(parent, 'token_info_panel'):
-                parent.token_info_panel.clear()
-                break
-            parent = getattr(parent, 'master', None)
-
-    def _on_click(self, event):
-        # Blokada akcji dla generała (podgląd, brak ruchu)
-        if hasattr(self, 'player') and hasattr(self.player, 'role') and self.player.role == 'Generał':
-            from tkinter import messagebox
-            messagebox.showinfo("Podgląd", "Generał nie może wykonywać akcji na żetonach.")
-            return
-        x = self.canvas.canvasx(event.x)
-        y = self.canvas.canvasy(event.y)
-        hr = self.map_model.coords_to_hex(x, y)
-        if not hasattr(self, 'selected_token_id'):
-            self.selected_token_id = None
-        # Sprawdź, czy kliknięto na żeton
-        clicked_token = None
-        for token in self.tokens:
-            if token.q is not None and token.r is not None:
-                # Pozwól kliknąć tylko jeśli żeton jest widoczny dla gracza (uwzględnij temp_visible_tokens)
-                visible_ids = set()
-                if hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
-                    visible_ids = self.player.visible_tokens | self.player.temp_visible_tokens
-                elif hasattr(self.player, 'visible_tokens'):
-                    visible_ids = self.player.visible_tokens
-                if token.id not in visible_ids:
-                    continue
-                tx, ty = self.map_model.hex_to_pixel(token.q, token.r)
-                hex_size = self.map_model.hex_size
-                if abs(x - tx) < hex_size // 2 and abs(y - ty) < hex_size // 2:
-                    clicked_token = token
-                    break
-        # Nowa logika: cykliczna zmiana trybu ruchem lewym klikiem na już zaznaczonym żetonie
-        if clicked_token:
-            if self.selected_token_id == clicked_token.id:
-                # Zmień tryb ruchu cyklicznie: combat -> march -> recon -> combat
-                current = getattr(clicked_token, 'movement_mode', 'combat')
-                if current == 'combat':
-                    clicked_token.movement_mode = 'march'
-                elif current == 'march':
-                    clicked_token.movement_mode = 'recon'
-                else:
-                    clicked_token.movement_mode = 'combat'
-                clicked_token.apply_movement_mode(reset_mp=False)  # NIE resetuj punktów ruchu przy zmianie trybu!
-            else:
-                # Zaznacz żeton (pierwszy klik)
+                # ...reszta logiki wyboru trybu ruchu i blokady...
+                if hasattr(clicked_token, 'movement_mode_locked') and clicked_token.movement_mode_locked:
+                    self.selected_token_id = clicked_token.id
+                    if self.panel_dowodcy is not None:
+                        self.panel_dowodcy.wybrany_token = clicked_token
+                    if self.token_info_panel is not None:
+                        self.token_info_panel.show_token(clicked_token)
+                    self.current_path = None
+                    self.refresh()
+                    return
+                # Okno wyboru trybu ruchu przez combobox (tylko jeśli nie zablokowany)
+                class ModeDialog(simpledialog.Dialog):
+                    def body(self, master):
+                        tk.Label(master, text="Wybierz tryb ruchu:").pack()
+                        self.combo = ttk.Combobox(master, values=["Bojowy", "Marsz", "Zwiad"], state="readonly")
+                        mode_map = {'combat': 0, 'marsz': 1, 'recon': 2}
+                        idx = mode_map.get(getattr(clicked_token, 'movement_mode', 'combat'), 0)
+                        self.combo.current(idx)
+                        self.combo.pack()
+                        return self.combo
+                    def apply(self):
+                        self.result = self.combo.get()
+                dialog = ModeDialog(self)
+                mode = dialog.result
+                if mode == "Bojowy":
+                    clicked_token.movement_mode = "combat"
+                elif mode == "Marsz":
+                    clicked_token.movement_mode = "march"
+                elif mode == "Zwiad":
+                    clicked_token.movement_mode = "recon"
+                clicked_token.apply_movement_mode(reset_mp=False)
+                clicked_token.movement_mode_locked = True  # Blokada zmiany trybu do końca tury
                 self.selected_token_id = clicked_token.id
-            if self.panel_dowodcy is not None:
-                self.panel_dowodcy.wybrany_token = clicked_token
-            if self.token_info_panel is not None:
-                self.token_info_panel.show_token(clicked_token)
+                if self.panel_dowodcy is not None:
+                    self.panel_dowodcy.wybrany_token = clicked_token
+                if self.token_info_panel is not None:
+                    self.token_info_panel.show_token(clicked_token)
+                self.current_path = None
+                self.refresh()
+                return
         elif hr and self.selected_token_id:
-            from engine.action import MoveAction
             token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
             if token:
-                action = MoveAction(token.id, hr[0], hr[1])
-                success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
-                self.tokens = self.game_engine.tokens
-                if success:
-                    from engine.engine import update_all_players_visibility
-                    if hasattr(self.game_engine, 'players'):
-                        update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
-                if not success:
+                path = self.game_engine.board.find_path((token.q, token.r), hr, max_cost=token.currentMovePoints)
+                if path:
+                    self.current_path = path
+                    self.refresh()
                     from tkinter import messagebox
-                    messagebox.showerror("Błąd ruchu", msg)
-                if success:
-                    self.selected_token_id = None
-                self.refresh()
+                    if messagebox.askyesno("Ruch", f"Czy wykonać ruch do {hr}?\nKoszt: {len(path)-1}"):
+                        from engine.action import MoveAction
+                        action = MoveAction(token.id, hr[0], hr[1])
+                        success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
+                        self.tokens = self.game_engine.tokens
+                        if success:
+                            from engine.engine import update_all_players_visibility
+                            if hasattr(self.game_engine, 'players'):
+                                update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
+                        if not success:
+                            from tkinter import messagebox
+                            messagebox.showerror("Błąd ruchu", msg)
+                        if success:
+                            self.selected_token_id = None
+                        self.current_path = None
+                        self.refresh()
+                    else:
+                        pass
+                else:
+                    from tkinter import messagebox
+                    messagebox.showerror("Błąd", "Brak możliwej ścieżki do celu!")
         else:
             self.selected_token_id = None
-        # Po kliknięciu w puste miejsce wyczyść panel info
+            self.current_path = None
         if clicked_token is None:
             self.clear_token_info_panel()
         self.refresh()

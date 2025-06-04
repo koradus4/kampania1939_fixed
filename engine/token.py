@@ -18,6 +18,7 @@ class Token:
         self.combat_value = getattr(self, 'combat_value', stats.get('combat_value', 0))
         # --- TRYB RUCHU ---
         self.movement_mode = getattr(self, 'movement_mode', movement_mode)
+        self.movement_mode_locked = False  # Blokada zmiany trybu ruchu do końca tury
 
     def can_move_to(self, dist: int) -> bool:
         """Sprawdza, czy żeton może się ruszyć na daną odległość (uwzględnia limit ruchu i paliwa)."""

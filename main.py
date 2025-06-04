@@ -162,6 +162,9 @@ if __name__ == "__main__":
 
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()
+        # Reset blokady trybu ruchu na początku każdej tury
+        for t in game_engine.tokens:
+            t.movement_mode_locked = False
         clear_temp_visibility(players)
         # --- AKTUALIZACJA WIDOCZNOŚCI PO KAŻDEJ TURZE ---
         # (możesz zostawić, ale nie jest już konieczne, bo i tak jest na początku każdej tury)
