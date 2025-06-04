@@ -1,97 +1,92 @@
-import json
 import os
+import json
 from engine.token import Token
+from engine.player import Player
 
 def _ensure_saves_dir(path):
-    # Jeśli path nie zawiera katalogu, zapisz do 'saves/'
     dir_name = os.path.dirname(path)
     if not dir_name:
-        dir_name = os.path.join(os.getcwd(), 'saves')
-        os.makedirs(dir_name, exist_ok=True)
-        path = os.path.join(dir_name, path)
+        os.makedirs('saves', exist_ok=True)
+        path = os.path.join('saves', path)
     else:
         os.makedirs(dir_name, exist_ok=True)
     return path
 
 def save_game(path, engine, active_player=None):
-    """Zapisuje pełny stan gry do pliku JSON w katalogu 'saves/' jeśli nie podano innego."""
     path = _ensure_saves_dir(path)
-    # Dodaj informację o aktywnym graczu (id, rola, nacja)
-    if active_player is not None:
-        current_player_obj = active_player
-    else:
-        current_player_obj = None
-        if hasattr(engine, 'players') and hasattr(engine, 'current_player'):
-            idx = getattr(engine, 'current_player', 0)
-            if isinstance(idx, int) and 0 <= idx < len(engine.players):
-                current_player_obj = engine.players[idx]
+    def player_to_dict(p):
+        d = p.__dict__.copy()
+        # Serializuj economy jako dict, nie jako obiekt
+        if hasattr(p, "economy") and p.economy is not None:
+            if hasattr(p.economy, "__dict__"):
+                d["economy"] = p.economy.__dict__.copy()
+            else:
+                d["economy"] = p.economy
+        # Zamień sety na listy (JSON nie obsługuje setów)
+        for key in ["visible_hexes", "visible_tokens", "temp_visible_hexes", "temp_visible_tokens"]:
+            if key in d and isinstance(d[key], set):
+                d[key] = [list(x) if isinstance(x, tuple) else x for x in d[key]]
+        return d
+
     state = {
         "tokens": [t.serialize() for t in engine.tokens],
+        "players": [player_to_dict(p) for p in getattr(engine, 'players', [])],
         "turn": getattr(engine, 'turn', 1),
         "current_player": getattr(engine, 'current_player', 0),
-        "players": [p.serialize() for p in getattr(engine, 'players', [])],
-        "economy": [getattr(p, 'economy', None).__dict__ if getattr(p, 'economy', None) else None for p in getattr(engine, 'players', [])],
-        "weather": getattr(engine, 'weather', None).__dict__ if hasattr(engine, 'weather') else None,
-        "turn_manager": None,
+        "weather": getattr(engine, 'weather', None).__dict__ if hasattr(engine, 'weather') and getattr(engine, 'weather', None) else None,
+        "turn_manager": getattr(engine, 'turn_manager', None).__dict__ if hasattr(engine, 'turn_manager') and getattr(engine, 'turn_manager', None) else None,
         "active_player_info": {
-            "id": getattr(current_player_obj, 'id', None),
-            "role": getattr(current_player_obj, 'role', None),
-            "nation": getattr(current_player_obj, 'nation', None)
+            "id": getattr(active_player, 'id', None),
+            "role": getattr(active_player, 'role', None),
+            "nation": getattr(active_player, 'nation', None)
         }
     }
-    # Serializuj turn_manager, zamieniając Player na dict
-    if hasattr(engine, 'turn_manager') and engine.turn_manager is not None:
-        tm_dict = engine.turn_manager.__dict__.copy()
-        if 'players' in tm_dict:
-            tm_dict['players'] = [p.serialize() for p in tm_dict['players']]
-        if 'game_engine' in tm_dict:
-            tm_dict['game_engine'] = None  # nie serializujemy silnika
-        if 'weather' in tm_dict and hasattr(tm_dict['weather'], '__dict__'):
-            tm_dict['weather'] = tm_dict['weather'].__dict__
-        state["turn_manager"] = tm_dict
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(state, f, indent=2, ensure_ascii=False)
+        json.dump(state, f, ensure_ascii=False, indent=2)
 
 def load_game(path, engine):
-    """Wczytuje pełny stan gry z pliku JSON z katalogu 'saves/' jeśli nie podano innego."""
-    path = _ensure_saves_dir(path)
-    import json
+    import types
+    from core.ekonomia import EconomySystem
     with open(path, "r", encoding="utf-8") as f:
         state = json.load(f)
-    engine.tokens = [Token.from_dict(t) for t in state["tokens"]]
-    engine.board.set_tokens(engine.tokens)
-    engine.turn = state["turn"]
-    engine.current_player = state["current_player"]
-    if "players" in state:
-        from engine.player import Player
-        engine.players = []
-        for p in state["players"]:
-            player = Player(
-                p.get('id'),
-                p.get('nation'),
-                p.get('role'),
-                p.get('time_limit', 5),
-                p.get('image_path'),
-                None
-            )
-            if 'name' in p:
-                player.name = p['name']
-            if 'map_path' in p:
-                player.map_path = p['map_path']
-            engine.players.append(player)
-    # Odtwórz ekonomię graczy
-    for p, econ in zip(engine.players, state.get("economy", [])):
-        if econ:
-            from core.ekonomia import EconomySystem
-            p.economy = EconomySystem()
-            p.economy.__dict__.update(econ)
-    if "weather" in state and hasattr(engine, 'weather'):
-        from core.pogoda import Pogoda
-        engine.weather = Pogoda()
-        engine.weather.__dict__.update(state["weather"])
-    if "turn_manager" in state and hasattr(engine, 'turn_manager'):
-        from core.tura import TurnManager
-        engine.turn_manager = TurnManager(engine.players, game_engine=engine)
-        engine.turn_manager.__dict__.update(state["turn_manager"])
-    # --- Nowość: zwróć info o aktywnym graczu ---
+    # Odtwórz żetony
+    engine.tokens = []
+    for tdata in state["tokens"]:
+        from engine.token import Token
+        token = Token.from_dict(tdata)
+        engine.tokens.append(token)
+    # Odtwórz graczy
+    engine.players = []
+    for pdata in state["players"]:
+        player = Player(pdata["id"], pdata["nation"], pdata["role"], pdata.get("time_limit", 5), pdata.get("image_path"), None)
+        player.__dict__.update(pdata)
+        # Odtwórz economy jako obiekt EconomySystem
+        if "economy" in pdata and isinstance(pdata["economy"], dict):
+            econ = EconomySystem()
+            econ.__dict__.update(pdata["economy"])
+            player.economy = econ
+        # Zamień listy na sety tupli (odtwarzanie widoczności)
+        for key in ["visible_hexes", "visible_tokens", "temp_visible_hexes", "temp_visible_tokens"]:
+            if key in player.__dict__ and isinstance(player.__dict__[key], list):
+                player.__dict__[key] = set(tuple(x) if isinstance(x, list) else x for x in player.__dict__[key])
+        engine.players.append(player)
+    # Odtwórz inne stany
+    if "turn" in state:
+        engine.turn = state["turn"]
+    if "current_player" in state:
+        engine.current_player = state["current_player"]
+    if "weather" in state and state["weather"]:
+        if hasattr(engine, "weather") and engine.weather:
+            engine.weather.__dict__.update(state["weather"])
+        else:
+            engine.weather = types.SimpleNamespace(**state["weather"])
+    if "turn_manager" in state and state["turn_manager"]:
+        if hasattr(engine, "turn_manager") and engine.turn_manager:
+            engine.turn_manager.__dict__.update(state["turn_manager"])
+        else:
+            engine.turn_manager = types.SimpleNamespace(**state["turn_manager"])
+    # Po wczytaniu przelicz widoczność
+    from engine.engine import update_all_players_visibility
+    update_all_players_visibility(engine.players, engine.tokens, engine.board)
+    # Zwróć info o aktywnym graczu (do synchronizacji GUI)
     return state.get("active_player_info", None)

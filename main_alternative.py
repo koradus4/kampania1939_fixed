@@ -68,6 +68,7 @@ if __name__ == "__main__":
     # Inicjalizacja menedżera tur
     turn_manager = TurnManager(players, game_engine=game_engine)
 
+    just_loaded_save = False  # Flaga: czy właśnie wczytano save
     # Pętla tur
     last_loaded_player_info = None  # Przechowuj info o aktywnym graczu po wczytaniu save
     while True:
@@ -106,7 +107,9 @@ if __name__ == "__main__":
                     try:
                         from engine.save_manager import load_game
                         global last_loaded_player_info
+                        global just_loaded_save
                         last_loaded_player_info = load_game(path, game_engine)
+                        just_loaded_save = True
                         if hasattr(panel_gracza.master, 'panel_mapa'):
                             panel_gracza.master.panel_mapa.refresh()
                         if last_loaded_player_info:
@@ -154,7 +157,9 @@ if __name__ == "__main__":
 
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()
-        # Reset blokady trybu ruchu na początku każdej tury
-        for t in game_engine.tokens:
-            t.movement_mode_locked = False
+        # Reset blokady trybu ruchu na początku każdej tury, ale NIE po wczytaniu save
+        if not just_loaded_save:
+            for t in game_engine.tokens:
+                t.movement_mode_locked = False
+        just_loaded_save = False
         clear_temp_visibility(players)

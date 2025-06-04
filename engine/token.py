@@ -40,6 +40,8 @@ class Token:
             'maxFuel': getattr(self, 'maxFuel', self.stats.get('maintenance', 0)),
             'currentFuel': getattr(self, 'currentFuel', getattr(self, 'maxFuel', self.stats.get('maintenance', 0))),
             'movement_mode': getattr(self, 'movement_mode', 'combat'),
+            'movement_mode_locked': getattr(self, 'movement_mode_locked', False),
+            'combat_value': getattr(self, 'combat_value', self.stats.get('combat_value', 0)),
         }
 
     @staticmethod
@@ -116,6 +118,9 @@ class Token:
         token.maxFuel = data.get('maxFuel', token.stats.get('maintenance', 0))
         token.currentFuel = data.get('currentFuel', token.maxFuel)
         token.movement_mode = data.get('movement_mode', 'combat')
+        token.movement_mode_locked = data.get('movement_mode_locked', False)
+        print(f"[DEBUG][from_dict] {token.id} movement_mode_locked={token.movement_mode_locked}")
+        token.combat_value = data.get('combat_value', token.stats.get('combat_value', 0))
         return token
 
     def apply_movement_mode(self, reset_mp: bool = False):
