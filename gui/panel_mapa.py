@@ -285,7 +285,7 @@ class PanelMapa(tk.Frame):
         elif hr and self.selected_token_id:
             token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
             if token:
-                path = self.game_engine.board.find_path((token.q, token.r), hr, max_cost=token.currentMovePoints)
+                path = self.game_engine.board.find_path((token.q, token.r), hr, max_mp=token.currentMovePoints, max_fuel=getattr(token, 'currentFuel', 9999))
                 if path:
                     # POLICZ RZECZYWISTY KOSZT RUCHU
                     real_cost = 0

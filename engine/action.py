@@ -47,7 +47,11 @@ class MoveAction(Action):
         if tile.move_mod == -1:
             return False, "Pole nieprzejezdne."
         # Pathfinding
-        path = engine.board.find_path(start, goal, max_cost=token.currentMovePoints)
+        # Ustal widoczne żetony dla gracza (jeśli gracz istnieje)
+        visible_tokens = None
+        if player is not None and hasattr(player, 'visible_tokens'):
+            visible_tokens = set(player.visible_tokens)
+        path = engine.board.find_path(start, goal, max_mp=token.currentMovePoints, max_fuel=token.currentFuel, visible_tokens=visible_tokens)
         if not path:
             return False, "Brak ścieżki do celu."
         # Oblicz koszt ruchu i paliwa po ścieżce

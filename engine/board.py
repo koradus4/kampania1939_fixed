@@ -68,8 +68,10 @@ class Board:
         UWAGA: Jeśli zmieniasz pozycje żetonów ręcznie (np. w testach), wywołaj ponownie set_tokens po zmianie!"""
         self.tokens = tokens
 
-    def is_occupied(self, q: int, r: int) -> bool:
-        """Sprawdza, czy pole jest zajęte przez żeton."""
+    def is_occupied(self, q: int, r: int, visible_tokens: Optional[set] = None) -> bool:
+        """Sprawdza, czy pole jest zajęte przez żeton. Jeśli podano visible_tokens, sprawdza tylko żetony widoczne."""
+        if visible_tokens is not None:
+            return any(t.q == q and t.r == r and t.id in visible_tokens for t in getattr(self, 'tokens', []))
         return any(t.q == q and t.r == r for t in getattr(self, 'tokens', []))
 
     def neighbors(self, q: int, r: int) -> List[Tuple[int, int]]:
@@ -77,13 +79,13 @@ class Board:
         directions = [(+1, 0), (+1, -1), (0, -1), (-1, 0), (-1, +1), (0, +1)]
         return [(q+dq, r+dr) for dq, dr in directions]
 
-    def find_path(self, start: Tuple[int, int], goal: Tuple[int, int], max_cost: int = 99) -> Optional[List[Tuple[int, int]]]:
-        """Prosty pathfinding A* (uwzględnia move_mod i zajętość pól)."""
+    def find_path(self, start: Tuple[int, int], goal: Tuple[int, int], max_mp: int = 99, max_fuel: int = 99, visible_tokens: Optional[set] = None) -> Optional[List[Tuple[int, int]]]:
+        """Prosty pathfinding A* (uwzględnia move_mod, zajętość pól, MP i paliwo, widoczność wrogów)."""
         import heapq
         open_set = []
         heapq.heappush(open_set, (0, start))
         came_from = {}
-        cost_so_far = {start: 0}
+        cost_so_far = {start: (0, 0)}  # (mp_cost, fuel_cost)
         while open_set:
             _, current = heapq.heappop(open_set)
             if current == goal:
@@ -97,17 +99,19 @@ class Board:
                 tile = self.get_tile(*neighbor)
                 if not tile:
                     continue
-                if self.is_occupied(*neighbor):
+                # Użyj widocznych żetonów do sprawdzania zajętości
+                if self.is_occupied(*neighbor, visible_tokens=visible_tokens):
                     continue
                 if tile.move_mod == -1:
                     continue
                 move_cost = 1 + tile.move_mod
-                new_cost = cost_so_far[current] + move_cost
-                if new_cost > max_cost:
+                new_mp = cost_so_far[current][0] + move_cost
+                new_fuel = cost_so_far[current][1] + move_cost
+                if new_mp > max_mp or new_fuel > max_fuel:
                     continue
-                if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
-                    cost_so_far[neighbor] = new_cost
-                    priority = new_cost + self.hex_distance(neighbor, goal)
+                if neighbor not in cost_so_far or (new_mp, new_fuel) < cost_so_far[neighbor]:
+                    cost_so_far[neighbor] = (new_mp, new_fuel)
+                    priority = new_mp + self.hex_distance(neighbor, goal)
                     heapq.heappush(open_set, (priority, neighbor))
                     came_from[neighbor] = current
         return None
