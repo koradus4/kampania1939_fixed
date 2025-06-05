@@ -140,14 +140,16 @@ class CombatAction(Action):
             return False, "Brak żetonu atakującego lub broniącego."
         # Sprawdź dystans (zasięg ataku)
         attack_range = attacker.stats.get('attack', {}).get('range', 1)
+        defense_range = defender.stats.get('attack', {}).get('range', 1)
         dist = engine.board.hex_distance((attacker.q, attacker.r), (defender.q, defender.r))
         if dist > attack_range:
             return False, f"Za daleko do ataku (zasięg: {attack_range})."
         # Sprawdź punkty ruchu
         if getattr(attacker, 'currentMovePoints', 0) <= 0:
+            print("[DEBUG] Brak punktów ruchu do ataku.")
             return False, "Brak punktów ruchu do ataku."
-        # Odejmij punkt ruchu
-        attacker.currentMovePoints -= 1
+        # Atak kosztuje wszystkie pozostałe MP (atak tylko raz na turę)
+        attacker.currentMovePoints = 0
         # --- Rozstrzyganie walki ---
         # Atakujący
         attack_val = attacker.stats.get('attack', {}).get('value', 0)
@@ -159,13 +161,28 @@ class CombatAction(Action):
         defense_mod = tile.defense_mod if tile else 0
         defense_total = defense_val + defense_mod
         defense_mult = random.uniform(0.8, 1.2)
-        defense_result = int(round(defense_total * defense_mult))
+        # --- PRINTY DEBUGUJĄCE WALKĘ ---
+        print(f"[WALKA] Atakujący: {attacker.id} ({getattr(attacker, 'name', '')}) na {attacker.q},{attacker.r}")
+        print(f"  Obrońca: {defender.id} ({getattr(defender, 'name', '')}) na {defender.q},{defender.r}")
+        print(f"  Zasięg ataku: {attack_range}, dystans: {dist}")
+        print(f"  Zasięg ataku obrońcy: {defense_range}")
+        # Atak jednostronny jeśli obrońca nie sięga atakującego
+        if dist > defense_range:
+            print("  Obrońca nie może kontratakować (za mały zasięg) – atak jednostronny.")
+            defense_result = 0  # brak kontrataku
+        else:
+            print("  Obrońca kontratakuje!")
+            defense_result = int(round(defense_total * defense_mult))
+        print(f"  Atak: {attack_val} x {attack_mult:.2f} = {attack_result}")
+        print(f"  Obrona: {defense_val} + modyfikator terenu {defense_mod} = {defense_total} x {defense_mult:.2f} = {defense_result}")
+        print(f"  Straty: obrońca -{attack_result}, atakujący -{defense_result}")
         # Odejmij straty
         defender.combat_value = max(0, getattr(defender, 'combat_value', 0) - attack_result)
         attacker.combat_value = max(0, getattr(attacker, 'combat_value', 0) - defense_result)
         # Zaktualizuj w stats (dla spójności z GUI)
         defender.stats['combat_value'] = defender.combat_value
         attacker.stats['combat_value'] = attacker.combat_value
+        print(f"  Po walce: obrońca {defender.combat_value}, atakujący {attacker.combat_value}")
         # Eliminacja obrońcy
         if defender.combat_value <= 0:
             if random.random() < 0.5:
@@ -195,4 +212,5 @@ class CombatAction(Action):
             msg += "\nAtakujący został zniszczony!"
         else:
             msg += f"\nAtakujący stracił {defense_result} punktów, pozostało: {attacker.combat_value}"
+        # --- KONIEC PRINTÓW ---
         return True, msg
