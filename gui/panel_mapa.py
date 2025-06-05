@@ -136,10 +136,15 @@ class PanelMapa(tk.Frame):
                     x, y = self.map_model.hex_to_pixel(token.q, token.r)
                     self.canvas.create_image(x, y, image=tk_img, anchor="center", tags=("token", f"token_{token.id}"))
                     self.token_images[token.id] = tk_img
-                    # Dodaj napis z combat_value (i bazowym w nawiasie)
+                    # Dodaj napis: combat_value (bazowy), punkty ruchu (MP) i paliwo
                     base_cv = token.stats.get('combat_value', '?')
                     curr_cv = getattr(token, 'combat_value', base_cv)
-                    self.canvas.create_text(x, y+hex_size//2-8, text=f"{curr_cv} ({base_cv})", fill="black", font=("Arial", 10, "bold"), tags="token")
+                    curr_mp = getattr(token, 'currentMovePoints', token.stats.get('move', '?'))
+                    max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', '?'))
+                    curr_fuel = getattr(token, 'currentFuel', token.stats.get('maintenance', '?'))
+                    max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', '?'))
+                    label = f"{curr_cv} ({base_cv})\nMP: {curr_mp} ({max_mp})\nPaliwo: {curr_fuel} ({max_fuel})"
+                    self.canvas.create_text(x, y+hex_size//2-8, text=label, fill="black", font=("Arial", 10, "bold"), tags="token")
                     # Obwódka zależna od trybu ruchu
                     border_color = "limegreen"  # domyślnie bojowy
                     if hasattr(token, 'movement_mode'):
