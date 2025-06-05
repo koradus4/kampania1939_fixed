@@ -175,7 +175,7 @@
       "owner": "2 (Polska)",
       "stats": {
         "move": 18,
-        "combat_value": 1,
+        "combat_value": 60,
         "defense_value": 36,
         "maintenance": 16,
         "price": 77,
@@ -194,15 +194,49 @@
         "h": 240,
         "nation": "Polska"
       },
-      "q": 18,
-      "r": 2,
-      "maxMovePoints": 27,
-      "currentMovePoints": 12,
+      "q": 11,
+      "r": -2,
+      "maxMovePoints": 18,
+      "currentMovePoints": 18,
       "maxFuel": 16,
-      "currentFuel": 15,
-      "movement_mode": "march",
+      "currentFuel": 16,
+      "movement_mode": "combat",
       "movement_mode_locked": false,
-      "combat_value": 1
+      "combat_value": 60
+    },
+    {
+      "id": "TC_Kompania__2_PL_TC_Kompania",
+      "owner": "2 (Polska)",
+      "stats": {
+        "move": 18,
+        "combat_value": 30,
+        "defense_value": 18,
+        "maintenance": 11,
+        "price": 53,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Kompania",
+        "label": "2_PL_TC_Kompania",
+        "unit_full_name": "Polska Czołg ciężki Kompania I",
+        "attack": {
+          "range": 3,
+          "value": 10
+        },
+        "image": "assets/tokens/Polska/TC_Kompania__2_PL_TC_Kompania/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 11,
+      "r": -1,
+      "maxMovePoints": 18,
+      "currentMovePoints": 18,
+      "maxFuel": 11,
+      "currentFuel": 11,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 30
     },
     {
       "id": "TC_Kompania__3_PL_TC_Kompania",
@@ -330,14 +364,14 @@
         "h": 240,
         "nation": "Polska"
       },
-      "q": 13,
+      "q": 15,
       "r": -1,
       "maxMovePoints": 5,
-      "currentMovePoints": 5,
+      "currentMovePoints": 2,
       "maxFuel": 4,
-      "currentFuel": 4,
+      "currentFuel": 1,
       "movement_mode": "combat",
-      "movement_mode_locked": false,
+      "movement_mode_locked": true,
       "combat_value": 24
     },
     {
@@ -364,14 +398,14 @@
         "h": 240,
         "nation": "Polska"
       },
-      "q": 13,
+      "q": 15,
       "r": 1,
       "maxMovePoints": 5,
-      "currentMovePoints": 5,
+      "currentMovePoints": 3,
       "maxFuel": 4,
-      "currentFuel": 4,
+      "currentFuel": 2,
       "movement_mode": "combat",
-      "movement_mode_locked": false,
+      "movement_mode_locked": true,
       "combat_value": 24
     },
     {
@@ -511,6 +545,108 @@
       "combat_value": 48
     },
     {
+      "id": "P_Kompania__5_N_P_Kompania",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 4,
+        "combat_value": 24,
+        "defense_value": 13,
+        "maintenance": 7,
+        "price": 56,
+        "sight": 3,
+        "unitType": "P",
+        "unitSize": "Kompania",
+        "label": "5_N_P_Kompania",
+        "unit_full_name": "Niemcy Piechota Kompania I",
+        "attack": {
+          "range": 2,
+          "value": 8
+        },
+        "image": "assets/tokens/Niemcy/P_Kompania__5_N_P_Kompania/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 22,
+      "r": -2,
+      "maxMovePoints": 4,
+      "currentMovePoints": 4,
+      "maxFuel": 7,
+      "currentFuel": 7,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 24
+    },
+    {
+      "id": "TC_Batalion__5_N_TC_Batalion",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 18,
+        "combat_value": 60,
+        "defense_value": 36,
+        "maintenance": 15,
+        "price": 72,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Batalion",
+        "label": "5_N_TC_Batalion",
+        "unit_full_name": "Niemcy Czołg ciężki Batalion II",
+        "attack": {
+          "range": 3,
+          "value": 18
+        },
+        "image": "assets/tokens/Niemcy/TC_Batalion__5_N_TC_Batalion/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 23,
+      "r": -7,
+      "maxMovePoints": 18,
+      "currentMovePoints": 18,
+      "maxFuel": 15,
+      "currentFuel": 15,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 60
+    },
+    {
+      "id": "TC_Kompania__5_N_TC_Kompania_20250603203310",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 18,
+        "combat_value": 30,
+        "defense_value": 18,
+        "maintenance": 10,
+        "price": 48,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Kompania",
+        "label": "5_N_TC_Kompania",
+        "unit_full_name": "Niemcy Czołg ciężki Kompania I",
+        "attack": {
+          "range": 3,
+          "value": 10
+        },
+        "image": "assets/tokens/Niemcy/TC_Kompania__5_N_TC_Kompania_20250603203310/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 23,
+      "r": -3,
+      "maxMovePoints": 18,
+      "currentMovePoints": 18,
+      "maxFuel": 10,
+      "currentFuel": 10,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 30
+    },
+    {
       "id": "TC_Kompania__5_N_TC_Kompania",
       "owner": "5 (Niemcy)",
       "stats": {
@@ -545,6 +681,40 @@
       "combat_value": 30
     },
     {
+      "id": "P_Pluton__5_N_P_Pluton",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 6,
+        "combat_value": 8,
+        "defense_value": 7,
+        "maintenance": 6,
+        "price": 38,
+        "sight": 3,
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "label": "5_N_P_Pluton",
+        "unit_full_name": "Niemcy Piechota Pluton ***",
+        "attack": {
+          "range": 2,
+          "value": 6
+        },
+        "image": "assets/tokens/Niemcy/P_Pluton__5_N_P_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 24,
+      "r": -2,
+      "maxMovePoints": 6,
+      "currentMovePoints": 6,
+      "maxFuel": 6,
+      "currentFuel": 6,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 8
+    },
+    {
       "id": "AC_Batalion__5_N_AC_Batalion",
       "owner": "5 (Niemcy)",
       "stats": {
@@ -574,6 +744,40 @@
       "currentMovePoints": 12,
       "maxFuel": 13,
       "currentFuel": 13,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 36
+    },
+    {
+      "id": "AC_Batalion__5_N_AC_Batalion_20250603203322",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 11,
+        "combat_value": 36,
+        "defense_value": 14,
+        "maintenance": 15,
+        "price": 81,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Batalion",
+        "label": "5_N_AC_Batalion",
+        "unit_full_name": "Niemcy Artyleria ciężka Batalion II",
+        "attack": {
+          "range": 7,
+          "value": 14
+        },
+        "image": "assets/tokens/Niemcy/AC_Batalion__5_N_AC_Batalion_20250603203322/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 25,
+      "r": -6,
+      "maxMovePoints": 11,
+      "currentMovePoints": 11,
+      "maxFuel": 15,
+      "currentFuel": 15,
       "movement_mode": "combat",
       "movement_mode_locked": false,
       "combat_value": 36
@@ -960,7 +1164,7 @@
       "role": "Generał",
       "time_limit": 5,
       "economy": {
-        "economic_points": 0,
+        "economic_points": 18,
         "special_points": 1,
         "assigned_points": 0
       },
@@ -981,10 +1185,6 @@
           17
         ],
         [
-          19,
-          0
-        ],
-        [
           11,
           -4
         ],
@@ -1061,10 +1261,6 @@
           6
         ],
         [
-          19,
-          2
-        ],
-        [
           11,
           -1
         ],
@@ -1150,6 +1346,10 @@
         ],
         [
           18,
+          -4
+        ],
+        [
+          18,
           5
         ],
         [
@@ -1193,6 +1393,14 @@
           -2
         ],
         [
+          18,
+          -2
+        ],
+        [
+          18,
+          -1
+        ],
+        [
           10,
           15
         ],
@@ -1203,14 +1411,6 @@
         [
           7,
           16
-        ],
-        [
-          22,
-          -2
-        ],
-        [
-          22,
-          -1
         ],
         [
           3,
@@ -1271,10 +1471,6 @@
         [
           18,
           9
-        ],
-        [
-          22,
-          0
         ],
         [
           14,
@@ -1409,6 +1605,10 @@
           -3
         ],
         [
+          18,
+          -3
+        ],
+        [
           10,
           14
         ],
@@ -1467,10 +1667,6 @@
         [
           6,
           3
-        ],
-        [
-          21,
-          1
         ],
         [
           14,
@@ -1569,6 +1765,10 @@
           16
         ],
         [
+          17,
+          1
+        ],
+        [
           9,
           -3
         ],
@@ -1599,14 +1799,6 @@
         [
           6,
           0
-        ],
-        [
-          21,
-          -1
-        ],
-        [
-          21,
-          -2
         ],
         [
           6,
@@ -1669,10 +1861,6 @@
           2
         ],
         [
-          21,
-          0
-        ],
-        [
           1,
           15
         ],
@@ -1683,6 +1871,10 @@
         [
           16,
           13
+        ],
+        [
+          17,
+          -4
         ],
         [
           5,
@@ -1737,6 +1929,14 @@
           15
         ],
         [
+          17,
+          -2
+        ],
+        [
+          17,
+          -1
+        ],
+        [
           5,
           5
         ],
@@ -1775,6 +1975,10 @@
         [
           5,
           -2
+        ],
+        [
+          17,
+          0
         ],
         [
           9,
@@ -1819,10 +2023,6 @@
         [
           16,
           10
-        ],
-        [
-          20,
-          1
         ],
         [
           20,
@@ -1981,6 +2181,10 @@
           1
         ],
         [
+          17,
+          -3
+        ],
+        [
           12,
           10
         ],
@@ -2031,14 +2235,6 @@
         [
           16,
           7
-        ],
-        [
-          20,
-          -2
-        ],
-        [
-          20,
-          -1
         ],
         [
           12,
@@ -2101,10 +2297,6 @@
           9
         ],
         [
-          20,
-          0
-        ],
-        [
           12,
           -4
         ],
@@ -2131,10 +2323,6 @@
         [
           4,
           10
-        ],
-        [
-          19,
-          1
         ],
         [
           13,
@@ -2175,10 +2363,6 @@
         [
           11,
           15
-        ],
-        [
-          20,
-          2
         ],
         [
           12,
@@ -2315,10 +2499,6 @@
         [
           8,
           -2
-        ],
-        [
-          19,
-          -1
         ],
         [
           11,
@@ -2350,22 +2530,22 @@
         ]
       ],
       "visible_tokens": [
-        "TC_Batalion__5_N_TC_Batalion",
-        "AP_Kompania__3_PL_AP_Kompania_20250603203152",
-        "AC_Batalion__2_PL_AC_Batalion",
-        "TC_Kompania__3_PL_TC_Kompania",
-        "AC_Kompania__3_PL_AC_Kompania",
-        "AC_Kompania__2_PL_AC_Kompania",
-        "P_Batalion__3_PL_P_Batalion",
-        "TC_Batalion__3_PL_TC_Batalion",
-        "P_Batalion__2_PL_P_Batalion",
-        "TC_Batalion__2_PL_TC_Batalion",
-        "AP_Kompania__3_PL_AP_Kompania",
-        "P_Kompania__2_PL_P_Kompania",
         "P_Pluton__3_PL_P_Pluton",
+        "TC_Batalion__3_PL_TC_Batalion",
+        "AP_Kompania__3_PL_AP_Kompania_20250603203152",
+        "AC_Kompania__2_PL_AC_Kompania",
+        "P_Kompania__2_PL_P_Kompania",
+        "P_Kompania__2_PL_P_Kompania_20250603203026",
+        "AC_Batalion__2_PL_AC_Batalion",
+        "AP_Kompania__3_PL_AP_Kompania",
+        "TC_Batalion__2_PL_TC_Batalion",
         "AP_Pluton__2_PL_AP_Pluton",
-        "P_Kompania__3_PL_P_Kompania",
-        "P_Kompania__2_PL_P_Kompania_20250603203026"
+        "TC_Kompania__2_PL_TC_Kompania",
+        "TC_Kompania__3_PL_TC_Kompania",
+        "P_Batalion__2_PL_P_Batalion",
+        "P_Batalion__3_PL_P_Batalion",
+        "AC_Kompania__3_PL_AC_Kompania",
+        "P_Kompania__3_PL_P_Kompania"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -2376,7 +2556,7 @@
       "role": "Dowódca",
       "time_limit": 5,
       "economy": {
-        "economic_points": 26,
+        "economic_points": 1,
         "special_points": 0,
         "assigned_points": 0
       },
@@ -2397,10 +2577,6 @@
           1
         ],
         [
-          19,
-          0
-        ],
-        [
           10,
           -3
         ],
@@ -2429,10 +2605,6 @@
           1
         ],
         [
-          21,
-          0
-        ],
-        [
           12,
           -3
         ],
@@ -2441,16 +2613,16 @@
           2
         ],
         [
+          17,
+          -4
+        ],
+        [
           3,
           6
         ],
         [
           5,
           3
-        ],
-        [
-          19,
-          2
         ],
         [
           9,
@@ -2493,6 +2665,14 @@
           4
         ],
         [
+          17,
+          -2
+        ],
+        [
+          17,
+          -1
+        ],
+        [
           3,
           8
         ],
@@ -2519,6 +2699,10 @@
         [
           6,
           -3
+        ],
+        [
+          18,
+          -4
         ],
         [
           6,
@@ -2549,6 +2733,10 @@
           1
         ],
         [
+          17,
+          0
+        ],
+        [
           5,
           7
         ],
@@ -2581,15 +2769,11 @@
           -2
         ],
         [
-          20,
-          1
-        ],
-        [
-          22,
+          18,
           -2
         ],
         [
-          22,
+          18,
           -1
         ],
         [
@@ -2603,6 +2787,10 @@
         [
           14,
           3
+        ],
+        [
+          17,
+          2
         ],
         [
           9,
@@ -2631,21 +2819,25 @@
         [
           1,
           5
+        ],
+        [
+          15,
+          4
         ],
         [
           6,
           1
         ],
         [
+          16,
+          3
+        ],
+        [
           7,
           0
         ],
         [
           18,
-          0
-        ],
-        [
-          22,
           0
         ],
         [
@@ -2689,10 +2881,6 @@
           -4
         ],
         [
-          21,
-          -1
-        ],
-        [
           1,
           7
         ],
@@ -2702,10 +2890,6 @@
         ],
         [
           7,
-          2
-        ],
-        [
-          18,
           2
         ],
         [
@@ -2723,6 +2907,10 @@
         [
           14,
           -1
+        ],
+        [
+          17,
+          -3
         ],
         [
           3,
@@ -2759,14 +2947,6 @@
         [
           2,
           8
-        ],
-        [
-          20,
-          -2
-        ],
-        [
-          20,
-          -1
         ],
         [
           12,
@@ -2817,8 +2997,8 @@
           -3
         ],
         [
-          20,
-          0
+          18,
+          -3
         ],
         [
           12,
@@ -2834,10 +3014,6 @@
         ],
         [
           4,
-          1
-        ],
-        [
-          19,
           1
         ],
         [
@@ -2865,31 +3041,31 @@
           3
         ],
         [
-          6,
-          3
-        ],
-        [
-          20,
+          16,
           2
         ],
         [
-          21,
-          1
+          6,
+          3
         ],
         [
           12,
           -1
         ],
         [
-          14,
-          -5
-        ],
-        [
           12,
           -2
         ],
         [
+          14,
+          -5
+        ],
+        [
           3,
+          4
+        ],
+        [
+          14,
           4
         ],
         [
@@ -2977,12 +3153,12 @@
           7
         ],
         [
-          8,
-          -2
+          17,
+          1
         ],
         [
-          19,
-          -1
+          8,
+          -2
         ],
         [
           9,
@@ -3001,12 +3177,12 @@
           9
         ],
         [
-          6,
-          0
+          15,
+          3
         ],
         [
-          21,
-          -2
+          6,
+          0
         ],
         [
           12,
@@ -3014,18 +3190,295 @@
         ]
       ],
       "visible_tokens": [
-        "TC_Batalion__5_N_TC_Batalion",
-        "AC_Batalion__2_PL_AC_Batalion",
-        "AC_Kompania__2_PL_AC_Kompania",
-        "P_Batalion__2_PL_P_Batalion",
         "TC_Batalion__2_PL_TC_Batalion",
-        "P_Kompania__2_PL_P_Kompania",
         "AP_Pluton__2_PL_AP_Pluton",
-        "P_Kompania__2_PL_P_Kompania_20250603203026"
+        "TC_Kompania__2_PL_TC_Kompania",
+        "P_Batalion__2_PL_P_Batalion",
+        "AC_Kompania__2_PL_AC_Kompania",
+        "P_Kompania__2_PL_P_Kompania",
+        "P_Kompania__2_PL_P_Kompania_20250603203026",
+        "AC_Batalion__2_PL_AC_Batalion"
       ],
-      "temp_visible_hexes": [],
+      "temp_visible_hexes": [
+        [
+          12,
+          4
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          14,
+          -2
+        ],
+        [
+          14,
+          -1
+        ],
+        [
+          17,
+          -3
+        ],
+        [
+          10,
+          3
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          16,
+          -2
+        ],
+        [
+          15,
+          -4
+        ],
+        [
+          16,
+          -1
+        ],
+        [
+          18,
+          1
+        ],
+        [
+          12,
+          -3
+        ],
+        [
+          12,
+          3
+        ],
+        [
+          14,
+          0
+        ],
+        [
+          17,
+          -4
+        ],
+        [
+          11,
+          -1
+        ],
+        [
+          11,
+          -2
+        ],
+        [
+          13,
+          4
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          15,
+          -2
+        ],
+        [
+          15,
+          -1
+        ],
+        [
+          16,
+          0
+        ],
+        [
+          18,
+          -3
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          17,
+          -2
+        ],
+        [
+          17,
+          -1
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          10,
+          -1
+        ],
+        [
+          13,
+          -3
+        ],
+        [
+          13,
+          3
+        ],
+        [
+          15,
+          0
+        ],
+        [
+          16,
+          2
+        ],
+        [
+          18,
+          -4
+        ],
+        [
+          12,
+          -2
+        ],
+        [
+          12,
+          -1
+        ],
+        [
+          14,
+          4
+        ],
+        [
+          14,
+          1
+        ],
+        [
+          17,
+          0
+        ],
+        [
+          11,
+          2
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          13,
+          -4
+        ],
+        [
+          15,
+          2
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          18,
+          -2
+        ],
+        [
+          18,
+          -1
+        ],
+        [
+          12,
+          0
+        ],
+        [
+          14,
+          -3
+        ],
+        [
+          14,
+          3
+        ],
+        [
+          17,
+          2
+        ],
+        [
+          11,
+          4
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          13,
+          -2
+        ],
+        [
+          13,
+          -1
+        ],
+        [
+          16,
+          -3
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          16,
+          3
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          12,
+          2
+        ],
+        [
+          14,
+          -4
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          10,
+          4
+        ],
+        [
+          11,
+          3
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          13,
+          0
+        ],
+        [
+          15,
+          -3
+        ],
+        [
+          16,
+          -4
+        ],
+        [
+          15,
+          3
+        ]
+      ],
       "temp_visible_tokens": [],
-      "punkty_ekonomiczne": 26
+      "punkty_ekonomiczne": 1
     },
     {
       "id": 3,
@@ -3033,7 +3486,7 @@
       "role": "Dowódca",
       "time_limit": 5,
       "economy": {
-        "economic_points": 43,
+        "economic_points": 1,
         "special_points": 0,
         "assigned_points": 0
       },
@@ -3815,18 +4268,18 @@
         ]
       ],
       "visible_tokens": [
-        "AP_Kompania__3_PL_AP_Kompania_20250603203152",
         "TC_Kompania__3_PL_TC_Kompania",
-        "AC_Kompania__3_PL_AC_Kompania",
-        "TC_Batalion__3_PL_TC_Batalion",
-        "P_Batalion__3_PL_P_Batalion",
-        "AP_Kompania__3_PL_AP_Kompania",
         "P_Pluton__3_PL_P_Pluton",
-        "P_Kompania__3_PL_P_Kompania"
+        "P_Batalion__3_PL_P_Batalion",
+        "AP_Kompania__3_PL_AP_Kompania_20250603203152",
+        "TC_Batalion__3_PL_TC_Batalion",
+        "AC_Kompania__3_PL_AC_Kompania",
+        "P_Kompania__3_PL_P_Kompania",
+        "AP_Kompania__3_PL_AP_Kompania"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": [],
-      "punkty_ekonomiczne": 43
+      "punkty_ekonomiczne": 1
     },
     {
       "id": 4,
@@ -3835,7 +4288,7 @@
       "time_limit": 5,
       "economy": {
         "economic_points": 0,
-        "special_points": 1,
+        "special_points": 0,
         "assigned_points": 0
       },
       "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał pułkownik Walther von Brauchitsch.png",
@@ -3943,10 +4396,6 @@
           -12
         ],
         [
-          19,
-          2
-        ],
-        [
           28,
           5
         ],
@@ -4005,10 +4454,6 @@
         [
           34,
           -13
-        ],
-        [
-          21,
-          2
         ],
         [
           34,
@@ -4371,20 +4816,16 @@
           -12
         ],
         [
-          22,
-          2
-        ],
-        [
           31,
           5
         ],
         [
-          23,
-          1
-        ],
-        [
           34,
           4
+        ],
+        [
+          23,
+          1
         ],
         [
           32,
@@ -4444,7 +4885,7 @@
         ],
         [
           20,
-          -1
+          -2
         ],
         [
           22,
@@ -4452,7 +4893,7 @@
         ],
         [
           20,
-          -2
+          -1
         ],
         [
           23,
@@ -4639,10 +5080,6 @@
           5
         ],
         [
-          20,
-          2
-        ],
-        [
           31,
           2
         ],
@@ -4652,11 +5089,11 @@
         ],
         [
           23,
-          -1
+          -2
         ],
         [
           23,
-          -2
+          -1
         ],
         [
           37,
@@ -4848,6 +5285,10 @@
         ],
         [
           19,
+          -2
+        ],
+        [
+          19,
           -1
         ],
         [
@@ -4859,12 +5300,12 @@
           -1
         ],
         [
-          33,
-          -3
-        ],
-        [
           25,
           -7
+        ],
+        [
+          33,
+          -3
         ],
         [
           25,
@@ -4900,21 +5341,24 @@
         ]
       ],
       "visible_tokens": [
-        "P_Batalion__5_N_P_Batalion",
+        "AP_Kompania__6_N_AP_Kompania",
+        "TC_Batalion__6_N_TC_Batalion",
+        "TC_Kompania__6_N_TC_Kompania_20250603203403",
         "TC_Batalion__5_N_TC_Batalion",
         "AP_Kompania__5_N_AP_Kompania",
-        "TC_Kompania__6_N_TC_Kompania_20250603203403",
-        "TC_Kompania__5_N_TC_Kompania",
-        "TC_Kompania__6_N_TC_Kompania",
-        "AC_Kompania__6_N_AC_Kompania",
-        "TC_Batalion__2_PL_TC_Batalion",
-        "AP_Kompania__6_N_AP_Kompania",
-        "AP_Kompania__6_N_AP_Kompania_20250603203344",
-        "TC_Batalion__6_N_TC_Batalion",
-        "AC_Batalion__6_N_AC_Batalion",
-        "P_Kompania__6_N_P_Kompania",
         "AC_Batalion__5_N_AC_Batalion",
-        "P_Batalion__6_N_P_Batalion"
+        "TC_Kompania__6_N_TC_Kompania",
+        "P_Kompania__5_N_P_Kompania",
+        "AC_Kompania__6_N_AC_Kompania",
+        "AC_Batalion__5_N_AC_Batalion_20250603203322",
+        "P_Kompania__6_N_P_Kompania",
+        "P_Batalion__5_N_P_Batalion",
+        "AP_Kompania__6_N_AP_Kompania_20250603203344",
+        "TC_Kompania__5_N_TC_Kompania_20250603203310",
+        "TC_Kompania__5_N_TC_Kompania",
+        "P_Pluton__5_N_P_Pluton",
+        "P_Batalion__6_N_P_Batalion",
+        "AC_Batalion__6_N_AC_Batalion"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -4923,9 +5367,9 @@
       "id": 5,
       "nation": "Niemcy",
       "role": "Dowódca",
-      "time_limit": 5,
+      "time_limit": 6,
       "economy": {
-        "economic_points": 37,
+        "economic_points": 0,
         "special_points": 0,
         "assigned_points": 0
       },
@@ -4934,6 +5378,14 @@
       "name": "Generał Fedor von Bock",
       "visible_hexes": [
         [
+          28,
+          -12
+        ],
+        [
+          23,
+          1
+        ],
+        [
           27,
           -5
         ],
@@ -4950,12 +5402,32 @@
           -10
         ],
         [
+          32,
+          -12
+        ],
+        [
+          33,
+          -13
+        ],
+        [
           19,
           0
         ],
         [
           25,
           -5
+        ],
+        [
+          24,
+          -7
+        ],
+        [
+          26,
+          -10
+        ],
+        [
+          25,
+          -8
         ],
         [
           26,
@@ -4966,12 +5438,40 @@
           -8
         ],
         [
+          31,
+          -11
+        ],
+        [
+          34,
+          -12
+        ],
+        [
           21,
           0
         ],
         [
+          20,
+          -2
+        ],
+        [
+          22,
+          -5
+        ],
+        [
+          20,
+          -1
+        ],
+        [
+          23,
+          -6
+        ],
+        [
           23,
           -3
+        ],
+        [
+          28,
+          -10
         ],
         [
           27,
@@ -4986,16 +5486,36 @@
           -7
         ],
         [
+          32,
+          -10
+        ],
+        [
           25,
           -12
         ],
         [
-          19,
-          2
+          33,
+          -11
         ],
         [
           25,
           -3
+        ],
+        [
+          24,
+          -5
+        ],
+        [
+          20,
+          -4
+        ],
+        [
+          25,
+          -6
+        ],
+        [
+          26,
+          -8
         ],
         [
           26,
@@ -5022,12 +5542,32 @@
           -10
         ],
         [
+          31,
+          -9
+        ],
+        [
+          34,
+          -10
+        ],
+        [
           34,
           -13
         ],
         [
-          21,
-          2
+          20,
+          0
+        ],
+        [
+          22,
+          -3
+        ],
+        [
+          23,
+          -4
+        ],
+        [
+          28,
+          -8
         ],
         [
           27,
@@ -5042,12 +5582,40 @@
           -5
         ],
         [
+          27,
+          -4
+        ],
+        [
+          32,
+          -8
+        ],
+        [
           25,
           -10
         ],
         [
+          33,
+          -9
+        ],
+        [
           32,
           -11
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          24,
+          -3
+        ],
+        [
+          26,
+          -6
+        ],
+        [
+          25,
+          -4
         ],
         [
           24,
@@ -5074,12 +5642,36 @@
           -8
         ],
         [
+          20,
+          -7
+        ],
+        [
+          21,
+          -8
+        ],
+        [
+          31,
+          -7
+        ],
+        [
           34,
           -11
         ],
         [
+          21,
+          1
+        ],
+        [
+          23,
+          -2
+        ],
+        [
           22,
           -4
+        ],
+        [
+          23,
+          -1
         ],
         [
           27,
@@ -5088,6 +5680,10 @@
         [
           28,
           -9
+        ],
+        [
+          27,
+          -11
         ],
         [
           30,
@@ -5096,274 +5692,6 @@
         [
           19,
           -3
-        ],
-        [
-          32,
-          -9
-        ],
-        [
-          24,
-          -4
-        ],
-        [
-          26,
-          -7
-        ],
-        [
-          29,
-          -8
-        ],
-        [
-          21,
-          -3
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          22,
-          -2
-        ],
-        [
-          22,
-          -1
-        ],
-        [
-          27,
-          -6
-        ],
-        [
-          28,
-          -7
-        ],
-        [
-          30,
-          -10
-        ],
-        [
-          24,
-          -11
-        ],
-        [
-          24,
-          -2
-        ],
-        [
-          24,
-          -1
-        ],
-        [
-          26,
-          -5
-        ],
-        [
-          20,
-          -6
-        ],
-        [
-          22,
-          -9
-        ],
-        [
-          22,
-          0
-        ],
-        [
-          30,
-          -8
-        ],
-        [
-          24,
-          -9
-        ],
-        [
-          26,
-          -12
-        ],
-        [
-          24,
-          0
-        ],
-        [
-          26,
-          -3
-        ],
-        [
-          21,
-          -1
-        ],
-        [
-          20,
-          -4
-        ],
-        [
-          22,
-          -7
-        ],
-        [
-          28,
-          -12
-        ],
-        [
-          22,
-          2
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          32,
-          -12
-        ],
-        [
-          33,
-          -13
-        ],
-        [
-          24,
-          -7
-        ],
-        [
-          26,
-          -10
-        ],
-        [
-          25,
-          -8
-        ],
-        [
-          31,
-          -11
-        ],
-        [
-          34,
-          -12
-        ],
-        [
-          20,
-          -1
-        ],
-        [
-          22,
-          -5
-        ],
-        [
-          20,
-          -2
-        ],
-        [
-          23,
-          -6
-        ],
-        [
-          28,
-          -10
-        ],
-        [
-          32,
-          -10
-        ],
-        [
-          33,
-          -11
-        ],
-        [
-          24,
-          -5
-        ],
-        [
-          26,
-          -8
-        ],
-        [
-          25,
-          -6
-        ],
-        [
-          31,
-          -9
-        ],
-        [
-          34,
-          -10
-        ],
-        [
-          20,
-          0
-        ],
-        [
-          22,
-          -3
-        ],
-        [
-          23,
-          -4
-        ],
-        [
-          28,
-          -8
-        ],
-        [
-          27,
-          -4
-        ],
-        [
-          32,
-          -8
-        ],
-        [
-          33,
-          -9
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          24,
-          -3
-        ],
-        [
-          26,
-          -6
-        ],
-        [
-          25,
-          -4
-        ],
-        [
-          20,
-          -7
-        ],
-        [
-          31,
-          -7
-        ],
-        [
-          21,
-          -8
-        ],
-        [
-          20,
-          2
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          23,
-          -1
-        ],
-        [
-          23,
-          -2
-        ],
-        [
-          27,
-          -11
         ],
         [
           27,
@@ -5378,12 +5706,24 @@
           -10
         ],
         [
+          32,
+          -9
+        ],
+        [
           25,
           -11
         ],
         [
           25,
           -2
+        ],
+        [
+          24,
+          -4
+        ],
+        [
+          26,
+          -7
         ],
         [
           25,
@@ -5391,7 +5731,15 @@
         ],
         [
           29,
+          -8
+        ],
+        [
+          29,
           -11
+        ],
+        [
+          21,
+          -3
         ],
         [
           20,
@@ -5414,12 +5762,36 @@
           1
         ],
         [
+          20,
+          1
+        ],
+        [
+          22,
+          -2
+        ],
+        [
+          22,
+          -1
+        ],
+        [
           23,
           0
         ],
         [
           27,
+          -6
+        ],
+        [
+          28,
+          -7
+        ],
+        [
+          27,
           -9
+        ],
+        [
+          30,
+          -10
         ],
         [
           32,
@@ -5438,8 +5810,24 @@
           -9
         ],
         [
+          24,
+          -11
+        ],
+        [
           25,
           0
+        ],
+        [
+          24,
+          -2
+        ],
+        [
+          24,
+          -1
+        ],
+        [
+          26,
+          -5
         ],
         [
           29,
@@ -5462,12 +5850,28 @@
           -4
         ],
         [
+          20,
+          -6
+        ],
+        [
+          22,
+          -9
+        ],
+        [
           23,
           -7
         ],
         [
+          22,
+          0
+        ],
+        [
           27,
           -7
+        ],
+        [
+          30,
+          -8
         ],
         [
           30,
@@ -5479,11 +5883,35 @@
         ],
         [
           19,
+          -2
+        ],
+        [
+          19,
           -1
         ],
         [
           25,
           -7
+        ],
+        [
+          24,
+          -9
+        ],
+        [
+          26,
+          -12
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          26,
+          -3
+        ],
+        [
+          21,
+          -2
         ],
         [
           29,
@@ -5495,371 +5923,36 @@
         ],
         [
           21,
-          -2
+          -1
         ],
         [
           23,
           -5
+        ],
+        [
+          22,
+          -7
         ]
       ],
       "visible_tokens": [
+        "AC_Batalion__5_N_AC_Batalion_20250603203322",
         "P_Batalion__5_N_P_Batalion",
         "TC_Batalion__5_N_TC_Batalion",
         "AP_Kompania__5_N_AP_Kompania",
+        "TC_Kompania__5_N_TC_Kompania_20250603203310",
         "TC_Kompania__5_N_TC_Kompania",
-        "TC_Batalion__2_PL_TC_Batalion",
-        "TC_Kompania__2_PL_TC_Kompania",
-        "AC_Batalion__5_N_AC_Batalion"
+        "P_Pluton__5_N_P_Pluton",
+        "AC_Batalion__5_N_AC_Batalion",
+        "P_Kompania__5_N_P_Kompania"
       ],
-      "temp_visible_hexes": [
-        [
-          22,
-          2
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          27,
-          -5
-        ],
-        [
-          28,
-          -6
-        ],
-        [
-          19,
-          0
-        ],
-        [
-          25,
-          -5
-        ],
-        [
-          24,
-          -7
-        ],
-        [
-          25,
-          -8
-        ],
-        [
-          26,
-          -4
-        ],
-        [
-          21,
-          0
-        ],
-        [
-          23,
-          -3
-        ],
-        [
-          20,
-          -1
-        ],
-        [
-          20,
-          -2
-        ],
-        [
-          22,
-          -5
-        ],
-        [
-          23,
-          -6
-        ],
-        [
-          27,
-          -3
-        ],
-        [
-          19,
-          2
-        ],
-        [
-          25,
-          -3
-        ],
-        [
-          24,
-          -5
-        ],
-        [
-          26,
-          -8
-        ],
-        [
-          25,
-          -6
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          26,
-          -2
-        ],
-        [
-          26,
-          -1
-        ],
-        [
-          21,
-          -7
-        ],
-        [
-          21,
-          2
-        ],
-        [
-          20,
-          0
-        ],
-        [
-          22,
-          -3
-        ],
-        [
-          23,
-          -4
-        ],
-        [
-          28,
-          -8
-        ],
-        [
-          27,
-          -4
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          24,
-          -3
-        ],
-        [
-          26,
-          -6
-        ],
-        [
-          25,
-          -4
-        ],
-        [
-          24,
-          -6
-        ],
-        [
-          26,
-          -9
-        ],
-        [
-          21,
-          -5
-        ],
-        [
-          23,
-          -8
-        ],
-        [
-          20,
-          2
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          23,
-          -2
-        ],
-        [
-          22,
-          -4
-        ],
-        [
-          23,
-          -1
-        ],
-        [
-          27,
-          -8
-        ],
-        [
-          28,
-          -9
-        ],
-        [
-          27,
-          -2
-        ],
-        [
-          25,
-          -2
-        ],
-        [
-          24,
-          -4
-        ],
-        [
-          25,
-          -1
-        ],
-        [
-          26,
-          -7
-        ],
-        [
-          21,
-          -3
-        ],
-        [
-          22,
-          -8
-        ],
-        [
-          21,
-          -6
-        ],
-        [
-          23,
-          -9
-        ],
-        [
-          22,
-          1
-        ],
-        [
-          23,
-          0
-        ],
-        [
-          22,
-          -2
-        ],
-        [
-          22,
-          -1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          27,
-          -6
-        ],
-        [
-          28,
-          -7
-        ],
-        [
-          27,
-          -9
-        ],
-        [
-          24,
-          -8
-        ],
-        [
-          25,
-          -9
-        ],
-        [
-          25,
-          0
-        ],
-        [
-          24,
-          -2
-        ],
-        [
-          24,
-          -1
-        ],
-        [
-          26,
-          -5
-        ],
-        [
-          20,
-          -3
-        ],
-        [
-          22,
-          -6
-        ],
-        [
-          21,
-          -4
-        ],
-        [
-          23,
-          -7
-        ],
-        [
-          22,
-          0
-        ],
-        [
-          27,
-          -7
-        ],
-        [
-          19,
-          -1
-        ],
-        [
-          25,
-          -7
-        ],
-        [
-          24,
-          -9
-        ],
-        [
-          24,
-          0
-        ],
-        [
-          26,
-          -3
-        ],
-        [
-          21,
-          -1
-        ],
-        [
-          21,
-          -2
-        ],
-        [
-          23,
-          -5
-        ],
-        [
-          22,
-          -7
-        ]
-      ],
-      "temp_visible_tokens": [
-        "TC_Batalion__2_PL_TC_Batalion",
-        "TC_Kompania__2_PL_TC_Kompania"
-      ],
-      "punkty_ekonomiczne": 37
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
     },
     {
       "id": 6,
       "nation": "Niemcy",
       "role": "Dowódca",
-      "time_limit": 5,
+      "time_limit": 4,
       "economy": {
         "economic_points": 0,
         "special_points": 0,
@@ -6359,19 +6452,18 @@
         ]
       ],
       "visible_tokens": [
-        "TC_Kompania__6_N_TC_Kompania_20250603203403",
-        "TC_Kompania__6_N_TC_Kompania",
         "AC_Kompania__6_N_AC_Kompania",
         "AP_Kompania__6_N_AP_Kompania",
-        "AP_Kompania__6_N_AP_Kompania_20250603203344",
-        "AC_Batalion__6_N_AC_Batalion",
-        "P_Kompania__6_N_P_Kompania",
         "TC_Batalion__6_N_TC_Batalion",
-        "P_Batalion__6_N_P_Batalion"
+        "TC_Kompania__6_N_TC_Kompania_20250603203403",
+        "P_Kompania__6_N_P_Kompania",
+        "AP_Kompania__6_N_AP_Kompania_20250603203344",
+        "TC_Kompania__6_N_TC_Kompania",
+        "P_Batalion__6_N_P_Batalion",
+        "AC_Batalion__6_N_AC_Batalion"
       ],
       "temp_visible_hexes": [],
-      "temp_visible_tokens": [],
-      "punkty_ekonomiczne": 0
+      "temp_visible_tokens": []
     }
   ],
   "turn": 1,
@@ -6379,8 +6471,8 @@
   "weather": null,
   "turn_manager": null,
   "active_player_info": {
-    "id": 5,
+    "id": 2,
     "role": "Dowódca",
-    "nation": "Niemcy"
+    "nation": "Polska"
   }
 }

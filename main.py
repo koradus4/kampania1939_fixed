@@ -171,11 +171,26 @@ if __name__ == "__main__":
         if not just_loaded_save:
             for t in game_engine.tokens:
                 t.movement_mode_locked = False
+        # --- DODANE: wymuszenie aktualnej referencji gracza po wczytaniu save ---
+        if just_loaded_save:
+            # Po wczytaniu save'a zsynchronizuj listę players i current_player z game_engine
+            players = game_engine.players
+            clear_temp_visibility(game_engine.players)
+            update_all_players_visibility(game_engine.players, game_engine.tokens, game_engine.board)
+            # Znajdź aktualnego gracza po wczytaniu save
+            found = None
+            for p in game_engine.players:
+                if (str(p.id) == str(last_loaded_player_info.get('id')) and
+                    p.role == last_loaded_player_info.get('role') and
+                    p.nation == last_loaded_player_info.get('nation')):
+                    found = p
+                    break
+            if found:
+                game_engine.current_player_obj = found
+                current_player = found
         just_loaded_save = False
         clear_temp_visibility(players)
-        # --- AKTUALIZACJA WIDOCZNOŚCI PO KAŻDEJ TURZE ---
-        # (możesz zostawić, ale nie jest już konieczne, bo i tak jest na początku każdej tury)
-        # update_all_players_visibility(players, game_engine.tokens, game_engine.board)
+        # --- KONIEC DODATKU ---
 
         # Sprawdzenie warunku zakończenia gry
         if hasattr(turn_manager, 'is_game_over') and turn_manager.is_game_over():
