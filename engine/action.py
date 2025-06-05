@@ -57,7 +57,10 @@ class MoveAction(Action):
         board = engine.board
         sight = token.stats.get('sight', 0)
         for i, step in enumerate(path[1:]):  # pomijamy start
-            if token.currentMovePoints - (path_cost + 1) < 0 or token.currentFuel - (fuel_cost + 1) < 0:
+            tile = board.get_tile(*step)
+            move_mod = getattr(tile, 'move_mod', 0)
+            move_cost = 1 + move_mod  # zawsze minimum 1, np. bagno 1+3=4, las 1+2=3, płaski 1+0=1
+            if token.currentMovePoints - (path_cost + move_cost) < 0 or token.currentFuel - (fuel_cost + move_cost) < 0:
                 break  # nie stać na kolejny krok
             # Wyznacz pole widzenia z tego heksu
             visible_hexes = set()
@@ -77,10 +80,18 @@ class MoveAction(Action):
                     if nation1 != nation2:
                         enemy_in_sight = True
                         break
+            # --- PRINTY DEBUGUJĄCE ---
+            print(f"[RUCH] Żeton {token.id} ({getattr(token, 'name', '')})")
+            print(f"  Tryb ruchu: {getattr(token, 'movement_mode', 'combat')}")
+            print(f"  Przed ruchem: MP={token.currentMovePoints-path_cost}, Paliwo={token.currentFuel-fuel_cost}")
+            print(f"  Wchodzi na heks: {step}, move_mod={move_mod}")
+            print(f"  Koszt wejścia: {move_cost} MP, {move_cost} paliwo")
+            # --- KONIEC PRINTÓW ---
             final_pos = step
-            path_cost += 1
-            fuel_cost += 1
+            path_cost += move_cost
+            fuel_cost += move_cost
             if enemy_in_sight:
+                print("  Przeciwnik w polu widzenia – ruch zatrzymany.")
                 break  # Zatrzymaj ruch natychmiast
         if final_pos == start:
             return False, "Brak wystarczających punktów ruchu lub paliwa na ruch."
