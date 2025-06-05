@@ -71,15 +71,18 @@ class MoveAction(Action):
                     if board.hex_distance(step, (q, r)) <= sight:
                         if board.get_tile(q, r) is not None:
                             visible_hexes.add((q, r))
-            # Sprawdź, czy w polu widzenia jest przeciwnik
+            # Sprawdź, czy w polu widzenia jest przeciwnik (ignoruj sojuszników)
             enemy_in_sight = False
             for t in engine.tokens:
-                if (t.q, t.r) in visible_hexes and hasattr(t, 'owner') and hasattr(token, 'owner'):
+                # Pomijaj żetony bez ownera lub o pustym ownerze
+                if not hasattr(t, 'owner') or not hasattr(token, 'owner') or not t.owner or not token.owner:
+                    continue
+                if (t.q, t.r) in visible_hexes:
                     nation1 = t.owner.split('(')[-1].replace(')','').strip()
                     nation2 = token.owner.split('(')[-1].replace(')','').strip()
                     if nation1 != nation2:
                         enemy_in_sight = True
-                        break
+                        break  # zatrzymaj ruch tylko na przeciwniku
             # --- PRINTY DEBUGUJĄCE ---
             print(f"[RUCH] Żeton {token.id} ({getattr(token, 'name', '')})")
             print(f"  Tryb ruchu: {getattr(token, 'movement_mode', 'combat')}")
