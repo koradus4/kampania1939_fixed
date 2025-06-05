@@ -5,6 +5,7 @@ from gui.panel_dowodcy import PanelDowodcy
 from core.ekonomia import EconomySystem
 from engine.engine import GameEngine, update_all_players_visibility, clear_temp_visibility
 from gui.panel_gracza import PanelGracza
+from core.zwyciestwo import VictoryConditions
 
 # Funkcja główna
 if __name__ == "__main__":
@@ -67,7 +68,8 @@ if __name__ == "__main__":
 
     # Inicjalizacja menedżera tur
     turn_manager = TurnManager(players, game_engine=game_engine)
-
+    # --- WARUNKI ZWYCIĘSTWA: 30 rund ---
+    victory_conditions = VictoryConditions(max_turns=30)
     just_loaded_save = False  # Flaga: czy właśnie wczytano save
     # Pętla tur
     last_loaded_player_info = None  # Przechowuj info o aktywnym graczu po wczytaniu save
@@ -160,6 +162,15 @@ if __name__ == "__main__":
 
         # Przejście do następnej tury/podtury
         turn_manager.next_turn()
+        # --- SPRAWDZENIE KOŃCA GRY ---
+        if victory_conditions.check_game_over(turn_manager.current_turn):
+            print(victory_conditions.get_victory_message())
+            print("=== PODSUMOWANIE ===")
+            for p in players:
+                vp = getattr(p, "victory_points", 0)
+                print(f"{p.nation} {p.role} (id={p.id}): {vp} punktów zwycięstwa")
+            print("====================")
+            break
         # Reset blokady trybu ruchu na początku każdej tury, ale NIE po wczytaniu save
         if not just_loaded_save:
             for t in game_engine.tokens:

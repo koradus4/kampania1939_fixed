@@ -1,7 +1,7 @@
 # Plik do dalszej implementacji
 
 class VictoryConditions:
-    def __init__(self, max_turns=10):
+    def __init__(self, max_turns=30):  # domyślnie 30 rund
         """
         Inicjalizuje warunki zwycięstwa.
         :param max_turns: Maksymalna liczba tur, po której gra się kończy.

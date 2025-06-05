@@ -191,7 +191,6 @@ class CombatAction(Action):
         if defender.combat_value <= 0:
             if random.random() < 0.5:
                 defender.combat_value = 1
-                # defender.stats['combat_value'] = 1  # USUNIĘTO!
                 # Cofnij obrońcę o 1 pole (prosty algorytm: odsuń od atakującego)
                 dq = defender.q - attacker.q
                 dr = defender.r - attacker.r
@@ -203,18 +202,44 @@ class CombatAction(Action):
                     msg = f"Obrońca przeżył z 1 punktem i cofnął się na ({new_q},{new_r})!"
                 else:
                     # Jeśli nie można się cofnąć, żeton ginie
+                    # --- VP za eliminację obrońcy ---
+                    self._award_vp_for_elimination(engine, attacker, defender)
                     engine.tokens.remove(defender)
                     msg = "Obrońca nie mógł się cofnąć i został zniszczony!"
             else:
+                # --- VP za eliminację obrońcy ---
+                self._award_vp_for_elimination(engine, attacker, defender)
                 engine.tokens.remove(defender)
                 msg = "Obrońca został zniszczony!"
         else:
             msg = f"Obrońca stracił {attack_result} punktów, pozostało: {defender.combat_value}"
         # Eliminacja atakującego
         if attacker.combat_value <= 0:
+            # --- VP za eliminację atakującego (dla obrońcy) ---
+            self._award_vp_for_elimination(engine, defender, attacker)
             engine.tokens.remove(attacker)
             msg += "\nAtakujący został zniszczony!"
         else:
             msg += f"\nAtakujący stracił {defense_result} punktów, pozostało: {attacker.combat_value}"
         # --- KONIEC PRINTÓW ---
         return True, msg
+
+    def _award_vp_for_elimination(self, engine, winner_token, loser_token):
+        """Przyznaje VP za eliminację żetonu."""
+        # Znajdź gracza-właściciela winner_token
+        winner_player = None
+        for p in getattr(engine, 'players', []):
+            if hasattr(winner_token, 'owner') and p and winner_token.owner == f"{p.id} ({p.nation})":
+                winner_player = p
+                break
+        if winner_player is not None:
+            price = loser_token.stats.get('price', 0)
+            winner_player.victory_points += price
+            # Dodaj do historii
+            winner_player.vp_history.append({
+                'turn': getattr(engine, 'turn', None),
+                'amount': price,
+                'reason': 'eliminacja',
+                'token_id': loser_token.id,
+                'enemy': loser_token.owner
+            })

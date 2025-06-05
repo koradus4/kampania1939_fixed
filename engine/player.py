@@ -69,6 +69,10 @@ class Player:
         self.temp_visible_hexes = set()  # Heksy odkryte tymczasowo w tej turze
         self.temp_visible_tokens = set()  # Żetony przeciwnika widoczne tymczasowo w tej turze
 
+        # --- PUNKTY ZWYCIĘSTWA (VP) ---
+        self.victory_points = 0
+        self.vp_history = []  # Lista słowników: {'turn': int, 'amount': int, 'reason': str, 'token_id': str, 'enemy': str}
+
     def serialize(self):
         return {
             'id': self.id,

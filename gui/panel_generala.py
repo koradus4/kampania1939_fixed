@@ -100,6 +100,10 @@ class PanelGenerala:
         # Uruchomienie timera
         self.update_timer()
 
+        # Przycisk VP
+        btn_vp = tk.Button(self.left_frame, text="Punkty zwycięstwa (VP)", font=("Arial", 12, "bold"), bg="#6B8E23", fg="gold", relief=tk.RAISED, borderwidth=3, command=self.show_vp_window)
+        btn_vp.pack(pady=(8, 2), fill=tk.X)
+
     def update_weather(self, weather_report):
         self.weather_panel.update_weather(weather_report)
 
@@ -272,3 +276,22 @@ class PanelGenerala:
                     if self.token_info_panel is not None:
                         self.token_info_panel.show_token(token)
                     break
+
+    def show_vp_window(self):
+        """Wyświetla okno z bilansem i historią punktów zwycięstwa."""
+        import tkinter as tk
+        win = tk.Toplevel(self.root)
+        win.title("Punkty zwycięstwa (VP)")
+        win.configure(bg="#2e2e2e")
+        vp = getattr(self.gracz, 'victory_points', 0)
+        tk.Label(win, text=f"Twój bilans VP: {vp}", font=("Arial", 15, "bold"), fg="gold", bg="#2e2e2e").pack(pady=10)
+        # Historia
+        history = getattr(self.gracz, 'vp_history', [])
+        frame = tk.Frame(win, bg="#2e2e2e")
+        frame.pack(padx=10, pady=5, fill=tk.BOTH, expand=True)
+        if not history:
+            tk.Label(frame, text="Brak zdarzeń.", fg="white", bg="#2e2e2e").pack()
+        else:
+            for entry in history[-20:][::-1]:
+                txt = f"Tura {entry.get('turn','?')}: +{entry['amount']} VP za {entry['reason']} (żeton {entry['token_id']}, wróg: {entry['enemy']})"
+                tk.Label(frame, text=txt, fg="white", bg="#2e2e2e", anchor="w", justify="left").pack(fill=tk.X)

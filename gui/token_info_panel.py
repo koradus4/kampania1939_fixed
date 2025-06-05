@@ -86,6 +86,18 @@ class TokenInfoPanel(tk.Frame):
         self.labels["wartość_bojowa"].config(text=f"Zasoby bojowe: {combat_value} (bazowo: {base_combat_value})")
         self.labels["zasięg_ataku"].config(text=f"Zasięg ataku: {attack_range}")
         self.labels["siła_ataku"].config(text=f"Siła ataku: {attack_value}")
+        # Dodaj wyświetlanie ceny (VP) jeśli jest dostępna
+        price = token.stats.get('price')
+        if price is not None:
+            if 'price' not in self.labels:
+                font = ("Arial", 11)
+                price_label = tk.Label(self.inner_frame, text=f"Wartość VP: {price}", font=font, anchor="w")
+                price_label.grid(row=len(self.labels), column=0, sticky="w", padx=4, pady=1)
+                self.labels['price'] = price_label
+            else:
+                self.labels['price'].config(text=f"Wartość VP: {price}")
+        elif 'price' in self.labels:
+            self.labels['price'].config(text="Wartość VP: -")
 
     def clear(self):
         # Czyści wszystkie etykiety panelu do wartości domyślnych
