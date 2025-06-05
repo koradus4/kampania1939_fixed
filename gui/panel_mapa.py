@@ -256,20 +256,21 @@ class PanelMapa(tk.Frame):
                     def apply(self):
                         self.result = self.combo.get()
                 dialog = ModeDialog(self)
-                mode = dialog.result
-                if mode == "Bojowy":
-                    clicked_token.movement_mode = "combat"
-                elif mode == "Marsz":
-                    clicked_token.movement_mode = "march"
-                elif mode == "Zwiad":
-                    clicked_token.movement_mode = "recon"
-                clicked_token.apply_movement_mode(reset_mp=False)
-                clicked_token.movement_mode_locked = True  # Blokada zmiany trybu do końca tury
-                self.selected_token_id = clicked_token.id
-                if self.panel_dowodcy is not None:
-                    self.panel_dowodcy.wybrany_token = clicked_token
-                if self.token_info_panel is not None:
-                    self.token_info_panel.show_token(clicked_token)
+                mode = getattr(dialog, 'result', None)
+                if mode is not None:
+                    if mode == "Bojowy":
+                        clicked_token.movement_mode = "combat"
+                    elif mode == "Marsz":
+                        clicked_token.movement_mode = "march"
+                    elif mode == "Zwiad":
+                        clicked_token.movement_mode = "recon"
+                    clicked_token.apply_movement_mode(reset_mp=False)
+                    clicked_token.movement_mode_locked = True  # Blokada zmiany trybu do końca tury
+                    self.selected_token_id = clicked_token.id
+                    if self.panel_dowodcy is not None:
+                        self.panel_dowodcy.wybrany_token = clicked_token
+                    if self.token_info_panel is not None:
+                        self.token_info_panel.show_token(clicked_token)
                 self.current_path = None
                 self.refresh()
                 return
@@ -278,10 +279,17 @@ class PanelMapa(tk.Frame):
             if token:
                 path = self.game_engine.board.find_path((token.q, token.r), hr, max_cost=token.currentMovePoints)
                 if path:
+                    # POLICZ RZECZYWISTY KOSZT RUCHU
+                    real_cost = 0
+                    for step in path[1:]:  # pomijamy start
+                        tile = self.game_engine.board.get_tile(*step)
+                        move_mod = getattr(tile, 'move_mod', 0)
+                        move_cost = 1 + move_mod
+                        real_cost += move_cost
                     self.current_path = path
                     self.refresh()
                     from tkinter import messagebox
-                    if messagebox.askyesno("Ruch", f"Czy wykonać ruch do {hr}?\nKoszt: {len(path)-1}"):
+                    if messagebox.askyesno("Ruch", f"Czy wykonać ruch do {hr}?\nKoszt: {real_cost}"):
                         from engine.action import MoveAction
                         action = MoveAction(token.id, hr[0], hr[1])
                         success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
@@ -347,7 +355,7 @@ class PanelMapa(tk.Frame):
             action = CombatAction(attacker.id, clicked_token.id)
             success, msg = self.game_engine.execute_action(action, player=getattr(self, 'player', None))
             self.tokens = self.game_engine.tokens
-            # Efekty wizualne (szkielet): podświetlenie pól, miganie, usuwanie, cofanie
+            # Efekty wizualne (szkielet): podświetlenie pól, miganie, usuwanie, cofania
             self._visualize_combat(attacker, clicked_token, msg)
             # Komunikat zwrotny
             if not success:
@@ -370,7 +378,7 @@ class PanelMapa(tk.Frame):
         self.canvas.create_polygon([c for p in verts_d for c in p], fill='#ff7f7f', outline='', tags='combat_fx')
         self.canvas.after(400, lambda: self.canvas.delete('combat_fx'))
 
-        # 2. Miganie żetonów, usuwanie, cofanie (na podstawie msg)
+        # 2. Miganie żetonów, usuwanie, cofania (na podstawie msg)
         def blink_token(token_id, color, times=4, delay=120, on_end=None):
             tag = f"token_{token_id}"
             def blink(i):
