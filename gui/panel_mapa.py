@@ -229,35 +229,29 @@ class PanelMapa(tk.Frame):
                     clicked_token = token
                     break
         if clicked_token:
-            # Sprawdź, czy kliknięty żeton należy do aktywnego gracza
-            if clicked_token:
-                # Sprawdź właściciela żetonu (owner może być np. '2 (Polska)')
-                expected_owner = f"{getattr(self.player, 'id', '?')} ({getattr(self.player, 'nation', '?')})"
-                if getattr(clicked_token, 'owner', None) != expected_owner:
-                    # Kliknięto żeton przeciwnika lub sojusznika – nie pokazuj wyboru trybu ruchu
-                    self.selected_token_id = None
-                    self.current_path = None
-                    if self.token_info_panel is not None:
-                        self.token_info_panel.clear()
-                    self.refresh()
-                    return
-                # ...reszta logiki wyboru trybu ruchu i blokady...
-                if hasattr(clicked_token, 'movement_mode_locked') and clicked_token.movement_mode_locked:
-                    self.selected_token_id = clicked_token.id
-                    if self.panel_dowodcy is not None:
-                        self.panel_dowodcy.wybrany_token = clicked_token
-                    if self.token_info_panel is not None:
-                        self.token_info_panel.show_token(clicked_token)
-                    self.current_path = None
-                    self.refresh()
-                    return
-                # Okno wyboru trybu ruchu przez combobox (tylko jeśli nie zablokowany)
+            expected_owner = f"{getattr(self.player, 'id', '?')} ({getattr(self.player, 'nation', '?')})"
+            if getattr(clicked_token, 'owner', None) != expected_owner:
+                self.selected_token_id = None
+                self.current_path = None
+                if self.token_info_panel is not None:
+                    self.token_info_panel.clear()
+                self.refresh()
+                return
+            # Najpierw pokaż info panel z aktualnym stanem żetonu
+            self.selected_token_id = clicked_token.id
+            if self.panel_dowodcy is not None:
+                self.panel_dowodcy.wybrany_token = clicked_token
+            if self.token_info_panel is not None:
+                self.token_info_panel.show_token(clicked_token)
+            # Jeśli tryb nie jest zablokowany, pokaż okno wyboru trybu ruchu
+            if not getattr(clicked_token, 'movement_mode_locked', False):
                 class ModeDialog(simpledialog.Dialog):
                     def body(self, master):
                         tk.Label(master, text="Wybierz tryb ruchu:").pack()
                         self.combo = ttk.Combobox(master, values=["Bojowy", "Marsz", "Zwiad"], state="readonly")
                         mode_map = {'combat': 0, 'marsz': 1, 'recon': 2}
-                        idx = mode_map.get(getattr(clicked_token, 'movement_mode', 'combat'), 0)
+                        curr_mode = getattr(clicked_token, 'movement_mode', 'combat')
+                        idx = mode_map.get(curr_mode, 0)
                         self.combo.current(idx)
                         self.combo.pack()
                         return self.combo
@@ -278,10 +272,10 @@ class PanelMapa(tk.Frame):
                     if self.panel_dowodcy is not None:
                         self.panel_dowodcy.wybrany_token = clicked_token
                     if self.token_info_panel is not None:
-                        self.token_info_panel.show_token(clicked_token)
-                self.current_path = None
-                self.refresh()
-                return
+                        self.token_info_panel.show_token(clicked_token)  # Odśwież info panel po zmianie trybu
+            self.current_path = None
+            self.refresh()
+            return
         elif hr and self.selected_token_id:
             token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
             if token:

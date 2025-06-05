@@ -152,6 +152,9 @@ class CombatAction(Action):
         if getattr(attacker, 'currentMovePoints', 0) <= 0:
             print("[DEBUG] Brak punktów ruchu do ataku.")
             return False, "Brak punktów ruchu do ataku."
+        # Sprawdź czy atak nie jest na własny żeton
+        if attacker.owner == defender.owner:
+            return False, "Nie można atakować własnych żetonów!"
         # Atak kosztuje wszystkie pozostałe MP (atak tylko raz na turę)
         attacker.currentMovePoints = 0
         # --- Rozstrzyganie walki ---
