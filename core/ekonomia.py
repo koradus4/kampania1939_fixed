@@ -25,8 +25,6 @@ class EconomySystem:
             self.economic_points -= points
             if self.economic_points < 0:
                 self.economic_points = 0
-        else:
-            print("[ERROR] Obiekt EconomySystem nie ma atrybutu 'economic_points'.")
 
     def get_points(self):
         """Zwraca aktualne punkty ekonomiczne i specjalne."""
@@ -38,11 +36,3 @@ class EconomySystem:
 
 if __name__ == "__main__":
     economy = EconomySystem()
-
-    print("Symulacja 10 tur ekonomii")
-    for turn in range(1, 11):
-        print(f"\n=== Tura {turn} ===")
-        economy.generate_economic_points()
-        economy.add_special_points()
-        points = economy.get_points()
-        print(f"{points['economic_points']} punkty ekonomiczne, {points['special_points']} punkty specjalne")

@@ -19,7 +19,6 @@ class PanelGracza(tk.Frame):
         try:
             self.image = Image.open(image_path).resize((298, 298), Image.Resampling.LANCZOS)
         except Exception as e:
-            print(f"[ERROR] Nie udało się wczytać zdjęcia gracza: {e}")
             self.image = Image.new("RGB", (298, 298), color="gray")  # Domyślne szare tło w przypadku błędu
         self.photo = ImageTk.PhotoImage(self.image)
         self.photo_label = tk.Label(self.photo_frame, image=self.photo, bg="white")

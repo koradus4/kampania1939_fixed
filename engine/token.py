@@ -119,7 +119,6 @@ class Token:
         token.currentFuel = data.get('currentFuel', token.maxFuel)
         token.movement_mode = data.get('movement_mode', 'combat')
         token.movement_mode_locked = data.get('movement_mode_locked', False)
-        print(f"[DEBUG][from_dict] {token.id} movement_mode_locked={token.movement_mode_locked}")
         token.combat_value = data.get('combat_value', token.stats.get('combat_value', 0))
         return token
 

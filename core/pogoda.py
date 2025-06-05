@@ -38,10 +38,8 @@ class Pogoda:
             self.opady += " (opady śniegu)"
 
     def wypisz_pogode(self):
-        print("=== Pogoda na dziś ===")
-        print(f"Temperatura: {self.temperatura}°C")
-        print(f"Zachmurzenie: {self.zachmurzenie}")
-        print(f"Opady: {self.opady}")
+        # Usunięto printy, funkcja nie wypisuje już nic do konsoli
+        pass
 
     def generuj_raport_pogodowy(self):
         """Generuje raport pogodowy w formacie tekstowym."""
@@ -56,5 +54,4 @@ if __name__ == "__main__":
     pogoda = Pogoda()
     for _ in range(7):  # Generowanie pogody na 7 dni
         pogoda.generuj_pogode()
-        pogoda.wypisz_pogode()
-        print()
+        # Usunięto printy testowe

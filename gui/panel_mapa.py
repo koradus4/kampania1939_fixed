@@ -14,9 +14,6 @@ class PanelMapa(tk.Frame):
         self.token_info_panel = token_info_panel
         self.panel_dowodcy = panel_dowodcy  # <--- dodane
 
-        # Debug printa, aby sprawdzić czy self.tokens i engine.tokens to ta sama lista po inicjalizacji
-        print(f"[DEBUG] PanelMapa.__init__: self.tokens id={id(self.tokens)}, engine.tokens id={id(self.game_engine.tokens)}")
-
         # Canvas + Scrollbary
         self.canvas = tk.Canvas(self, width=width, height=height)
         hbar = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
@@ -73,8 +70,6 @@ class PanelMapa(tk.Frame):
         # Dodaj tymczasową widoczność (odkryte w tej turze)
         if hasattr(self.player, 'temp_visible_hexes'):
             visible_hexes |= set((int(q), int(r)) for q, r in self.player.temp_visible_hexes)
-        # DEBUG: wypisz heksy widoczne i zamglenione
-        # print(f"[DEBUG] visible_hexes: {sorted(visible_hexes)}")
         fogged = []
         for key, tile in self.map_model.terrain.items():
             if isinstance(key, tuple) and len(key) == 2:
@@ -85,7 +80,6 @@ class PanelMapa(tk.Frame):
             if 0 <= cx <= self._bg_width and 0 <= cy <= self._bg_height:
                 if (int(q), int(r)) not in visible_hexes:
                     fogged.append((int(q), int(r)))
-        # print(f"[DEBUG] fogged_hexes: {sorted(fogged)}")
         for key, tile in self.map_model.terrain.items():
             # Obsługa kluczy tuple (q, r) lub string "q,r"
             if isinstance(key, tuple) and len(key) == 2:
@@ -124,11 +118,6 @@ class PanelMapa(tk.Frame):
             tokens = [t for t in self.tokens if t.id in (self.player.visible_tokens | self.player.temp_visible_tokens)]
         elif hasattr(self, 'player') and hasattr(self.player, 'visible_tokens'):
             tokens = [t for t in self.tokens if t.id in self.player.visible_tokens]
-        print(f"[DEBUG] _draw_tokens_on_map: self.tokens id={id(self.tokens)}, engine.tokens id={id(self.game_engine.tokens)}")
-        print(f"[DEBUG] _draw_tokens_on_map: token ids={[t.id for t in self.tokens]}")
-        if hasattr(self, 'player'):
-            print(f"[DEBUG] _draw_tokens_on_map: player.visible_tokens={getattr(self.player, 'visible_tokens', None)}")
-            print(f"[DEBUG] _draw_tokens_on_map: player.temp_visible_tokens={getattr(self.player, 'temp_visible_tokens', None)}")
         for token in tokens:
             if token.q is not None and token.r is not None:
                 img_path = token.stats.get("image")
@@ -227,7 +216,6 @@ class PanelMapa(tk.Frame):
                     clicked_token = token
                     break
         if clicked_token:
-            print(f"[DEBUG][PanelMapa] Kliknięto na {clicked_token.id}, movement_mode_locked={clicked_token.movement_mode_locked}")
             # Sprawdź, czy kliknięty żeton należy do aktywnego gracza
             if clicked_token:
                 # Sprawdź właściciela żetonu (owner może być np. '2 (Polska)')
@@ -301,17 +289,9 @@ class PanelMapa(tk.Frame):
                             from tkinter import messagebox
                             messagebox.showerror("Błąd ruchu", msg)
                         if success:
-                            # Debug: wypisz widoczność wszystkich graczy po ruchu
-                            for p in self.game_engine.players:
-                                print(f"[DEBUG][PoRuchu] Player {getattr(p, 'id', '?')} visible_tokens: {getattr(p, 'visible_tokens', None)}")
                             self.selected_token_id = None
                         self.current_path = None
                         self.refresh()
-                        print(f"[DEBUG] Po ruchu: self.tokens id={id(self.tokens)}, engine.tokens id={id(self.game_engine.tokens)}")
-                        print(f"[DEBUG] Po ruchu: {[t.id for t in self.tokens]}")
-                        if hasattr(self, 'player'):
-                            print(f"[DEBUG] Po ruchu: player.visible_tokens={getattr(self.player, 'visible_tokens', None)}")
-                            print(f"[DEBUG] Po ruchu: player.temp_visible_tokens={getattr(self.player, 'temp_visible_tokens', None)}")
                     else:
                         pass
                 else:
@@ -374,7 +354,6 @@ class PanelMapa(tk.Frame):
             self.refresh()
 
     def _visualize_combat(self, attacker, defender, msg):
-        print(f"[DEBUG] Przed walką: attacker {attacker.id} combat_value={getattr(attacker, 'combat_value', '?')}, defender {defender.id} combat_value={getattr(defender, 'combat_value', '?')}")
         # 1. Podświetlenie pól atakującego i broniącego (mgiełka)
         ax, ay = self.map_model.hex_to_pixel(attacker.q, attacker.r)
         dx, dy = self.map_model.hex_to_pixel(defender.q, defender.r)
@@ -443,7 +422,7 @@ class PanelMapa(tk.Frame):
         def print_after_refresh():
             att = next((t for t in self.tokens if t.id == attacker.id), None)
             defn = next((t for t in self.tokens if t.id == defender.id), None)
-            print(f"[DEBUG] Po walce: attacker {attacker.id} combat_value={getattr(att, 'combat_value', '?') if att else 'X'}, defender {defender.id} combat_value={getattr(defn, 'combat_value', '?') if defn else 'X'}")
+            # Usunięto printy debugujące
         self.canvas.after(600, print_after_refresh)
 
     # Dodane: metoda do ładowania stanu gry (przykładowa implementacja)
@@ -470,7 +449,7 @@ class PanelMapa(tk.Frame):
             self.game_engine.turn = state.get('turn', self.game_engine.turn)
             # Odśwież widok
             self.refresh()
-            print(f"[DEBUG] Stan gry załadowany: tura {self.game_engine.turn}, gracz {self.game_engine.current_player_id}")
+            # Usunięto printy debugujące
         except Exception as e:
             print(f"[ERROR] Ładowanie stanu gry nie powiodło się: {e}")
 
@@ -486,30 +465,11 @@ class PanelMapa(tk.Frame):
             with open('save_game.json', 'w') as f:
                 import json
                 json.dump(state, f, ensure_ascii=False, indent=4)
-            print("[DEBUG] Stan gry zapisany")
+            # Usunięto printy debugujące
         except Exception as e:
             print(f"[ERROR] Zapisywanie stanu gry nie powiodło się: {e}")
 
     # Dodane: debug metoda do wypisywania aktualnego stanu gry w konsoli
     def debug_print_game_state(self):
-        print("[DEBUG] Aktualny stan gry:")
-        print(f"  Tura: {self.game_engine.turn}")
-        print(f"  Aktywny gracz: {self.game_engine.current_player_id}")
-        print("  Żetony:")
-        for token in self.tokens:
-            print(f"    Token ID {token.id}: ({token.q}, {token.r}), właściciel={token.owner}, tryb ruchu={token.movement_mode}, punkty ruchu={token.currentMovePoints}")
-        print("  Widoczność gracza:")
-        if hasattr(self.player, 'visible_tokens'):
-            print(f"    Widoczne tokeny: {self.player.visible_tokens}")
-        if hasattr(self.player, 'temp_visible_tokens'):
-            print(f"    Tymczasowo widoczne tokeny: {self.player.temp_visible_tokens}")
-        if hasattr(self.player, 'visible_hexes'):
-            print(f"    Widoczne heksy: {self.player.visible_hexes}")
-        if hasattr(self.player, 'temp_visible_hexes'):
-            print(f"    Tymczasowo widoczne heksy: {self.player.temp_visible_hexes}")
-        print(f"[DEBUG] PanelMapa: self.tokens id={id(self.tokens)}, engine.tokens id={id(self.game_engine.tokens)} (po load/save)")
-        print(f"[DEBUG] PanelMapa: {[t.id for t in self.tokens]}")
-        if hasattr(self, 'player'):
-            print(f"[DEBUG] PanelMapa: player.visible_tokens={getattr(self.player, 'visible_tokens', None)}")
-            print(f"[DEBUG] PanelMapa: player.temp_visible_tokens={getattr(self.player, 'temp_visible_tokens', None)}")
-        print(f"[DEBUG][PanelMapa] Kliknięto na {clicked_token.id}, movement_mode_locked={clicked_token.movement_mode_locked}")
+        # Usunięto wszystkie printy debugujące
+        pass
