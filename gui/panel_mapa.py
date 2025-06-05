@@ -308,23 +308,23 @@ class PanelMapa(tk.Frame):
                                 update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
                             # --- AUTOMATYCZNA REAKCJA WROGÓW ---
                             moved_token = token  # żeton, który się ruszał
+                            print(f"[DEBUG] Sprawdzam reakcję wrogów na ruch żetonu {moved_token.id} ({moved_token.owner}) na ({moved_token.q},{moved_token.r})")
                             for enemy in self.game_engine.tokens:
                                 if enemy.id == moved_token.id or enemy.owner == moved_token.owner:
                                     continue
-                                # Sprawdź pole widzenia wroga
                                 sight = enemy.stats.get('sight', 0)
                                 dist = self.game_engine.board.hex_distance((enemy.q, enemy.r), (moved_token.q, moved_token.r))
                                 in_sight = dist <= sight
-                                # Sprawdź zasięg ataku
                                 attack_range = enemy.stats.get('attack', {}).get('range', 1)
                                 in_range = dist <= attack_range
+                                print(f"[DEBUG] Wróg {enemy.id} ({enemy.owner}) na ({enemy.q},{enemy.r}): dystans={dist}, sight={sight}, attack_range={attack_range}, in_sight={in_sight}, in_range={in_range}")
                                 if in_sight and in_range:
-                                    # Oznacz żeton jako wykryty do końca tury
+                                    print(f"[REAKCJA WROGA] {enemy.id} ({enemy.owner}) atakuje {moved_token.id} ({moved_token.owner})!")
                                     setattr(moved_token, 'wykryty_do_konca_tury', True)
                                     from engine.action import CombatAction
                                     action = CombatAction(enemy.id, moved_token.id)
                                     success2, msg2 = self.game_engine.execute_action(action)
-                                    print(f"[REAKCJA WROGA] {enemy.id} atakuje {moved_token.id}: {msg2}")
+                                    print(f"[WYNIK REAKCJI] {enemy.id} -> {moved_token.id}: {msg2}")
                                     self._visualize_combat(enemy, moved_token, msg2)
                         if not success:
                             from tkinter import messagebox
