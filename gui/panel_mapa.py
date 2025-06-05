@@ -306,6 +306,12 @@ class PanelMapa(tk.Frame):
                             for enemy in self.game_engine.tokens:
                                 if enemy.id == moved_token.id or enemy.owner == moved_token.owner:
                                     continue
+                                # Blokada: nie atakuj własnych żetonów (Polak na Polaka, Niemiec na Niemca)
+                                nation_enemy = enemy.owner.split('(')[-1].replace(')','').strip()
+                                nation_moved = moved_token.owner.split('(')[-1].replace(')','').strip()
+                                if nation_enemy == nation_moved:
+                                    print(f"[DEBUG] Blokada: {enemy.id} ({enemy.owner}) nie atakuje własnego żetonu {moved_token.id} ({moved_token.owner})!")
+                                    continue
                                 sight = enemy.stats.get('sight', 0)
                                 dist = self.game_engine.board.hex_distance((enemy.q, enemy.r), (moved_token.q, moved_token.r))
                                 in_sight = dist <= sight
