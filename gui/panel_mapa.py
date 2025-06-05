@@ -306,6 +306,26 @@ class PanelMapa(tk.Frame):
                             from engine.engine import update_all_players_visibility
                             if hasattr(self.game_engine, 'players'):
                                 update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
+                            # --- AUTOMATYCZNA REAKCJA WROGÓW ---
+                            moved_token = token  # żeton, który się ruszał
+                            for enemy in self.game_engine.tokens:
+                                if enemy.id == moved_token.id or enemy.owner == moved_token.owner:
+                                    continue
+                                # Sprawdź pole widzenia wroga
+                                sight = enemy.stats.get('sight', 0)
+                                dist = self.game_engine.board.hex_distance((enemy.q, enemy.r), (moved_token.q, moved_token.r))
+                                in_sight = dist <= sight
+                                # Sprawdź zasięg ataku
+                                attack_range = enemy.stats.get('attack', {}).get('range', 1)
+                                in_range = dist <= attack_range
+                                if in_sight and in_range:
+                                    # Oznacz żeton jako wykryty do końca tury
+                                    setattr(moved_token, 'wykryty_do_konca_tury', True)
+                                    from engine.action import CombatAction
+                                    action = CombatAction(enemy.id, moved_token.id)
+                                    success2, msg2 = self.game_engine.execute_action(action)
+                                    print(f"[REAKCJA WROGA] {enemy.id} atakuje {moved_token.id}: {msg2}")
+                                    self._visualize_combat(enemy, moved_token, msg2)
                         if not success:
                             from tkinter import messagebox
                             messagebox.showerror("Błąd ruchu", msg)
