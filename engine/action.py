@@ -183,15 +183,15 @@ class CombatAction(Action):
         # Odejmij straty
         defender.combat_value = max(0, getattr(defender, 'combat_value', 0) - attack_result)
         attacker.combat_value = max(0, getattr(attacker, 'combat_value', 0) - defense_result)
-        # Zaktualizuj w stats (dla spójności z GUI)
-        defender.stats['combat_value'] = defender.combat_value
-        attacker.stats['combat_value'] = attacker.combat_value
+        # NIE NADPISUJEMY stats['combat_value']!
+        # defender.stats['combat_value'] = defender.combat_value  # USUNIĘTO! To jest wartość bazowa, nie zmieniamy jej.
+        # attacker.stats['combat_value'] = attacker.combat_value  # USUNIĘTO!
         print(f"  Po walce: obrońca {defender.combat_value}, atakujący {attacker.combat_value}")
         # Eliminacja obrońcy
         if defender.combat_value <= 0:
             if random.random() < 0.5:
                 defender.combat_value = 1
-                defender.stats['combat_value'] = 1
+                # defender.stats['combat_value'] = 1  # USUNIĘTO!
                 # Cofnij obrońcę o 1 pole (prosty algorytm: odsuń od atakującego)
                 dq = defender.q - attacker.q
                 dr = defender.r - attacker.r

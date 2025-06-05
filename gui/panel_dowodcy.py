@@ -208,11 +208,19 @@ class PanelDowodcy:
         def zatwierdz():
             ile_fuel = var_fuel.get()
             ile_combat = var_combat.get()
+            # Uzupełnianie paliwa
             token.currentFuel += ile_fuel
+            max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', 0))
+            if token.currentFuel > max_fuel:
+                token.currentFuel = max_fuel
+            # Uzupełnianie zasobów bojowych
+            max_combat = token.stats.get('combat_value', 0)
             if hasattr(token, 'combat_value'):
                 token.combat_value += ile_combat
             else:
                 token.combat_value = ile_combat
+            if token.combat_value > max_combat:
+                token.combat_value = max_combat
             if callback:
                 callback(ile_fuel, ile_combat)
             win.destroy()
