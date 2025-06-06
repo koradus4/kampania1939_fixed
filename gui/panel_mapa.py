@@ -290,7 +290,7 @@ class PanelMapa(tk.Frame):
                             for enemy in self.game_engine.tokens:
                                 if enemy.id == moved_token.id or enemy.owner == moved_token.owner:
                                     continue
-                                # Blokada: nie atakuj własnych żetonów (Polak na Polaka, Niemiec na Niemca)
+                                # Blokada: nie atakuje własnych żetonów
                                 nation_enemy = enemy.owner.split('(')[-1].replace(')','').strip()
                                 nation_moved = moved_token.owner.split('(')[-1].replace(')','').strip()
                                 if nation_enemy == nation_moved:
@@ -310,6 +310,8 @@ class PanelMapa(tk.Frame):
                                     success2, msg2 = self.game_engine.execute_action(action)
                                     print(f"[WYNIK REAKCJI] {enemy.id} -> {moved_token.id}: {msg2}")
                                     self._visualize_combat(enemy, moved_token, msg2)
+                            # --- DODANE: wymuszone odświeżenie mapy po wszystkich reakcjach wrogów ---
+                            self.refresh()
                         if not success:
                             from tkinter import messagebox
                             messagebox.showerror("Błąd ruchu", msg)
@@ -438,11 +440,13 @@ class PanelMapa(tk.Frame):
                 new_q, new_r = int(m.group(1)), int(m.group(2))
                 old_q, old_r = defender.q, defender.r
                 animate_retreat(defender, old_q, old_r, new_q, new_r)
-                blink_token(defender.id, color='red', times=2, delay=120)
+                blink_token(defender.id, color='red', times=2, delay=120, on_end=self.refresh)
         # Domyślnie: krótkie miganie obu żetonów
         else:
-            blink_token(attacker.id, color='orange', times=2, delay=100)
-            blink_token(defender.id, color='orange', times=2, delay=100)
+            def after_blink():
+                self.refresh()
+            blink_token(attacker.id, color='orange', times=2, delay=100, on_end=None)
+            blink_token(defender.id, color='orange', times=2, delay=100, on_end=after_blink)
         # Po animacjach, po odświeżeniu mapy, wypisz wartości po walce
         def print_after_refresh():
             att = next((t for t in self.tokens if t.id == attacker.id), None)
