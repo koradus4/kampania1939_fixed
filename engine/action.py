@@ -192,20 +192,20 @@ class CombatAction(Action):
         print(f"  Po walce: obrońca {defender.combat_value}, atakujący {attacker.combat_value}")
         # Eliminacja obrońcy
         if defender.combat_value <= 0:
+            import random
             if random.random() < 0.5:
                 defender.combat_value = 1
-                # Cofnij obrońcę o 1 pole (prosty algorytm: odsuń od atakującego)
+                # Cofnij obrońcę o 1 pole (odsuń od atakującego)
                 dq = defender.q - attacker.q
                 dr = defender.r - attacker.r
                 new_q = defender.q + (1 if dq > 0 else -1 if dq < 0 else 0)
                 new_r = defender.r + (1 if dr > 0 else -1 if dr < 0 else 0)
-                # Sprawdź czy pole jest wolne
+                # Sprawdź czy pole jest wolne i istnieje
                 if not engine.board.is_occupied(new_q, new_r) and engine.board.get_tile(new_q, new_r):
                     defender.set_position(new_q, new_r)
                     msg = f"Obrońca przeżył z 1 punktem i cofnął się na ({new_q},{new_r})!"
                 else:
                     # Jeśli nie można się cofnąć, żeton ginie
-                    # --- VP za eliminację obrońcy ---
                     self._award_vp_for_elimination(engine, attacker, defender)
                     engine.tokens.remove(defender)
                     msg = "Obrońca nie mógł się cofnąć i został zniszczony!"
