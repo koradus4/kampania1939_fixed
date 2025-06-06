@@ -130,38 +130,22 @@ class PanelMapa(tk.Frame):
                         continue
                 try:
                     img = Image.open(img_path)
-                    hex_size = self.map_model.hex_size
+                    hex_size = 40  # Ustaw stały rozmiar 40x40
                     img = img.resize((hex_size, hex_size), Image.LANCZOS)
                     tk_img = ImageTk.PhotoImage(img)
                     x, y = self.map_model.hex_to_pixel(token.q, token.r)
                     self.canvas.create_image(x, y, image=tk_img, anchor="center", tags=("token", f"token_{token.id}"))
                     self.token_images[token.id] = tk_img
-                    # Dodaj napis: combat_value (bazowy), punkty ruchu (MP), paliwo i zasięg ataku
-                    base_cv = token.stats.get('combat_value', '?')
-                    curr_cv = getattr(token, 'combat_value', base_cv)
-                    curr_mp = getattr(token, 'currentMovePoints', token.stats.get('move', '?'))
-                    max_mp = getattr(token, 'maxMovePoints', token.stats.get('move', '?'))
-                    curr_fuel = getattr(token, 'currentFuel', token.stats.get('maintenance', '?'))
-                    max_fuel = getattr(token, 'maxFuel', token.stats.get('maintenance', '?'))
-                    # Pobierz zasięg ataku
-                    attack = token.stats.get('attack', '-')
-                    if isinstance(attack, dict):
-                        attack_range = attack.get('range', '-')
-                    elif isinstance(attack, int):
-                        attack_range = '-'
-                    else:
-                        attack_range = '-'
-                    label = f"{curr_cv} ({base_cv})\nMP: {curr_mp} ({max_mp})\nPaliwo: {curr_fuel} ({max_fuel})\nZasięg ataku: {attack_range}"
-                    self.canvas.create_text(x, y+hex_size//2-8, text=label, fill="black", font=("Arial", 10, "bold"), tags="token")
+                    # --- USUNIĘTO: wyświetlanie parametrów tekstowych na żetonie ---
                     # Obwódka zależna od trybu ruchu
-                    border_color = "limegreen"  # domyślnie bojowy
+                    border_color = "yellow"  # domyślnie bojowy
                     if hasattr(token, 'movement_mode'):
                         if token.movement_mode == 'combat':
-                            border_color = "limegreen"
+                            border_color = "yellow"  # bojowy
                         elif token.movement_mode == 'march':
-                            border_color = "red"
+                            border_color = "limegreen"  # marsz
                         elif token.movement_mode == 'recon':
-                            border_color = "yellow"
+                            border_color = "red"  # zwiad
                     if hasattr(self, 'selected_token_id') and token.id == self.selected_token_id:
                         verts = get_hex_vertices(x, y, hex_size)
                         flat = [coord for p in verts for coord in p]
