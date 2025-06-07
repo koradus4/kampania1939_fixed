@@ -22,8 +22,14 @@ class PanelGracza(tk.Frame):
             self.image = Image.new("RGB", (298, 298), color="gray")  # Domyślne szare tło w przypadku błędu
         self.photo = ImageTk.PhotoImage(self.image)
         self.photo_label = tk.Label(self.photo_frame, image=self.photo, bg="white")
-        self.photo_label.image = self.photo  # Referencja, aby obraz nie został usunięty przez GC
-        self.photo_label.pack()
+        self.photo_label.place(x=0, y=0, width=298, height=298)
+
+        # --- DODANE: okno 80x80 px w prawym górnym rogu zdjęcia ---
+        # Prostokąt 80x80, 1 piksel od górnej i prawej ramki zdjęcia
+        self.overlay_frame = tk.Frame(self.photo_frame, bg="lightgray", relief=tk.RAISED, borderwidth=2)
+        self.overlay_frame.place(x=298-80-1, y=1, width=80, height=80)  # WYMUSZONY rozmiar 80x80 px
+        self.overlay_label = tk.Label(self.overlay_frame, text="?", font=("Arial", 24), bg="lightgray")
+        self.overlay_label.pack(expand=True, fill=tk.BOTH)
 
         # Przyciski ZAPISZ/WCZYTAJ GRĘ pod zdjęciem
         btn_frame = tk.Frame(self, bg="white")
