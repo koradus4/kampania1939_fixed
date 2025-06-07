@@ -310,6 +310,9 @@ class PanelMapa(tk.Frame):
                                     success2, msg2 = self.game_engine.execute_action(action)
                                     print(f"[WYNIK REAKCJI] {enemy.id} -> {moved_token.id}: {msg2}")
                                     self._visualize_combat(enemy, moved_token, msg2)
+                                    # Komunikat zwrotny także dla ataku reakcyjnego
+                                    from tkinter import messagebox
+                                    messagebox.showinfo("Wynik walki", msg2)
                             # --- DODANE: wymuszone odświeżenie mapy po wszystkich reakcjach wrogów ---
                             self.refresh()
                         if not success:

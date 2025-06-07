@@ -195,16 +195,24 @@ class CombatAction(Action):
             import random
             if random.random() < 0.5:
                 defender.combat_value = 1
-                # Cofnij obrońcę o 1 pole (odsuń od atakującego)
-                dq = defender.q - attacker.q
-                dr = defender.r - attacker.r
-                new_q = defender.q + (1 if dq > 0 else -1 if dq < 0 else 0)
-                new_r = defender.r + (1 if dr > 0 else -1 if dr < 0 else 0)
-                # Sprawdź czy pole jest wolne i istnieje
-                if not engine.board.is_occupied(new_q, new_r) and engine.board.get_tile(new_q, new_r):
-                    defender.set_position(new_q, new_r)
-                    msg = f"Obrońca przeżył z 1 punktem i cofnął się na ({new_q},{new_r})!"
-                else:
+                # Szukaj wolnego sąsiedniego pola oddalającego od atakującego
+                from engine.hex_utils import get_neighbors
+                neighbors = get_neighbors(defender.q, defender.r)
+                start_dist = engine.board.hex_distance((attacker.q, attacker.r), (defender.q, defender.r))
+                found = False
+                for nq, nr in neighbors:
+                    # Pole musi istnieć i być wolne
+                    if not engine.board.get_tile(nq, nr):
+                        continue
+                    if engine.board.is_occupied(nq, nr):
+                        continue
+                    # Pole musi oddalać od atakującego
+                    if engine.board.hex_distance((attacker.q, attacker.r), (nq, nr)) > start_dist:
+                        defender.set_position(nq, nr)
+                        msg = f"Obrońca przeżył z 1 punktem i cofnął się na ({nq},{nr})!"
+                        found = True
+                        break
+                if not found:
                     # Jeśli nie można się cofnąć, żeton ginie
                     self._award_vp_for_elimination(engine, attacker, defender)
                     engine.tokens.remove(defender)
