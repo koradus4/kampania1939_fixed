@@ -35,6 +35,11 @@
     "r": -1
   },
   {
+    "id": "P_Pluton__2_PL_P_Pluton",
+    "q": 11,
+    "r": 0
+  },
+  {
     "id": "TC_Kompania__3_PL_TC_Kompania",
     "q": 11,
     "r": 13
@@ -113,6 +118,11 @@
     "id": "AC_Batalion__5_N_AC_Batalion_20250603203322",
     "q": 25,
     "r": -6
+  },
+  {
+    "id": "P_Pluton__5_N_P_Pluton_20250607100730",
+    "q": 27,
+    "r": -8
   },
   {
     "id": "P_Kompania__6_N_P_Kompania",

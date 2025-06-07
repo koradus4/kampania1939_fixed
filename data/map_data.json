@@ -1898,7 +1898,11 @@
     "11,0": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Pluton__2_PL_P_Pluton",
+        "image": "tokens/Polska/P_Pluton__2_PL_P_Pluton/token.png"
+      }
     },
     "11,1": {
       "terrain_key": "teren_płaski",
@@ -4637,7 +4641,11 @@
     "27,-8": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
-      "defense_mod": 0
+      "defense_mod": 0,
+      "token": {
+        "unit": "P_Pluton__5_N_P_Pluton_20250607100730",
+        "image": "tokens/Niemcy/P_Pluton__5_N_P_Pluton_20250607100730/token.png"
+      }
     },
     "27,-7": {
       "terrain_key": "duża rzeka",

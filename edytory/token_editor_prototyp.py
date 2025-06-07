@@ -1004,43 +1004,80 @@ class TokenEditor:
 
         # Czcionki
         try:
-            font_nation = ImageFont.truetype("arial.ttf", int(width * 0.13))
-            font_type = ImageFont.truetype("arial.ttf", int(width * 0.10))
+            # Nacja bardzo mała, typ bardzo duży, reszta jak dotąd
+            font_nation = ImageFont.truetype("arial.ttf", int(width * 0.07))
+            font_type = ImageFont.truetype("arialbd.ttf", int(width * 0.19))  # DUŻA, pogrubiona
             font_size = ImageFont.truetype("arial.ttf", int(width * 0.10))
             font_symbol = ImageFont.truetype("arialbd.ttf", int(width * 0.18))
         except Exception:
             font_nation = font_type = font_size = font_symbol = ImageFont.load_default()
 
-        # Kolor tekstu
         text_color = self.variable_text_color if self.variable_text_color else "black"
 
-        # Rozmieszczenie
         margin = 8
         y = margin
 
-        # Nacja
-        bbox_nation = draw.textbbox((0, 0), nation, font=font_nation)
-        x_nation = (width - (bbox_nation[2] - bbox_nation[0])) / 2
-        draw.text((x_nation, y), nation, fill=text_color, font=font_nation)
-        y += bbox_nation[3] - bbox_nation[1] + margin
+        # Nacja – bardzo mała lub pomijana
+        show_nation = False  # Możesz zmienić na True jeśli chcesz wyświetlać nację
+        if show_nation:
+            bbox_nation = draw.textbbox((0, 0), nation, font=font_nation)
+            x_nation = (width - (bbox_nation[2] - bbox_nation[0])) / 2
+            draw.text((x_nation, y), nation, fill=text_color, font=font_nation)
+            y += bbox_nation[3] - bbox_nation[1] + int(margin/2)
 
-        # Pełna nazwa rodzaju jednostki
-        bbox_type = draw.textbbox((0, 0), unit_type_full, font=font_type)
-        x_type = (width - (bbox_type[2] - bbox_type[0])) / 2
-        draw.text((x_type, y), unit_type_full, fill=text_color, font=font_type)
-        y += bbox_type[3] - bbox_type[1] + margin
+        # Pełna nazwa rodzaju jednostki – DUŻA, centralna, z zawijaniem
+        def wrap_text(text, font, max_width):
+            words = text.split()
+            lines = []
+            current = ""
+            for word in words:
+                test = current + (" " if current else "") + word
+                if draw.textlength(test, font=font) <= max_width:
+                    current = test
+                else:
+                    if current:
+                        lines.append(current)
+                    current = word
+            if current:
+                lines.append(current)
+            return lines
 
-        # Nazwa wielkości
+        # Wyznacz linie zawinięte i ich łączną wysokość
+        max_text_width = int(width * 0.9)
+        type_lines = wrap_text(unit_type_full, font_type, max_text_width)
+        total_type_height = sum(draw.textbbox((0,0), line, font=font_type)[3] - draw.textbbox((0,0), line, font=font_type)[1] for line in type_lines)
+        total_type_height += (len(type_lines)-1) * 2  # odstęp między liniami
+
+        bbox_size = draw.textbbox((0, 0), unit_size, font=font_size)
+        size_height = bbox_size[3] - bbox_size[1]
+        bbox_symbol = draw.textbbox((0, 0), unit_symbol, font=font_symbol)
+        symbol_height = bbox_symbol[3] - bbox_symbol[1]
+        margin = 8
+        gap_type_to_size = margin * 2  # duży odstęp pod nazwą rodzaju jednostki
+        gap_size_to_symbol = 2         # bardzo mały odstęp pod nazwą wielkości
+        total_height = total_type_height + gap_type_to_size + size_height + gap_size_to_symbol + symbol_height
+
+        # Wyśrodkuj całość pionowo
+        y = (height - total_height) // 2
+
+        # Rysuj linie nazwy rodzaju jednostki
+        for line in type_lines:
+            bbox = draw.textbbox((0, 0), line, font=font_type)
+            x = (width - (bbox[2] - bbox[0])) / 2
+            draw.text((x, y), line, fill=text_color, font=font_type)
+            y += bbox[3] - bbox[1] + 2  # odstęp między liniami
+        y += gap_type_to_size - 2  # po ostatniej linii, bo już +2 było dodane
+
+        # Nazwa wielkości (Pluton/Kompania/Batalion) – bezpośrednio nad symbolem
         bbox_size = draw.textbbox((0, 0), unit_size, font=font_size)
         x_size = (width - (bbox_size[2] - bbox_size[0])) / 2
         draw.text((x_size, y), unit_size, fill=text_color, font=font_size)
-        y += bbox_size[3] - bbox_size[1] + margin
+        y += bbox_size[3] - bbox_size[1] + gap_size_to_symbol
 
-        # Symbol wielkości – na środku żetonu
+        # Symbol wielkości – bezpośrednio pod nazwą wielkości
         bbox_symbol = draw.textbbox((0, 0), unit_symbol, font=font_symbol)
         x_symbol = (width - (bbox_symbol[2] - bbox_symbol[0])) / 2
-        y_symbol = (height + y) // 2 - (bbox_symbol[3] - bbox_symbol[1]) // 2
-        draw.text((x_symbol, y_symbol), unit_symbol, fill=text_color, font=font_symbol)
+        draw.text((x_symbol, y), unit_symbol, fill=text_color, font=font_symbol)
 
         return token_img
 

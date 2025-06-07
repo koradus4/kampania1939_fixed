@@ -276,6 +276,29 @@
     "h": 240
   },
   {
+    "id": "P_Pluton__5_N_P_Pluton_20250607100730",
+    "nation": "Niemcy",
+    "unitType": "P",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "5_N_P_Pluton",
+    "unit_full_name": "Niemcy Piechota Pluton ***",
+    "move": 5,
+    "attack": {
+      "range": 1,
+      "value": 2
+    },
+    "combat_value": 8,
+    "defense_value": 4,
+    "maintenance": 2,
+    "price": 18,
+    "sight": 3,
+    "owner": "5 (Niemcy)",
+    "image": "assets/tokens/Niemcy/P_Pluton__5_N_P_Pluton_20250607100730/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
     "id": "TC_Batalion__5_N_TC_Batalion",
     "nation": "Niemcy",
     "unitType": "TC",
@@ -663,6 +686,29 @@
     "sight": 3,
     "owner": "3 (Polska)",
     "image": "assets/tokens/Polska/P_Kompania__3_PL_P_Kompania/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "P_Pluton__2_PL_P_Pluton",
+    "nation": "Polska",
+    "unitType": "P",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "2_PL_P_Pluton",
+    "unit_full_name": "Polska Piechota Pluton ***",
+    "move": 5,
+    "attack": {
+      "range": 1,
+      "value": 2
+    },
+    "combat_value": 8,
+    "defense_value": 4,
+    "maintenance": 2,
+    "price": 18,
+    "sight": 3,
+    "owner": "2 (Polska)",
+    "image": "assets/tokens/Polska/P_Pluton__2_PL_P_Pluton/token.png",
     "w": 240,
     "h": 240
   },
