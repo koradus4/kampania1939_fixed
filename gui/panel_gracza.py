@@ -27,17 +27,17 @@ class PanelGracza(tk.Frame):
         self.photo_label = tk.Label(self.photo_frame, image=self.photo, bg="white")
         self.photo_label.place(x=0, y=0, width=298, height=298)
 
-        # --- DODANE: okno 80x80 px w prawym górnym rogu zdjęcia ---
-        # Prostokąt 80x80, 1 piksel od górnej i prawej ramki zdjęcia
+        # --- DODANE: okno 110x80 px w prawym górnym rogu zdjęcia ---
+        # Prostokąt 110x80, 1 piksel od górnej i prawej ramki zdjęcia
         self.overlay_frame = tk.Frame(self.photo_frame, bg="lightgray", relief=tk.RAISED, borderwidth=2)
-        self.overlay_frame.place(x=298-80-1, y=1, width=80, height=80)  # WYMUSZONY rozmiar 80x80 px
+        self.overlay_frame.place(x=298-110-1, y=1, width=110, height=80)  # Zwiększona szerokość
 
         # --- WIDGET VP ---
-        # Etykieta "Punkty zwycięstwa" na górze overlay
-        self.vp_label = tk.Label(self.overlay_frame, text="Punkty zwycięstwa", font=("Arial", 8, "bold"), bg="lightgray")
+        # Etykieta "Punkty zwycięstwa (nacja)" na górze overlay
+        self.vp_label = tk.Label(self.overlay_frame, text="Punkty zwycięstwa (nacja)", font=("Arial", 8, "bold"), bg="lightgray", wraplength=105, justify=tk.CENTER)
         self.vp_label.pack(side=tk.TOP, pady=(4, 2))
-        # Białe pole z wartością VP
-        self.vp_value_box = tk.Frame(self.overlay_frame, bg="white", relief=tk.SUNKEN, borderwidth=2, width=48, height=32)
+        # Białe pole z wartością VP (szersze)
+        self.vp_value_box = tk.Frame(self.overlay_frame, bg="white", relief=tk.SUNKEN, borderwidth=2, width=90, height=32)
         self.vp_value_box.pack(side=tk.TOP, pady=(2, 4))
         self.vp_value_box.pack_propagate(False)
         self.vp_value_label = tk.Label(self.vp_value_box, text="0", font=("Arial", 20, "bold"), bg="white", fg="black")
@@ -143,7 +143,12 @@ class PanelGracza(tk.Frame):
     def update_vp(self):
         """Aktualizuje wyświetlaną wartość punktów zwycięstwa (VP) dla nacji gracza."""
         vp = self.get_nation_vp()
-        self.vp_value_label.config(text=str(vp))
+        # Automatyczne skalowanie czcionki dla dużych liczb
+        if len(str(vp)) >= 4:
+            font = ("Arial", 14, "bold")
+        else:
+            font = ("Arial", 20, "bold")
+        self.vp_value_label.config(text=str(vp), font=font)
 
     def destroy(self):
         # Usuwanie instancji z rejestru przy zamknięciu
