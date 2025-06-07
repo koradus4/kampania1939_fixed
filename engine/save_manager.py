@@ -21,7 +21,8 @@ def save_game(path, engine, active_player=None):
         "tokens": [t.serialize() for t in engine.tokens],
         "players": [player_to_dict(p) for p in getattr(engine, 'players', [])],
         "turn": getattr(engine, 'turn', 1),
-        "current_player": getattr(engine, 'current_player', 0),
+        # ZAPISUJEMY current_player jako id aktywnego gracza
+        "current_player": getattr(engine, 'current_player_obj', getattr(engine, 'current_player', None)).id if hasattr(engine, 'current_player_obj') and getattr(engine, 'current_player_obj', None) else getattr(engine, 'current_player', 0),
         "weather": getattr(engine, 'weather', None).__dict__ if hasattr(engine, 'weather') and getattr(engine, 'weather', None) else None,
         "turn_manager": getattr(engine, 'turn_manager', None).__dict__ if hasattr(engine, 'turn_manager') and getattr(engine, 'turn_manager', None) else None,
         "active_player_info": {
@@ -66,7 +67,9 @@ def load_game(path, engine):
     if "turn" in state:
         engine.turn = state["turn"]
     if "current_player" in state:
+        # Ustaw current_player jako id oraz current_player_obj jako obiekt gracza o tym id
         engine.current_player = state["current_player"]
+        engine.current_player_obj = next((p for p in engine.players if getattr(p, 'id', None) == engine.current_player), None)
     if "weather" in state and state["weather"]:
         if hasattr(engine, "weather") and engine.weather:
             engine.weather.__dict__.update(state["weather"])
