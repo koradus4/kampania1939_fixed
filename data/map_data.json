@@ -9532,6 +9532,11 @@
       }
     }
   },
-  "key_points": {},
+  "key_points": {
+    "6,7": {
+      "type": "miasto",
+      "value": 100
+    }
+  },
   "spawn_points": {}
 }
