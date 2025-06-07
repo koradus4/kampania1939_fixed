@@ -432,9 +432,17 @@ class PanelMapa(tk.Frame):
         # Eliminacja obrońcy
         if 'obrońca został zniszczony' in msg_l or 'obrońca nie mógł się cofnąć' in msg_l:
             blink_token(defender.id, color='red', times=4, delay=100, on_end=lambda: animate_remove(defender.id))
+            # Aktualizacja VP po eliminacji
+            if hasattr(self, 'panel_dowodcy') and hasattr(self.panel_dowodcy, 'panel_gracza'):
+                from gui.panel_gracza import PanelGracza
+                PanelGracza.update_all_vp()
         # Eliminacja atakującego
         elif 'atakujący został zniszczony' in msg_l:
             blink_token(attacker.id, color='red', times=4, delay=100, on_end=lambda: animate_remove(attacker.id))
+            # Aktualizacja VP po eliminacji
+            if hasattr(self, 'panel_dowodcy') and hasattr(self.panel_dowodcy, 'panel_gracza'):
+                from gui.panel_gracza import PanelGracza
+                PanelGracza.update_all_vp()
         # Cofanie obrońcy
         elif 'cofnął się na' in msg_l:
             import re

@@ -35,8 +35,8 @@ class PanelDowodcy:
         self.left_frame.pack_propagate(False)
 
         # Panel gracza
-        panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path, self.game_engine, player=self.gracz)
-        panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
+        self.panel_gracza = PanelGracza(self.left_frame, self.gracz.name, self.gracz.image_path, self.game_engine, player=self.gracz)
+        self.panel_gracza.pack(pady=(10, 1), fill=tk.BOTH, expand=False)
 
         # Pozostały czas NAD sekcją właściwości żetonu
         self.timer_frame = tk.Label(self.left_frame, text=f"Pozostały czas: {self.remaining_time // 60}:{self.remaining_time % 60:02d}", font=("Arial", 14, "bold"), bg="#6B8E23", fg="white", relief=tk.RAISED, borderwidth=4)

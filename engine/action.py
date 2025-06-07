@@ -236,15 +236,18 @@ class CombatAction(Action):
         return True, msg
 
     def _award_vp_for_elimination(self, engine, winner_token, loser_token):
-        """Przyznaje VP za eliminację żetonu."""
+        """Przyznaje VP za eliminację żetonu oraz odejmuje VP przeciwnikowi."""
         # Znajdź gracza-właściciela winner_token
         winner_player = None
+        loser_player = None
         for p in getattr(engine, 'players', []):
             if hasattr(winner_token, 'owner') and p and winner_token.owner == f"{p.id} ({p.nation})":
                 winner_player = p
-                break
+            if hasattr(loser_token, 'owner') and p and loser_token.owner == f"{p.id} ({p.nation})":
+                loser_player = p
+        price = loser_token.stats.get('price', 0)
+        # Dodaj punkty zwycięstwa zwycięzcy
         if winner_player is not None:
-            price = loser_token.stats.get('price', 0)
             winner_player.victory_points += price
             # Dodaj do historii
             winner_player.vp_history.append({
@@ -253,4 +256,15 @@ class CombatAction(Action):
                 'reason': 'eliminacja',
                 'token_id': loser_token.id,
                 'enemy': loser_token.owner
+            })
+        # ODEJMIJ punkty przegranemu
+        if loser_player is not None:
+            loser_player.victory_points -= price
+            # Dodaj do historii
+            loser_player.vp_history.append({
+                'turn': getattr(engine, 'turn', None),
+                'amount': -price,
+                'reason': 'utrata',
+                'token_id': loser_token.id,
+                'enemy': winner_token.owner
             })

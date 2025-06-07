@@ -2,10 +2,13 @@ import tkinter as tk
 from PIL import Image, ImageTk
 
 class PanelGracza(tk.Frame):
+    _instances = []  # Lista wszystkich instancji PanelGracza
+
     def __init__(self, parent, name, image_path, game_engine, player=None, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.game_engine = game_engine
         self.player = player
+        PanelGracza._instances.append(self)  # Rejestracja instancji
 
         # Ramka na nazwisko
         self.name_label = tk.Label(self, text=name, font=("Arial", 12), bg="white", relief=tk.SUNKEN, borderwidth=2, wraplength=280, justify=tk.CENTER, height=2)
@@ -28,8 +31,20 @@ class PanelGracza(tk.Frame):
         # Prostokąt 80x80, 1 piksel od górnej i prawej ramki zdjęcia
         self.overlay_frame = tk.Frame(self.photo_frame, bg="lightgray", relief=tk.RAISED, borderwidth=2)
         self.overlay_frame.place(x=298-80-1, y=1, width=80, height=80)  # WYMUSZONY rozmiar 80x80 px
-        self.overlay_label = tk.Label(self.overlay_frame, text="?", font=("Arial", 24), bg="lightgray")
-        self.overlay_label.pack(expand=True, fill=tk.BOTH)
+
+        # --- WIDGET VP ---
+        # Etykieta "Punkty zwycięstwa" na górze overlay
+        self.vp_label = tk.Label(self.overlay_frame, text="Punkty zwycięstwa", font=("Arial", 8, "bold"), bg="lightgray")
+        self.vp_label.pack(side=tk.TOP, pady=(4, 2))
+        # Białe pole z wartością VP
+        self.vp_value_box = tk.Frame(self.overlay_frame, bg="white", relief=tk.SUNKEN, borderwidth=2, width=48, height=32)
+        self.vp_value_box.pack(side=tk.TOP, pady=(2, 4))
+        self.vp_value_box.pack_propagate(False)
+        self.vp_value_label = tk.Label(self.vp_value_box, text="0", font=("Arial", 20, "bold"), bg="white", fg="black")
+        self.vp_value_label.pack(expand=True, fill=tk.BOTH)
+
+        # --- METODA AKTUALIZACJI VP ---
+        PanelGracza.update_all_vp()
 
         # Przyciski ZAPISZ/WCZYTAJ GRĘ pod zdjęciem
         btn_frame = tk.Frame(self, bg="white")
@@ -97,6 +112,8 @@ class PanelGracza(tk.Frame):
                         messagebox.showinfo("Wczytanie gry", msg)
                     else:
                         messagebox.showinfo("Wczytanie gry", "Gra została wczytana!")
+                    # --- Aktualizacja VP po wczytaniu gry ---
+                    PanelGracza.update_all_vp()
                 except Exception as e:
                     messagebox.showerror("Błąd wczytywania", str(e))
 
@@ -105,6 +122,34 @@ class PanelGracza(tk.Frame):
         self.btn_save.pack(side=tk.LEFT, padx=6)
         self.btn_load = tk.Button(btn_frame, text="Wczytaj grę", command=self.on_load, bg="saddlebrown", fg="white", font=("Arial", 11, "bold"), width=12)
         self.btn_load.pack(side=tk.LEFT, padx=6)
+
+    @classmethod
+    def update_all_vp(cls):
+        for inst in cls._instances:
+            inst.update_vp()
+
+    def get_nation_vp(self):
+        """Zwraca sumę punktów zwycięstwa dla nacji tego gracza."""
+        if not self.player or not hasattr(self.player, 'nation'):
+            return 0
+        nation = self.player.nation
+        # Pobierz listę graczy z game_engine
+        players = getattr(self.game_engine, 'players', None)
+        if not players:
+            # fallback: tylko ten gracz
+            return getattr(self.player, 'victory_points', 0)
+        return sum(getattr(p, 'victory_points', 0) for p in players if getattr(p, 'nation', None) == nation)
+
+    def update_vp(self):
+        """Aktualizuje wyświetlaną wartość punktów zwycięstwa (VP) dla nacji gracza."""
+        vp = self.get_nation_vp()
+        self.vp_value_label.config(text=str(vp))
+
+    def destroy(self):
+        # Usuwanie instancji z rejestru przy zamknięciu
+        if self in PanelGracza._instances:
+            PanelGracza._instances.remove(self)
+        super().destroy()
 
 # Testowanie modułu
 if __name__ == "__main__":
