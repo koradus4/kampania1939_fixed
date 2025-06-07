@@ -213,7 +213,7 @@ class PanelGenerala:
         dowodcy = [g for g in self.gracze if g.nation == self.gracz.nation and g.role == "Dowódca"]
         def refresh_points():
             self.update_economy()
-        TokenShop(self.root, self.ekonomia, dowodcy, on_purchase_callback=refresh_points)
+        TokenShop(self.root, self.ekonomia, dowodcy, on_purchase_callback=refresh_points, nation=self.gracz.nation)
 
     def update_timer(self):
         """Aktualizuje odliczanie czasu."""
