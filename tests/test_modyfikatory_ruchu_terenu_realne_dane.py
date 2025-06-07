@@ -57,3 +57,6 @@ def test_token_move_mod_realdata():
     # Sprawdź, czy punkty ruchu odjęto zgodnie z sumą move_mod na trasie
     assert token.currentMovePoints == start_mp - path_cost, (
         f"MP po ruchu nie zgadza się z sumą move_mod! Było: {start_mp}, powinno być: {start_mp - path_cost}, jest: {token.currentMovePoints}, koszt trasy: {path_cost}, trasa: {found_path}")
+
+# test_modyfikatory_ruchu_terenu_realne_dane.py
+# Testuje, czy modyfikatory ruchu są poprawnie uwzględniane na prawdziwych danych

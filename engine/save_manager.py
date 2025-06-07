@@ -15,18 +15,7 @@ def _ensure_saves_dir(path):
 def save_game(path, engine, active_player=None):
     path = _ensure_saves_dir(path)
     def player_to_dict(p):
-        d = p.__dict__.copy()
-        # Serializuj economy jako dict, nie jako obiekt
-        if hasattr(p, "economy") and p.economy is not None:
-            if hasattr(p.economy, "__dict__"):
-                d["economy"] = p.economy.__dict__.copy()
-            else:
-                d["economy"] = p.economy
-        # Zamień sety na listy (JSON nie obsługuje setów)
-        for key in ["visible_hexes", "visible_tokens", "temp_visible_hexes", "temp_visible_tokens"]:
-            if key in d and isinstance(d[key], set):
-                d[key] = [list(x) if isinstance(x, tuple) else x for x in d[key]]
-        return d
+        return p.serialize()
 
     state = {
         "tokens": [t.serialize() for t in engine.tokens],
@@ -59,7 +48,10 @@ def load_game(path, engine):
     engine.players = []
     for pdata in state["players"]:
         player = Player(pdata["id"], pdata["nation"], pdata["role"], pdata.get("time_limit", 5), pdata.get("image_path"), None)
-        player.__dict__.update(pdata)
+        # NIE nadpisuj __dict__ w całości, tylko ustaw kluczowe atrybuty:
+        # (aby nie nadpisać np. referencji do economy)
+        player.victory_points = pdata.get("victory_points", 0)
+        player.vp_history = pdata.get("vp_history", [])
         # Odtwórz economy jako obiekt EconomySystem
         if "economy" in pdata and isinstance(pdata["economy"], dict):
             econ = EconomySystem()
@@ -67,8 +59,8 @@ def load_game(path, engine):
             player.economy = econ
         # Zamień listy na sety tupli (odtwarzanie widoczności)
         for key in ["visible_hexes", "visible_tokens", "temp_visible_hexes", "temp_visible_tokens"]:
-            if key in player.__dict__ and isinstance(player.__dict__[key], list):
-                player.__dict__[key] = set(tuple(x) if isinstance(x, list) else x for x in player.__dict__[key])
+            if key in pdata and isinstance(pdata[key], list):
+                setattr(player, key, set(tuple(x) if isinstance(x, list) else x for x in pdata[key]))
         engine.players.append(player)
     # Odtwórz inne stany
     if "turn" in state:
@@ -86,7 +78,7 @@ def load_game(path, engine):
         else:
             engine.turn_manager = types.SimpleNamespace(**state["turn_manager"])
     # Po wczytaniu przelicz widoczność
-    from engine.engine import update_all_players_visibility
-    update_all_players_visibility(engine.players, engine.tokens, engine.board)
+    # from engine.engine import update_all_players_visibility
+    # update_all_players_visibility(engine.players, engine.tokens, engine.board)
     # Zwróć info o aktywnym graczu (do synchronizacji GUI)
     return state.get("active_player_info", None)

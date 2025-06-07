@@ -81,7 +81,14 @@ class Player:
             'name': self.name,
             'time_limit': self.time_limit,
             'image_path': self.image_path,
-            'map_path': self.map_path
+            'map_path': self.map_path,
+            'victory_points': self.victory_points,
+            'vp_history': self.vp_history,
+            'economy': self.economy.__dict__ if self.economy else None,
+            'visible_hexes': [list(x) if isinstance(x, tuple) else x for x in self.visible_hexes],
+            'visible_tokens': [list(x) if isinstance(x, tuple) else x for x in self.visible_tokens],
+            'temp_visible_hexes': [list(x) if isinstance(x, tuple) else x for x in self.temp_visible_hexes],
+            'temp_visible_tokens': [list(x) if isinstance(x, tuple) else x for x in self.temp_visible_tokens],
         }
 
     def __str__(self):

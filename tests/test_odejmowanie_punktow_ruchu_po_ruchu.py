@@ -4,7 +4,9 @@ from engine.action import MoveAction
 
 @pytest.mark.integration
 def test_token_move_points_are_modified():
-    """Testuje czy po ruchu żetonu zmieniają się jego punkty ruchu (currentMovePoints)."""
+    """Testuje czy po ruchu żetonu zmieniają się jego punkty ruchu (currentMovePoints).
+    Sprawdza, czy po ruchu żetonu odpowiednio zmniejszają się jego punkty ruchu
+    """
     engine = GameEngine(
         map_path="data/map_data.json",
         tokens_index_path="assets/tokens/index.json",

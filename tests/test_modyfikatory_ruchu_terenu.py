@@ -1,4 +1,5 @@
 # test_token_move_mod.py
+# Sprawdza, czy modyfikatory ruchu (np. przez las, rzekę) działają poprawnie
 from engine.board import Board
 from engine.token import Token
 from engine.action import MoveAction
