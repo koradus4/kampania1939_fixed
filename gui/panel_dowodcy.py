@@ -93,6 +93,22 @@ class PanelDowodcy:
 
         self.update_timer()
 
+        # --- Przycisk wystawiania nowych jednostek ---
+        self.btn_deploy = tk.Button(
+            self.left_frame,
+            text="Wystaw nowe jednostki",
+            font=("Arial", 14, "bold"),
+            bg="#6B8E23",
+            fg="white",
+            relief=tk.RAISED,
+            borderwidth=4,
+            activebackground="#556B2F",
+            activeforeground="white",
+            command=self.open_deploy_window
+        )
+        self.btn_deploy.pack(pady=8, fill=tk.X)
+        self.update_deploy_button_state()
+
     def update_timer(self):
         if self.root.winfo_exists():
             if self.remaining_time > 0:
@@ -286,3 +302,42 @@ class PanelDowodcy:
             self.uzupelnij_zeton(token, max_fuel_do_uzupelnienia, max_combat_do_uzupelnienia, max_lacznie, callback)
         btn.config(command=on_uzupelnij)
         self.btn_tankuj = btn
+
+    def update_deploy_button_state(self):
+        import os
+        folder = f"assets/tokens/nowe_dla_{self.gracz.id}/"
+        has_new = os.path.exists(folder) and any(os.scandir(folder))
+        if has_new:
+            self.btn_deploy.config(state="normal")
+            self._start_deploy_blink()
+        else:
+            self.btn_deploy.config(state="disabled", bg="#6B8E23")
+            self._stop_deploy_blink()
+
+    def _start_deploy_blink(self):
+        # Miganie przycisku jeśli są nowe żetony
+        if hasattr(self, '_deploy_blinking') and self._deploy_blinking:
+            return
+        self._deploy_blinking = True
+        def blink():
+            if not self._deploy_blinking:
+                self.btn_deploy.config(bg="#6B8E23")
+                return
+            current = self.btn_deploy.cget("bg")
+            new_bg = "#FFD700" if current == "#6B8E23" else "#6B8E23"
+            self.btn_deploy.config(bg=new_bg)
+            self.root.after(600, blink)
+        blink()
+
+    def _stop_deploy_blink(self):
+        self._deploy_blinking = False
+        self.btn_deploy.config(bg="#6B8E23")
+
+    def open_deploy_window(self):
+        try:
+            from gui.deploy_new_tokens import DeployNewTokensWindow
+        except ImportError:
+            import tkinter as tk
+            tk.messagebox.showerror("Błąd", "Brak pliku deploy_new_tokens.py lub klasy DeployNewTokensWindow!")
+            return
+        DeployNewTokensWindow(self.root, self.gracz)
