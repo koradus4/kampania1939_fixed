@@ -100,6 +100,10 @@ class PanelGenerala:
         # Uruchomienie timera
         self.update_timer()
 
+        # Dodaj przycisk zakupu nowych jednostek
+        self.buy_units_btn = tk.Button(self.left_frame, text="Zakup nowe jednostki", font=("Arial", 13, "bold"), bg="#6B8E23", fg="white", command=self.open_token_shop)
+        self.buy_units_btn.pack(pady=(5, 5), fill=tk.BOTH, expand=False)
+
     def update_weather(self, weather_report):
         self.weather_panel.update_weather(weather_report)
 
@@ -202,6 +206,14 @@ class PanelGenerala:
         win.transient(self.root)
         win.grab_set()
         win.wait_window()
+
+    def open_token_shop(self):
+        from gui.token_shop import TokenShop
+        # Lista dowódców tej samej nacji
+        dowodcy = [g for g in self.gracze if g.nation == self.gracz.nation and g.role == "Dowódca"]
+        def refresh_points():
+            self.update_economy()
+        TokenShop(self.root, self.ekonomia, dowodcy, on_purchase_callback=refresh_points)
 
     def update_timer(self):
         """Aktualizuje odliczanie czasu."""
