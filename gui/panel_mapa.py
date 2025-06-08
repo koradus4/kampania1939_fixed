@@ -357,7 +357,6 @@ class PanelMapa(tk.Frame):
             token = next((t for t in self.tokens if t.id == self.selected_token_id), None)
             if token:
                 path = self.game_engine.board.find_path((token.q, token.r), hr, max_mp=token.currentMovePoints, max_fuel=getattr(token, 'currentFuel', 9999))
-                print(f"[DEBUG][MAPA] find_path: start=({token.q},{token.r}), goal={hr}, MP={token.currentMovePoints}, Fuel={getattr(token, 'currentFuel', 9999)} -> path={path}")
                 if path:
                     # POLICZ RZECZYWISTY KOSZT RUCHU
                     real_cost = 0
@@ -420,7 +419,6 @@ class PanelMapa(tk.Frame):
                         pass
                 else:
                     from tkinter import messagebox
-                    print(f"[DEBUG][MAPA] Brak możliwej ścieżki do celu z ({token.q},{token.r}) do {hr}!")
                     messagebox.showerror("Błąd", "Brak możliwej ścieżki do celu!")
         else:
             self.selected_token_id = None
