@@ -25,10 +25,13 @@ class MoveAction(Action):
         tile = engine.board.get_tile(self.dest_q, self.dest_r)
         if tile is None:
             return False, "Brak pola docelowego."
+        print(f"[DEBUG][MOVE] Próba ruchu: token={token.id}, start={start}, goal={goal}, MP={token.currentMovePoints}, Fuel={token.currentFuel}")
+        print(f"[DEBUG][MOVE] Pole docelowe: {tile}, move_mod={getattr(tile, 'move_mod', None)}, spawn_nation={getattr(tile, 'spawn_nation', None)}")
         # Usuwamy blokadę na wejście na pole z wrogiem, ale nie pozwalamy wejść na pole z sojusznikiem
         if engine.board.is_occupied(self.dest_q, self.dest_r):
             for t in engine.tokens:
                 if t.q == self.dest_q and t.r == self.dest_r and t.owner == token.owner:
+                    print(f"[DEBUG][MOVE] Pole zajęte przez sojusznika: {t.id} na ({t.q},{t.r})")
                     return False, "Pole zajęte przez sojusznika."
         # --- MNOŻNIKI TRYBÓW RUCHU ---
         movement_mode = getattr(token, 'movement_mode', 'combat')
@@ -42,17 +45,22 @@ class MoveAction(Action):
             token.maxFuel = token.stats.get('maintenance', 0)
         if not hasattr(token, 'currentFuel'):
             token.currentFuel = token.maxFuel
+        print(f"[DEBUG][MOVE] MP po trybie: {token.currentMovePoints}, maxFuel={token.maxFuel}, currentFuel={token.currentFuel}")
         if token.currentMovePoints <= 0 or token.currentFuel <= 0:
+            print(f"[DEBUG][MOVE] Brak punktów ruchu lub paliwa!")
             return False, "Brak punktów ruchu lub paliwa."
         if tile.move_mod == -1:
+            print(f"[DEBUG][MOVE] Pole nieprzejezdne!")
             return False, "Pole nieprzejezdne."
         # Pathfinding
-        # Ustal widoczne żetony dla gracza (jeśli gracz istnieje)
         visible_tokens = None
         if player is not None and hasattr(player, 'visible_tokens'):
             visible_tokens = set(player.visible_tokens)
+        print(f"[DEBUG][MOVE] Wywołanie find_path: start={start}, goal={goal}, max_mp={token.currentMovePoints}, max_fuel={token.currentFuel}, visible_tokens={visible_tokens}")
         path = engine.board.find_path(start, goal, max_mp=token.currentMovePoints, max_fuel=token.currentFuel, visible_tokens=visible_tokens)
+        print(f"[DEBUG][MOVE] Wynik find_path: {path}")
         if not path:
+            print(f"[DEBUG][MOVE] Brak ścieżki do celu!")
             return False, "Brak ścieżki do celu."
         # Oblicz koszt ruchu i paliwa po ścieżce
         path_cost = 0

@@ -101,7 +101,18 @@ class PanelGenerala:
         self.update_timer()
 
         # Dodaj przycisk zakupu nowych jednostek
-        self.buy_units_btn = tk.Button(self.left_frame, text="Zakup nowe jednostki", font=("Arial", 13, "bold"), bg="#6B8E23", fg="white", command=self.open_token_shop)
+        self.buy_units_btn = tk.Button(
+            self.left_frame,
+            text="Zakup nowe jednostki",
+            font=("Arial", 13, "bold"),
+            bg="#6B8E23",
+            fg="white",
+            relief=tk.RAISED,
+            borderwidth=4,
+            activebackground="#7CA942",
+            activeforeground="white",
+            command=self.open_token_shop
+        )
         self.buy_units_btn.pack(pady=(5, 5), fill=tk.BOTH, expand=False)
 
     def update_weather(self, weather_report):

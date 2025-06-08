@@ -267,44 +267,92 @@ class TokenShop(tk.Toplevel):
         self.unit_full_name_var.set(unit_full_name)
 
     def update_stats(self):
-        # Logika jak w update_numeric_fields z token_editor_prototyp.py
+        # Pełna logika jak w update_numeric_fields z token_editor_prototyp.py
         ut = self.unit_type.get()
         size = self.unit_size.get()
-        # Domyślne wartości
+        # Domyślne wartości (pełne, jak w edytorze)
         defaults = {
-            "ruch": {"P": 5, "TC": 18, "AC": 12, "AP": 16},
-            "range": {"P": 1, "TC": 3, "AC": 6, "AP": 4},
-            "attack": {
-                "Pluton": {"P": 2, "TC": 6, "AC": 6, "AP": 3},
-                "Kompania": {"P": 4, "TC": 10, "AC": 9, "AP": 6},
-                "Batalion": {"P": 8, "TC": 18, "AC": 12, "AP": 9}
+            "ruch": {
+                "P": 5, "K": 16, "TC": 18, "TŚ": 20, "TL": 22, "TS": 24,
+                "AC": 12, "AL": 14, "AP": 16, "Z": 20, "D": 16, "G": 16
             },
-            "combat": {"P__Pluton": 8, "P__Kompania": 24, "P__Batalion": 48, "AC__Pluton": 6, "AC__Kompania": 18, "AC__Batalion": 36, "TC__Pluton": 10, "TC__Kompania": 30, "TC__Batalion": 60, "AP__Pluton": 5, "AP__Kompania": 15, "AP__Batalion": 30},
-            "unit_maintenance": {"Pluton": {"P": 2, "TC": 5, "AC": 3, "AP": 3}, "Kompania": {"P": 4, "TC": 10, "AC": 6, "AP": 6}, "Batalion": {"P": 8, "TC": 15, "AC": 12, "AP": 9}},
-            "purchase": {"Pluton": {"P": 18, "TC": 24, "AC": 22, "AP": 18}, "Kompania": {"P": 36, "TC": 48, "AC": 44, "AP": 36}, "Batalion": {"P": 54, "TC": 72, "AC": 66, "AP": 54}},
-            "sight": {"P": 3, "TC": 2, "AC": 3, "AP": 3},
-            "defense": {"Pluton": {"P": 4, "TC": 7, "AC": 2, "AP": 2}, "Kompania": {"P": 10, "TC": 18, "AC": 6, "AP": 5}, "Batalion": {"P": 20, "TC": 36, "AC": 12, "AP": 10}}
+            "range": {
+                "P": 1, "K": 1, "TC": 3, "TŚ": 3, "TL": 2, "TS": 2,
+                "AC": 6, "AL": 4, "AP": 4, "Z": 1, "D": 0, "G": 0
+            },
+            "attack": {
+                "Pluton": {"P": 2, "K": 3, "TC": 6, "TŚ": 5, "TL": 4, "TS": 3, "AC": 6, "AL": 4, "AP": 3, "Z": 1, "D": 0, "G": 0},
+                "Kompania": {"P": 4, "K": 6, "TC": 10, "TŚ": 8, "TL": 7, "TS": 6, "AC": 9, "AL": 7, "AP": 6, "Z": 2, "D": 0, "G": 0},
+                "Batalion": {"P": 8, "K": 9, "TC": 18, "TŚ": 15, "TL": 12, "TS": 10, "AC": 12, "AL": 10, "AP": 9, "Z": 3, "D": 0, "G": 0}
+            },
+            "combat": {"P__Pluton": 8, "P__Kompania": 24, "P__Batalion": 48, "AC__Pluton": 6, "AC__Kompania": 18, "AC__Batalion": 36, "TC__Pluton": 10, "TC__Kompania": 30, "TC__Batalion": 60, "AL__Pluton": 7, "AL__Kompania": 21, "AL__Batalion": 42, "AP__Pluton": 5, "AP__Kompania": 15, "AP__Batalion": 30},
+            "unit_maintenance": {
+                "Pluton": {"P": 2, "K": 3, "TC": 5, "TŚ": 4, "TL": 3, "TS": 2, "AC": 3, "AL": 3, "AP": 3, "Z": 2, "D": 0, "G": 0},
+                "Kompania": {"P": 4, "K": 6, "TC": 10, "TŚ": 8, "TL": 6, "TS": 5, "AC": 6, "AL": 6, "AP": 6, "Z": 4, "D": 0, "G": 0},
+                "Batalion": {"P": 8, "K": 9, "TC": 15, "TŚ": 12, "TL": 10, "TS": 8, "AC": 12, "AL": 10, "AP": 9, "Z": 6, "D": 0, "G": 0}
+            },
+            "purchase": {
+                "Pluton": {"P": 18, "K": 20, "TC": 24, "TŚ": 22, "TL": 20, "TS": 18, "AC": 22, "AL": 20, "AP": 18, "Z": 16, "D": 60, "G": 60},
+                "Kompania": {"P": 36, "K": 40, "TC": 48, "TŚ": 44, "TL": 40, "TS": 36, "AC": 44, "AL": 40, "AP": 36, "Z": 32, "D": 60, "G": 60},
+                "Batalion": {"P": 54, "K": 60, "TC": 72, "TŚ": 66, "TL": 60, "TS": 54, "AC": 66, "AL": 60, "AP": 54, "Z": 48, "D": 60, "G": 60}
+            },
+            "sight": {"P": 3, "K": 3, "TC": 2, "TŚ": 2, "TL": 2, "TS": 3, "AC": 3, "AL": 3, "AP": 3, "D": 4, "G": 4, "Z": 2}
         }
-        ruch = defaults["ruch"].get(ut, 0)
-        zasieg = defaults["range"].get(ut, 1)
-        atak = defaults["attack"][size].get(ut, 1)
-        combat = defaults["combat"].get(f"{ut}__{size}", 1)
-        obrona = defaults["defense"][size].get(ut, 1)
-        maintenance = defaults["unit_maintenance"][size].get(ut, 1)
-        cena = defaults["purchase"][size].get(ut, 1)
-        sight = defaults["sight"].get(ut, 1)
-        # Modyfikatory wsparcia
+        # Domyślne wartości
+        ruch = int(defaults["ruch"].get(ut, 0))
+        zasieg = int(defaults["range"].get(ut, 0))
+        atak = int(defaults["attack"][size].get(ut, 0))
+        combat = int(defaults["combat"].get(f"{ut}__{size}", 0))
+        # Obrona
+        defense_defaults = {
+            "Pluton": {"P": 4, "TC": 7, "AC": 2, "AL": 3, "AP": 2},
+            "Kompania": {"P": 10, "TC": 18, "AC": 6, "AL": 7, "AP": 5},
+            "Batalion": {"P": 20, "TC": 36, "AC": 12, "AL": 14, "AP": 10}
+        }
+        obrona = int(defense_defaults.get(size, {}).get(ut, 0))
+        # Maintenance i cena
+        maintenance = int(defaults["unit_maintenance"][size].get(ut, 0))
+        cena = int(defaults["purchase"][size].get(ut, 0))
+        sight = int(defaults["sight"].get(ut, 0))
+        # --- Modyfikatory wsparcia i transportu ---
+        # Transport (priorytet)
+        transport = None
+        for t in self.transport_types:
+            if t in self.support_vars and self.support_vars[t].get():
+                transport = t
+                break
+        if transport:
+            upg = self.support_upgrades[transport]
+            ruch += upg["movement"]
+        # Pozostałe wsparcia
+        movement_penalty_applied = False
+        max_range_bonus = 0
         for sup, var in self.support_vars.items():
-            if var.get():
+            if var.get() and sup not in self.transport_types:
                 upg = self.support_upgrades[sup]
-                ruch += upg["movement"]
-                zasieg += upg["range"]
+                # Kara do ruchu tylko raz
+                if upg["movement"] < 0 and not movement_penalty_applied:
+                    ruch -= 1
+                    movement_penalty_applied = True
                 atak += upg["attack"]
                 combat += upg["combat"]
-                maintenance += upg["unit_maintenance"]
                 cena += upg["purchase"]
+                maintenance += upg["unit_maintenance"]
+                # Bonus do zasięgu ataku (najwyższy)
+                max_range_bonus = max(max_range_bonus, upg["range"])
+                # Bonus do obrony
                 obrona += upg["defense"]
-        # Aktualizacja labeli
+        # Zastosuj najwyższy bonus do zasięgu ataku
+        if max_range_bonus > 0:
+            zasieg += max_range_bonus
+        # Dolicz maintenance za transport
+        if transport:
+            maintenance += self.support_upgrades[transport]["unit_maintenance"]
+            cena += self.support_upgrades[transport]["purchase"]
+            obrona += self.support_upgrades[transport]["defense"]
+        # Dolicz obronę za transport
+        # Dolicz sight za wsparcia jeśli mają (w przyszłości)
+        # --- Aktualizacja labeli ---
         self.stats_labels["Ruch"].config(text=str(ruch))
         self.stats_labels["Zasięg ataku"].config(text=str(zasieg))
         self.stats_labels["Siła ataku"].config(text=str(atak))
@@ -316,7 +364,6 @@ class TokenShop(tk.Toplevel):
         # Blokada przycisku kupna jeśli brak punktów
         self.buy_btn.config(state="normal" if self.points_var.get() >= cena else "disabled")
         self.current_stats = dict(ruch=ruch, zasieg=zasieg, atak=atak, combat=combat, obrona=obrona, maintenance=maintenance, cena=cena, sight=sight)
-        # Aktualizacja podglądu miniatury
         self.update_token_preview()
 
     def update_token_preview(self):

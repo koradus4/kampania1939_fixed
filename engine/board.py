@@ -26,7 +26,15 @@ class Board:
             k: Tile(*map(int, k.split(",")), v)
             for k, v in d.get("terrain", {}).items()
         }
-        # key_points, spawn_points można dodać później
+        # Dodano: spawn_points
+        self.spawn_points = d.get("spawn_points", {})
+        # Ustaw spawn_nation w terrain na podstawie spawn_points
+        for nation, hex_list in self.spawn_points.items():
+            for hex_id in hex_list:
+                tile = self.terrain.get(hex_id)
+                if tile:
+                    tile.spawn_nation = nation
+        # key_points można dodać później
 
     def hex_to_pixel(self, q: int, r: int) -> Tuple[float, float]:
         # Axial -> pixel (dla pointy-top) z offsetem, by heks 0,0 był w pełni widoczny
@@ -97,17 +105,21 @@ class Board:
                 return path[::-1]
             for neighbor in self.neighbors(*current):
                 tile = self.get_tile(*neighbor)
+                print(f"[DEBUG][PATH] Rozważam neighbor={neighbor}, tile={tile}, move_mod={getattr(tile, 'move_mod', None) if tile else None}")
                 if not tile:
+                    print(f"[DEBUG][PATH] Odrzucam {neighbor} - brak tile")
                     continue
-                # Użyj widocznych żetonów do sprawdzania zajętości
                 if self.is_occupied(*neighbor, visible_tokens=visible_tokens):
+                    print(f"[DEBUG][PATH] Odrzucam {neighbor} - zajęte")
                     continue
                 if tile.move_mod == -1:
+                    print(f"[DEBUG][PATH] Odrzucam {neighbor} - nieprzejezdne")
                     continue
                 move_cost = 1 + tile.move_mod
                 new_mp = cost_so_far[current][0] + move_cost
                 new_fuel = cost_so_far[current][1] + move_cost
                 if new_mp > max_mp or new_fuel > max_fuel:
+                    print(f"[DEBUG][PATH] Odrzucam {neighbor} - za drogo (mp={new_mp}, fuel={new_fuel})")
                     continue
                 if neighbor not in cost_so_far or (new_mp, new_fuel) < cost_so_far[neighbor]:
                     cost_so_far[neighbor] = (new_mp, new_fuel)
