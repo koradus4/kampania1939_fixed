@@ -340,5 +340,5 @@ class PanelDowodcy:
             import tkinter as tk
             tk.messagebox.showerror("Błąd", "Brak pliku deploy_new_tokens.py lub klasy DeployNewTokensWindow!")
             return
-        # Dodane: zapisz referencję do okna deploy
-        self.deploy_window = DeployNewTokensWindow(self.root, self.gracz)
+        # Dodane: zapisz referencję do okna deploy i przekaż self (PanelDowodcy)
+        self.deploy_window = DeployNewTokensWindow(self.root, self.gracz, panel_dowodcy=self)

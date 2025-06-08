@@ -3,9 +3,10 @@ from tkinter import messagebox
 from pathlib import Path
 
 class DeployNewTokensWindow(tk.Toplevel):
-    def __init__(self, parent, gracz):
+    def __init__(self, parent, gracz, panel_dowodcy=None):
         super().__init__(parent)
         self.gracz = gracz
+        self.panel_dowodcy = panel_dowodcy  # zapisz referencję
         self.title(f"Wystawianie nowych jednostek – Dowódca {gracz.id} ({gracz.nation})")
         self.geometry("200x200")
         self.configure(bg="darkolivegreen")
@@ -25,7 +26,18 @@ class DeployNewTokensWindow(tk.Toplevel):
         self.tokens_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self._load_new_tokens()
         # Przycisk zamknięcia
-        tk.Button(self.main_frame, text="Zamknij", command=self.destroy, bg="saddlebrown", fg="white", font=("Arial", 12, "bold")).pack(pady=10, fill=tk.X)
+        tk.Button(self.main_frame, text="Zamknij", command=self._on_close, bg="saddlebrown", fg="white", font=("Arial", 12, "bold")).pack(pady=10, fill=tk.X)
+
+    def _on_close(self):
+        if self.panel_dowodcy:
+            self.panel_dowodcy.update_deploy_button_state()
+        self.destroy()
+
+    def destroy(self):
+        # Nadpisanie destroy, by zawsze odświeżyć stan przycisku
+        if hasattr(self, 'panel_dowodcy') and self.panel_dowodcy:
+            self.panel_dowodcy.update_deploy_button_state()
+        super().destroy()
 
     def _load_new_tokens(self):
         from PIL import Image, ImageTk
