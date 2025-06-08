@@ -30,6 +30,7 @@ class DeployNewTokensWindow(tk.Toplevel):
     def _load_new_tokens(self):
         from PIL import Image, ImageTk
         folder = Path(f"assets/tokens/nowe_dla_{self.gracz.id}/")
+        self.selected_token_path = None  # Dodane: reset wyboru przy każdym ładowaniu
         for widget in self.tokens_frame.winfo_children():
             widget.destroy()
         if not folder.exists():
@@ -37,6 +38,15 @@ class DeployNewTokensWindow(tk.Toplevel):
             return
         found = False
         count = 0
+        def on_token_click(path):
+            self.selected_token_path = path
+            # Podświetl wybraną miniaturę (opcjonalnie)
+            for w in self.tokens_frame.winfo_children():
+                w.config(bg="#556B2F")
+            # Znajdź widget odpowiadający klikniętej miniaturze i podświetl
+            for w in self.tokens_frame.winfo_children():
+                if hasattr(w, 'token_path') and w.token_path == path:
+                    w.config(bg="#FFD700")
         for sub in folder.iterdir():
             if sub.is_dir() and (sub / "token.json").exists():
                 found = True
@@ -52,6 +62,8 @@ class DeployNewTokensWindow(tk.Toplevel):
                 if photo:
                     lbl_img = tk.Label(self.tokens_frame, image=photo, bg="#556B2F")
                     lbl_img.image = photo  # referencja!
+                    lbl_img.token_path = sub  # Dodane: zapamiętaj ścieżkę folderu
+                    lbl_img.bind("<Button-1>", lambda e, p=sub: on_token_click(p))
                     lbl_img.pack(padx=8, pady=8)
                 else:
                     tk.Label(self.tokens_frame, text="(brak miniatury)", bg="#556B2F", fg="gray").pack(padx=8, pady=16)

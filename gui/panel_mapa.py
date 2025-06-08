@@ -119,14 +119,19 @@ class PanelMapa(tk.Frame):
         elif hasattr(self, 'player') and hasattr(self.player, 'visible_tokens'):
             tokens = [t for t in self.tokens if t.id in self.player.visible_tokens]
         for token in tokens:
+            print(f"[DEBUG][TOKEN] id={token.id}, owner={getattr(token, 'owner', None)}, q={token.q}, r={token.r}")
             if token.q is not None and token.r is not None:
                 img_path = token.stats.get("image")
                 if not img_path:
                     nation = token.stats.get('nation', '')
                     img_path = f"assets/tokens/{nation}/{token.id}/token.png"
+                print(f"[DEBUG][TOKEN] img_path={img_path}")
+                print(f"[DEBUG][TOKEN] os.path.exists(img_path)={os.path.exists(img_path)}")
                 if not os.path.exists(img_path):
                     img_path = "assets/tokens/default/token.png" if os.path.exists("assets/tokens/default/token.png") else None
+                    print(f"[DEBUG][TOKEN] używam default img_path={img_path}")
                     if not img_path:
+                        print(f"[DEBUG][TOKEN] Brak obrazka dla {token.id}, pomijam rysowanie.")
                         continue
                 try:
                     img = Image.open(img_path)
@@ -134,6 +139,7 @@ class PanelMapa(tk.Frame):
                     img = img.resize((hex_size, hex_size), Image.LANCZOS)
                     tk_img = ImageTk.PhotoImage(img)
                     x, y = self.map_model.hex_to_pixel(token.q, token.r)
+                    print(f"[DEBUG][TOKEN] Rysuję {token.id} na ({x},{y}) hex_size={hex_size}")
                     self.canvas.create_image(x, y, image=tk_img, anchor="center", tags=("token", f"token_{token.id}"))
                     self.token_images[token.id] = tk_img
                     # --- USUNIĘTO: wyświetlanie parametrów tekstowych na żetonie ---
@@ -156,8 +162,8 @@ class PanelMapa(tk.Frame):
                             fill="",
                             tags="token_sel"
                         )
-                except Exception:
-                    pass
+                except Exception as e:
+                    print(f"[DEBUG][TOKEN] Błąd ładowania/rysowania obrazka dla {token.id}: {e}")
         # Kod spełnia wymagania: synchronizacja żetonów, tagowanie, poprawna mgiełka i widoczność.
 
     def _draw_path_on_map(self):
@@ -194,6 +200,46 @@ class PanelMapa(tk.Frame):
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
         hr = self.map_model.coords_to_hex(x, y)
+        # --- DODANE: obsługa wystawiania żetonu z poczekalni ---
+        if self.panel_dowodcy is not None and hasattr(self.panel_dowodcy, 'deploy_window'):
+            deploy = self.panel_dowodcy.deploy_window
+            if deploy is not None and getattr(deploy, 'selected_token_path', None):
+                import os, json, shutil
+                from engine.token import Token
+                token_folder = deploy.selected_token_path
+                print(f"[DEBUG] Wybrano folder żetonu: {token_folder}")
+                token_json = os.path.join(token_folder, "token.json")
+                if os.path.exists(token_json):
+                    print(f"[DEBUG] Plik token.json istnieje: {token_json}")
+                    with open(token_json, encoding="utf-8") as f:
+                        token_data = json.load(f)
+                    # Ustaw owner na aktualnego gracza
+                    token_owner = f"{self.player.id} ({self.player.nation})"
+                    print(f"[DEBUG] Ustawiam ownera: {token_owner}")
+                    token_data["owner"] = token_owner
+                    # Utwórz obiekt Token
+                    new_token = Token.from_json(token_data)
+                    new_token.set_position(hr[0], hr[1])
+                    new_token.owner = token_owner
+                    print(f"[DEBUG] Utworzono Token: id={new_token.id}, q={new_token.q}, r={new_token.r}, owner={new_token.owner}")
+                    self.game_engine.tokens.append(new_token)
+                    print(f"[DEBUG] Liczba żetonów po dodaniu: {len(self.game_engine.tokens)}")
+                    self.game_engine.board.set_tokens(self.game_engine.tokens)
+                    # Dodaj: aktualizacja widoczności po dodaniu żetonu
+                    from engine.engine import update_all_players_visibility
+                    update_all_players_visibility(self.game_engine.players, self.game_engine.tokens, self.game_engine.board)
+                    # Usuń folder z poczekalni
+                    # shutil.rmtree(token_folder)
+                    print(f"[DEBUG] (ZMIANA) NIE usuwam folderu: {token_folder} - plik PNG potrzebny do rysowania na mapie!")
+                    # Odśwież GUI
+                    self.refresh()
+                    print(f"[DEBUG] Odświeżono mapę po dodaniu żetonu.")
+                    # Zamknij okno deploy
+                    deploy.destroy()
+                    self.panel_dowodcy.deploy_window = None
+                    print(f"[DEBUG] Zamknięto okno deploy.")
+                    return
+        # ...existing code...
         if not hasattr(self, 'selected_token_id'):
             self.selected_token_id = None
         # Sprawdź, czy kliknięto na żeton

@@ -419,6 +419,10 @@ class TokenShop(tk.Toplevel):
         unit_id = f"nowy_{self.unit_type.get()}_{self.unit_size.get()}__{dowodca_id}_{label}_{now}"
         folder = Path("assets/tokens") / f"nowe_dla_{dowodca_id}" / unit_id
         folder.mkdir(parents=True, exist_ok=True)
+        # Zamiast: "image": "token.png",
+        # Ustal ścieżkę względną do pliku PNG względem katalogu głównego projektu
+        # np. assets/tokens/nowe_dla_{dowodca_id}/{unit_id}/token.png
+        rel_img_path = str(folder / "token.png").replace("\\", "/")
         token_json = {
             "id": unit_id,
             "nation": self.nation.get(),
@@ -435,7 +439,7 @@ class TokenShop(tk.Toplevel):
             "price": cena,
             "sight": self.current_stats["sight"],
             "owner": f"{dowodca_id}",
-            "image": "token.png",
+            "image": rel_img_path,
             "w": 240,
             "h": 240
         }
