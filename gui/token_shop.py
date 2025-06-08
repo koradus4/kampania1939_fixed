@@ -213,9 +213,6 @@ class TokenShop(tk.Toplevel):
         self.flag_canvas = tk.Canvas(self.preview_frame, width=120, height=120, bg="dimgray", bd=2, relief=tk.SUNKEN)
         self.flag_canvas.pack(pady=10)
         self.flag_img = None
-        # Przycisk zapisu podglądu jako PNG
-        save_btn = tk.Button(self.preview_frame, text="Zapisz podgląd jako PNG", command=self.save_token_preview_as_png, font=("Arial", 10), bg="#556B2F", fg="white")
-        save_btn.pack(pady=2)
         # Statystyki
         stats_box = tk.Frame(self.preview_frame, bg="darkolivegreen", bd=2, relief=tk.GROOVE)
         stats_box.pack(fill=tk.BOTH, expand=True, pady=5)
@@ -572,42 +569,3 @@ class TokenShop(tk.Toplevel):
         self.info_label.config(text=f"Zakupiono: {unit_full_name} (koszt: {cena})", fg="green")
         if self.on_purchase_callback:
             self.on_purchase_callback()
-
-    def save_token_preview_as_png(self):
-        try:
-            from tkinter import filedialog
-            # Generuj aktualny obrazek podglądu
-            width, height = 120, 120
-            nation = self.nation.get()
-            unit_type = self.unit_type.get()
-            unit_size = self.unit_size.get()
-            base_bg = create_flag_background(nation, width, height)
-            token_img = base_bg.copy()
-            draw = ImageDraw.Draw(token_img)
-            draw.rectangle([0, 0, width, height], outline="black", width=3)
-            unit_type_full = {
-                "P": "Piechota",
-                "K": "Kawaleria",
-                "TC": "Czołg ciężki",
-                "TŚ": "Czołg średni",
-                "TL": "Czołg lekki",
-                "TS": "Sam. pancerny",
-                "AC": "Artyleria ciężka",
-                "AL": "Artyleria lekka",
-                "AP": "Artyleria plot",
-                "Z": "Zaopatrzenie",
-                "D": "Dowództwo",
-                "G": "Generał"
-            }.get(unit_type, unit_type)
-            unit_symbol = {"Pluton": "***", "Kompania": "I", "Batalion": "II"}.get(unit_size, "")
-            font = ImageFont.truetype("arial.ttf", 16) if os.path.exists("arial.ttf") else ImageFont.load_default()
-            draw.text((10, 10), unit_type_full, fill="black", font=font)
-            draw.text((10, 40), unit_size, fill="black", font=font)
-            draw.text((10, 70), unit_symbol, fill="black", font=font)
-            # Okno dialogowe do wyboru ścieżki
-            file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png")], title="Zapisz podgląd żetonu jako PNG")
-            if file_path:
-                token_img.save(file_path, format="PNG")
-                messagebox.showinfo("Zapisano", f"Podgląd żetonu zapisany jako: {file_path}")
-        except Exception as e:
-            messagebox.showerror("Błąd zapisu", f"Nie udało się zapisać pliku PNG:\n{e}\n{traceback.format_exc()}")
