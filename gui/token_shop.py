@@ -213,6 +213,9 @@ class TokenShop(tk.Toplevel):
         self.flag_canvas = tk.Canvas(self.preview_frame, width=120, height=120, bg="dimgray", bd=2, relief=tk.SUNKEN)
         self.flag_canvas.pack(pady=10)
         self.flag_img = None
+        # Przycisk zapisu podglądu jako PNG
+        save_btn = tk.Button(self.preview_frame, text="Zapisz podgląd jako PNG", command=self.save_token_preview_as_png, font=("Arial", 10), bg="#556B2F", fg="white")
+        save_btn.pack(pady=2)
         # Statystyki
         stats_box = tk.Frame(self.preview_frame, bg="darkolivegreen", bd=2, relief=tk.GROOVE)
         stats_box.pack(fill=tk.BOTH, expand=True, pady=5)
@@ -237,13 +240,13 @@ class TokenShop(tk.Toplevel):
         self.update_stats()
 
     def update_unit_names(self):
-        # Generuje label i unit_full_name jak w TokenEditor
+        # Generuje label i unit_full_name jak w TokenEditor, z dodanym słowem 'nowy'
         nation = self.nation.get()
         unit_type = self.unit_type.get()
         unit_size = self.unit_size.get()
         dowodca_id = self.selected_commander.get()
         nation_short = "PL" if nation == "Polska" else ("N" if nation == "Niemcy" else nation[:2].upper())
-        label = f"{dowodca_id}_{nation_short}_{unit_type}_{unit_size}"
+        label = f"nowy_{dowodca_id}_{nation_short}_{unit_type}_{unit_size}"
         unit_type_full = {
             "P": "Piechota",
             "K": "Kawaleria",
@@ -413,7 +416,7 @@ class TokenShop(tk.Toplevel):
         # --- Generuj unikalny id ---
         import datetime
         now = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        unit_id = f"{self.unit_type.get()}_{self.unit_size.get()}__{dowodca_id}_{label}_{now}"
+        unit_id = f"nowy_{self.unit_type.get()}_{self.unit_size.get()}__{dowodca_id}_{label}_{now}"
         folder = Path("assets/tokens") / f"nowe_dla_{dowodca_id}" / unit_id
         folder.mkdir(parents=True, exist_ok=True)
         token_json = {
@@ -439,17 +442,78 @@ class TokenShop(tk.Toplevel):
         import json
         with open(folder / "token.json", "w", encoding="utf-8") as f:
             json.dump(token_json, f, indent=2, ensure_ascii=False)
-        # --- Obrazek: flaga nacji ---
-        img = Image.new("RGBA", (240, 240), (200, 200, 200, 255))
-        draw = ImageDraw.Draw(img)
-        if self.nation.get() == "Polska":
-            draw.rectangle([0, 0, 240, 120], fill="white")
-            draw.rectangle([0, 120, 240, 240], fill="red")
-        elif self.nation.get() == "Niemcy":
-            draw.rectangle([0, 0, 240, 80], fill="black")
-            draw.rectangle([0, 80, 240, 160], fill="red")
-            draw.rectangle([0, 160, 240, 240], fill="gold")
-        img.save(folder / "token.png")
+        # --- Obrazek: żeton jak w podglądzie ---
+        width, height = 240, 240
+        nation = self.nation.get()
+        unit_type = self.unit_type.get()
+        unit_size = self.unit_size.get()
+        base_bg = create_flag_background(nation, width, height)
+        token_img = base_bg.copy()
+        draw = ImageDraw.Draw(token_img)
+        draw.rectangle([0, 0, width, height], outline="black", width=6)
+        unit_type_full = {
+            "P": "Piechota",
+            "K": "Kawaleria",
+            "TC": "Czołg ciężki",
+            "TŚ": "Czołg średni",
+            "TL": "Czołg lekki",
+            "TS": "Sam. pancerny",
+            "AC": "Artyleria ciężka",
+            "AL": "Artyleria lekka",
+            "AP": "Artyleria plot",
+            "Z": "Zaopatrzenie",
+            "D": "Dowództwo",
+            "G": "Generał"
+        }.get(unit_type, unit_type)
+        unit_symbol = {"Pluton": "***", "Kompania": "I", "Batalion": "II"}.get(unit_size, "")
+        try:
+            font_type = ImageFont.truetype("arialbd.ttf", 38)
+            font_size = ImageFont.truetype("arial.ttf", 22)
+            font_symbol = ImageFont.truetype("arialbd.ttf", 36)
+        except Exception:
+            font_type = font_size = font_symbol = ImageFont.load_default()
+        margin = 12
+        def wrap_text(text, font, max_width):
+            words = text.split()
+            lines = []
+            line = ""
+            for w in words:
+                test = line + (" " if line else "") + w
+                if draw.textlength(test, font=font) <= max_width:
+                    line = test
+                else:
+                    if line:
+                        lines.append(line)
+                    line = w
+            if line:
+                lines.append(line)
+            return lines
+        max_text_width = int(width * 0.9)
+        type_lines = wrap_text(unit_type_full, font_type, max_text_width)
+        total_type_height = sum(draw.textbbox((0,0), line, font=font_type)[3] - draw.textbbox((0,0), line, font=font_type)[1] for line in type_lines)
+        total_type_height += (len(type_lines)-1) * 4
+        bbox_size = draw.textbbox((0,0), unit_size, font=font_size)
+        size_height = bbox_size[3] - bbox_size[1]
+        bbox_symbol = draw.textbbox((0,0), unit_symbol, font=font_symbol)
+        symbol_height = bbox_symbol[3] - bbox_symbol[1]
+        gap_type_to_size = margin * 2
+        gap_size_to_symbol = 4
+        total_height = total_type_height + gap_type_to_size + size_height + gap_size_to_symbol + symbol_height
+        y = (height - total_height) // 2
+        for line in type_lines:
+            bbox = draw.textbbox((0, 0), line, font=font_type)
+            x = (width - (bbox[2] - bbox[0])) / 2
+            draw.text((x, y), line, fill="black", font=font_type)
+            y += bbox[3] - bbox[1] + 4
+        y += gap_type_to_size - 4
+        bbox_size = draw.textbbox((0, 0), unit_size, font=font_size)
+        x_size = (width - (bbox_size[2] - bbox_size[0])) / 2
+        draw.text((x_size, y), unit_size, fill="black", font=font_size)
+        y += bbox_size[3] - bbox_size[1] + gap_size_to_symbol
+        bbox_symbol = draw.textbbox((0, 0), unit_symbol, font=font_symbol)
+        x_symbol = (width - (bbox_symbol[2] - bbox_symbol[0])) / 2
+        draw.text((x_symbol, y), unit_symbol, fill="black", font=font_symbol)
+        token_img.save(folder / "token.png")
         # Odejmij punkty
         self.points_var.set(self.points_var.get() - cena)
         self.points_label.config(text=f"Dostępne punkty ekonomiczne: {self.points_var.get()}")
@@ -457,3 +521,42 @@ class TokenShop(tk.Toplevel):
         self.info_label.config(text=f"Zakupiono: {unit_full_name} (koszt: {cena})", fg="green")
         if self.on_purchase_callback:
             self.on_purchase_callback()
+
+    def save_token_preview_as_png(self):
+        try:
+            from tkinter import filedialog
+            # Generuj aktualny obrazek podglądu
+            width, height = 120, 120
+            nation = self.nation.get()
+            unit_type = self.unit_type.get()
+            unit_size = self.unit_size.get()
+            base_bg = create_flag_background(nation, width, height)
+            token_img = base_bg.copy()
+            draw = ImageDraw.Draw(token_img)
+            draw.rectangle([0, 0, width, height], outline="black", width=3)
+            unit_type_full = {
+                "P": "Piechota",
+                "K": "Kawaleria",
+                "TC": "Czołg ciężki",
+                "TŚ": "Czołg średni",
+                "TL": "Czołg lekki",
+                "TS": "Sam. pancerny",
+                "AC": "Artyleria ciężka",
+                "AL": "Artyleria lekka",
+                "AP": "Artyleria plot",
+                "Z": "Zaopatrzenie",
+                "D": "Dowództwo",
+                "G": "Generał"
+            }.get(unit_type, unit_type)
+            unit_symbol = {"Pluton": "***", "Kompania": "I", "Batalion": "II"}.get(unit_size, "")
+            font = ImageFont.truetype("arial.ttf", 16) if os.path.exists("arial.ttf") else ImageFont.load_default()
+            draw.text((10, 10), unit_type_full, fill="black", font=font)
+            draw.text((10, 40), unit_size, fill="black", font=font)
+            draw.text((10, 70), unit_symbol, fill="black", font=font)
+            # Okno dialogowe do wyboru ścieżki
+            file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png")], title="Zapisz podgląd żetonu jako PNG")
+            if file_path:
+                token_img.save(file_path, format="PNG")
+                messagebox.showinfo("Zapisano", f"Podgląd żetonu zapisany jako: {file_path}")
+        except Exception as e:
+            messagebox.showerror("Błąd zapisu", f"Nie udało się zapisać pliku PNG:\n{e}\n{traceback.format_exc()}")
