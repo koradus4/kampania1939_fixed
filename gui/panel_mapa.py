@@ -258,14 +258,21 @@ class PanelMapa(tk.Frame):
                     new_token.currentFuel = new_token.maxFuel
                     # Skopiuj PNG do katalogu docelowego jeśli wymagane (np. assets/tokens/aktualne/)
                     png_src = os.path.join(token_folder, "token.png")
+                    json_src = os.path.join(token_folder, "token.json")
                     if os.path.exists(png_src):
                         dest_dir = os.path.join("assets", "tokens", "aktualne")
                         os.makedirs(dest_dir, exist_ok=True)
-                        png_dst = os.path.join(dest_dir, os.path.basename(token_folder) + ".png")
+                        base_name = os.path.basename(token_folder)
+                        png_dst = os.path.join(dest_dir, base_name + ".png")
                         shutil.copy2(png_src, png_dst)
                         # print(f"[DEBUG] Skopiowano PNG do: {png_dst}")
                         # Ustaw nową ścieżkę do obrazka w stats['image']
                         new_token.stats['image'] = png_dst.replace('\\', '/')
+                    # Skopiuj również token.json do katalogu aktualne
+                    if os.path.exists(json_src):
+                        json_dst = os.path.join(dest_dir, base_name + ".json")
+                        shutil.copy2(json_src, json_dst)
+                        # print(f"[DEBUG] Skopiowano JSON do: {json_dst}")
                     # print(f"[DEBUG] Utworzono Token: id={new_token.id}, q={new_token.q}, r={new_token.r}, owner={new_token.owner}")
                     self.game_engine.tokens.append(new_token)
                     # print(f"[DEBUG] Liczba żetonów po dodaniu: {len(self.game_engine.tokens)}")

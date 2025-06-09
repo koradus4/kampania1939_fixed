@@ -1,9 +1,5 @@
 # Plan systemu walki – wersja 1 (zatwierdzony)
 
-## 1. Warunki ataku
-- Atakujący widzi i ma w zasięgu ataku jednostkę przeciwnika.
-- Atak inicjuje się prawym przyciskiem myszy na żetonie przeciwnika.
-
 ## 2. Liczba ataków
 - Atakujący może wykonać tyle ataków, ile ma niewykorzystanych punktów ruchu (`move`).
 - Każdy atak kosztuje 1 punkt ruchu żetonu atakującego.
@@ -38,14 +34,6 @@
   - Jeśli broniący przeżywa z 1 punktem combat_value: żeton broniącego miga na czerwono, po czym automatycznie cofa się o jedno pole i wraca do normalnego wyglądu.
   - Jeśli atakujący zostaje wyeliminowany: żeton atakującego miga kilka razy na czerwono, po czym znika z planszy.
 - Po zakończeniu animacji wszystkie pola i żetony wracają do normalnego wyglądu.
-
----
-
-**Zalety:**
-- Prosty, dynamiczny system.
-- Każdy atak to wymiana strat.
-- Teren ma realny wpływ na obronę.
-- Możliwość „ostatniej szansy” dla obrońcy.
 
 ---
 

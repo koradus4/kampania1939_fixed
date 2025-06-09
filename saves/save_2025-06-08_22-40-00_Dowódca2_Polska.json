@@ -2107,6 +2107,40 @@
       "movement_mode": "combat",
       "movement_mode_locked": false,
       "combat_value": 60
+    },
+    {
+      "id": "nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250608223938",
+      "owner": "2 (Polska)",
+      "stats": {
+        "move": 5,
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "label": "nowy_2_PL_P_Pluton",
+        "unit_full_name": "Polska Piechota Pluton ***",
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "image": "assets/tokens/aktualne/nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250608223938.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 0,
+      "r": 0,
+      "maxMovePoints": 5,
+      "currentMovePoints": 5,
+      "maxFuel": 2,
+      "currentFuel": 2,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 8
     }
   ],
   "players": [
@@ -2121,8 +2155,8 @@
       "victory_points": 0,
       "vp_history": [],
       "economy": {
-        "economic_points": 54,
-        "special_points": 2,
+        "economic_points": 21,
+        "special_points": 1,
         "assigned_points": 0
       },
       "visible_hexes": [
@@ -2293,6 +2327,10 @@
         [
           8,
           4
+        ],
+        [
+          0,
+          0
         ],
         [
           3,
@@ -2689,6 +2727,10 @@
         [
           9,
           4
+        ],
+        [
+          2,
+          -1
         ],
         [
           5,
@@ -3225,6 +3267,10 @@
         [
           8,
           6
+        ],
+        [
+          1,
+          0
         ],
         [
           1,
@@ -3476,6 +3522,10 @@
         ],
         [
           0,
+          1
+        ],
+        [
+          0,
           10
         ],
         [
@@ -3576,36 +3626,37 @@
         ]
       ],
       "visible_tokens": [
+        "TC_Pluton__3_PL_TC_Pluton_20250607192721",
+        "P_Pluton__3_PL_P_Pluton",
+        "AC_Pluton__3_PL_AC_Pluton_20250607192749",
+        "TC_Kompania__2_PL_TC_Kompania",
+        "P_Pluton__2_PL_P_Pluton_20250607191242",
+        "TC_Batalion__3_PL_TC_Batalion",
+        "TC_Pluton__2_PL_TC_Pluton_20250607191407",
         "AC_Batalion__3_PL_AC_Batalion",
         "AC_Batalion__2_PL_AC_Batalion",
-        "AC_Pluton__3_PL_AC_Pluton_20250607192749",
-        "AC_Pluton__3_PL_AC_Pluton",
-        "P_Pluton__3_PL_P_Pluton_20250607192706",
-        "P_Pluton__2_PL_P_Pluton_20250607191251",
-        "TC_Pluton__2_PL_TC_Pluton",
-        "P_Pluton__3_PL_P_Pluton",
-        "P_Pluton__2_PL_P_Pluton",
-        "TC_Batalion__2_PL_TC_Batalion",
-        "AC_Pluton__2_PL_AC_Pluton",
-        "AP_Pluton__3_PL_AP_Pluton",
-        "TC_Pluton__3_PL_TC_Pluton",
-        "TC_Kompania__2_PL_TC_Kompania",
-        "P_Pluton__3_PL_P_Pluton_20250607192659",
-        "AC_Kompania__2_PL_AC_Kompania",
-        "P_Pluton__2_PL_P_Pluton_20250607191242",
-        "AP_Pluton__3_PL_AP_Pluton_20250607192826",
-        "TC_Pluton__3_PL_TC_Pluton_20250607192721",
         "P_Batalion__2_PL_P_Batalion",
+        "P_Pluton__2_PL_P_Pluton_20250607191251",
+        "AP_Pluton__3_PL_AP_Pluton_20250607192830",
+        "TC_Batalion__2_PL_TC_Batalion",
+        "AC_Kompania__2_PL_AC_Kompania",
+        "P_Pluton__3_PL_P_Pluton_20250607192659",
+        "AC_Pluton__2_PL_AC_Pluton",
+        "AC_Pluton__3_PL_AC_Pluton",
+        "TC_Kompania__3_PL_TC_Kompania",
+        "AP_Pluton__3_PL_AP_Pluton_20250607192826",
+        "TC_Pluton__2_PL_TC_Pluton",
         "AP_Pluton__2_PL_AP_Pluton",
         "P_Kompania__2_PL_P_Kompania",
-        "AP_Pluton__2_PL_AP_Pluton_20250607191546",
-        "AP_Pluton__3_PL_AP_Pluton_20250607192830",
-        "AC_Kompania__3_PL_AC_Kompania",
-        "TC_Kompania__3_PL_TC_Kompania",
-        "TC_Batalion__3_PL_TC_Batalion",
         "AP_Pluton__2_PL_AP_Pluton_20250607191551",
+        "P_Pluton__2_PL_P_Pluton",
+        "P_Pluton__3_PL_P_Pluton_20250607192706",
+        "AP_Pluton__2_PL_AP_Pluton_20250607191546",
         "AC_Pluton__2_PL_AC_Pluton_20250607191446",
-        "TC_Pluton__2_PL_TC_Pluton_20250607191407"
+        "AC_Kompania__3_PL_AC_Kompania",
+        "TC_Pluton__3_PL_TC_Pluton",
+        "AP_Pluton__3_PL_AP_Pluton",
+        "nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250608223938"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -3621,7 +3672,7 @@
       "victory_points": 0,
       "vp_history": [],
       "economy": {
-        "economic_points": 55,
+        "economic_points": 0,
         "special_points": 0,
         "assigned_points": 0
       },
@@ -3776,6 +3827,10 @@
         ],
         [
           0,
+          0
+        ],
+        [
+          0,
           9
         ],
         [
@@ -3989,6 +4044,10 @@
         [
           10,
           3
+        ],
+        [
+          1,
+          0
         ],
         [
           1,
@@ -4208,6 +4267,14 @@
         ],
         [
           0,
+          1
+        ],
+        [
+          2,
+          -1
+        ],
+        [
+          0,
           10
         ],
         [
@@ -4316,22 +4383,23 @@
         ]
       ],
       "visible_tokens": [
-        "AC_Batalion__2_PL_AC_Batalion",
-        "AC_Kompania__2_PL_AC_Kompania",
-        "P_Pluton__2_PL_P_Pluton_20250607191242",
-        "P_Pluton__2_PL_P_Pluton_20250607191251",
-        "TC_Kompania__2_PL_TC_Kompania",
-        "P_Batalion__2_PL_P_Batalion",
         "AP_Pluton__2_PL_AP_Pluton",
-        "AP_Pluton__2_PL_AP_Pluton_20250607191546",
         "TC_Pluton__2_PL_TC_Pluton",
+        "TC_Kompania__2_PL_TC_Kompania",
         "P_Kompania__2_PL_P_Kompania",
+        "P_Pluton__2_PL_P_Pluton_20250607191242",
+        "TC_Pluton__2_PL_TC_Pluton_20250607191407",
+        "AC_Batalion__2_PL_AC_Batalion",
+        "P_Batalion__2_PL_P_Batalion",
+        "P_Pluton__2_PL_P_Pluton_20250607191251",
         "AP_Pluton__2_PL_AP_Pluton_20250607191551",
         "P_Pluton__2_PL_P_Pluton",
-        "TC_Batalion__2_PL_TC_Batalion",
-        "AC_Pluton__2_PL_AC_Pluton",
+        "AP_Pluton__2_PL_AP_Pluton_20250607191546",
+        "AC_Kompania__2_PL_AC_Kompania",
         "AC_Pluton__2_PL_AC_Pluton_20250607191446",
-        "TC_Pluton__2_PL_TC_Pluton_20250607191407"
+        "AC_Pluton__2_PL_AC_Pluton",
+        "TC_Batalion__2_PL_TC_Batalion",
+        "nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250608223938"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -4347,7 +4415,7 @@
       "victory_points": 0,
       "vp_history": [],
       "economy": {
-        "economic_points": 55,
+        "economic_points": 0,
         "special_points": 0,
         "assigned_points": 0
       },
@@ -5114,20 +5182,20 @@
         ]
       ],
       "visible_tokens": [
-        "AC_Batalion__3_PL_AC_Batalion",
-        "AC_Pluton__3_PL_AC_Pluton",
-        "AC_Pluton__3_PL_AC_Pluton_20250607192749",
-        "P_Pluton__3_PL_P_Pluton_20250607192659",
         "AP_Pluton__3_PL_AP_Pluton_20250607192826",
         "TC_Pluton__3_PL_TC_Pluton_20250607192721",
-        "P_Pluton__3_PL_P_Pluton_20250607192706",
-        "TC_Batalion__3_PL_TC_Batalion",
-        "AP_Pluton__3_PL_AP_Pluton_20250607192830",
-        "TC_Kompania__3_PL_TC_Kompania",
-        "AC_Kompania__3_PL_AC_Kompania",
+        "AC_Pluton__3_PL_AC_Pluton_20250607192749",
         "P_Pluton__3_PL_P_Pluton",
+        "TC_Batalion__3_PL_TC_Batalion",
+        "AC_Batalion__3_PL_AC_Batalion",
+        "AP_Pluton__3_PL_AP_Pluton_20250607192830",
+        "P_Pluton__3_PL_P_Pluton_20250607192706",
+        "TC_Pluton__3_PL_TC_Pluton",
+        "AC_Kompania__3_PL_AC_Kompania",
         "AP_Pluton__3_PL_AP_Pluton",
-        "TC_Pluton__3_PL_TC_Pluton"
+        "P_Pluton__3_PL_P_Pluton_20250607192659",
+        "AC_Pluton__3_PL_AC_Pluton",
+        "TC_Kompania__3_PL_TC_Kompania"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -5143,8 +5211,8 @@
       "victory_points": 0,
       "vp_history": [],
       "economy": {
-        "economic_points": 42,
-        "special_points": 2,
+        "economic_points": 0,
+        "special_points": 0,
         "assigned_points": 0
       },
       "visible_hexes": [
@@ -6718,38 +6786,38 @@
         ]
       ],
       "visible_tokens": [
-        "AC_Pluton__6_N_AC_Pluton",
-        "P_Pluton__5_N_P_Pluton_20250607193851",
-        "P_Pluton__6_N_P_Pluton_20250607195018",
-        "AP_Pluton__5_N_AP_Pluton_20250607194019",
-        "TC_Batalion__6_N_TC_Batalion",
-        "AP_Pluton__6_N_AP_Pluton_20250607195154",
-        "P_Kompania__6_N_P_Kompania_20250607195033",
-        "P_Pluton__6_N_P_Pluton",
-        "TC_Kompania__6_N_TC_Kompania",
-        "TC_Batalion__5_N_TC_Batalion",
-        "AC_Kompania__6_N_AC_Kompania",
-        "P_Kompania__6_N_P_Kompania",
-        "AC_Pluton__5_N_AC_Pluton_20250607193948",
-        "P_Kompania__5_N_P_Kompania",
-        "AC_Kompania__5_N_AC_Kompania",
-        "AP_Pluton__6_N_AP_Pluton_20250607195201",
-        "AP_Pluton__5_N_AP_Pluton_20250607194016",
-        "AC_Batalion__5_N_AC_Batalion",
-        "AC_Pluton__5_N_AC_Pluton",
-        "P_Pluton__5_N_P_Pluton_20250607193856",
-        "P_Pluton__6_N_P_Pluton_20250607195022",
-        "AC_Pluton__6_N_AC_Pluton_20250607195116",
         "P_Pluton__5_N_P_Pluton",
-        "AP_Pluton__5_N_AP_Pluton",
-        "TC_Kompania__5_N_TC_Kompania",
-        "TC_Pluton__6_N_TC_Pluton_20250607195050",
-        "TC_Pluton__5_N_TC_Pluton",
-        "AC_Batalion__6_N_AC_Batalion",
         "AP_Pluton__6_N_AP_Pluton",
-        "TC_Pluton__6_N_TC_Pluton",
+        "TC_Kompania__5_N_TC_Kompania",
+        "AC_Pluton__5_N_AC_Pluton",
+        "TC_Kompania__6_N_TC_Kompania",
+        "AC_Kompania__5_N_AC_Kompania",
+        "AC_Batalion__5_N_AC_Batalion",
+        "P_Pluton__6_N_P_Pluton_20250607195022",
+        "P_Pluton__5_N_P_Pluton_20250607193856",
+        "AC_Batalion__6_N_AC_Batalion",
         "TC_Pluton__5_N_TC_Pluton_20250607193928",
-        "P_Batalion__5_N_P_Batalion"
+        "P_Pluton__5_N_P_Pluton_20250607193851",
+        "TC_Pluton__6_N_TC_Pluton_20250607195050",
+        "P_Pluton__6_N_P_Pluton",
+        "AP_Pluton__6_N_AP_Pluton_20250607195201",
+        "AC_Pluton__6_N_AC_Pluton",
+        "P_Kompania__6_N_P_Kompania_20250607195033",
+        "P_Batalion__5_N_P_Batalion",
+        "TC_Batalion__5_N_TC_Batalion",
+        "AP_Pluton__5_N_AP_Pluton",
+        "P_Kompania__5_N_P_Kompania",
+        "AC_Pluton__6_N_AC_Pluton_20250607195116",
+        "AP_Pluton__5_N_AP_Pluton_20250607194016",
+        "TC_Pluton__6_N_TC_Pluton",
+        "AC_Pluton__5_N_AC_Pluton_20250607193948",
+        "AP_Pluton__6_N_AP_Pluton_20250607195154",
+        "AP_Pluton__5_N_AP_Pluton_20250607194019",
+        "P_Kompania__6_N_P_Kompania",
+        "AC_Kompania__6_N_AC_Kompania",
+        "P_Pluton__6_N_P_Pluton_20250607195018",
+        "TC_Pluton__5_N_TC_Pluton",
+        "TC_Batalion__6_N_TC_Batalion"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -6765,7 +6833,7 @@
       "victory_points": 0,
       "vp_history": [],
       "economy": {
-        "economic_points": 40,
+        "economic_points": 0,
         "special_points": 0,
         "assigned_points": 0
       },
@@ -7516,22 +7584,22 @@
         ]
       ],
       "visible_tokens": [
-        "AP_Pluton__5_N_AP_Pluton",
+        "P_Pluton__5_N_P_Pluton",
+        "AP_Pluton__5_N_AP_Pluton_20250607194016",
+        "AC_Pluton__5_N_AC_Pluton_20250607193948",
+        "P_Pluton__5_N_P_Pluton_20250607193856",
+        "P_Batalion__5_N_P_Batalion",
+        "TC_Batalion__5_N_TC_Batalion",
         "TC_Kompania__5_N_TC_Kompania",
+        "AP_Pluton__5_N_AP_Pluton_20250607194019",
+        "TC_Pluton__5_N_TC_Pluton_20250607193928",
+        "AP_Pluton__5_N_AP_Pluton",
+        "AC_Pluton__5_N_AC_Pluton",
+        "TC_Pluton__5_N_TC_Pluton",
         "P_Kompania__5_N_P_Kompania",
         "P_Pluton__5_N_P_Pluton_20250607193851",
         "AC_Kompania__5_N_AC_Kompania",
-        "AP_Pluton__5_N_AP_Pluton_20250607194019",
-        "AP_Pluton__5_N_AP_Pluton_20250607194016",
-        "TC_Pluton__5_N_TC_Pluton",
-        "AC_Batalion__5_N_AC_Batalion",
-        "AC_Pluton__5_N_AC_Pluton",
-        "P_Pluton__5_N_P_Pluton_20250607193856",
-        "TC_Batalion__5_N_TC_Batalion",
-        "TC_Pluton__5_N_TC_Pluton_20250607193928",
-        "P_Pluton__5_N_P_Pluton",
-        "P_Batalion__5_N_P_Batalion",
-        "AC_Pluton__5_N_AC_Pluton_20250607193948"
+        "AC_Batalion__5_N_AC_Batalion"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -7547,7 +7615,7 @@
       "victory_points": 0,
       "vp_history": [],
       "economy": {
-        "economic_points": 40,
+        "economic_points": 0,
         "special_points": 0,
         "assigned_points": 0
       },
@@ -8430,34 +8498,34 @@
         ]
       ],
       "visible_tokens": [
-        "AC_Pluton__6_N_AC_Pluton",
-        "TC_Pluton__6_N_TC_Pluton_20250607195050",
-        "P_Pluton__6_N_P_Pluton_20250607195018",
+        "P_Pluton__6_N_P_Pluton",
+        "AC_Pluton__6_N_AC_Pluton_20250607195116",
         "AP_Pluton__6_N_AP_Pluton_20250607195201",
-        "TC_Kompania__6_N_TC_Kompania",
-        "TC_Batalion__6_N_TC_Batalion",
-        "AC_Batalion__6_N_AC_Batalion",
-        "AP_Pluton__6_N_AP_Pluton",
+        "AC_Pluton__6_N_AC_Pluton",
         "P_Pluton__6_N_P_Pluton_20250607195022",
         "TC_Pluton__6_N_TC_Pluton",
-        "AC_Pluton__6_N_AC_Pluton_20250607195116",
         "AP_Pluton__6_N_AP_Pluton_20250607195154",
         "P_Kompania__6_N_P_Kompania_20250607195033",
-        "P_Pluton__6_N_P_Pluton",
+        "AP_Pluton__6_N_AP_Pluton",
+        "P_Kompania__6_N_P_Kompania",
         "AC_Kompania__6_N_AC_Kompania",
-        "P_Kompania__6_N_P_Kompania"
+        "P_Pluton__6_N_P_Pluton_20250607195018",
+        "AC_Batalion__6_N_AC_Batalion",
+        "TC_Kompania__6_N_TC_Kompania",
+        "TC_Batalion__6_N_TC_Batalion",
+        "TC_Pluton__6_N_TC_Pluton_20250607195050"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
     }
   ],
   "turn": 1,
-  "current_player": 6,
+  "current_player": 2,
   "weather": null,
   "turn_manager": null,
   "active_player_info": {
-    "id": 6,
+    "id": 2,
     "role": "Dowódca",
-    "nation": "Niemcy"
+    "nation": "Polska"
   }
 }
