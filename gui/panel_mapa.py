@@ -133,6 +133,29 @@ class PanelMapa(tk.Frame):
                         outline="",
                         tags="fog"
                     )
+        # --- PODŚWIETLANIE PUNKTÓW SPECJALNYCH (mosty, miasta, fortyfikacje, węzły) ---
+        key_points = getattr(self.map_model, 'key_points', {})
+        special_types = {'most', 'miasto', 'fortyfikacja', 'węzeł komunikacyjny'}
+        for hex_id, point_type in key_points.items():
+            # point_type to dict, np. {'type': 'miasto', 'value': 100}
+            type_str = point_type.get('type', '').lower() if isinstance(point_type, dict) else str(point_type).lower()
+            if type_str in special_types:
+                if isinstance(hex_id, tuple) and len(hex_id) == 2:
+                    q, r = int(hex_id[0]), int(hex_id[1])
+                else:
+                    q, r = map(int, str(hex_id).split(','))
+                cx, cy = self.map_model.hex_to_pixel(q, r)
+                if 0 <= cx <= self._bg_width and 0 <= cy <= self._bg_height:
+                    verts = get_hex_vertices(cx, cy, s)
+                    flat = [coord for p in verts for coord in p]
+                    # Bardzo delikatna zielona mgiełka (jasna, półprzezroczysta, lekki wzorek)
+                    self.canvas.create_polygon(
+                        flat,
+                        fill='#b6ffb6',  # bardzo jasna zieleń
+                        outline='',
+                        stipple='gray25',  # bardzo delikatna mgiełka
+                        tags='special_point_overlay'
+                    )
 
     def _draw_tokens_on_map(self):
         self._sync_player_from_engine()

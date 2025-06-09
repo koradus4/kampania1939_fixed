@@ -34,6 +34,8 @@ class Board:
                 tile = self.terrain.get(hex_id)
                 if tile:
                     tile.spawn_nation = nation
+        # Dodano: key_points
+        self.key_points = d.get("key_points", {})
         # key_points można dodać później
 
     def hex_to_pixel(self, q: int, r: int) -> Tuple[float, float]:

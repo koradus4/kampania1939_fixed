@@ -749,11 +749,6 @@
         "image": "tokens/Polska/AC_Batalion__2_PL_AC_Batalion/token.png"
       }
     },
-    "4,2": {
-      "terrain_key": "mała rzeka",
-      "move_mod": 2,
-      "defense_mod": 1
-    },
     "4,3": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
@@ -4168,8 +4163,8 @@
       "defense_mod": 1
     },
     "24,-8": {
-      "terrain_key": "mała miejscowość",
-      "move_mod": 1,
+      "terrain_key": "miasto",
+      "move_mod": 2,
       "defense_mod": 2
     },
     "24,-7": {
@@ -6997,8 +6992,8 @@
       "defense_mod": 0
     },
     "40,13": {
-      "terrain_key": "duża rzeka",
-      "move_mod": 5,
+      "terrain_key": "most",
+      "move_mod": 0,
       "defense_mod": -1
     },
     "41,-20": {
@@ -7162,9 +7157,9 @@
       "defense_mod": 0
     },
     "41,12": {
-      "terrain_key": "mała miejscowość",
-      "move_mod": 1,
-      "defense_mod": 2
+      "terrain_key": "most",
+      "move_mod": 0,
+      "defense_mod": -1
     },
     "42,-21": {
       "terrain_key": "teren_płaski",
@@ -9634,9 +9629,203 @@
       "terrain_key": "las",
       "move_mod": 2,
       "defense_mod": 2
+    },
+    "4,2": {
+      "terrain_key": "teren_płaski",
+      "move_mod": 0,
+      "defense_mod": 0
     }
   },
-  "key_points": {},
+  "key_points": {
+    "10,-4": {
+      "type": "miasto",
+      "value": 100
+    },
+    "9,-3": {
+      "type": "miasto",
+      "value": 100
+    },
+    "24,-8": {
+      "type": "miasto",
+      "value": 100
+    },
+    "23,-7": {
+      "type": "most",
+      "value": 50
+    },
+    "15,-7": {
+      "type": "miasto",
+      "value": 100
+    },
+    "14,-6": {
+      "type": "most",
+      "value": 50
+    },
+    "15,-6": {
+      "type": "most",
+      "value": 50
+    },
+    "17,-1": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "15,6": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "14,6": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "3,12": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "28,4": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "27,4": {
+      "type": "miasto",
+      "value": 100
+    },
+    "16,19": {
+      "type": "miasto",
+      "value": 100
+    },
+    "16,20": {
+      "type": "miasto",
+      "value": 100
+    },
+    "17,19": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "6,27": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "2,20": {
+      "type": "most",
+      "value": 50
+    },
+    "3,19": {
+      "type": "miasto",
+      "value": 100
+    },
+    "31,6": {
+      "type": "miasto",
+      "value": 100
+    },
+    "32,6": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "41,12": {
+      "type": "most",
+      "value": 50
+    },
+    "49,7": {
+      "type": "most",
+      "value": 50
+    },
+    "55,1": {
+      "type": "most",
+      "value": 50
+    },
+    "55,-10": {
+      "type": "most",
+      "value": 50
+    },
+    "51,-11": {
+      "type": "miasto",
+      "value": 100
+    },
+    "50,-11": {
+      "type": "miasto",
+      "value": 100
+    },
+    "49,-11": {
+      "type": "miasto",
+      "value": 100
+    },
+    "52,-13": {
+      "type": "miasto",
+      "value": 100
+    },
+    "51,-12": {
+      "type": "most",
+      "value": 50
+    },
+    "51,-10": {
+      "type": "fortyfikacja",
+      "value": 150
+    },
+    "50,-10": {
+      "type": "fortyfikacja",
+      "value": 150
+    },
+    "49,-10": {
+      "type": "fortyfikacja",
+      "value": 150
+    },
+    "44,-14": {
+      "type": "most",
+      "value": 50
+    },
+    "46,-6": {
+      "type": "miasto",
+      "value": 100
+    },
+    "35,-4": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "35,-3": {
+      "type": "miasto",
+      "value": 100
+    },
+    "54,-16": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "45,-15": {
+      "type": "miasto",
+      "value": 100
+    },
+    "43,-13": {
+      "type": "fortyfikacja",
+      "value": 150
+    },
+    "44,-13": {
+      "type": "fortyfikacja",
+      "value": 150
+    },
+    "42,-14": {
+      "type": "fortyfikacja",
+      "value": 150
+    },
+    "43,-15": {
+      "type": "fortyfikacja",
+      "value": 150
+    },
+    "44,-16": {
+      "type": "fortyfikacja",
+      "value": 150
+    },
+    "44,-15": {
+      "type": "miasto",
+      "value": 100
+    },
+    "51,-17": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    },
+    "50,-16": {
+      "type": "węzeł komunikacyjny",
+      "value": 75
+    }
+  },
   "spawn_points": {
     "Polska": [
       "0,0",
