@@ -15,6 +15,7 @@ class Tile:
 
 class Board:
     def __init__(self, json_path: str):
+        self.json_path = json_path  # Dodane: zapamiętaj ścieżkę do pliku mapy
         with open(json_path, encoding="utf-8") as f:
             d = json.load(f)
         m = d["meta"]

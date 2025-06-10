@@ -16,7 +16,18 @@ class GameEngine:
             self.board.set_tokens(self.tokens)
             self.turn = 1
             self.current_player = 0
-        # Możesz dodać listę graczy, pogodę, itp.
+        self._init_key_points_state()
+
+    def _init_key_points_state(self):
+        """Tworzy słownik: hex_id -> {'initial_value': X, 'current_value': Y, 'type': ...} na podstawie mapy."""
+        self.key_points_state = {}
+        if hasattr(self.board, 'key_points'):
+            for hex_id, kp in self.board.key_points.items():
+                self.key_points_state[hex_id] = {
+                    'initial_value': kp['value'],
+                    'current_value': kp['value'],
+                    'type': kp.get('type', None)
+                }
 
     def save_state(self, filepath: str):
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
@@ -72,6 +83,131 @@ class GameEngine:
             if token.owner != expected_owner:
                 return False, "Ten żeton nie należy do twojego dowódcy."
         return action.execute(self)
+
+    def get_visible_tokens(self, player):
+        """Zwraca listę żetonów widocznych dla danego gracza (elastyczne filtrowanie)."""
+        visible = []
+        player_role = getattr(player, 'role', '').strip().lower()
+        player_nation = getattr(player, 'nation', '').strip().lower()
+        player_id = getattr(player, 'id', None)
+        for token in self.tokens:
+            token_nation = str(token.stats.get('nation', '')).strip().lower()
+            token_owner = str(token.owner).strip()
+            # 1. Mgła wojny i pole 'visible_for' (jeśli istnieje)
+            if 'visible_for' in token.stats:
+                if player_id in token.stats['visible_for']:
+                    visible.append(token)
+                    continue
+            # 2. Generał widzi wszystkie żetony swojej nacji
+            if player_role == 'generał' and token_nation == player_nation:
+                visible.append(token)
+            # 3. Dowódca widzi tylko swoje żetony
+            elif player_role == 'dowódca' and token_owner == f"{player_id} ({player_nation.title()})":
+                visible.append(token)
+        return visible
+
+    def _process_key_points(self, players):
+        """Przetwarza punkty kluczowe: rozdziela punkty ekonomiczne, aktualizuje stan punktów, usuwa wyzerowane."""
+        # Mapowanie nacji -> generał
+        generals = {p.nation: p for p in players if getattr(p, 'role', '').lower() == 'generał'}
+        tokens_by_pos = {(t.q, t.r): t for t in self.tokens}
+        to_remove = []
+        for hex_id, kp in self.key_points_state.items():
+            q, r = map(int, hex_id.split(","))
+            token = tokens_by_pos.get((q, r))
+            if token and hasattr(token, 'owner') and token.owner:
+                # Wyciągnij nację z ownera (np. "2 (Polska)")
+                nation = token.owner.split("(")[-1].replace(")", "").strip()
+                general = generals.get(nation)
+                if general and hasattr(general, 'economy'):
+                    give = int(0.1 * kp['initial_value'])
+                    if give < 1:
+                        give = 1  # Minimalnie 1 punkt
+                    if kp['current_value'] <= 0:
+                        continue
+                    if give > kp['current_value']:
+                        give = kp['current_value']
+                    general.economy.economic_points += give
+                    kp['current_value'] -= give
+                    if kp['current_value'] <= 0:
+                        to_remove.append(hex_id)
+        # Usuń wyzerowane punkty z key_points_state i z planszy
+        for hex_id in to_remove:
+            self.key_points_state.pop(hex_id, None)
+            if hasattr(self.board, 'key_points'):
+                self.board.key_points.pop(hex_id, None)
+        # (Opcjonalnie) zapisz do pliku mapy aktualny stan key_points
+        self._save_key_points_to_map()
+
+    def _save_key_points_to_map(self):
+        """Zapisuje aktualny stan key_points do pliku mapy (data/map_data.json)."""
+        try:
+            map_path = self.board.__dict__.get('json_path', 'data/map_data.json')
+            with open(map_path, encoding='utf-8') as f:
+                data = json.load(f)
+            # Aktualizuj key_points
+            data['key_points'] = {k: {'type': v['type'], 'value': v['current_value']} for k, v in self.key_points_state.items()}
+            with open(map_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"[WARN] Nie udało się zapisać key_points: {e}")
+
+    def process_key_points(self, players):
+        """Przetwarza punkty kluczowe: rozdziela punkty ekonomiczne, aktualizuje stan punktów, usuwa wyzerowane."""
+        generals = {p.nation: p for p in players if getattr(p, 'role', '').lower() == 'generał'}
+        tokens_by_pos = {(t.q, t.r): t for t in self.tokens}
+        to_remove = []
+        # Debug: zbierz sumy dla każdego generała
+        debug_points_per_general = {}
+        debug_details_per_general = {}
+        for hex_id, kp in self.key_points_state.items():
+            q, r = map(int, hex_id.split(","))
+            token = tokens_by_pos.get((q, r))
+            if token and hasattr(token, 'owner') and token.owner:
+                nation = token.owner.split("(")[-1].replace(")", "").strip()
+                general = generals.get(nation)
+                if general and hasattr(general, 'economy'):
+                    give = int(0.1 * kp['initial_value'])
+                    if give < 1:
+                        give = 1  # Minimalnie 1 punkt
+                    if kp['current_value'] <= 0:
+                        continue
+                    if give > kp['current_value']:
+                        give = kp['current_value']
+                    general.economy.economic_points += give
+                    kp['current_value'] -= give
+                    # Debug: zapisz szczegóły
+                    debug_points_per_general.setdefault(general, 0)
+                    debug_points_per_general[general] += give
+                    debug_details_per_general.setdefault(general, []).append((hex_id, give, kp['current_value']))
+                    if kp['current_value'] <= 0:
+                        to_remove.append(hex_id)
+        # Debug: wypisz podsumowanie
+        for general, total in debug_points_per_general.items():
+            print(f"[EKONOMIA][KEY_POINTS] {general.nation} (Generał {general.id}): otrzymał {total} pkt z heksów specjalnych:")
+            for hex_id, give, left in debug_details_per_general[general]:
+                print(f"    Heks {hex_id}: +{give} pkt (pozostało na heksie: {left})")
+        if not debug_points_per_general:
+            print("[EKONOMIA][KEY_POINTS] Żaden generał nie otrzymał punktów z heksów specjalnych w tej turze.")
+        # Usuń wyzerowane punkty z key_points_state i z planszy
+        for hex_id in to_remove:
+            self.key_points_state.pop(hex_id, None)
+            if hasattr(self.board, 'key_points'):
+                self.board.key_points.pop(hex_id, None)
+        self._save_key_points_to_map()
+
+    def _save_key_points_to_map(self):
+        """Zapisuje aktualny stan key_points do pliku mapy (data/map_data.json)."""
+        try:
+            map_path = self.board.__dict__.get('json_path', 'data/map_data.json')
+            with open(map_path, encoding='utf-8') as f:
+                data = json.load(f)
+            # Aktualizuj key_points
+            data['key_points'] = {k: {'type': v['type'], 'value': v['current_value']} for k, v in self.key_points_state.items()}
+            with open(map_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"[WARN] Nie udało się zapisać key_points: {e}")
 
     def get_visible_tokens(self, player):
         """Zwraca listę żetonów widocznych dla danego gracza (elastyczne filtrowanie)."""

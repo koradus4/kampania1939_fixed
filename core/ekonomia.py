@@ -12,8 +12,10 @@ class EconomySystem:
 
     def generate_economic_points(self):
         """Generuje punkty ekonomiczne."""
+        start_points = self.economic_points
         points = random.randint(1, 100)
         self.economic_points += points
+        print(f"[EKONOMIA][GENERAŁ] Losowe punkty ekonomiczne: +{points} (przed: {start_points}, po: {self.economic_points})")
 
     def add_special_points(self):
         """Dodaje 1 punkt specjalny."""
@@ -33,6 +35,10 @@ class EconomySystem:
     def get_assigned_points(self):
         """Zwraca liczbę punktów przydzielonych dowódcom."""
         return self.assigned_points
+
+    def add_economic_points(self, points):
+        """Dodaje punkty ekonomiczne (np. z punktów kluczowych)."""
+        self.economic_points += points
 
 if __name__ == "__main__":
     economy = EconomySystem()
