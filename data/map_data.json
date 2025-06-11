@@ -9639,11 +9639,11 @@
   "key_points": {
     "10,-4": {
       "type": "miasto",
-      "value": 4
+      "value": 90
     },
     "9,-3": {
       "type": "miasto",
-      "value": 4
+      "value": 90
     },
     "24,-8": {
       "type": "miasto",
@@ -9691,11 +9691,11 @@
     },
     "16,19": {
       "type": "miasto",
-      "value": 4
+      "value": 80
     },
     "16,20": {
       "type": "miasto",
-      "value": 4
+      "value": 80
     },
     "17,19": {
       "type": "węzeł komunikacyjny",
@@ -9743,15 +9743,15 @@
     },
     "50,-11": {
       "type": "miasto",
-      "value": 4
+      "value": 60
     },
     "49,-11": {
       "type": "miasto",
-      "value": 4
+      "value": 60
     },
     "52,-13": {
       "type": "miasto",
-      "value": 4
+      "value": 40
     },
     "51,-12": {
       "type": "most",
@@ -9787,11 +9787,11 @@
     },
     "54,-16": {
       "type": "węzeł komunikacyjny",
-      "value": 5
+      "value": 33
     },
     "45,-15": {
       "type": "miasto",
-      "value": 4
+      "value": 60
     },
     "43,-13": {
       "type": "fortyfikacja",
@@ -9815,7 +9815,7 @@
     },
     "44,-15": {
       "type": "miasto",
-      "value": 4
+      "value": 60
     },
     "51,-17": {
       "type": "węzeł komunikacyjny",

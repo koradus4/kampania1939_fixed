@@ -13,3 +13,14 @@ def point_in_polygon(x, y, poly):
         if ((y0 > y) != (y1 > y)) and (x < (x1 - x0) * (y - y0) / (y1 - y0) + x0):
             inside = not inside
     return inside
+
+def get_neighbors(q, r):
+    """Zwraca współrzędne sąsiednich heksów"""
+    return [
+        (q + 1, r),
+        (q - 1, r),
+        (q, r + 1),
+        (q, r - 1),
+        (q + 1, r - 1),
+        (q - 1, r + 1)
+    ]
