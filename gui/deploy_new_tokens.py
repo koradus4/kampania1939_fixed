@@ -29,14 +29,26 @@ class DeployNewTokensWindow(tk.Toplevel):
         tk.Button(self.main_frame, text="Zamknij", command=self._on_close, bg="saddlebrown", fg="white", font=("Arial", 12, "bold")).pack(pady=10, fill=tk.X)
 
     def _on_close(self):
-        if self.panel_dowodcy:
-            self.panel_dowodcy.update_deploy_button_state()
+        try:
+            if self.panel_dowodcy:
+                # Sprawdź, czy przycisk istnieje przed próbą aktualizacji
+                if hasattr(self.panel_dowodcy, 'btn_deploy') and hasattr(self.panel_dowodcy.btn_deploy, 'winfo_exists'):
+                    if self.panel_dowodcy.btn_deploy.winfo_exists():
+                        self.panel_dowodcy.update_deploy_button_state()
+        except Exception as e:
+            print(f"[INFO] Błąd podczas zamykania: {e}")
         self.destroy()
 
     def destroy(self):
-        # Nadpisanie destroy, by zawsze odświeżyć stan przycisku
-        if hasattr(self, 'panel_dowodcy') and self.panel_dowodcy:
-            self.panel_dowodcy.update_deploy_button_state()
+        # Nadpisanie destroy, by zawsze odświeżyć stan przycisku, ale z zabezpieczeniem
+        try:
+            if hasattr(self, 'panel_dowodcy') and self.panel_dowodcy:
+                # Sprawdź, czy przycisk istnieje przed próbą aktualizacji
+                if hasattr(self.panel_dowodcy, 'btn_deploy') and hasattr(self.panel_dowodcy.btn_deploy, 'winfo_exists'):
+                    if self.panel_dowodcy.btn_deploy.winfo_exists():
+                        self.panel_dowodcy.update_deploy_button_state()
+        except Exception as e:
+            print(f"[INFO] Bezpieczne zamykanie okna deploy: {e}")
         super().destroy()
 
     def _load_new_tokens(self):

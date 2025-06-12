@@ -176,12 +176,52 @@ class PanelGenerala:
         max_points = self.ekonomia.get_points()['economic_points']
         suma_var = tk.IntVar(value=0)
 
+        # Funkcja aktualizująca sumy i stan przycisku zatwierdzającego
         def update_sum(*_):
             suma = sum(var.get() for var in suwak_vars.values())
             suma_var.set(suma)
             left = max_points - suma
             label_left.config(text=f"Pozostało do przydzielenia: {left}")
-            btn_ok.config(state="normal" if left >= 0 else "disabled")
+            
+            # Dezaktywujemy przycisk zatwierdzający jeśli przekroczono limit punktów
+            if left < 0:
+                btn_ok.config(state="disabled")
+                label_left.config(fg="red")  # Zmiana koloru na czerwony gdy przekroczono limit
+            else:
+                btn_ok.config(state="normal")
+                label_left.config(fg="white")  # Powrót do normalnego koloru
+            
+            # Aktualizujemy maksymalne wartości suwaków
+            update_slider_limits()
+            
+        # Funkcja aktualizująca limity suwaków w zależności od pozostałych punktów
+        def update_slider_limits():
+            current_slider_id = None
+            # Sprawdzamy, który suwak jest aktualnie zmieniany
+            for _id, var in suwak_vars.items():
+                if var._trace_change_count > 0:
+                    current_slider_id = _id
+                    break
+            
+            suma = sum(var.get() for var in suwak_vars.values())
+            remaining = max_points - suma
+            
+            # Aktualizacja maksymalnych wartości suwaków
+            for _id, slider in sliders.items():
+                current_value = suwak_vars[_id].get()
+                if _id == current_slider_id:
+                    # Dla aktualnie zmienianego suwaka ustawiamy maksimum jako jego aktualna wartość + pozostałe punkty
+                    new_max = current_value + remaining
+                else:
+                    # Dla pozostałych suwaków ustawiamy maksimum jako aktualna wartość + pozostałe punkty
+                    new_max = current_value + remaining
+                
+                # Sprawdzamy, czy nowa wartość maximum nie jest ujemna
+                new_max = max(new_max, 0)
+                slider.config(to=new_max)
+
+        # Tworzymy słownik do przechowywania obiektów suwaków
+        sliders = {}
 
         for i, d in enumerate(dowodcy):
             tk.Label(win, text=f"{d.name}", bg="darkolivegreen", fg="white", font=("Arial", 12, "bold")).pack(pady=(10 if i==0 else 2, 2))
@@ -189,12 +229,41 @@ class PanelGenerala:
             suwak = tk.Scale(win, from_=0, to=max_points, orient=tk.HORIZONTAL, variable=var, bg="darkolivegreen", fg="white", font=("Arial", 11, "bold"), troughcolor="#556B2F", highlightthickness=0, relief=tk.RAISED, borderwidth=3, length=240)
             suwak.pack()
             suwak_vars[d.id] = var
+            sliders[d.id] = suwak
+            # Dodajemy atrybut do śledzenia czy suwak jest aktualnie zmieniany
+            var._trace_change_count = 0
+            
+            # Funkcja zwiększająca licznik zmian podczas rozpoczęcia zmiany
+            def on_change_start(_id):
+                def _handler(*_):
+                    suwak_vars[_id]._trace_change_count += 1
+                return _handler
+                
+            # Funkcja zmniejszająca licznik zmian po zakończeniu zmiany
+            def on_change_end(_id):
+                def _handler(*_):
+                    if suwak_vars[_id]._trace_change_count > 0:
+                        suwak_vars[_id]._trace_change_count -= 1
+                    update_sum()
+                return _handler
+                
+            # Śledzenie zmian suwaka
+            suwak.bind("<ButtonPress-1>", on_change_start(d.id))
+            suwak.bind("<ButtonRelease-1>", on_change_end(d.id))
             var.trace_add("write", update_sum)
 
         label_left = tk.Label(win, text=f"Pozostało do przydzielenia: {max_points}", bg="darkolivegreen", fg="white", font=("Arial", 11, "bold"))
         label_left.pack(pady=8)
 
         def zatwierdz():
+            # Oblicz sumę przydzielonych punktów
+            suma = sum(var.get() for var in suwak_vars.values())
+            
+            # Sprawdź czy suma nie przekracza dostępnych punktów
+            if suma > max_points:
+                messagebox.showerror("Błąd", "Przekroczono dostępne punkty ekonomiczne!")
+                return
+            
             for d in dowodcy:
                 przydzielone = suwak_vars[d.id].get()
                 # Synchronizuj z systemem ekonomii dowódcy
@@ -206,7 +275,7 @@ class PanelGenerala:
                 if not hasattr(d, 'punkty_ekonomiczne') or d.punkty_ekonomiczne is None:
                     d.punkty_ekonomiczne = 0
                 d.punkty_ekonomiczne = d.economy.economic_points
-            self.ekonomia.subtract_points(sum(var.get() for var in suwak_vars.values()))
+            self.ekonomia.subtract_points(suma)
             self.update_economy(self.ekonomia.get_points()['economic_points'])
             win.destroy()
 

@@ -7,11 +7,6 @@
     "orientation": "pointy"
   },
   "terrain": {
-    "0,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
-    },
     "0,1": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
@@ -9418,6 +9413,11 @@
         "unit": "TC_Pluton__5_N_TC_Pluton",
         "image": "tokens/Niemcy/TC_Pluton__5_N_TC_Pluton/token.png"
       }
+    },
+    "0,0": {
+      "terrain_key": "teren_płaski",
+      "move_mod": 0,
+      "defense_mod": 0
     }
   },
   "key_points": {
@@ -9454,5 +9454,14 @@
       "value": 100
     }
   },
-  "spawn_points": {}
+  "spawn_points": {
+    "Polska": [
+      "0,2",
+      "0,8"
+    ],
+    "Niemcy": [
+      "24,-12",
+      "32,-4"
+    ]
+  }
 }
