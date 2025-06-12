@@ -1,5 +1,51 @@
 [
   {
+    "id": "AC_Pluton__5_N_AC_Pluton",
+    "nation": "Niemcy",
+    "unitType": "AC",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "5_N_AC_Pluton",
+    "unit_full_name": "Niemcy Artyleria ciężka Pluton ***",
+    "move": 16,
+    "attack": {
+      "range": 7,
+      "value": 12
+    },
+    "combat_value": 6,
+    "defense_value": 7,
+    "maintenance": 12,
+    "price": 57,
+    "sight": 3,
+    "owner": "5 (Niemcy)",
+    "image": "assets/tokens/Niemcy/AC_Pluton__5_N_AC_Pluton/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "AC_Pluton__6_N_AC_Pluton",
+    "nation": "Niemcy",
+    "unitType": "AC",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "6_N_AC_Pluton",
+    "unit_full_name": "Niemcy Artyleria ciężka Pluton ***",
+    "move": 16,
+    "attack": {
+      "range": 7,
+      "value": 12
+    },
+    "combat_value": 6,
+    "defense_value": 7,
+    "maintenance": 12,
+    "price": 57,
+    "sight": 3,
+    "owner": "6 (Niemcy)",
+    "image": "assets/tokens/Niemcy/AC_Pluton__6_N_AC_Pluton/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
     "id": "TC_Pluton__5_N_TC_Pluton",
     "nation": "Niemcy",
     "unitType": "TC",
@@ -42,6 +88,52 @@
     "sight": 2,
     "owner": "6 (Niemcy)",
     "image": "assets/tokens/Niemcy/TC_Pluton__6_N_TC_Pluton/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "AC_Pluton__2_PL_AC_Pluton",
+    "nation": "Polska",
+    "unitType": "AC",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "2_PL_AC_Pluton",
+    "unit_full_name": "Polska Artyleria ciężka Pluton ***",
+    "move": 16,
+    "attack": {
+      "range": 7,
+      "value": 12
+    },
+    "combat_value": 6,
+    "defense_value": 7,
+    "maintenance": 12,
+    "price": 57,
+    "sight": 3,
+    "owner": "2 (Polska)",
+    "image": "assets/tokens/Polska/AC_Pluton__2_PL_AC_Pluton/token.png",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "AC_Pluton__3_PL_AC_Pluton",
+    "nation": "Polska",
+    "unitType": "AC",
+    "unitSize": "Pluton",
+    "shape": "prostokąt",
+    "label": "3_PL_AC_Pluton",
+    "unit_full_name": "Polska Artyleria ciężka Pluton ***",
+    "move": 16,
+    "attack": {
+      "range": 7,
+      "value": 12
+    },
+    "combat_value": 6,
+    "defense_value": 7,
+    "maintenance": 12,
+    "price": 57,
+    "sight": 3,
+    "owner": "3 (Polska)",
+    "image": "assets/tokens/Polska/AC_Pluton__3_PL_AC_Pluton/token.png",
     "w": 240,
     "h": 240
   },
