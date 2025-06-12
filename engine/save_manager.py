@@ -29,7 +29,9 @@ def save_game(path, engine, active_player=None):
             "id": getattr(active_player, 'id', None),
             "role": getattr(active_player, 'role', None),
             "nation": getattr(active_player, 'nation', None)
-        }
+        },
+        # Dodajemy key_points_state do zapisu
+        "key_points_state": getattr(engine, 'key_points_state', {})
     }
     with open(path, "w", encoding="utf-8") as f:
         json.dump(state, f, ensure_ascii=False, indent=2)
@@ -70,6 +72,10 @@ def load_game(path, engine):
         # Ustaw current_player jako id oraz current_player_obj jako obiekt gracza o tym id
         engine.current_player = state["current_player"]
         engine.current_player_obj = next((p for p in engine.players if getattr(p, 'id', None) == engine.current_player), None)
+    # Odtwórz stan key_points
+    if "key_points_state" in state and isinstance(state["key_points_state"], dict):
+        engine.key_points_state = state["key_points_state"]
+        print("[INFO] Wczytano stan punktów specjalnych (key_points) z zapisu gry")
     if "weather" in state and state["weather"]:
         if hasattr(engine, "weather") and engine.weather:
             engine.weather.__dict__.update(state["weather"])
