@@ -1,0 +1,23 @@
+{
+  "id": "nowy_TC_Batalion__3_nowy_3_PL_TC_Batalion_20250612231902",
+  "nation": "Polska",
+  "unitType": "TC",
+  "unitSize": "Batalion",
+  "shape": "prostokąt",
+  "label": "nowy_3_PL_TC_Batalion",
+  "unit_full_name": "Polska Czołg ciężki Batalion II",
+  "move": 18,
+  "attack": {
+    "range": 3,
+    "value": 18
+  },
+  "combat_value": 60,
+  "defense_value": 36,
+  "maintenance": 16,
+  "price": 77,
+  "sight": 2,
+  "owner": "3",
+  "image": "assets/tokens/nowe_dla_3/nowy_TC_Batalion__3_nowy_3_PL_TC_Batalion_20250612231902/token.png",
+  "w": 240,
+  "h": 240
+}
