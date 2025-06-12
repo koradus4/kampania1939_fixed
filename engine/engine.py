@@ -5,9 +5,10 @@ from engine.board import Board
 from engine.token import load_tokens, Token
 
 class GameEngine:
-    def __init__(self, map_path: str, tokens_index_path: str, tokens_start_path: str, seed: int = 42):
+    def __init__(self, map_path: str, tokens_index_path: str, tokens_start_path: str, seed: int = 42, read_only: bool = False):
         self.random = random.Random(seed)
         self.board = Board(map_path)
+        self.read_only = read_only  # Dodana flaga tylko do odczytu
         state_path = os.path.join("saves", "latest.json")
         if os.path.exists(state_path):
             self.load_state(state_path)
@@ -141,6 +142,9 @@ class GameEngine:
 
     def _save_key_points_to_map(self):
         """Zapisuje aktualny stan key_points do pliku mapy (data/map_data.json)."""
+        if getattr(self, 'read_only', False):
+            print("[INFO] Działanie w trybie read-only - zmiany nie zostaną zapisane do pliku.")
+            return
         try:
             map_path = self.board.__dict__.get('json_path', 'data/map_data.json')
             with open(map_path, encoding='utf-8') as f:
@@ -198,6 +202,9 @@ class GameEngine:
 
     def _save_key_points_to_map(self):
         """Zapisuje aktualny stan key_points do pliku mapy (data/map_data.json)."""
+        if getattr(self, 'read_only', False):
+            print("[INFO] Działanie w trybie read-only - zmiany nie zostaną zapisane do pliku.")
+            return
         try:
             map_path = self.board.__dict__.get('json_path', 'data/map_data.json')
             with open(map_path, encoding='utf-8') as f:

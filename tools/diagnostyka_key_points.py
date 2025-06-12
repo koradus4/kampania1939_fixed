@@ -56,8 +56,7 @@ def diagnose_key_points_system():
     for hex_id, point_data in key_points.items():
         print(f"   - {hex_id}: {point_data}")
     
-    # 2. Sprawdź inicjalizację GameEngine
-    print("\n2. SPRAWDZANIE GAMEENGINE")
+    # 2. Sprawdź inicjalizację GameEngine    print("\n2. SPRAWDZANIE GAMEENGINE")
     print("-" * 30)
     
     try:
@@ -65,7 +64,8 @@ def diagnose_key_points_system():
             map_path="data/map_data.json",
             tokens_index_path="assets/tokens/index.json",
             tokens_start_path="assets/start_tokens.json",
-            seed=42
+            seed=42,
+            read_only=True  # Zapobiega nadpisywaniu pliku mapy
         )
         print("✅ GameEngine został zainicjalizowany")
     except Exception as e:

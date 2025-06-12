@@ -17,14 +17,13 @@ if __name__ == "__main__":
     # Pobranie wyborów graczy z ekranu startowego
     game_data = ekran_startowy.get_game_data()
     miejsca = game_data["miejsca"]
-    czasy = game_data["czasy"]
-
-    # Inicjalizacja silnika gry (GameEngine jako źródło prawdy)
+    czasy = game_data["czasy"]    # Inicjalizacja silnika gry (GameEngine jako źródło prawdy)
     game_engine = GameEngine(
         map_path="data/map_data.json",
         tokens_index_path="assets/tokens/index.json",
         tokens_start_path="assets/start_tokens.json",
-        seed=42
+        seed=42,
+        read_only=True  # Zapobiega nadpisywaniu pliku mapy
     )
 
     # Tworzenie obiektów graczy z uwzględnieniem czasu na turę i ścieżek do zdjęć
@@ -183,10 +182,13 @@ if __name__ == "__main__":
                         start = getattr(dow, 'punkty_ekonomiczne', 0)
                         end = dow.economy.economic_points
                         spent = start - end if start > end else 0
-                        print(f"  Dowódca {dow.id} ({dow.nation}): otrzymał {given} pkt, wydał {spent}, bilans: przed={start}, po={end}")
-        turn_manager.next_turn()
-        # --- ROZDZIEL PUNKTY Z KEY_POINTS ---
-        game_engine.process_key_points(players)
+                        print(f"  Dowódca {dow.id} ({dow.nation}): otrzymał {given} pkt, wydał {spent}, bilans: przed={start}, po={end}")        # Przejście do kolejnego gracza i zwrócenie informacji czy zakończyła się pełna tura
+        is_full_turn_end = turn_manager.next_turn()
+        
+        # --- ROZDZIEL PUNKTY Z KEY_POINTS tylko na koniec pełnej tury ---
+        if is_full_turn_end:
+            game_engine.process_key_points(players)
+            
         # Reset blokady trybu ruchu na początku każdej tury, ale NIE po wczytaniu save
         if not just_loaded_save:
             for t in game_engine.tokens:
