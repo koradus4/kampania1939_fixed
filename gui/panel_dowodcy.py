@@ -305,8 +305,17 @@ class PanelDowodcy:
 
     def update_deploy_button_state(self):
         import os
-        folder = f"assets/tokens/nowe_dla_{self.gracz.id}/"
-        has_new = os.path.exists(folder) and any(os.scandir(folder))
+        from pathlib import Path
+        folder = Path(f"assets/tokens/nowe_dla_{self.gracz.id}/")
+        
+        # Sprawdź czy są prawidłowe żetony (foldery z token.json)
+        has_new = False
+        if folder.exists():
+            for sub in folder.iterdir():
+                if sub.is_dir() and (sub / "token.json").exists():
+                    has_new = True
+                    break
+        
         if has_new:
             self.btn_deploy.config(state="normal")
             self._start_deploy_blink()

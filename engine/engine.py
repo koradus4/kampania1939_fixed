@@ -211,32 +211,13 @@ class GameEngine:
                 data = json.load(f)
             # Aktualizuj key_points
             data['key_points'] = {k: {'type': v['type'], 'value': v['current_value']} for k, v in self.key_points_state.items()}
-            with open(map_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
+            with open(map_path, 'w', encoding='utf-8') as f:                json.dump(data, f, indent=2, ensure_ascii=False)
         except Exception as e:
             print(f"[WARN] Nie udało się zapisać key_points: {e}")
 
-    def get_visible_tokens(self, player):
-        """Zwraca listę żetonów widocznych dla danego gracza (elastyczne filtrowanie)."""
-        visible = []
-        player_role = getattr(player, 'role', '').strip().lower()
-        player_nation = getattr(player, 'nation', '').strip().lower()
-        player_id = getattr(player, 'id', None)
-        for token in self.tokens:
-            token_nation = str(token.stats.get('nation', '')).strip().lower()
-            token_owner = str(token.owner).strip()
-            # 1. Mgła wojny i pole 'visible_for' (jeśli istnieje)
-            if 'visible_for' in token.stats:
-                if player_id in token.stats['visible_for']:
-                    visible.append(token)
-                    continue
-            # 2. Generał widzi wszystkie żetony swojej nacji
-            if player_role == 'generał' and token_nation == player_nation:
-                visible.append(token)
-            # 3. Dowódca widzi tylko swoje żetony
-            elif player_role == 'dowódca' and token_owner == f"{player_id} ({player_nation.title()})":
-                visible.append(token)
-        return visible
+    def update_all_players_visibility(self, players):
+        """Aktualizuje widoczność dla wszystkich graczy."""
+        update_all_players_visibility(players, self.tokens, self.board)
 
 def get_token_vision_hexes(token, board):
     """

@@ -178,10 +178,12 @@ if __name__ == "__main__":
                         spent = start - end if start > end else 0
                         print(f"  Dowódca {dow.id} ({dow.nation}): otrzymał {given} pkt, wydał {spent}, bilans: przed={start}, po={end}")        # Przejście do kolejnego gracza i zwrócenie informacji czy zakończyła się pełna tura
         is_full_turn_end = turn_manager.next_turn()
-        
-        # --- ROZDZIEL PUNKTY Z KEY_POINTS tylko na koniec pełnej tury ---
+          # --- ROZDZIEL PUNKTY Z KEY_POINTS tylko na koniec pełnej tury ---
         if is_full_turn_end:
             game_engine.process_key_points(players)
+            
+        # --- AKTUALIZUJ WIDOCZNOŚĆ NA KOŃCU KAŻDEJ TURY ---
+        game_engine.update_all_players_visibility(players)
             
         # --- SPRAWDZENIE KOŃCA GRY ---
         if victory_conditions.check_game_over(turn_manager.current_turn):

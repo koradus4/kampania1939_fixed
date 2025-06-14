@@ -1,10 +1,10 @@
 {
-  "id": "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250612231120",
+  "id": "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803",
   "nation": "Polska",
   "unitType": "TC",
   "unitSize": "Pluton",
   "shape": "prostokąt",
-  "label": "nowy_2_PL_TC_Pluton",
+  "label": "nowy_3_PL_TC_Pluton",
   "unit_full_name": "Polska Czołg ciężki Pluton ***",
   "move": 18,
   "attack": {
@@ -16,8 +16,8 @@
   "maintenance": 5,
   "price": 24,
   "sight": 2,
-  "owner": "2",
-  "image": "assets/tokens/nowe_dla_2/nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250612231120/token.png",
+  "owner": "3",
+  "image": "assets/tokens/nowe_dla_3/nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803/token.png",
   "w": 240,
   "h": 240
 }

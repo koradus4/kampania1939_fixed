@@ -1,0 +1,2070 @@
+{
+  "tokens": [
+    {
+      "id": "AC_Pluton__2_PL_AC_Pluton",
+      "owner": "2 (Polska)",
+      "stats": {
+        "move": 16,
+        "combat_value": 6,
+        "defense_value": 7,
+        "maintenance": 12,
+        "price": 57,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Pluton",
+        "label": "2_PL_AC_Pluton",
+        "unit_full_name": "Polska Artyleria ciężka Pluton ***",
+        "attack": {
+          "range": 7,
+          "value": 12
+        },
+        "image": "assets/tokens/Polska/AC_Pluton__2_PL_AC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 3,
+      "r": 0,
+      "maxMovePoints": 16,
+      "currentMovePoints": 16,
+      "maxFuel": 12,
+      "currentFuel": 12,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 6
+    },
+    {
+      "id": "AC_Pluton__3_PL_AC_Pluton",
+      "owner": "3 (Polska)",
+      "stats": {
+        "move": 16,
+        "combat_value": 6,
+        "defense_value": 7,
+        "maintenance": 12,
+        "price": 57,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Pluton",
+        "label": "3_PL_AC_Pluton",
+        "unit_full_name": "Polska Artyleria ciężka Pluton ***",
+        "attack": {
+          "range": 7,
+          "value": 12
+        },
+        "image": "assets/tokens/Polska/AC_Pluton__3_PL_AC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 4,
+      "r": 10,
+      "maxMovePoints": 16,
+      "currentMovePoints": 16,
+      "maxFuel": 12,
+      "currentFuel": 12,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 6
+    },
+    {
+      "id": "TC_Pluton__2_PL_TC_Pluton",
+      "owner": "2 (Polska)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "2_PL_TC_Pluton",
+        "unit_full_name": "Polska Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/Polska/TC_Pluton__2_PL_TC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 5,
+      "r": 0,
+      "maxMovePoints": 18,
+      "currentMovePoints": 18,
+      "maxFuel": 5,
+      "currentFuel": 5,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 10
+    },
+    {
+      "id": "TC_Pluton__3_PL_TC_Pluton",
+      "owner": "3 (Polska)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "3_PL_TC_Pluton",
+        "unit_full_name": "Polska Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/Polska/TC_Pluton__3_PL_TC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 6,
+      "r": 9,
+      "maxMovePoints": 18,
+      "currentMovePoints": 18,
+      "maxFuel": 5,
+      "currentFuel": 5,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 10
+    },
+    {
+      "id": "TC_Pluton__6_N_TC_Pluton",
+      "owner": "6 (Niemcy)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "6_N_TC_Pluton",
+        "unit_full_name": "Niemcy Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/Niemcy/TC_Pluton__6_N_TC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 25,
+      "r": -3,
+      "maxMovePoints": 18,
+      "currentMovePoints": 18,
+      "maxFuel": 5,
+      "currentFuel": 5,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 10
+    },
+    {
+      "id": "AC_Pluton__5_N_AC_Pluton",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 16,
+        "combat_value": 6,
+        "defense_value": 7,
+        "maintenance": 12,
+        "price": 57,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Pluton",
+        "label": "5_N_AC_Pluton",
+        "unit_full_name": "Niemcy Artyleria ciężka Pluton ***",
+        "attack": {
+          "range": 7,
+          "value": 12
+        },
+        "image": "assets/tokens/Niemcy/AC_Pluton__5_N_AC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 27,
+      "r": -9,
+      "maxMovePoints": 16,
+      "currentMovePoints": 16,
+      "maxFuel": 12,
+      "currentFuel": 12,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 6
+    },
+    {
+      "id": "AC_Pluton__6_N_AC_Pluton",
+      "owner": "6 (Niemcy)",
+      "stats": {
+        "move": 16,
+        "combat_value": 6,
+        "defense_value": 7,
+        "maintenance": 12,
+        "price": 57,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Pluton",
+        "label": "6_N_AC_Pluton",
+        "unit_full_name": "Niemcy Artyleria ciężka Pluton ***",
+        "attack": {
+          "range": 7,
+          "value": 12
+        },
+        "image": "assets/tokens/Niemcy/AC_Pluton__6_N_AC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 27,
+      "r": -3,
+      "maxMovePoints": 16,
+      "currentMovePoints": 16,
+      "maxFuel": 12,
+      "currentFuel": 12,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 6
+    },
+    {
+      "id": "TC_Pluton__5_N_TC_Pluton",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "5_N_TC_Pluton",
+        "unit_full_name": "Niemcy Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/Niemcy/TC_Pluton__5_N_TC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 24,
+      "r": -8,
+      "maxMovePoints": 18,
+      "currentMovePoints": 18,
+      "maxFuel": 5,
+      "currentFuel": 5,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 10
+    },
+    {
+      "id": "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614192800",
+      "owner": "2 (Polska)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "nowy_2_PL_TC_Pluton",
+        "unit_full_name": "Polska Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/aktualne/nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614192800.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 1,
+      "r": 2,
+      "maxMovePoints": 18,
+      "currentMovePoints": 17,
+      "maxFuel": 5,
+      "currentFuel": 4,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 10
+    },
+    {
+      "id": "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803",
+      "owner": "3 (Polska)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "nowy_3_PL_TC_Pluton",
+        "unit_full_name": "Polska Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/aktualne/nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 1,
+      "r": 7,
+      "maxMovePoints": 18,
+      "currentMovePoints": 14,
+      "maxFuel": 5,
+      "currentFuel": 1,
+      "movement_mode": "combat",
+      "movement_mode_locked": true,
+      "combat_value": 10
+    }
+  ],
+  "players": [
+    {
+      "id": 1,
+      "nation": "Polska",
+      "role": "Generał",
+      "name": "Marszałek Polski Edward Rydz-Śmigły",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Marszałek Polski Edward Rydz-Śmigły.png",
+      "map_path": "C:/Users/klif/kampania1939_fixed/assets/mapa_globalna.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 16,
+        "special_points": 1,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          -1
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          3,
+          13
+        ],
+        [
+          5,
+          10
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          9
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          12
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          10
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          3,
+          11
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          6,
+          -3
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          -2
+        ],
+        [
+          5,
+          -1
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          7,
+          -2
+        ],
+        [
+          7,
+          -1
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          -1
+        ],
+        [
+          0,
+          10
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          -2
+        ],
+        [
+          6,
+          -1
+        ],
+        [
+          2,
+          13
+        ],
+        [
+          7,
+          9
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          4,
+          -2
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          11
+        ],
+        [
+          4,
+          13
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          9
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          9
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__2_PL_TC_Pluton",
+        "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614192800",
+        "AC_Pluton__3_PL_AC_Pluton",
+        "TC_Pluton__3_PL_TC_Pluton",
+        "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803",
+        "AC_Pluton__2_PL_AC_Pluton"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 2,
+      "nation": "Polska",
+      "role": "Dowódca",
+      "name": "Generał Juliusz Rómmel",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał Juliusz Rómmel.png",
+      "map_path": "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca2.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          -1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          -2
+        ],
+        [
+          5,
+          -1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          7,
+          -2
+        ],
+        [
+          7,
+          -1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          -1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          -2
+        ],
+        [
+          6,
+          -1
+        ],
+        [
+          4,
+          -2
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          6,
+          -3
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "visible_tokens": [
+        "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614192800",
+        "AC_Pluton__2_PL_AC_Pluton",
+        "TC_Pluton__2_PL_TC_Pluton"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 3,
+      "nation": "Polska",
+      "role": "Dowódca",
+      "name": "Generał Tadeusz Kutrzeba",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał Tadeusz Kutrzeba.png",
+      "map_path": "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca1.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          4,
+          9
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          3,
+          13
+        ],
+        [
+          5,
+          10
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          3,
+          9
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          5,
+          12
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          10
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          13
+        ],
+        [
+          7,
+          9
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          10
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          11
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          5,
+          11
+        ],
+        [
+          4,
+          13
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          9
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          6,
+          9
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__3_PL_TC_Pluton",
+        "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803",
+        "AC_Pluton__3_PL_AC_Pluton"
+      ],
+      "temp_visible_hexes": [
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          10
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ]
+      ],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 4,
+      "nation": "Niemcy",
+      "role": "Generał",
+      "name": "Generał pułkownik Walther von Brauchitsch",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał pułkownik Walther von Brauchitsch.png",
+      "map_path": "C:/Users/klif/kampania1939_fixed/assets/mapa_globalna.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          28,
+          -12
+        ],
+        [
+          28,
+          -3
+        ],
+        [
+          27,
+          -5
+        ],
+        [
+          28,
+          -6
+        ],
+        [
+          30,
+          -9
+        ],
+        [
+          25,
+          -5
+        ],
+        [
+          24,
+          -7
+        ],
+        [
+          26,
+          -10
+        ],
+        [
+          25,
+          -8
+        ],
+        [
+          26,
+          -4
+        ],
+        [
+          29,
+          -5
+        ],
+        [
+          23,
+          -3
+        ],
+        [
+          23,
+          -6
+        ],
+        [
+          28,
+          -10
+        ],
+        [
+          27,
+          -12
+        ],
+        [
+          27,
+          -3
+        ],
+        [
+          28,
+          -4
+        ],
+        [
+          25,
+          -3
+        ],
+        [
+          26,
+          -8
+        ],
+        [
+          25,
+          -6
+        ],
+        [
+          26,
+          -11
+        ],
+        [
+          29,
+          -12
+        ],
+        [
+          26,
+          -2
+        ],
+        [
+          26,
+          -1
+        ],
+        [
+          29,
+          -3
+        ],
+        [
+          29,
+          -6
+        ],
+        [
+          28,
+          -8
+        ],
+        [
+          27,
+          -10
+        ],
+        [
+          28,
+          -11
+        ],
+        [
+          28,
+          -2
+        ],
+        [
+          27,
+          -4
+        ],
+        [
+          28,
+          -1
+        ],
+        [
+          30,
+          -5
+        ],
+        [
+          25,
+          -10
+        ],
+        [
+          24,
+          -3
+        ],
+        [
+          26,
+          -6
+        ],
+        [
+          25,
+          -4
+        ],
+        [
+          24,
+          -6
+        ],
+        [
+          26,
+          -9
+        ],
+        [
+          29,
+          -10
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          29,
+          -4
+        ],
+        [
+          23,
+          -8
+        ],
+        [
+          23,
+          -1
+        ],
+        [
+          23,
+          -2
+        ],
+        [
+          27,
+          -8
+        ],
+        [
+          28,
+          -9
+        ],
+        [
+          27,
+          -11
+        ],
+        [
+          30,
+          -12
+        ],
+        [
+          27,
+          -2
+        ],
+        [
+          27,
+          -1
+        ],
+        [
+          30,
+          -3
+        ],
+        [
+          30,
+          -6
+        ],
+        [
+          24,
+          -10
+        ],
+        [
+          25,
+          -2
+        ],
+        [
+          24,
+          -4
+        ],
+        [
+          26,
+          -7
+        ],
+        [
+          29,
+          -8
+        ],
+        [
+          25,
+          -1
+        ],
+        [
+          29,
+          -11
+        ],
+        [
+          29,
+          -2
+        ],
+        [
+          22,
+          -8
+        ],
+        [
+          23,
+          -9
+        ],
+        [
+          27,
+          -6
+        ],
+        [
+          28,
+          -7
+        ],
+        [
+          27,
+          -9
+        ],
+        [
+          30,
+          -10
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          30,
+          -4
+        ],
+        [
+          24,
+          -8
+        ],
+        [
+          25,
+          -9
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          24,
+          -2
+        ],
+        [
+          24,
+          -1
+        ],
+        [
+          26,
+          -5
+        ],
+        [
+          29,
+          -9
+        ],
+        [
+          22,
+          -6
+        ],
+        [
+          23,
+          -7
+        ],
+        [
+          28,
+          -5
+        ],
+        [
+          27,
+          -7
+        ],
+        [
+          30,
+          -11
+        ],
+        [
+          25,
+          -7
+        ],
+        [
+          24,
+          -9
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          26,
+          -3
+        ],
+        [
+          22,
+          -7
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__5_N_TC_Pluton",
+        "AC_Pluton__5_N_AC_Pluton",
+        "AC_Pluton__6_N_AC_Pluton",
+        "TC_Pluton__6_N_TC_Pluton"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 5,
+      "nation": "Niemcy",
+      "role": "Dowódca",
+      "name": "Generał Fedor von Bock",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał Fedor von Bock.png",
+      "map_path": "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca1.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          28,
+          -12
+        ],
+        [
+          27,
+          -8
+        ],
+        [
+          28,
+          -9
+        ],
+        [
+          27,
+          -11
+        ],
+        [
+          30,
+          -12
+        ],
+        [
+          30,
+          -9
+        ],
+        [
+          24,
+          -10
+        ],
+        [
+          24,
+          -7
+        ],
+        [
+          26,
+          -10
+        ],
+        [
+          25,
+          -8
+        ],
+        [
+          26,
+          -7
+        ],
+        [
+          29,
+          -8
+        ],
+        [
+          29,
+          -11
+        ],
+        [
+          22,
+          -8
+        ],
+        [
+          23,
+          -9
+        ],
+        [
+          23,
+          -6
+        ],
+        [
+          28,
+          -10
+        ],
+        [
+          27,
+          -12
+        ],
+        [
+          27,
+          -6
+        ],
+        [
+          28,
+          -7
+        ],
+        [
+          27,
+          -9
+        ],
+        [
+          30,
+          -10
+        ],
+        [
+          24,
+          -8
+        ],
+        [
+          25,
+          -9
+        ],
+        [
+          26,
+          -8
+        ],
+        [
+          25,
+          -6
+        ],
+        [
+          26,
+          -11
+        ],
+        [
+          29,
+          -12
+        ],
+        [
+          29,
+          -9
+        ],
+        [
+          22,
+          -6
+        ],
+        [
+          23,
+          -7
+        ],
+        [
+          28,
+          -8
+        ],
+        [
+          27,
+          -10
+        ],
+        [
+          28,
+          -11
+        ],
+        [
+          27,
+          -7
+        ],
+        [
+          30,
+          -11
+        ],
+        [
+          25,
+          -10
+        ],
+        [
+          25,
+          -7
+        ],
+        [
+          24,
+          -9
+        ],
+        [
+          26,
+          -6
+        ],
+        [
+          24,
+          -6
+        ],
+        [
+          26,
+          -9
+        ],
+        [
+          29,
+          -10
+        ],
+        [
+          23,
+          -8
+        ],
+        [
+          22,
+          -7
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__5_N_TC_Pluton",
+        "AC_Pluton__5_N_AC_Pluton"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 6,
+      "nation": "Niemcy",
+      "role": "Dowódca",
+      "name": "Generał Walther von Reichenau",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał Walther von Reichenau.png",
+      "map_path": "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca2.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          28,
+          -3
+        ],
+        [
+          27,
+          -5
+        ],
+        [
+          28,
+          -6
+        ],
+        [
+          27,
+          -2
+        ],
+        [
+          27,
+          -1
+        ],
+        [
+          30,
+          -3
+        ],
+        [
+          30,
+          -6
+        ],
+        [
+          25,
+          -5
+        ],
+        [
+          25,
+          -2
+        ],
+        [
+          24,
+          -4
+        ],
+        [
+          25,
+          -1
+        ],
+        [
+          26,
+          -4
+        ],
+        [
+          29,
+          -5
+        ],
+        [
+          29,
+          -2
+        ],
+        [
+          23,
+          -3
+        ],
+        [
+          27,
+          -6
+        ],
+        [
+          27,
+          -3
+        ],
+        [
+          28,
+          -4
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          30,
+          -4
+        ],
+        [
+          25,
+          -3
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          24,
+          -2
+        ],
+        [
+          24,
+          -1
+        ],
+        [
+          26,
+          -5
+        ],
+        [
+          26,
+          -2
+        ],
+        [
+          26,
+          -1
+        ],
+        [
+          29,
+          -3
+        ],
+        [
+          29,
+          -6
+        ],
+        [
+          28,
+          -5
+        ],
+        [
+          28,
+          -2
+        ],
+        [
+          27,
+          -4
+        ],
+        [
+          28,
+          -1
+        ],
+        [
+          30,
+          -5
+        ],
+        [
+          24,
+          -3
+        ],
+        [
+          25,
+          -4
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          26,
+          -3
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          29,
+          -4
+        ],
+        [
+          23,
+          -1
+        ],
+        [
+          23,
+          -2
+        ]
+      ],
+      "visible_tokens": [
+        "AC_Pluton__6_N_AC_Pluton",
+        "TC_Pluton__6_N_TC_Pluton"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    }
+  ],
+  "turn": 1,
+  "current_player": 3,
+  "weather": null,
+  "turn_manager": null,
+  "active_player_info": {
+    "id": 3,
+    "role": "Dowódca",
+    "nation": "Polska"
+  },
+  "key_points_state": {
+    "9,-3": {
+      "initial_value": 100,
+      "current_value": 100,
+      "type": "miasto"
+    },
+    "9,-4": {
+      "initial_value": 50,
+      "current_value": 50,
+      "type": "most"
+    },
+    "10,-4": {
+      "initial_value": 50,
+      "current_value": 50,
+      "type": "most"
+    },
+    "15,-6": {
+      "initial_value": 50,
+      "current_value": 50,
+      "type": "most"
+    },
+    "14,-6": {
+      "initial_value": 50,
+      "current_value": 50,
+      "type": "most"
+    },
+    "15,-7": {
+      "initial_value": 100,
+      "current_value": 100,
+      "type": "miasto"
+    },
+    "24,-8": {
+      "initial_value": 100,
+      "current_value": 100,
+      "type": "miasto"
+    },
+    "6,9": {
+      "initial_value": 100,
+      "current_value": 100,
+      "type": "miasto"
+    }
+  }
+}
