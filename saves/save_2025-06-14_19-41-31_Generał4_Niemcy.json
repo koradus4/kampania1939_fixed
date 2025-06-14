@@ -273,14 +273,14 @@
       "combat_value": 10
     },
     {
-      "id": "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614192800",
+      "id": "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614194044",
       "owner": "2 (Polska)",
       "stats": {
         "move": 18,
         "combat_value": 10,
         "defense_value": 7,
-        "maintenance": 5,
-        "price": 24,
+        "maintenance": 6,
+        "price": 29,
         "sight": 2,
         "unitType": "TC",
         "unitSize": "Pluton",
@@ -290,7 +290,7 @@
           "range": 3,
           "value": 6
         },
-        "image": "assets/tokens/aktualne/nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614192800.png",
+        "image": "assets/tokens/aktualne/nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614194044.png",
         "shape": "prostokąt",
         "w": 240,
         "h": 240,
@@ -300,14 +300,38 @@
       "r": 2,
       "maxMovePoints": 18,
       "currentMovePoints": 17,
-      "maxFuel": 5,
-      "currentFuel": 4,
+      "maxFuel": 6,
+      "currentFuel": 5,
       "movement_mode": "combat",
       "movement_mode_locked": false,
-      "combat_value": 10
+      "combat_value": 10,
+      "full_data": {
+        "id": "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614194044",
+        "nation": "Polska",
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "shape": "prostokąt",
+        "label": "nowy_2_PL_TC_Pluton",
+        "unit_full_name": "Polska Czołg ciężki Pluton ***",
+        "move": 18,
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 6,
+        "price": 29,
+        "sight": 2,
+        "owner": "2",
+        "image": "assets/tokens/nowe_dla_2/nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614194044/token.png",
+        "w": 240,
+        "h": 240
+      },
+      "image_data": "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"
     },
     {
-      "id": "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803",
+      "id": "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614194052",
       "owner": "3 (Polska)",
       "stats": {
         "move": 18,
@@ -324,21 +348,45 @@
           "range": 3,
           "value": 6
         },
-        "image": "assets/tokens/aktualne/nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803.png",
+        "image": "assets/tokens/aktualne/nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614194052.png",
         "shape": "prostokąt",
         "w": 240,
         "h": 240,
         "nation": "Polska"
       },
       "q": 1,
-      "r": 7,
+      "r": 9,
       "maxMovePoints": 18,
-      "currentMovePoints": 14,
+      "currentMovePoints": 16,
       "maxFuel": 5,
-      "currentFuel": 1,
+      "currentFuel": 3,
       "movement_mode": "combat",
-      "movement_mode_locked": true,
-      "combat_value": 10
+      "movement_mode_locked": false,
+      "combat_value": 10,
+      "full_data": {
+        "id": "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614194052",
+        "nation": "Polska",
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "shape": "prostokąt",
+        "label": "nowy_3_PL_TC_Pluton",
+        "unit_full_name": "Polska Czołg ciężki Pluton ***",
+        "move": 18,
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "owner": "3",
+        "image": "assets/tokens/nowe_dla_3/nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614194052/token.png",
+        "w": 240,
+        "h": 240
+      },
+      "image_data": "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"
     }
   ],
   "players": [
@@ -353,7 +401,7 @@
       "victory_points": 0,
       "vp_history": [],
       "economy": {
-        "economic_points": 16,
+        "economic_points": 4,
         "special_points": 1,
         "assigned_points": 0
       },
@@ -407,6 +455,10 @@
           9
         ],
         [
+          0,
+          11
+        ],
+        [
           2,
           8
         ],
@@ -439,20 +491,12 @@
           8
         ],
         [
-          3,
-          6
-        ],
-        [
           5,
           12
         ],
         [
           8,
           8
-        ],
-        [
-          0,
-          7
         ],
         [
           1,
@@ -513,10 +557,6 @@
         [
           1,
           4
-        ],
-        [
-          0,
-          6
         ],
         [
           2,
@@ -567,16 +607,8 @@
           2
         ],
         [
-          1,
-          6
-        ],
-        [
           0,
           8
-        ],
-        [
-          2,
-          5
         ],
         [
           1,
@@ -635,10 +667,6 @@
           7
         ],
         [
-          1,
-          5
-        ],
-        [
           6,
           1
         ],
@@ -677,10 +705,6 @@
         [
           4,
           7
-        ],
-        [
-          3,
-          5
         ],
         [
           5,
@@ -723,10 +747,6 @@
           7
         ],
         [
-          2,
-          6
-        ],
-        [
           6,
           0
         ],
@@ -741,11 +761,11 @@
       ],
       "visible_tokens": [
         "TC_Pluton__2_PL_TC_Pluton",
-        "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614192800",
-        "AC_Pluton__3_PL_AC_Pluton",
+        "AC_Pluton__2_PL_AC_Pluton",
+        "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614194052",
         "TC_Pluton__3_PL_TC_Pluton",
-        "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803",
-        "AC_Pluton__2_PL_AC_Pluton"
+        "AC_Pluton__3_PL_AC_Pluton",
+        "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614194044"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -920,9 +940,9 @@
         ]
       ],
       "visible_tokens": [
-        "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614192800",
+        "TC_Pluton__2_PL_TC_Pluton",
         "AC_Pluton__2_PL_AC_Pluton",
-        "TC_Pluton__2_PL_TC_Pluton"
+        "nowy_TC_Pluton__2_nowy_2_PL_TC_Pluton_20250614194044"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -976,16 +996,8 @@
           9
         ],
         [
-          1,
-          6
-        ],
-        [
           0,
           8
-        ],
-        [
-          2,
-          5
         ],
         [
           2,
@@ -994,6 +1006,10 @@
         [
           1,
           9
+        ],
+        [
+          0,
+          11
         ],
         [
           2,
@@ -1026,10 +1042,6 @@
         [
           4,
           8
-        ],
-        [
-          3,
-          6
         ],
         [
           3,
@@ -1053,19 +1065,11 @@
         ],
         [
           0,
-          7
-        ],
-        [
-          0,
           10
         ],
         [
           2,
           7
-        ],
-        [
-          1,
-          5
         ],
         [
           1,
@@ -1098,10 +1102,6 @@
         [
           4,
           7
-        ],
-        [
-          3,
-          5
         ],
         [
           3,
@@ -1136,10 +1136,6 @@
           9
         ],
         [
-          0,
-          6
-        ],
-        [
           2,
           9
         ],
@@ -1150,10 +1146,6 @@
         [
           1,
           13
-        ],
-        [
-          2,
-          6
         ],
         [
           2,
@@ -1173,80 +1165,11 @@
         ]
       ],
       "visible_tokens": [
+        "AC_Pluton__3_PL_AC_Pluton",
         "TC_Pluton__3_PL_TC_Pluton",
-        "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614192803",
-        "AC_Pluton__3_PL_AC_Pluton"
+        "nowy_TC_Pluton__3_nowy_3_PL_TC_Pluton_20250614194052"
       ],
-      "temp_visible_hexes": [
-        [
-          0,
-          7
-        ],
-        [
-          0,
-          10
-        ],
-        [
-          2,
-          7
-        ],
-        [
-          1,
-          5
-        ],
-        [
-          3,
-          7
-        ],
-        [
-          1,
-          8
-        ],
-        [
-          1,
-          6
-        ],
-        [
-          0,
-          8
-        ],
-        [
-          2,
-          5
-        ],
-        [
-          1,
-          9
-        ],
-        [
-          3,
-          5
-        ],
-        [
-          2,
-          8
-        ],
-        [
-          0,
-          9
-        ],
-        [
-          0,
-          6
-        ],
-        [
-          1,
-          7
-        ],
-        [
-          2,
-          6
-        ],
-        [
-          3,
-          6
-        ]
-      ],
+      "temp_visible_hexes": [],
       "temp_visible_tokens": []
     },
     {
@@ -1260,8 +1183,8 @@
       "victory_points": 0,
       "vp_history": [],
       "economy": {
-        "economic_points": 0,
-        "special_points": 0,
+        "economic_points": 9,
+        "special_points": 1,
         "assigned_points": 0
       },
       "visible_hexes": [
@@ -1611,10 +1534,10 @@
         ]
       ],
       "visible_tokens": [
-        "TC_Pluton__5_N_TC_Pluton",
+        "TC_Pluton__6_N_TC_Pluton",
         "AC_Pluton__5_N_AC_Pluton",
         "AC_Pluton__6_N_AC_Pluton",
-        "TC_Pluton__6_N_TC_Pluton"
+        "TC_Pluton__5_N_TC_Pluton"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -1817,8 +1740,8 @@
         ]
       ],
       "visible_tokens": [
-        "TC_Pluton__5_N_TC_Pluton",
-        "AC_Pluton__5_N_AC_Pluton"
+        "AC_Pluton__5_N_AC_Pluton",
+        "TC_Pluton__5_N_TC_Pluton"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
@@ -2009,21 +1932,21 @@
         ]
       ],
       "visible_tokens": [
-        "AC_Pluton__6_N_AC_Pluton",
-        "TC_Pluton__6_N_TC_Pluton"
+        "TC_Pluton__6_N_TC_Pluton",
+        "AC_Pluton__6_N_AC_Pluton"
       ],
       "temp_visible_hexes": [],
       "temp_visible_tokens": []
     }
   ],
   "turn": 1,
-  "current_player": 3,
+  "current_player": 4,
   "weather": null,
   "turn_manager": null,
   "active_player_info": {
-    "id": 3,
-    "role": "Dowódca",
-    "nation": "Polska"
+    "id": 4,
+    "role": "Generał",
+    "nation": "Niemcy"
   },
   "key_points_state": {
     "9,-3": {

@@ -1,5 +1,7 @@
 import os
 import json
+import base64
+from pathlib import Path
 from engine.token import Token
 from engine.player import Player
 
@@ -17,8 +19,36 @@ def save_game(path, engine, active_player=None):
     def player_to_dict(p):
         return p.serialize()
 
+    # Serializuj żetony z pełnymi danymi dla nowych żetonów
+    tokens_data = []
+    for token in engine.tokens:
+        token_data = token.serialize()
+        
+        # Jeśli to nowy żeton, zapisz pełne dane + obraz
+        if "nowy_" in token.id:
+            json_path = Path(f"assets/tokens/aktualne/{token.id}.json")
+            png_path = Path(f"assets/tokens/aktualne/{token.id}.png")
+            
+            # Wczytaj pełne dane JSON
+            if json_path.exists():
+                try:
+                    with open(json_path, 'r', encoding='utf-8') as f:
+                        token_data['full_data'] = json.load(f)
+                except Exception as e:
+                    print(f"[WARN] Nie udało się wczytać {json_path}: {e}")
+            
+            # Zakoduj obraz do base64
+            if png_path.exists():
+                try:
+                    with open(png_path, 'rb') as f:
+                        token_data['image_data'] = base64.b64encode(f.read()).decode('utf-8')
+                except Exception as e:
+                    print(f"[WARN] Nie udało się zakodować {png_path}: {e}")
+        
+        tokens_data.append(token_data)
+
     state = {
-        "tokens": [t.serialize() for t in engine.tokens],
+        "tokens": tokens_data,
         "players": [player_to_dict(p) for p in getattr(engine, 'players', [])],
         "turn": getattr(engine, 'turn', 1),
         # ZAPISUJEMY current_player jako id aktywnego gracza
@@ -35,18 +65,58 @@ def save_game(path, engine, active_player=None):
     }
     with open(path, "w", encoding="utf-8") as f:
         json.dump(state, f, ensure_ascii=False, indent=2)
+    
+    # Wyczyść folder aktualne po zapisie
+    cleanup_aktualne_folder()
+
+def cleanup_aktualne_folder():
+    """Usuwa nowe żetony z folderu aktualne po zapisie"""
+    aktualne_path = Path("assets/tokens/aktualne")
+    if aktualne_path.exists():
+        for file_path in aktualne_path.iterdir():
+            if file_path.name.startswith("nowy_"):
+                try:
+                    file_path.unlink()
+                    print(f"[INFO] Usunięto: {file_path}")
+                except Exception as e:
+                    print(f"[WARN] Nie udało się usunąć {file_path}: {e}")
 
 def load_game(path, engine):
     import types
     from core.ekonomia import EconomySystem
     with open(path, "r", encoding="utf-8") as f:
-        state = json.load(f)
-    # Odtwórz żetony
+        state = json.load(f)    # Odtwórz żetony
     engine.tokens = []
+    aktualne_path = Path("assets/tokens/aktualne")
+    aktualne_path.mkdir(parents=True, exist_ok=True)
+    
     for tdata in state["tokens"]:
         from engine.token import Token
         token = Token.from_dict(tdata)
         engine.tokens.append(token)
+        
+        # Jeśli to nowy żeton z pełnymi danymi, odtwórz pliki
+        if "nowy_" in token.id and "full_data" in tdata:
+            json_path = aktualne_path / f"{token.id}.json"
+            png_path = aktualne_path / f"{token.id}.png"
+            
+            # Zapisz JSON
+            try:
+                with open(json_path, 'w', encoding='utf-8') as f:
+                    json.dump(tdata['full_data'], f, indent=2, ensure_ascii=False)
+                print(f"[INFO] Odtworzono: {json_path}")
+            except Exception as e:
+                print(f"[WARN] Nie udało się odtworzyć {json_path}: {e}")
+            
+            # Zapisz obraz
+            if "image_data" in tdata:
+                try:
+                    image_bytes = base64.b64decode(tdata['image_data'])
+                    with open(png_path, 'wb') as f:
+                        f.write(image_bytes)
+                    print(f"[INFO] Odtworzono: {png_path}")
+                except Exception as e:
+                    print(f"[WARN] Nie udało się odtworzyć {png_path}: {e}")
     # Odtwórz graczy
     engine.players = []
     for pdata in state["players"]:
