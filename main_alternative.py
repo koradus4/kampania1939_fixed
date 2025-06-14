@@ -143,8 +143,6 @@ if __name__ == "__main__":
             start_points = current_player.economy.economic_points
             current_player.economy.generate_economic_points()
             current_player.economy.add_special_points()
-            # Debug: bilans po losowaniu
-            print(f"[EKONOMIA][GENERAŁ] Stan punktów po losowaniu: {current_player.economy.economic_points}")
             available_points = current_player.economy.get_points()['economic_points']
             app.update_economy(available_points)  # Przekazanie dostępnych punktów ekonomicznych
 
@@ -154,7 +152,6 @@ if __name__ == "__main__":
         # Aktualizacja punktów ekonomicznych dla paneli dowódców
         if isinstance(app, PanelDowodcy):
             przydzielone_punkty = current_player.economy.get_points()['economic_points']
-            print(f"[EKONOMIA][DOWÓDCA] Dowódca {current_player.id} ({current_player.nation}) - punkty na start tury: {przydzielone_punkty}")
             app.update_economy(przydzielone_punkty)  # Aktualizacja interfejsu dowódcy
             # --- Synchronizacja punktów ekonomicznych dowódcy z systemem ekonomii ---
             current_player.punkty_ekonomiczne = przydzielone_punkty
@@ -164,19 +161,7 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Błąd: {e}")
 
-        # Przejście do następnej tury/podtury
-        # --- DEBUG: podsumowanie przekazania punktów dowódcom ---
-        if isinstance(app, PanelGenerala):
-            if hasattr(app, 'zarzadzanie_punktami_widget'):
-                widget = app.zarzadzanie_punktami_widget
-                print("[EKONOMIA][PRZEKAZANIE] Podsumowanie przekazania punktów dowódcom:")
-                for commander_id, given in widget.commander_points.items():
-                    dow = next((p for p in players if p.id == commander_id), None)
-                    if dow:
-                        start = getattr(dow, 'punkty_ekonomiczne', 0)
-                        end = dow.economy.economic_points
-                        spent = start - end if start > end else 0
-                        print(f"  Dowódca {dow.id} ({dow.nation}): otrzymał {given} pkt, wydał {spent}, bilans: przed={start}, po={end}")        # Przejście do kolejnego gracza i zwrócenie informacji czy zakończyła się pełna tura
+        # Przejście do następnej tury/podtury        # Przejście do kolejnego gracza i zwrócenie informacji czy zakończyła się pełna tura
         is_full_turn_end = turn_manager.next_turn()
           # --- ROZDZIEL PUNKTY Z KEY_POINTS tylko na koniec pełnej tury ---
         if is_full_turn_end:
