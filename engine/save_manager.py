@@ -77,7 +77,6 @@ def cleanup_aktualne_folder():
             if file_path.name.startswith("nowy_"):
                 try:
                     file_path.unlink()
-                    print(f"[INFO] Usunięto: {file_path}")
                 except Exception as e:
                     print(f"[WARN] Nie udało się usunąć {file_path}: {e}")
 
@@ -104,7 +103,6 @@ def load_game(path, engine):
             try:
                 with open(json_path, 'w', encoding='utf-8') as f:
                     json.dump(tdata['full_data'], f, indent=2, ensure_ascii=False)
-                print(f"[INFO] Odtworzono: {json_path}")
             except Exception as e:
                 print(f"[WARN] Nie udało się odtworzyć {json_path}: {e}")
             
@@ -114,7 +112,6 @@ def load_game(path, engine):
                     image_bytes = base64.b64decode(tdata['image_data'])
                     with open(png_path, 'wb') as f:
                         f.write(image_bytes)
-                    print(f"[INFO] Odtworzono: {png_path}")
                 except Exception as e:
                     print(f"[WARN] Nie udało się odtworzyć {png_path}: {e}")
     # Odtwórz graczy
@@ -145,7 +142,6 @@ def load_game(path, engine):
     # Odtwórz stan key_points
     if "key_points_state" in state and isinstance(state["key_points_state"], dict):
         engine.key_points_state = state["key_points_state"]
-        print("[INFO] Wczytano stan punktów specjalnych (key_points) z zapisu gry")
     if "weather" in state and state["weather"]:
         if hasattr(engine, "weather") and engine.weather:
             engine.weather.__dict__.update(state["weather"])
