@@ -136,14 +136,12 @@ class GameEngine:
         for hex_id in to_remove:
             self.key_points_state.pop(hex_id, None)
             if hasattr(self.board, 'key_points'):
-                self.board.key_points.pop(hex_id, None)
-        # (Opcjonalnie) zapisz do pliku mapy aktualny stan key_points
+                self.board.key_points.pop(hex_id, None)        # (Opcjonalnie) zapisz do pliku mapy aktualny stan key_points
         self._save_key_points_to_map()
 
     def _save_key_points_to_map(self):
         """Zapisuje aktualny stan key_points do pliku mapy (data/map_data.json)."""
         if getattr(self, 'read_only', False):
-            print("[INFO] Działanie w trybie read-only - zmiany nie zostaną zapisane do pliku.")
             return
         try:
             map_path = self.board.__dict__.get('json_path', 'data/map_data.json')
@@ -154,7 +152,7 @@ class GameEngine:
             with open(map_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
         except Exception as e:
-            print(f"[WARN] Nie udało się zapisać key_points: {e}")
+            pass
 
     def process_key_points(self, players):
         """Przetwarza punkty kluczowe: rozdziela punkty ekonomiczne, aktualizuje stan punktów, usuwa wyzerowane."""
@@ -186,34 +184,12 @@ class GameEngine:
                     debug_details_per_general.setdefault(general, []).append((hex_id, give, kp['current_value']))
                     if kp['current_value'] <= 0:
                         to_remove.append(hex_id)
-        # Debug: wypisz podsumowanie
-        for general, total in debug_points_per_general.items():
-            print(f"[EKONOMIA][KEY_POINTS] {general.nation} (Generał {general.id}): otrzymał {total} pkt z heksów specjalnych:")
-            for hex_id, give, left in debug_details_per_general[general]:
-                print(f"    Heks {hex_id}: +{give} pkt (pozostało na heksie: {left})")
-        if not debug_points_per_general:
-            print("[EKONOMIA][KEY_POINTS] Żaden generał nie otrzymał punktów z heksów specjalnych w tej turze.")
         # Usuń wyzerowane punkty z key_points_state i z planszy
         for hex_id in to_remove:
             self.key_points_state.pop(hex_id, None)
             if hasattr(self.board, 'key_points'):
                 self.board.key_points.pop(hex_id, None)
         self._save_key_points_to_map()
-
-    def _save_key_points_to_map(self):
-        """Zapisuje aktualny stan key_points do pliku mapy (data/map_data.json)."""
-        if getattr(self, 'read_only', False):
-            print("[INFO] Działanie w trybie read-only - zmiany nie zostaną zapisane do pliku.")
-            return
-        try:
-            map_path = self.board.__dict__.get('json_path', 'data/map_data.json')
-            with open(map_path, encoding='utf-8') as f:
-                data = json.load(f)
-            # Aktualizuj key_points
-            data['key_points'] = {k: {'type': v['type'], 'value': v['current_value']} for k, v in self.key_points_state.items()}
-            with open(map_path, 'w', encoding='utf-8') as f:                json.dump(data, f, indent=2, ensure_ascii=False)
-        except Exception as e:
-            print(f"[WARN] Nie udało się zapisać key_points: {e}")
 
     def update_all_players_visibility(self, players):
         """Aktualizuje widoczność dla wszystkich graczy."""
