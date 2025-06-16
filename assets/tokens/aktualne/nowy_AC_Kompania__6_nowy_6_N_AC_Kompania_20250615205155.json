@@ -1,0 +1,23 @@
+{
+  "id": "nowy_AC_Kompania__6_nowy_6_N_AC_Kompania_20250615205155",
+  "nation": "Niemcy",
+  "unitType": "AC",
+  "unitSize": "Kompania",
+  "shape": "prostokąt",
+  "label": "nowy_6_N_AC_Kompania",
+  "unit_full_name": "Niemcy Artyleria ciężka Kompania I",
+  "move": 12,
+  "attack": {
+    "range": 6,
+    "value": 9
+  },
+  "combat_value": 18,
+  "defense_value": 6,
+  "maintenance": 6,
+  "price": 44,
+  "sight": 3,
+  "owner": "6",
+  "image": "assets/tokens/nowe_dla_6/nowy_AC_Kompania__6_nowy_6_N_AC_Kompania_20250615205155/token.png",
+  "w": 240,
+  "h": 240
+}
