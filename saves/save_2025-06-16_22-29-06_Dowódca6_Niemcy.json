@@ -1,0 +1,2670 @@
+{
+  "tokens": [
+    {
+      "id": "AC_Pluton__2_PL_AC_Pluton",
+      "owner": "2 (Polska)",
+      "stats": {
+        "move": 16,
+        "combat_value": 6,
+        "defense_value": 7,
+        "maintenance": 12,
+        "price": 57,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Pluton",
+        "label": "2_PL_AC_Pluton",
+        "unit_full_name": "Polska Artyleria ciężka Pluton ***",
+        "attack": {
+          "range": 7,
+          "value": 12
+        },
+        "image": "assets/tokens/Polska/AC_Pluton__2_PL_AC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 3,
+      "r": 0,
+      "maxMovePoints": 24,
+      "currentMovePoints": 24,
+      "maxFuel": 12,
+      "currentFuel": 12,
+      "movement_mode": "march",
+      "movement_mode_locked": false,
+      "combat_value": 6
+    },
+    {
+      "id": "AC_Pluton__3_PL_AC_Pluton",
+      "owner": "3 (Polska)",
+      "stats": {
+        "move": 16,
+        "combat_value": 6,
+        "defense_value": 7,
+        "maintenance": 12,
+        "price": 57,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Pluton",
+        "label": "3_PL_AC_Pluton",
+        "unit_full_name": "Polska Artyleria ciężka Pluton ***",
+        "attack": {
+          "range": 7,
+          "value": 12
+        },
+        "image": "assets/tokens/Polska/AC_Pluton__3_PL_AC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 4,
+      "r": 5,
+      "maxMovePoints": 24,
+      "currentMovePoints": 19,
+      "maxFuel": 12,
+      "currentFuel": 7,
+      "movement_mode": "march",
+      "movement_mode_locked": false,
+      "combat_value": 6
+    },
+    {
+      "id": "TC_Pluton__2_PL_TC_Pluton",
+      "owner": "2 (Polska)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "2_PL_TC_Pluton",
+        "unit_full_name": "Polska Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/Polska/TC_Pluton__2_PL_TC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 5,
+      "r": 4,
+      "maxMovePoints": 27,
+      "currentMovePoints": 22,
+      "maxFuel": 5,
+      "currentFuel": 0,
+      "movement_mode": "march",
+      "movement_mode_locked": false,
+      "combat_value": 10
+    },
+    {
+      "id": "TC_Pluton__3_PL_TC_Pluton",
+      "owner": "3 (Polska)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "3_PL_TC_Pluton",
+        "unit_full_name": "Polska Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/Polska/TC_Pluton__3_PL_TC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 6,
+      "r": 4,
+      "maxMovePoints": 27,
+      "currentMovePoints": 22,
+      "maxFuel": 5,
+      "currentFuel": 0,
+      "movement_mode": "march",
+      "movement_mode_locked": false,
+      "combat_value": 10
+    },
+    {
+      "id": "TC_Pluton__6_N_TC_Pluton",
+      "owner": "6 (Niemcy)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "6_N_TC_Pluton",
+        "unit_full_name": "Niemcy Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/Niemcy/TC_Pluton__6_N_TC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 23,
+      "r": -4,
+      "maxMovePoints": 27,
+      "currentMovePoints": 24,
+      "maxFuel": 5,
+      "currentFuel": 2,
+      "movement_mode": "march",
+      "movement_mode_locked": true,
+      "combat_value": 10
+    },
+    {
+      "id": "AC_Pluton__5_N_AC_Pluton",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 16,
+        "combat_value": 6,
+        "defense_value": 7,
+        "maintenance": 12,
+        "price": 57,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Pluton",
+        "label": "5_N_AC_Pluton",
+        "unit_full_name": "Niemcy Artyleria ciężka Pluton ***",
+        "attack": {
+          "range": 7,
+          "value": 12
+        },
+        "image": "assets/tokens/Niemcy/AC_Pluton__5_N_AC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 23,
+      "r": -3,
+      "maxMovePoints": 24,
+      "currentMovePoints": 17,
+      "maxFuel": 12,
+      "currentFuel": 10,
+      "movement_mode": "march",
+      "movement_mode_locked": false,
+      "combat_value": 6
+    },
+    {
+      "id": "AC_Pluton__6_N_AC_Pluton",
+      "owner": "6 (Niemcy)",
+      "stats": {
+        "move": 16,
+        "combat_value": 6,
+        "defense_value": 7,
+        "maintenance": 12,
+        "price": 57,
+        "sight": 3,
+        "unitType": "AC",
+        "unitSize": "Pluton",
+        "label": "6_N_AC_Pluton",
+        "unit_full_name": "Niemcy Artyleria ciężka Pluton ***",
+        "attack": {
+          "range": 7,
+          "value": 12
+        },
+        "image": "assets/tokens/Niemcy/AC_Pluton__6_N_AC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 27,
+      "r": -3,
+      "maxMovePoints": 16,
+      "currentMovePoints": 16,
+      "maxFuel": 12,
+      "currentFuel": 12,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 6
+    },
+    {
+      "id": "TC_Pluton__5_N_TC_Pluton",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 18,
+        "combat_value": 10,
+        "defense_value": 7,
+        "maintenance": 5,
+        "price": 24,
+        "sight": 2,
+        "unitType": "TC",
+        "unitSize": "Pluton",
+        "label": "5_N_TC_Pluton",
+        "unit_full_name": "Niemcy Czołg ciężki Pluton ***",
+        "attack": {
+          "range": 3,
+          "value": 6
+        },
+        "image": "assets/tokens/Niemcy/TC_Pluton__5_N_TC_Pluton/token.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 24,
+      "r": -5,
+      "maxMovePoints": 27,
+      "currentMovePoints": 23,
+      "maxFuel": 5,
+      "currentFuel": 1,
+      "movement_mode": "march",
+      "movement_mode_locked": false,
+      "combat_value": 10
+    },
+    {
+      "id": "nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250616222552",
+      "owner": "2 (Polska)",
+      "stats": {
+        "move": 5,
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "label": "nowy_2_PL_P_Pluton",
+        "unit_full_name": "Polska Piechota Pluton ***",
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "image": "assets/tokens/aktualne/nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250616222552.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 1,
+      "r": 3,
+      "maxMovePoints": 8,
+      "currentMovePoints": 6,
+      "maxFuel": 2,
+      "currentFuel": 0,
+      "movement_mode": "march",
+      "movement_mode_locked": false,
+      "combat_value": 8,
+      "full_data": {
+        "id": "nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250616222552",
+        "nation": "Polska",
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "shape": "prostokąt",
+        "label": "nowy_2_PL_P_Pluton",
+        "unit_full_name": "Polska Piechota Pluton ***",
+        "move": 5,
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "owner": "2",
+        "image": "assets/tokens/nowe_dla_2/nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250616222552/token.png",
+        "w": 240,
+        "h": 240
+      },
+      "image_data": "iVBORw0KGgoAAAANSUhEUgAAAPAAAADwCAYAAAA+VemSAAASGElEQVR4nO3dCZDU5JvH8WcAOUVOOd0FOURRQfBCoEQUBFSU4o+irgKCsCy1guJRRUlxFBbUWiqKB4rUsi6sKLIIwr8EYZdTDvkrymHJobiCcrNyyU22nphmm87bMz09M915mO+n6q2ZSSdvZ9L9S94kb5IcEfEEgEklsj0DANJHgAHDCDBgGAEGDCPAgGGlkr3geRycBqIkJycnNIwtMGAYAQYMI8CAYQQYMIwAA4YRYMAwAgwYRoABwwgwYBgBBgwjwIBhBBgwjAADhhFgwDACDBhGgAHDCDBgGAEGDCPAgGEEGDCMAAOGEWDAMAIMGEaAAcMIMGAYAQYMI8CAYQQYMIwAA4YRYMAwAgwYRoABwwgwYBgBBgwjwIBhBBgwjAADhhFgwDACDBhGgAHDCDBgGAEGDCPAgGEEGDCMAAOGEWDAMAIMGEaAAcMIMGAYAQYMI8CAYQQYMIwAA4YRYMAwAgwYRoABwwgwYBgBBgwjwIBhBBgwjAADhhFgwDACDBhGgAHDCDBgGAEGDCPAgGEEGDCMAAOGEWDAMAIMGEaAAcNMBXjFihWSk5OTZylVqpSUKVNGLrvsMqldu7Zcf/310rVrV3n11Vdl3759ub7HokWLQvVVrlxZLJs3b17of6pevbpYo5/dwIEDZd26ddmelcgwFeBUnT17Vk6dOiVHjhyR3bt3y8aNG/0v8XPPPScNGzaU9957L9uziHzQz1JXvo0bN/Y/O/18cREHODcaal2Ljx49OtuzghTMnTtXrrvuOn/le+jQoWzPTuQUuwDHjBo1SubPn5/t2UAuTpw4Iffff79s3bo127MSWRdFgBcvXiye5/lFm1cnT56UgwcP+k3nl156SapUqeKc7tlnnw0N69Chw/m6YuX333/PwH8BFNMAxytRooSULl3aD+21114rL774oixbtkwqVaoUGvf777+XtWvXZmU+gcJw0QXYRfehXFtbtWrVqozPD1BYikWA1T333OMc/ssvvxTaaaTVq1fL4MGD/dNWVatWlbJly8oVV1whbdu2lZEjR8oPP/yQ7/nWAzdvv/22dOvWTRo0aOCfGtMWxuWXXy6tWrWSIUOGFHgltGXLFnn++ef9FZ3Wr60Vbb0MHTrUb6Xk18qVK+Xpp5+WW265xV8Ol1xyiVSrVk2uueYa6d27t0yfPt0/spzMW2+95S/3cuXKOV+/+eabz382bdu2TVrP3r175fXXX5d7771X6tevLxUrVpSSJUtK+fLlpW7dutKmTRt/xf7111+LZZ6rRNHy5cud87p48eI8p921a5dz2kGDBl0w3sKFC0PjVKpUKde69+/f73Xv3t1Zf3wpWbKk98QTT3iHDx9O6f994403vCpVquRZr5YuXbp4u3fvdtYzd+7c0PjVqlXzzp07540ZM8YrXbp00npLlSrljRw5MqX5Xbdunde6deuU5rdevXrehx9+6KznzTffTKkOEfHatGnjrOP999/3KlasmHI9jz76qHfkyBEvypLMe/EIsH65XNOOGjWqQAHevn2717hx45S/KFqaNWvmr1CSOXv2rPf444/nq04t9evXd9brCnDVqlW9/v37p1z3a6+9luvynTp1aq4rgmTlqaee8s6cOVOoAX733XfzPR9aOnXq5EVZsQ7wiBEjnNPqmjrdAB8/ftxr0aJFWl+Wu+66y98CugwfPjytOrW0b98+pQDnt+jWLFnLYd68eV6JEiXSrvuZZ54ptABv377dK1u2bNrzsnTpUi+qim2Av/32W69ChQqh6fRLt2PHjrQDrE1LV50vvPCCt3XrVu/UqVPezz//7K88tCmaOO6UKVNCdW7cuNHLyclxbl2nT5/uHThwwG/qrVixwmvXrp1zeXz22WcpB1ibsrr11Ob3sWPHvGXLlnktW7Z0jjtjxozQ/B48eNCrUaOGczno1nXDhg3eiRMn/Pp1ZVm7dm1n3TNnznSuIF3jrl27NulnPXDgwND4tWrV8j766CN/V+fkyZPe5s2b/ZWGq+7Ro0d7UVUsAqxbNf3C7Nmzx1uzZo3fRC5fvrxzurvvvjv0HqkGWL/suh+ZOO7EiROd8z5t2rTQuDfddFNovF69eoXGq1mzprNprF/w5s2bh8bv3LlzSgHWen/77bdQvXv37nXuP2rLINXWggbGZefOnf7KKHF83Q05ffp0gQJ8+vRpf9cgcfwlS5Y4x+/QoUNo3D59+nhRddEGOJ1Srlw5f02cboB1K5c4nn4xkzWLVdOmTUPT6BY6ft9X3ytxnPHjxyetc9KkSV7Dhg29Bx980Bs3bpy3YMECb9++fSkFeMKECUnr1f3BxPEHDBhwwTg6v7oSyG8IXMtYy/z58wu8Bf7pp5/8lYduYbV5ffvttycdd+zYsaG6u3Xr5kWVa1mUkmJIr1SaNm2aXHXVVWnXsXz58tCwli1b+qc2ktHTPomnZfQURr169fzf169f7+zvm+wUmOrfv79f0pFbvXoVV6I//vgjNO979uwJjTdo0KBc31d7u+my19NX8T7//HPp1KmTFMSVV17pl549e+Y5ruv0oPbis6TYBVjP0U6cONE/B1gQ27ZtCw2bNWtWrgF20UB3797d/3379u2h17W+Ro0aSVH0WNNzo8lUqFAhNOzMmTMX/P3dd985V44tWrTI8/1vu+22UIA3bdokRd23esOGDfLVV1/J0qVLZcGCBWLdRRlg/dJr5wE9Ya9dKuvUqeN3UtCO8bqG15P5BXXgwIFCmdfDhw+f/137b7uCpGErbLFODcm4XvuzFZf7MtDrjPV67LzUqlXL2fGiMG3btk2++OILv2OJXkO8efPmPC9FLIplXZRKXSwXM9xxxx0Zfc/Tp08XSj1Hjx7NyPskyitkqbQkXHWk2gJJXBkUZnhWr17t97DS4OYXAS4mXPtPep2xNs/Tpd0OXftkx44dczZps811V4/9+/f7W7m8Wjl6o4VENWvWLPA8zZgxQx555BE5d+5cKJjaCtPmfbNmzfzjFboPr9cZJ45nCQFOk/ZLTqRNtIJItk+q+4bar9hFm93ab/mGG27wv5SxogdyilrTpk2d+5nffPON3185N67+282bNy/Q/Ozdu1f69OlzQXh1RTJu3Dj/QF/iSte1D28twLbmNkJuvfXW0LAvv/zSuWVJlX6B9WKCRHPmzEk6jd6UQN9Tf44dO1Z69OjhXzSQV9O8MOjWzHWt9TvvvJPrdAsXLnRepN+lS5eUwpS4dY2ZOnWqHD9+XOLp0Wi9UMPVYvr1119DwwhwMaE3ydOrjeLpFTZ6CsX1BdOtqDYR9RSKfqH0ihy9Oil+XP3yPPDAA6FpJ0yY4PzC6/u9/PLLoeH6HpdeeqkUNd0Hfvjhh0PDP/jgA/n444+d02hoBgwYEBquzdp27dpdMEwPRLokhjQm8ai22rFjhyS7Cm3KlCmh4Rbvt1Us+kKnKj9dKV3d9rR07NjRW7lypd8RQbsafvLJJ17dunVD45UpU8bvmRRv/fr1zq6U2mFi8uTJfi+po0eP+l0p27Zt63z/RYsWpXQ1Um6GDBkSmqZnz56h8bQjiqunm155NXjwYL9rqHZf1J5xOv916tQJjav/b2InjhhXj7DevXv7PeF+/PHHC7qNuuZZS9++ff1OO/p5bNmyxe/AUb16dXMXNCTJKgFON8DaL1n72SZbhnmVxCuhYoYNG5Z2nXpZY6KiDLDSYKY7v7ktB3XjjTfmOm2DBg3OjztnzpwCzYcWfb+ocs0vTegC0KPGuj+Xzj2WH3roIRk+fLjztTFjxvhHUvNLD15NnjxZMq1fv37+hfPpnF8fNmyYjBgxIunrifvFiXbu3Hn+lNR9992Xrw467du3D+3DazM8scNK1LEFLuAF/dosc/UddhVtbmoTTvsR5+WVV15x9o12Fb1RwKFDh5z1FPUWOGbVqlVeq1atUppf7b/96aef5rkMtJXTpEmTXOvaFXehh15xlNdNBfTKsKFDh/pXi3Xt2jXlix+yzfm/ZHvtcTHQG47rUWB9csTs2bNlyZIlsmvXLv+cqG6VdAut5yA7duwojz32mH87nFRoZ4S+ffv6R1e1R5F2A9Q6dQuhR1WbNGni31KmV69ecvXVV0u2aV9vPT20Zs0amTlzpr88dIumvc30oJoexNOj93qLG+0+mkqPLW3l6I0HdQuvXVX1YJ4eaNJl2KhRI3+Zxp8j11v36E0M9XywHijUc726zPSAo/Y579y5szz55JPn+8Hfeeed/r2n402aNCl0QC2qtNvMn+2PFHrKAMgeVy839oEBwwgwYBgBBgwjwIBhBBgwjAADhhFgwDACDBhGgAHDCDBgGAEGDCPAgGEEGDAs+fVc+XzCAIDMYwsMGEaAAcMIMGAYAQYMI8CAYQQ4Q+YFNyBzlTL6QG194LaIzHRMOzAY76MCzsNSERlSwDoQLdyVMsMq6v2bE4adEpHf9An1QXleRMIPTCmY70VEH8B6VyHXi+wiwBmmz/NbkuS1D0TkCRF5RUQedgS9IHQlgYsPTegI6S0i9wb3+f0w2zMDEwhwxLQKfv6Yx3i57RfPD16LPTfwSX0UaPD7fwWv9Ygb3wu2/m2CJn75YPxX9QHjCXU/F0z/jT5GVERuCMavJiIPisgPaf7fSA9N6Ij53+BnuUKs8/7gg35PRPSx372CprzSh5vqU5hmiEgdEekTHFSbG4T1UxFZICL//+yDPw0WkdUiog9D7aTPRg4OwP23iGwI6kLRI8ARovupfw1+Dz8+vGAB/vsgwA1EZFTca68H4dUt/xfBFliNE5FHg1A+KyLvJtT5tYgsE5HWccN6BnVNSngPFB2a0BGgj6teGwRAm6CXB/vDmTA++Dk5LrxKH639frDl/VcROZgw3V8Swqtiz1PcWITziwuxBc6wNcE+ZDJVReQ/RaRyBuZluz6eM9gqX+t4vXJw6klbBSv18Z1xr7mOkMce2fZHEc0vwghwls8D5wT7uzWDZqweeKqUoXnRc88SNK+Tib22O2F4/NY6pmTcfjUygwBH6DxwYUk1QLHnT+bWIjgb/NQDW/G4Wjwa2Ac2/sG5wnooxTpiR4r/J5dxYq9pCwHRQ4CNujT4mXhwSa1zDHNtMXXft66I/CQim5Kc0loWbH1j56cRLQTYqObBz2kicjpu+KbgNE6iskkOMA2J6+xxJG641jkgOEKu540vK8R5R+FhH9io7iLSMDiqfbOI3C0iv4rILBG5PTinm3gwqlww/j+JSFsR+QcRGRocYZ4tIlcH9cY6cmwJeme9lqX/EXljC2yUhnG5iPQLjhC/ETSdx4rIvycZ/99EpF5CR4uSwWkrHfZ3IjIl6PChW9w3gwNuseY6oicn7mDkBZwDAWSN6zgGW2DAMAIMGEaAAcMIMGAYAQYMI8CAYQQ44lrH3X52VoSnQ3YQ4IiLv2yvcoSnQ3YQ4IiLXSQvwc3fozodsoMAR8w/ikh/Eflb8LdeLRRzRfDzy+DC//FZnA7R4bmKR8l4+UPEuzTuM+go4vULfq8k4v2HiNci7vXWWZqOIlkprpzSFzpCZgb3Vs5P82lXcM1uJqerkY9pULR9oQlwhOhN1L8Lyvrg6iJtvsboHSI7BrflaRbcW6tRcDvaTE7H7XSyI9lypwkdwXJWxOuR8JmUEPFmR2w6imSsJMkqAY5i+ee4z6K3iFc5+L28iPe3CE1HkYwVAmyk/Evc51BXxDsi4k2MG1ZbxNsZgekoktFCgA2U30S8GnGfw5xg+DkRr1Xc8BFZno4iGS8E2Ej5XcR7TsTrmzD82yBUSyMyHUUyWjiNBBjGLXWAiwwBBgwjwIBhBBgwjAADhhFgwDACDBhGgAHDCDBgGAEGDCPAgGEEGDCMAAOGEWDAMAIMGEaAAcMIMGAYAQYMI8CAYQQYMIwAA4YRYMAwAgwYRoABwwgwYBgBBgwjwIBhBBgwjAADhhFgwDACDBhGgAHDCDBgGAEGDCPAgGEEGDCMAAOGEWDAMAIMGEaAAcMIMGAYAQYMI8CAYQQYMIwAA4YRYMAwAgwYRoABwwgwYBgBBgwjwIBhBBgwjAADhhFgwDACDBhGgAHDCDBgGAEGDCPAgGEEGDCMAAOGEWDAMAIMGEaAAcMIMGAYAQYMI8CAYQQYMIwAA4YRYMAwAgwYRoABwwgwYFiOiHjZngkA6WELDBhGgAHDCDBgGAEGxK7/A2bJ1+86An8+AAAAAElFTkSuQmCC"
+    },
+    {
+      "id": "nowy_P_Pluton__3_nowy_3_PL_P_Pluton_20250616222554",
+      "owner": "3 (Polska)",
+      "stats": {
+        "move": 5,
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "label": "nowy_3_PL_P_Pluton",
+        "unit_full_name": "Polska Piechota Pluton ***",
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "image": "assets/tokens/aktualne/nowy_P_Pluton__3_nowy_3_PL_P_Pluton_20250616222554.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Polska"
+      },
+      "q": 1,
+      "r": 6,
+      "maxMovePoints": 8,
+      "currentMovePoints": 6,
+      "maxFuel": 2,
+      "currentFuel": 0,
+      "movement_mode": "march",
+      "movement_mode_locked": false,
+      "combat_value": 8,
+      "full_data": {
+        "id": "nowy_P_Pluton__3_nowy_3_PL_P_Pluton_20250616222554",
+        "nation": "Polska",
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "shape": "prostokąt",
+        "label": "nowy_3_PL_P_Pluton",
+        "unit_full_name": "Polska Piechota Pluton ***",
+        "move": 5,
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "owner": "3",
+        "image": "assets/tokens/nowe_dla_3/nowy_P_Pluton__3_nowy_3_PL_P_Pluton_20250616222554/token.png",
+        "w": 240,
+        "h": 240
+      },
+      "image_data": "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"
+    },
+    {
+      "id": "nowy_P_Pluton__5_nowy_5_N_P_Pluton_20250616222744",
+      "owner": "5 (Niemcy)",
+      "stats": {
+        "move": 5,
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "label": "nowy_5_N_P_Pluton",
+        "unit_full_name": "Niemcy Piechota Pluton ***",
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "image": "assets/tokens/aktualne/nowy_P_Pluton__5_nowy_5_N_P_Pluton_20250616222744.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 24,
+      "r": -12,
+      "maxMovePoints": 5,
+      "currentMovePoints": 5,
+      "maxFuel": 2,
+      "currentFuel": 2,
+      "movement_mode": "combat",
+      "movement_mode_locked": false,
+      "combat_value": 8,
+      "full_data": {
+        "id": "nowy_P_Pluton__5_nowy_5_N_P_Pluton_20250616222744",
+        "nation": "Niemcy",
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "shape": "prostokąt",
+        "label": "nowy_5_N_P_Pluton",
+        "unit_full_name": "Niemcy Piechota Pluton ***",
+        "move": 5,
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "owner": "5",
+        "image": "assets/tokens/nowe_dla_5/nowy_P_Pluton__5_nowy_5_N_P_Pluton_20250616222744/token.png",
+        "w": 240,
+        "h": 240
+      },
+      "image_data": "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"
+    },
+    {
+      "id": "nowy_P_Pluton__6_nowy_6_N_P_Pluton_20250616222747",
+      "owner": "6 (Niemcy)",
+      "stats": {
+        "move": 5,
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "label": "nowy_6_N_P_Pluton",
+        "unit_full_name": "Niemcy Piechota Pluton ***",
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "image": "assets/tokens/aktualne/nowy_P_Pluton__6_nowy_6_N_P_Pluton_20250616222747.png",
+        "shape": "prostokąt",
+        "w": 240,
+        "h": 240,
+        "nation": "Niemcy"
+      },
+      "q": 32,
+      "r": -4,
+      "maxMovePoints": 8,
+      "currentMovePoints": 8,
+      "maxFuel": 2,
+      "currentFuel": 2,
+      "movement_mode": "march",
+      "movement_mode_locked": true,
+      "combat_value": 8,
+      "full_data": {
+        "id": "nowy_P_Pluton__6_nowy_6_N_P_Pluton_20250616222747",
+        "nation": "Niemcy",
+        "unitType": "P",
+        "unitSize": "Pluton",
+        "shape": "prostokąt",
+        "label": "nowy_6_N_P_Pluton",
+        "unit_full_name": "Niemcy Piechota Pluton ***",
+        "move": 5,
+        "attack": {
+          "range": 1,
+          "value": 2
+        },
+        "combat_value": 8,
+        "defense_value": 4,
+        "maintenance": 2,
+        "price": 18,
+        "sight": 3,
+        "owner": "6",
+        "image": "assets/tokens/nowe_dla_6/nowy_P_Pluton__6_nowy_6_N_P_Pluton_20250616222747/token.png",
+        "w": 240,
+        "h": 240
+      },
+      "image_data": "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"
+    }
+  ],
+  "players": [
+    {
+      "id": 1,
+      "nation": "Polska",
+      "role": "Generał",
+      "name": "Marszałek Polski Edward Rydz-Śmigły",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Marszałek Polski Edward Rydz-Śmigły.png",
+      "map_path": "C:/Users/klif/kampania1939_fixed/assets/mapa_globalna.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 23,
+        "special_points": 1,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          -1
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          7,
+          4
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          6,
+          -3
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          -2
+        ],
+        [
+          5,
+          -1
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          8,
+          3
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          -1
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          6,
+          -2
+        ],
+        [
+          6,
+          -1
+        ],
+        [
+          4,
+          -2
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__2_PL_TC_Pluton",
+        "AC_Pluton__3_PL_AC_Pluton",
+        "TC_Pluton__3_PL_TC_Pluton",
+        "nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250616222552",
+        "AC_Pluton__2_PL_AC_Pluton",
+        "nowy_P_Pluton__3_nowy_3_PL_P_Pluton_20250616222554"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 2,
+      "nation": "Polska",
+      "role": "Dowódca",
+      "name": "Generał Juliusz Rómmel",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał Juliusz Rómmel.png",
+      "map_path": "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca2.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          -1
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          7,
+          4
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          6,
+          -3
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          -2
+        ],
+        [
+          5,
+          -1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          -1
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          6,
+          -2
+        ],
+        [
+          6,
+          -1
+        ],
+        [
+          4,
+          -2
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__2_PL_TC_Pluton",
+        "TC_Pluton__3_PL_TC_Pluton",
+        "nowy_P_Pluton__3_nowy_3_PL_P_Pluton_20250616222554",
+        "AC_Pluton__3_PL_AC_Pluton",
+        "AC_Pluton__2_PL_AC_Pluton",
+        "nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250616222552"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 3,
+      "nation": "Polska",
+      "role": "Dowódca",
+      "name": "Generał Tadeusz Kutrzeba",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał Tadeusz Kutrzeba.png",
+      "map_path": "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca1.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          8,
+          3
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          7,
+          4
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          3
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__2_PL_TC_Pluton",
+        "TC_Pluton__3_PL_TC_Pluton",
+        "nowy_P_Pluton__3_nowy_3_PL_P_Pluton_20250616222554",
+        "AC_Pluton__3_PL_AC_Pluton",
+        "nowy_P_Pluton__2_nowy_2_PL_P_Pluton_20250616222552"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 4,
+      "nation": "Niemcy",
+      "role": "Generał",
+      "name": "Generał pułkownik Walther von Brauchitsch",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał pułkownik Walther von Brauchitsch.png",
+      "map_path": "C:/Users/klif/kampania1939_fixed/assets/mapa_globalna.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 1,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          27,
+          -5
+        ],
+        [
+          28,
+          -6
+        ],
+        [
+          25,
+          -5
+        ],
+        [
+          26,
+          -4
+        ],
+        [
+          29,
+          -5
+        ],
+        [
+          21,
+          -9
+        ],
+        [
+          21,
+          0
+        ],
+        [
+          23,
+          -3
+        ],
+        [
+          34,
+          -6
+        ],
+        [
+          27,
+          -12
+        ],
+        [
+          27,
+          -3
+        ],
+        [
+          28,
+          -4
+        ],
+        [
+          25,
+          -12
+        ],
+        [
+          25,
+          -3
+        ],
+        [
+          32,
+          -4
+        ],
+        [
+          26,
+          -11
+        ],
+        [
+          26,
+          -2
+        ],
+        [
+          26,
+          -1
+        ],
+        [
+          29,
+          -3
+        ],
+        [
+          31,
+          -6
+        ],
+        [
+          23,
+          -10
+        ],
+        [
+          34,
+          -4
+        ],
+        [
+          28,
+          -2
+        ],
+        [
+          28,
+          -1
+        ],
+        [
+          30,
+          -5
+        ],
+        [
+          25,
+          -10
+        ],
+        [
+          32,
+          -2
+        ],
+        [
+          32,
+          -1
+        ],
+        [
+          24,
+          -6
+        ],
+        [
+          35,
+          -6
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          22,
+          -4
+        ],
+        [
+          30,
+          -3
+        ],
+        [
+          24,
+          -4
+        ],
+        [
+          26,
+          -7
+        ],
+        [
+          35,
+          -4
+        ],
+        [
+          21,
+          -3
+        ],
+        [
+          22,
+          -11
+        ],
+        [
+          22,
+          -2
+        ],
+        [
+          22,
+          -1
+        ],
+        [
+          27,
+          -6
+        ],
+        [
+          32,
+          -7
+        ],
+        [
+          24,
+          -11
+        ],
+        [
+          24,
+          -2
+        ],
+        [
+          24,
+          -1
+        ],
+        [
+          26,
+          -5
+        ],
+        [
+          21,
+          -10
+        ],
+        [
+          22,
+          -9
+        ],
+        [
+          34,
+          -7
+        ],
+        [
+          27,
+          -13
+        ],
+        [
+          22,
+          0
+        ],
+        [
+          28,
+          -5
+        ],
+        [
+          32,
+          -5
+        ],
+        [
+          33,
+          -6
+        ],
+        [
+          24,
+          -9
+        ],
+        [
+          26,
+          -12
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          26,
+          -3
+        ],
+        [
+          21,
+          -1
+        ],
+        [
+          31,
+          -4
+        ],
+        [
+          34,
+          -5
+        ],
+        [
+          28,
+          -3
+        ],
+        [
+          32,
+          -3
+        ],
+        [
+          33,
+          -4
+        ],
+        [
+          24,
+          -7
+        ],
+        [
+          35,
+          -7
+        ],
+        [
+          20,
+          -1
+        ],
+        [
+          20,
+          -2
+        ],
+        [
+          22,
+          -5
+        ],
+        [
+          23,
+          -6
+        ],
+        [
+          31,
+          -2
+        ],
+        [
+          31,
+          -1
+        ],
+        [
+          34,
+          -3
+        ],
+        [
+          33,
+          -2
+        ],
+        [
+          24,
+          -5
+        ],
+        [
+          35,
+          -5
+        ],
+        [
+          25,
+          -6
+        ],
+        [
+          29,
+          -6
+        ],
+        [
+          20,
+          0
+        ],
+        [
+          22,
+          -3
+        ],
+        [
+          23,
+          -4
+        ],
+        [
+          27,
+          -4
+        ],
+        [
+          24,
+          -12
+        ],
+        [
+          24,
+          -3
+        ],
+        [
+          26,
+          -6
+        ],
+        [
+          25,
+          -4
+        ],
+        [
+          29,
+          -4
+        ],
+        [
+          22,
+          -10
+        ],
+        [
+          23,
+          -11
+        ],
+        [
+          23,
+          -1
+        ],
+        [
+          23,
+          -2
+        ],
+        [
+          27,
+          -2
+        ],
+        [
+          27,
+          -1
+        ],
+        [
+          32,
+          -6
+        ],
+        [
+          30,
+          -6
+        ],
+        [
+          33,
+          -7
+        ],
+        [
+          24,
+          -10
+        ],
+        [
+          26,
+          -13
+        ],
+        [
+          25,
+          -11
+        ],
+        [
+          25,
+          -2
+        ],
+        [
+          25,
+          -1
+        ],
+        [
+          29,
+          -2
+        ],
+        [
+          29,
+          -1
+        ],
+        [
+          31,
+          -5
+        ],
+        [
+          23,
+          -9
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          30,
+          -4
+        ],
+        [
+          33,
+          -5
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          20,
+          -3
+        ],
+        [
+          31,
+          -3
+        ],
+        [
+          21,
+          -4
+        ],
+        [
+          30,
+          -2
+        ],
+        [
+          30,
+          -1
+        ],
+        [
+          33,
+          -3
+        ],
+        [
+          25,
+          -7
+        ],
+        [
+          21,
+          -2
+        ],
+        [
+          23,
+          -5
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__6_N_TC_Pluton",
+        "AC_Pluton__5_N_AC_Pluton",
+        "TC_Pluton__5_N_TC_Pluton",
+        "nowy_P_Pluton__5_nowy_5_N_P_Pluton_20250616222744",
+        "nowy_P_Pluton__6_nowy_6_N_P_Pluton_20250616222747",
+        "AC_Pluton__6_N_AC_Pluton"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 5,
+      "nation": "Niemcy",
+      "role": "Dowódca",
+      "name": "Generał Fedor von Bock",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał Fedor von Bock.png",
+      "map_path": "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca1.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 0,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          22,
+          -4
+        ],
+        [
+          24,
+          -10
+        ],
+        [
+          26,
+          -13
+        ],
+        [
+          25,
+          -11
+        ],
+        [
+          25,
+          -5
+        ],
+        [
+          24,
+          -7
+        ],
+        [
+          25,
+          -2
+        ],
+        [
+          24,
+          -4
+        ],
+        [
+          26,
+          -7
+        ],
+        [
+          26,
+          -4
+        ],
+        [
+          23,
+          -11
+        ],
+        [
+          21,
+          -9
+        ],
+        [
+          21,
+          -3
+        ],
+        [
+          21,
+          0
+        ],
+        [
+          20,
+          -1
+        ],
+        [
+          20,
+          -2
+        ],
+        [
+          22,
+          -5
+        ],
+        [
+          23,
+          -6
+        ],
+        [
+          23,
+          -3
+        ],
+        [
+          22,
+          -2
+        ],
+        [
+          22,
+          -1
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          23,
+          -9
+        ],
+        [
+          22,
+          -11
+        ],
+        [
+          27,
+          -12
+        ],
+        [
+          25,
+          -12
+        ],
+        [
+          25,
+          -3
+        ],
+        [
+          24,
+          -5
+        ],
+        [
+          24,
+          -11
+        ],
+        [
+          25,
+          -6
+        ],
+        [
+          24,
+          -2
+        ],
+        [
+          24,
+          -1
+        ],
+        [
+          26,
+          -5
+        ],
+        [
+          26,
+          -11
+        ],
+        [
+          21,
+          -10
+        ],
+        [
+          23,
+          -10
+        ],
+        [
+          20,
+          -3
+        ],
+        [
+          21,
+          -4
+        ],
+        [
+          20,
+          0
+        ],
+        [
+          22,
+          -3
+        ],
+        [
+          22,
+          -9
+        ],
+        [
+          23,
+          -4
+        ],
+        [
+          27,
+          -13
+        ],
+        [
+          22,
+          0
+        ],
+        [
+          25,
+          -10
+        ],
+        [
+          24,
+          -12
+        ],
+        [
+          25,
+          -7
+        ],
+        [
+          24,
+          -9
+        ],
+        [
+          24,
+          -3
+        ],
+        [
+          26,
+          -6
+        ],
+        [
+          25,
+          -4
+        ],
+        [
+          24,
+          -6
+        ],
+        [
+          26,
+          -12
+        ],
+        [
+          26,
+          -3
+        ],
+        [
+          21,
+          -2
+        ],
+        [
+          23,
+          -1
+        ],
+        [
+          22,
+          -10
+        ],
+        [
+          21,
+          -1
+        ],
+        [
+          23,
+          -5
+        ],
+        [
+          23,
+          -2
+        ]
+      ],
+      "visible_tokens": [
+        "TC_Pluton__6_N_TC_Pluton",
+        "AC_Pluton__5_N_AC_Pluton",
+        "TC_Pluton__5_N_TC_Pluton",
+        "nowy_P_Pluton__5_nowy_5_N_P_Pluton_20250616222744"
+      ],
+      "temp_visible_hexes": [],
+      "temp_visible_tokens": []
+    },
+    {
+      "id": 6,
+      "nation": "Niemcy",
+      "role": "Dowódca",
+      "name": "Generał Walther von Reichenau",
+      "time_limit": 5,
+      "image_path": "c:/Users/klif/kampania1939_fixed/gui/images/Generał Walther von Reichenau.png",
+      "map_path": "c:/Users/klif/kampania1939_fixed/gui/mapa_cyfrowa/mapa_dowodca2.jpg",
+      "victory_points": 0,
+      "vp_history": [],
+      "economy": {
+        "economic_points": 7,
+        "special_points": 0,
+        "assigned_points": 0
+      },
+      "visible_hexes": [
+        [
+          28,
+          -3
+        ],
+        [
+          27,
+          -5
+        ],
+        [
+          28,
+          -6
+        ],
+        [
+          32,
+          -3
+        ],
+        [
+          25,
+          -5
+        ],
+        [
+          33,
+          -4
+        ],
+        [
+          35,
+          -7
+        ],
+        [
+          26,
+          -4
+        ],
+        [
+          29,
+          -5
+        ],
+        [
+          23,
+          -3
+        ],
+        [
+          22,
+          -5
+        ],
+        [
+          31,
+          -2
+        ],
+        [
+          23,
+          -6
+        ],
+        [
+          31,
+          -1
+        ],
+        [
+          34,
+          -3
+        ],
+        [
+          34,
+          -6
+        ],
+        [
+          27,
+          -3
+        ],
+        [
+          28,
+          -4
+        ],
+        [
+          25,
+          -3
+        ],
+        [
+          24,
+          -5
+        ],
+        [
+          33,
+          -2
+        ],
+        [
+          25,
+          -6
+        ],
+        [
+          32,
+          -4
+        ],
+        [
+          35,
+          -5
+        ],
+        [
+          26,
+          -2
+        ],
+        [
+          26,
+          -1
+        ],
+        [
+          29,
+          -3
+        ],
+        [
+          31,
+          -6
+        ],
+        [
+          29,
+          -6
+        ],
+        [
+          22,
+          -3
+        ],
+        [
+          23,
+          -4
+        ],
+        [
+          34,
+          -4
+        ],
+        [
+          28,
+          -2
+        ],
+        [
+          27,
+          -4
+        ],
+        [
+          28,
+          -1
+        ],
+        [
+          30,
+          -5
+        ],
+        [
+          24,
+          -3
+        ],
+        [
+          32,
+          -2
+        ],
+        [
+          25,
+          -4
+        ],
+        [
+          24,
+          -6
+        ],
+        [
+          32,
+          -1
+        ],
+        [
+          35,
+          -6
+        ],
+        [
+          26,
+          -6
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          29,
+          -4
+        ],
+        [
+          23,
+          -2
+        ],
+        [
+          22,
+          -4
+        ],
+        [
+          31,
+          -4
+        ],
+        [
+          23,
+          -1
+        ],
+        [
+          27,
+          -2
+        ],
+        [
+          27,
+          -1
+        ],
+        [
+          30,
+          -3
+        ],
+        [
+          30,
+          -6
+        ],
+        [
+          32,
+          -6
+        ],
+        [
+          33,
+          -7
+        ],
+        [
+          25,
+          -2
+        ],
+        [
+          24,
+          -4
+        ],
+        [
+          25,
+          -1
+        ],
+        [
+          35,
+          -4
+        ],
+        [
+          21,
+          -3
+        ],
+        [
+          29,
+          -2
+        ],
+        [
+          29,
+          -1
+        ],
+        [
+          31,
+          -5
+        ],
+        [
+          22,
+          -2
+        ],
+        [
+          22,
+          -1
+        ],
+        [
+          27,
+          -6
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          30,
+          -4
+        ],
+        [
+          33,
+          -5
+        ],
+        [
+          32,
+          -7
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          24,
+          -2
+        ],
+        [
+          24,
+          -1
+        ],
+        [
+          26,
+          -5
+        ],
+        [
+          31,
+          -3
+        ],
+        [
+          21,
+          -4
+        ],
+        [
+          34,
+          -7
+        ],
+        [
+          28,
+          -5
+        ],
+        [
+          30,
+          -2
+        ],
+        [
+          30,
+          -1
+        ],
+        [
+          32,
+          -5
+        ],
+        [
+          33,
+          -3
+        ],
+        [
+          33,
+          -6
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          26,
+          -3
+        ],
+        [
+          21,
+          -2
+        ],
+        [
+          23,
+          -5
+        ],
+        [
+          34,
+          -5
+        ]
+      ],
+      "visible_tokens": [
+        "AC_Pluton__5_N_AC_Pluton",
+        "AC_Pluton__6_N_AC_Pluton",
+        "TC_Pluton__6_N_TC_Pluton",
+        "TC_Pluton__5_N_TC_Pluton",
+        "nowy_P_Pluton__6_nowy_6_N_P_Pluton_20250616222747"
+      ],
+      "temp_visible_hexes": [
+        [
+          22,
+          -4
+        ],
+        [
+          27,
+          -5
+        ],
+        [
+          25,
+          -5
+        ],
+        [
+          25,
+          -2
+        ],
+        [
+          24,
+          -4
+        ],
+        [
+          25,
+          -1
+        ],
+        [
+          26,
+          -4
+        ],
+        [
+          21,
+          -3
+        ],
+        [
+          23,
+          -3
+        ],
+        [
+          22,
+          -5
+        ],
+        [
+          23,
+          -6
+        ],
+        [
+          22,
+          -2
+        ],
+        [
+          22,
+          -1
+        ],
+        [
+          27,
+          -3
+        ],
+        [
+          25,
+          -3
+        ],
+        [
+          24,
+          -5
+        ],
+        [
+          25,
+          -6
+        ],
+        [
+          24,
+          -2
+        ],
+        [
+          24,
+          -1
+        ],
+        [
+          26,
+          -5
+        ],
+        [
+          26,
+          -2
+        ],
+        [
+          21,
+          -4
+        ],
+        [
+          22,
+          -3
+        ],
+        [
+          23,
+          -4
+        ],
+        [
+          27,
+          -4
+        ],
+        [
+          24,
+          -3
+        ],
+        [
+          26,
+          -6
+        ],
+        [
+          25,
+          -4
+        ],
+        [
+          24,
+          -6
+        ],
+        [
+          26,
+          -3
+        ],
+        [
+          23,
+          -1
+        ],
+        [
+          21,
+          -2
+        ],
+        [
+          23,
+          -5
+        ],
+        [
+          23,
+          -2
+        ]
+      ],
+      "temp_visible_tokens": []
+    }
+  ],
+  "turn": 1,
+  "current_player": 6,
+  "weather": null,
+  "turn_manager": null,
+  "active_player_info": {
+    "id": 6,
+    "role": "Dowódca",
+    "nation": "Niemcy"
+  },
+  "key_points_state": {
+    "9,-3": {
+      "initial_value": 100,
+      "current_value": 100,
+      "type": "miasto"
+    },
+    "9,-4": {
+      "initial_value": 50,
+      "current_value": 50,
+      "type": "most"
+    },
+    "10,-4": {
+      "initial_value": 50,
+      "current_value": 50,
+      "type": "most"
+    },
+    "15,-6": {
+      "initial_value": 50,
+      "current_value": 50,
+      "type": "most"
+    },
+    "14,-6": {
+      "initial_value": 50,
+      "current_value": 50,
+      "type": "most"
+    },
+    "15,-7": {
+      "initial_value": 100,
+      "current_value": 100,
+      "type": "miasto"
+    },
+    "24,-8": {
+      "initial_value": 100,
+      "current_value": 100,
+      "type": "miasto"
+    },
+    "6,9": {
+      "initial_value": 100,
+      "current_value": 100,
+      "type": "miasto"
+    }
+  }
+}

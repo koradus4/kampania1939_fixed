@@ -91,6 +91,9 @@ class PanelGenerala:
             token_info_panel=self.token_info_panel
         )
         self.panel_mapa.pack(fill="both", expand=True)
+        
+        # Generał widzi wszystkie żetony normalnie (bez efektu przezroczystości)
+        self.panel_mapa.set_active_commander(None)
         # Dodaj obsługę podglądu żetonu prawym przyciskiem myszy (tylko dla generała)
         self.panel_mapa.canvas.bind("<Button-3>", self._on_right_click_token)
 

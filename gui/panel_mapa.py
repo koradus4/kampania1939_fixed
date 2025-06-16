@@ -13,6 +13,11 @@ class PanelMapa(tk.Frame):
         self.tokens = self.game_engine.tokens
         self.token_info_panel = token_info_panel
         self.panel_dowodcy = panel_dowodcy  # <--- dodane
+          # Przechowywanie informacji o aktywnym dowódcy dla przezroczystości
+        self.active_commander_id = None
+        
+        # Inicjalizacja ścieżki ruchu (zapobiega błędowi AttributeError)
+        self.current_path = None
 
         # Canvas + Scrollbary
         self.canvas = tk.Canvas(self, width=width, height=height)
@@ -48,11 +53,19 @@ class PanelMapa(tk.Frame):
 
         # żetony
         self.token_images = {}
-        # Przekazanie obiektu gracza do panelu (potrzebne do filtrowania widoczności)
-        self.player = getattr(game_engine, 'current_player_obj', None)
         self._draw_tokens_on_map()
 
-        self.current_path = None  # Ścieżka do wizualizacji
+    def set_active_commander(self, commander_id):
+        """Ustawia aktywnego dowódcę dla efektu przezroczystości żetonów"""
+        self.active_commander_id = commander_id
+        self._draw_tokens_on_map()  # Odśwież wyświetlanie żetonów
+
+    def _get_token_commander_id(self, token):
+        """Pobiera ID dowódcy z ownera żetonu (format: 'ID (Nation)')"""
+        if hasattr(token, 'owner') and token.owner:
+            # Format ownera: "2 (Polska)" -> zwraca "2"
+            return token.owner.split(' ')[0]
+        return None
 
     def _sync_player_from_engine(self):
         """Synchronizuje self.player z aktualnym obiektem gracza z silnika gry."""
@@ -161,8 +174,7 @@ class PanelMapa(tk.Frame):
         self._sync_player_from_engine()
         self.tokens = self.game_engine.tokens  # Zawsze aktualizuj listę żetonów
         self.canvas.delete("token")
-        self.canvas.delete("token_sel")  # Usuwamy stare obwódki
-        # Filtrowanie widoczności żetonów przez fog of war (uwzględnij temp_visible_tokens)
+        self.canvas.delete("token_sel")  # Usuwamy stare obwódki        # Filtrowanie widoczności żetonów przez fog of war (uwzględnij temp_visible_tokens)
         tokens = self.tokens
         if hasattr(self, 'player') and hasattr(self.player, 'visible_tokens') and hasattr(self.player, 'temp_visible_tokens'):
             tokens = [t for t in self.tokens if t.id in (self.player.visible_tokens | self.player.temp_visible_tokens)]
@@ -183,6 +195,17 @@ class PanelMapa(tk.Frame):
                     img = Image.open(img_path)
                     hex_size = 40  # Ustaw stały rozmiar 40x40
                     img = img.resize((hex_size, hex_size), Image.LANCZOS)
+                    
+                    # Zastosuj przezroczystość dla nieaktywnych żetonów
+                    if self.active_commander_id is not None:
+                        token_commander_id = self._get_token_commander_id(token)
+                        if token_commander_id != self.active_commander_id:
+                            # Żeton nieaktywnego dowódcy - zmniejsz przezroczystość
+                            img = img.convert("RGBA")
+                            alpha = img.split()[-1]  # Pobierz kanał alfa
+                            alpha = alpha.point(lambda p: int(p * 0.4))  # 40% przezroczystości
+                            img.putalpha(alpha)
+                    
                     tk_img = ImageTk.PhotoImage(img)
                     x, y = self.map_model.hex_to_pixel(token.q, token.r)
                     self.canvas.create_image(x, y, image=tk_img, anchor="center", tags=("token", f"token_{token.id}"))
@@ -307,13 +330,14 @@ class PanelMapa(tk.Frame):
                     self.game_engine.current_player_obj = self.player
                     # Odśwież panel mapy po synchronizacji widoczności
                     self.refresh()
-                    # print(f"[DEBUG] Odświeżono mapę po dodaniu żetonu.")
-                    # Usuń folder z poczekalni
+                    # print(f"[DEBUG] Odświeżono mapę po dodaniu żetonu.")                    # Usuń folder z poczekalni
                     shutil.rmtree(token_folder)
                     # print(f"[DEBUG] Usunięto folder: {token_folder}")
                     # Zamknij okno deploy
                     deploy.destroy()
                     self.panel_dowodcy.deploy_window = None
+                    # Aktualizuj stan przycisku deploy - usuń miganie jeśli nie ma już żetonów
+                    self.panel_dowodcy.update_deploy_button_state()
                     # print(f"[DEBUG] Zamknięto okno deploy.")
                     return
         # ...existing code...

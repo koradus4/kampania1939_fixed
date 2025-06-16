@@ -90,6 +90,9 @@ class PanelDowodcy:
             panel_dowodcy=self  # <--- przekazanie referencji
         )
         self.panel_mapa.pack(fill="both", expand=True)
+        
+        # Ustaw aktywnego dowódcę dla efektu przezroczystości żetonów
+        self.panel_mapa.set_active_commander(str(self.gracz.id))
 
         self.update_timer()
 
