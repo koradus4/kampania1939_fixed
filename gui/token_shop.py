@@ -90,15 +90,30 @@ class TokenShop(tk.Toplevel):
 
         # Prawy panel: podgląd/statystyki
         self.preview_frame = tk.Frame(main_container, bd=2, relief=tk.RIDGE, bg="darkolivegreen")
-        self.preview_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=5, pady=5)
-
-        # --- Punkty ekonomiczne ---
+        self.preview_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=5, pady=5)        # --- Punkty ekonomiczne ---
         points_box = tk.Frame(self.control_frame, bg="olivedrab", bd=3, relief=tk.GROOVE)
         points_box.pack(fill=tk.X, pady=5)
         self.points_label = tk.Label(points_box, text=f"Dostępne punkty ekonomiczne: {self.points_var.get()}", font=("Arial", 13, "bold"), bg="olivedrab", fg="white")
         self.points_label.pack(pady=5)
 
-        # --- Dowódca ---
+        # Buduj GUI
+        self.build_gui()
+
+    def get_text_color_for_nation(self, nation):
+        """Zwraca kolor tekstu na żetonie dla danej nacji, identyczny jak w Token Editor"""
+        defaults = {
+            "Polska": "black",
+            "Niemcy": "blue",
+            "Wielka Brytania": "black",
+            "Japonia": "black",
+            "Stany Zjednoczone": "black",
+            "Francja": "black",
+            "Związek Radziecki": "white"
+        }
+        return defaults.get(nation, "black")
+
+    def build_gui(self):
+        """Buduje interfejs graficzny sklepu"""
         commander_box = tk.Frame(self.control_frame, bg="darkolivegreen")
         commander_box.pack(fill=tk.X, pady=5)
         tk.Label(commander_box, text="Wybierz dowódcę:", bg="darkolivegreen", fg="white", font=("Arial", 12, "bold")).pack(anchor="w")
@@ -397,9 +412,10 @@ class TokenShop(tk.Toplevel):
             font_size = ImageFont.truetype("arial.ttf", 11)
             font_symbol = ImageFont.truetype("arialbd.ttf", 18)
         except Exception:
-            font_type = font_size = font_symbol = ImageFont.load_default()
-        # Wyśrodkowanie i rysowanie (identycznie jak w TokenEditor)
+            font_type = font_size = font_symbol = ImageFont.load_default()        # Wyśrodkowanie i rysowanie (identycznie jak w TokenEditor)
         margin = 6
+        # Określenie koloru tekstu na podstawie nacji
+        text_color = self.get_text_color_for_nation(nation)
         # Pełna nazwa rodzaju jednostki – DUŻA, centralna, z zawijaniem
         def wrap_text(text, font, max_width):
             words = text.split()
@@ -432,18 +448,18 @@ class TokenShop(tk.Toplevel):
         for line in type_lines:
             bbox = draw.textbbox((0, 0), line, font=font_type)
             x = (width - (bbox[2] - bbox[0])) / 2
-            draw.text((x, y), line, fill="black", font=font_type)
+            draw.text((x, y), line, fill=text_color, font=font_type)
             y += bbox[3] - bbox[1] + 2
         y += gap_type_to_size - 2
         # Wielkość
         bbox_size = draw.textbbox((0, 0), unit_size, font=font_size)
         x_size = (width - (bbox_size[2] - bbox_size[0])) / 2
-        draw.text((x_size, y), unit_size, fill="black", font=font_size)
+        draw.text((x_size, y), unit_size, fill=text_color, font=font_size)
         y += bbox_size[3] - bbox_size[1] + gap_size_to_symbol
         # Symbol wielkości
         bbox_symbol = draw.textbbox((0, 0), unit_symbol, font=font_symbol)
         x_symbol = (width - (bbox_symbol[2] - bbox_symbol[0])) / 2
-        draw.text((x_symbol, y), unit_symbol, fill="black", font=font_symbol)
+        draw.text((x_symbol, y), unit_symbol, fill=text_color, font=font_symbol)
         # Wyświetl na canvasie
         self.flag_img = ImageTk.PhotoImage(token_img)
         self.flag_canvas.delete("all")
@@ -521,6 +537,8 @@ class TokenShop(tk.Toplevel):
         except Exception:
             font_type = font_size = font_symbol = ImageFont.load_default()
         margin = 12
+        # Określenie koloru tekstu na podstawie nacji
+        text_color = self.get_text_color_for_nation(nation)
         def wrap_text(text, font, max_width):
             words = text.split()
             lines = []
@@ -551,16 +569,16 @@ class TokenShop(tk.Toplevel):
         for line in type_lines:
             bbox = draw.textbbox((0, 0), line, font=font_type)
             x = (width - (bbox[2] - bbox[0])) / 2
-            draw.text((x, y), line, fill="black", font=font_type)
+            draw.text((x, y), line, fill=text_color, font=font_type)
             y += bbox[3] - bbox[1] + 4
         y += gap_type_to_size - 4
         bbox_size = draw.textbbox((0, 0), unit_size, font=font_size)
         x_size = (width - (bbox_size[2] - bbox_size[0])) / 2
-        draw.text((x_size, y), unit_size, fill="black", font=font_size)
+        draw.text((x_size, y), unit_size, fill=text_color, font=font_size)
         y += bbox_size[3] - bbox_size[1] + gap_size_to_symbol
         bbox_symbol = draw.textbbox((0, 0), unit_symbol, font=font_symbol)
         x_symbol = (width - (bbox_symbol[2] - bbox_symbol[0])) / 2
-        draw.text((x_symbol, y), unit_symbol, fill="black", font=font_symbol)
+        draw.text((x_symbol, y), unit_symbol, fill=text_color, font=font_symbol)
         token_img.save(folder / "token.png")
         # Odejmij punkty
         self.points_var.set(self.points_var.get() - cena)
