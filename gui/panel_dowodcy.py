@@ -93,6 +93,9 @@ class PanelDowodcy:
         
         # Ustaw aktywnego dowódcę dla efektu przezroczystości żetonów
         self.panel_mapa.set_active_commander(str(self.gracz.id))
+        
+        # Wycentruj mapę na jednostkach gracza
+        self.root.after(100, self.panel_mapa.center_on_player_tokens)
 
         self.update_timer()
 

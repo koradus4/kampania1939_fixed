@@ -67,6 +67,49 @@ class PanelMapa(tk.Frame):
             return token.owner.split(' ')[0]
         return None
 
+    def center_on_player_tokens(self):
+        """Centruje mapę na środku wszystkich jednostek aktualnego gracza"""
+        if not hasattr(self, 'player') or not self.player:
+            return
+        
+        # Znajdź wszystkie jednostki gracza
+        player_tokens = []
+        expected_owner = f"{self.player.id} ({self.player.nation})"
+        
+        for token in self.tokens:
+            if hasattr(token, 'owner') and token.owner == expected_owner:
+                if token.q is not None and token.r is not None:
+                    player_tokens.append(token)
+        
+        if not player_tokens:
+            return  # Brak jednostek do wycentrowania
+        
+        # Oblicz środek wszystkich jednostek
+        avg_q = sum(token.q for token in player_tokens) / len(player_tokens)
+        avg_r = sum(token.r for token in player_tokens) / len(player_tokens)
+        
+        # Przelicz na współrzędne pikseli
+        center_x, center_y = self.map_model.hex_to_pixel(avg_q, avg_r)
+        
+        # Pobierz rozmiary canvas
+        canvas_width = self.canvas.winfo_width()
+        canvas_height = self.canvas.winfo_height()
+        
+        if canvas_width <= 1 or canvas_height <= 1:
+            return  # Canvas nie jest jeszcze gotowy
+        
+        # Oblicz pozycję scroll aby wycentrować
+        scroll_x = (center_x - canvas_width / 2) / self._bg_width
+        scroll_y = (center_y - canvas_height / 2) / self._bg_height
+        
+        # Ogranicz do zakresu 0.0 - 1.0
+        scroll_x = max(0.0, min(1.0, scroll_x))
+        scroll_y = max(0.0, min(1.0, scroll_y))
+        
+        # Przewiń mapę
+        self.canvas.xview_moveto(scroll_x)
+        self.canvas.yview_moveto(scroll_y)
+
     def _sync_player_from_engine(self):
         """Synchronizuje self.player z aktualnym obiektem gracza z silnika gry."""
         if hasattr(self.game_engine, 'current_player_obj'):

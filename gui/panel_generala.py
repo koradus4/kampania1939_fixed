@@ -94,6 +94,9 @@ class PanelGenerala:
         
         # Generał widzi wszystkie żetony normalnie (bez efektu przezroczystości)
         self.panel_mapa.set_active_commander(None)
+        
+        # Wycentruj mapę na jednostkach gracza
+        self.root.after(100, self.panel_mapa.center_on_player_tokens)
         # Dodaj obsługę podglądu żetonu prawym przyciskiem myszy (tylko dla generała)
         self.panel_mapa.canvas.bind("<Button-3>", self._on_right_click_token)
 
