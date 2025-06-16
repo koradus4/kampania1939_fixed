@@ -19,8 +19,13 @@ Kompletny system GUI dla różnych ról:
 - **`panel_dowodcy.py`** - interfejs dla dowódcy (lokalna mapa)
 - **`panel_gracza.py`** - wspólne elementy UI (VP, czas, akcje)
 - **`panel_mapa.py`** - główny komponent mapy z interakcją
+  - Przezroczystość żetonów nieaktywnych dowódców
+  - Automatyczne centrowanie na jednostkach gracza
+  - System scrollowania i nawigacji
 - **`token_info_panel.py`** - szczegóły wybranej jednostki
 - **`token_shop.py`** - kupowanie nowych jednostek
+  - Kolory napisów zgodne z Token Editor
+  - Poprawione zarządzanie zakupami
 
 ### 3. SYSTEMY PODSTAWOWE (`core/`)
 Mechaniki rozgrywki:
@@ -78,12 +83,15 @@ PĘTLA GŁÓWNA:
 - Generał widzi wszystkie jednostki swojej armii
 - Dowódca widzi tylko swoje + wykryte wrogie
 - Tymczasowa widoczność podczas ruchu
+- **NOWE**: Przezroczystość żetonów nieaktywnych dowódców (40% alpha)
+- **NOWE**: Automatyczne centrowanie mapy na jednostkach gracza
 
 ### System ekonomiczny:
 - Punkty ekonomiczne co turę
 - Punkty specjalne z kluczowych lokacji
 - Kupowanie nowych jednostek
 - Uzupełnianie zapasów
+- **NAPRAWIONE**: Poprawne usuwanie żetonów z puli po wystawieniu
 
 ### System walki:
 - Wartości ataku/obrony jednostek
@@ -128,3 +136,22 @@ Kompletny zestaw testów:
 - Testy systemu zapisu/wczytania
 - Testy mechanik ruchu i walki
 - Testy interfejsu użytkownika
+
+## OSTATNIE AKTUALIZACJE (Czerwiec 2025)
+
+### ✅ Naprawione błędy:
+- **Problem wystawiania żetonów** - poprawne usuwanie z puli po deployment
+- **Błąd AttributeError** - dodana inicjalizacja `current_path` w PanelMapa
+- **Kolory napisów** - Token Shop używa tych samych kolorów co Token Editor
+- **Migające przyciski** - poprawne odświeżanie stanu po wystawieniu żetonu
+
+### 🆕 Nowe funkcje:
+- **Przezroczystość żetonów** - nieaktywni dowódcy mają żetony z 40% alpha
+- **Auto-centrowanie mapy** - automatyczne wycentrowanie na jednostkach gracza
+- **Lepszy UX** - natychmiastowe rozpoznanie żetonów aktywnego dowódcy
+
+### 🎯 Usprawnienia wizualne:
+- Żetony aktywnego dowódcy: jasne, wyraźne kolory
+- Żetony nieaktywnych: przyciemnione, w tle
+- Generał widzi wszystkie żetony normalnie
+- Płynne przejścia między turami

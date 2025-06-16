@@ -25,8 +25,13 @@ kampania1939_fixed/
 │   ├── panel_dowodcy.py   # Interfejs dowódcy (lokalna mapa)  
 │   ├── panel_gracza.py    # Wspólne elementy UI
 │   ├── panel_mapa.py      # Główny komponent mapy
+│   │                      # - Przezroczystość żetonów (alpha 40% dla nieaktywnych)
+│   │                      # - Auto-centrowanie na jednostkach gracza
+│   │                      # - Zarządzanie widocznością dowódców
 │   ├── token_info_panel.py # Informacje o jednostce
 │   ├── token_shop.py      # Kupowanie jednostek
+│   │                      # - Kolory napisów zgodne z Token Editor
+│   │                      # - Poprawione zarządzanie zakupami
 │   ├── deploy_new_tokens.py # Deployment nowych jednostek
 │   ├── panel_ekonomiczny.py # Zarządzanie ekonomią
 │   ├── panel_pogodowy.py  # Panel pogody
@@ -136,3 +141,10 @@ kampania1939_fixed/
 - **Pełne GUI dla 2 typów graczy**
 - **System AI-ready**
 - **Kompletne testy**
+
+## OSTATNIE AKTUALIZACJE (Czerwiec 2025):
+- ✅ **Naprawione błędy wystawiania żetonów** - poprawne zarządzanie puli
+- ✅ **System przezroczystości dowódców** - wizualne odróżnienie aktywnych żetonów  
+- ✅ **Auto-centrowanie mapy** - mapa wycentrowana na jednostkach gracza
+- ✅ **Zunifikowane kolory napisów** - spójność między Token Shop a Token Editor
+- ✅ **Stabilność systemu** - naprawione błędy AttributeError i migania
