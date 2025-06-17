@@ -208,6 +208,93 @@ class ArmyCreatorStudio:
                                        command=self.create_army_thread,
                                        style='Success.TButton')
         self.create_button.pack(fill=tk.X, pady=10)
+        
+        # Panel zarządzania folderami
+        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
+        
+        management_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
+        management_frame.pack(fill=tk.X, padx=20, pady=10)
+        
+        ttk.Label(management_frame, text="🗂️ ZARZĄDZANIE FOLDERAMI", style='Header.TLabel').pack(pady=5)
+        
+        # Statystyki żetonów
+        self.stats_frame = tk.Frame(management_frame, bg="#556B2F", relief=tk.RIDGE, bd=2)
+        self.stats_frame.pack(fill=tk.X, pady=5)
+        
+        self.stats_label = tk.Label(self.stats_frame, 
+                                   text="📊 Sprawdzanie folderów...", 
+                                   bg="#556B2F", fg="white", 
+                                   font=("Arial", 10))
+        self.stats_label.pack(pady=5)
+        
+        # Przyciski czyszczenia
+        clean_frame = tk.Frame(management_frame, bg="#6B8E23")
+        clean_frame.pack(fill=tk.X, pady=5)
+        
+        ttk.Button(clean_frame, text="🗑️ Wyczyść Polskie Żetony",
+                  command=self.clean_polish_tokens,
+                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+        
+        ttk.Button(clean_frame, text="🗑️ Wyczyść Niemieckie Żetony",
+                  command=self.clean_german_tokens,
+                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+        
+        ttk.Button(clean_frame, text="🗑️ Wyczyść WSZYSTKIE Żetony",
+                  command=self.clean_all_tokens,
+                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+        
+        ttk.Button(clean_frame, text="📊 Odśwież Statystyki",
+                  command=self.refresh_token_stats,
+                  style='Military.TButton').pack(fill=tk.X, pady=2)
+        
+        # Główny przycisk tworzenia
+        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=10)
+        
+        self.create_button = ttk.Button(action_frame, text="💾 UTWÓRZ ARMIĘ",
+                                       command=self.create_army_thread,
+                                       style='Success.TButton')
+        self.create_button.pack(fill=tk.X, pady=10)
+        
+        # Panel zarządzania folderami
+        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
+        
+        management_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
+        management_frame.pack(fill=tk.X, padx=20, pady=10)
+        
+        ttk.Label(management_frame, text="🗂️ ZARZĄDZANIE FOLDERAMI", style='Header.TLabel').pack(pady=5)
+        
+        # Statystyki żetonów
+        self.stats_frame = tk.Frame(management_frame, bg="#556B2F", relief=tk.RIDGE, bd=2)
+        self.stats_frame.pack(fill=tk.X, pady=5)
+        
+        self.stats_label = tk.Label(self.stats_frame, 
+                                   text="📊 Sprawdzanie folderów...", 
+                                   bg="#556B2F", fg="white", 
+                                   font=("Arial", 10))
+        self.stats_label.pack(pady=5)
+        
+        # Przyciski czyszczenia
+        clean_frame = tk.Frame(management_frame, bg="#6B8E23")
+        clean_frame.pack(fill=tk.X, pady=5)
+        
+        ttk.Button(clean_frame, text="🗑️ Wyczyść Polskie Żetony",
+                  command=self.clean_polish_tokens,
+                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+        
+        ttk.Button(clean_frame, text="🗑️ Wyczyść Niemieckie Żetony",
+                  command=self.clean_german_tokens,
+                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+        
+        ttk.Button(clean_frame, text="🗑️ Wyczyść WSZYSTKIE Żetony",
+                  command=self.clean_all_tokens,
+                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+        
+        ttk.Button(clean_frame, text="📊 Odśwież Statystyki",
+                  command=self.refresh_token_stats,
+                  style='Military.TButton').pack(fill=tk.X, pady=2)
+        
+        # Załaduj początkowe statystyki
+        self.refresh_token_stats()
     
     def create_preview_panel(self, parent):
         """Tworzy panel podglądu armii."""
@@ -697,6 +784,145 @@ class ArmyCreatorStudio:
         
         messagebox.showerror("❌ Błąd", 
                             f"Wystąpił błąd podczas tworzenia armii:\n\n{error_message}")
+    
+    # === FUNKCJE ZARZĄDZANIA FOLDERAMI ===
+    
+    def refresh_token_stats(self):
+        """Odświeża statystyki żetonów w folderach."""
+        try:
+            tokens_dir = Path("assets/tokens")
+            if not tokens_dir.exists():
+                self.stats_label.config(text="📂 Folder assets/tokens nie istnieje")
+                return
+            
+            # Sprawdź foldery nacji
+            polish_count, polish_vp = self.count_nation_tokens("Polska")
+            german_count, german_vp = self.count_nation_tokens("Niemcy")
+            
+            stats_text = f"📊 STATYSTYKI ŻETONÓW:\n"
+            stats_text += f"🇵🇱 Polska: {polish_count} żetonów ({polish_vp} VP)\n"
+            stats_text += f"🇩🇪 Niemcy: {german_count} żetonów ({german_vp} VP)"
+            
+            self.stats_label.config(text=stats_text)
+            
+        except Exception as e:
+            self.stats_label.config(text=f"❌ Błąd: {str(e)}")
+    
+    def count_nation_tokens(self, nation):
+        """Zlicza żetony i VP dla danej nacji."""
+        tokens_dir = Path(f"assets/tokens/{nation}")
+        if not tokens_dir.exists():
+            return 0, 0
+        
+        count = 0
+        total_vp = 0
+        
+        for token_folder in tokens_dir.iterdir():
+            if token_folder.is_dir():
+                json_file = token_folder / "token.json"
+                if json_file.exists():
+                    count += 1
+                    try:
+                        with open(json_file, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                            total_vp += int(data.get('purchase_value', 0))
+                    except:
+                        pass  # Ignoruj błędy odczytu
+        
+        return count, total_vp
+    
+    def clean_polish_tokens(self):
+        """Czyści polskie żetony z potwierdzeniem."""
+        self.clean_nation_tokens("Polska", "🇵🇱")
+    
+    def clean_german_tokens(self):
+        """Czyści niemieckie żetony z potwierdzeniem."""
+        self.clean_nation_tokens("Niemcy", "🇩🇪")
+    
+    def clean_all_tokens(self):
+        """Czyści wszystkie żetony z potwierdzeniem."""
+        if messagebox.askyesno("⚠️ UWAGA!", 
+                              "Czy na pewno chcesz usunąć WSZYSTKIE żetony?\n\n"
+                              "Ta operacja nie może być cofnięta!\n\n"
+                              "🗑️ Zostaną usunięte:\n"
+                              "• Wszystkie polskie żetony\n"
+                              "• Wszystkie niemieckie żetony\n"
+                              "• Plik index.json"):
+            
+            try:
+                import shutil
+                tokens_dir = Path("assets/tokens")
+                
+                if tokens_dir.exists():
+                    # Usuń foldery nacji
+                    for nation_dir in tokens_dir.iterdir():
+                        if nation_dir.is_dir() and nation_dir.name in ["Polska", "Niemcy"]:
+                            shutil.rmtree(nation_dir)
+                    
+                    # Usuń index.json
+                    index_file = tokens_dir / "index.json"
+                    if index_file.exists():
+                        index_file.unlink()
+                
+                self.refresh_token_stats()
+                messagebox.showinfo("✅ Sukces!", "Wszystkie żetony zostały usunięte.")
+                
+            except Exception as e:
+                messagebox.showerror("❌ Błąd", f"Błąd podczas usuwania:\n{str(e)}")
+    
+    def clean_nation_tokens(self, nation, flag):
+        """Czyści żetony wybranej nacji z potwierdzeniem."""
+        # Sprawdź ile żetonów do usunięcia
+        count, vp = self.count_nation_tokens(nation)
+        
+        if count == 0:
+            messagebox.showinfo("ℹ️ Info", f"Brak żetonów {flag} {nation} do usunięcia.")
+            return
+        
+        if messagebox.askyesno("⚠️ POTWIERDŹ USUNIĘCIE", 
+                              f"Czy na pewno chcesz usunąć żetony {flag} {nation}?\n\n"
+                              f"🗑️ Do usunięcia:\n"
+                              f"• {count} żetonów\n"
+                              f"• {vp} VP łącznie\n\n"
+                              f"Ta operacja nie może być cofnięta!"):
+            
+            try:
+                import shutil
+                nation_dir = Path(f"assets/tokens/{nation}")
+                
+                if nation_dir.exists():
+                    shutil.rmtree(nation_dir)
+                
+                # Aktualizuj index.json
+                self.update_index_after_deletion(nation)
+                
+                self.refresh_token_stats()
+                messagebox.showinfo("✅ Sukces!", 
+                                   f"Usunięto {count} żetonów {flag} {nation} ({vp} VP).")
+                
+            except Exception as e:
+                messagebox.showerror("❌ Błąd", f"Błąd podczas usuwania:\n{str(e)}")
+    
+    def update_index_after_deletion(self, deleted_nation):
+        """Aktualizuje index.json po usunięciu żetonów nacji."""
+        try:
+            index_file = Path("assets/tokens/index.json")
+            if not index_file.exists():
+                return
+            
+            with open(index_file, 'r', encoding='utf-8') as f:
+                index_data = json.load(f)
+            
+            # Usuń żetony usuniętej nacji z indeksu
+            if deleted_nation in index_data:
+                del index_data[deleted_nation]
+            
+            # Zapisz zaktualizowany indeks
+            with open(index_file, 'w', encoding='utf-8') as f:
+                json.dump(index_data, f, indent=2, ensure_ascii=False)
+                
+        except Exception as e:
+            print(f"Błąd aktualizacji index.json: {e}")
 
 def main():
     """Główna funkcja aplikacji."""
