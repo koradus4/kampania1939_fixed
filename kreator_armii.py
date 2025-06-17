@@ -1,5 +1,5 @@
 """
-ARMY CREATOR STUDIO - Profesjonalna aplikacja do tworzenia armii
+KREATOR ARMII - Profesjonalna aplikacja do tworzenia armii
 Pełna automatyzacja, GUI, kontrola parametrów, inteligentne balansowanie
 """
 
@@ -13,8 +13,8 @@ import threading
 import time
 from unittest.mock import patch
 
-# Dodaj ścieżkę do edytorów (z głównego folderu)
-project_root = Path(__file__).parent  # główny folder projektu
+# Dodaj ścieżkę do edytorów (z głównego folderu projektu)
+project_root = Path(__file__).parent
 sys.path.append(str(project_root / "edytory"))
 
 class ArmyCreatorStudio:
@@ -22,16 +22,16 @@ class ArmyCreatorStudio:
         self.root = root
         self.root.title("🎖️ Kreator Armii - Kampania 1939")
         self.root.geometry("800x700")
-        self.root.configure(bg="#2c3e50")
+        self.root.configure(bg="#556B2F")  # Dark olive green jak w grze
         self.root.resizable(True, True)
         
         # Ikona i style
         self.setup_styles()
         
-        # Dane aplikacji
+        # Dane aplikacji (POPRAWIONE - po 2 dowódców na nację)
         self.nations = ["Polska", "Niemcy"]
         self.commanders = {
-            "Polska": ["1 (Polska)", "2 (Polska)", "3 (Polska)"],
+            "Polska": ["1 (Polska)", "2 (Polska)"],
             "Niemcy": ["5 (Niemcy)", "6 (Niemcy)"]
         }
         
@@ -73,39 +73,39 @@ class ArmyCreatorStudio:
         style = ttk.Style()
         style.theme_use('clam')
         
-        # Kolory motywu wojskowego
+        # Kolory motywu wojskowego (jak w grze)
         style.configure('Title.TLabel', 
-                       foreground='#ecf0f1', 
-                       background='#2c3e50',
+                       foreground='white', 
+                       background='#556B2F',  # Dark olive green
                        font=('Arial', 20, 'bold'))
         
         style.configure('Header.TLabel',
-                       foreground='#ecf0f1',
-                       background='#2c3e50', 
+                       foreground='white',
+                       background='#556B2F',  # Dark olive green
                        font=('Arial', 12, 'bold'))
         
         style.configure('Military.TButton',
                        font=('Arial', 11, 'bold'),
-                       foreground='#2c3e50')
+                       foreground='#556B2F')
         
         style.configure('Success.TButton',
                        font=('Arial', 12, 'bold'),
-                       foreground='#27ae60')
+                       foreground='#6B8E23')  # Olive green jak w grze
         
         style.configure('Danger.TButton',
                        font=('Arial', 12, 'bold'),
-                       foreground='#e74c3c')
+                       foreground='#8B0000')
     
     def create_gui(self):
         """Tworzy główny interfejs aplikacji."""
         
         # Nagłówek
-        header_frame = tk.Frame(self.root, bg="#34495e", height=80)
+        header_frame = tk.Frame(self.root, bg="#6B8E23", height=80)  # Olive green jak w grze
         header_frame.pack(fill=tk.X, padx=10, pady=5)
         header_frame.pack_propagate(False)
         
         title_label = ttk.Label(header_frame, 
-                               text="🎖️ ARMY CREATOR STUDIO", 
+                               text="🎖️ KREATOR ARMII", 
                                style='Title.TLabel')
         title_label.pack(expand=True)
         
@@ -115,18 +115,18 @@ class ArmyCreatorStudio:
         subtitle_label.pack()
         
         # Główny kontener
-        main_frame = tk.Frame(self.root, bg="#2c3e50")
+        main_frame = tk.Frame(self.root, bg="#556B2F")  # Dark olive green
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
         
         # Lewa kolumna - Parametry
-        left_frame = tk.Frame(main_frame, bg="#34495e", width=350)
+        left_frame = tk.Frame(main_frame, bg="#6B8E23", width=350)  # Olive green jak w grze
         left_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 5))
         left_frame.pack_propagate(False)
         
         self.create_parameters_panel(left_frame)
         
         # Prawa kolumna - Podgląd i kontrola
-        right_frame = tk.Frame(main_frame, bg="#34495e")
+        right_frame = tk.Frame(main_frame, bg="#6B8E23")  # Olive green jak w grze
         right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(5, 0))
         
         self.create_preview_panel(right_frame)
@@ -141,7 +141,7 @@ class ArmyCreatorStudio:
         ttk.Label(parent, text="⚙️ PARAMETRY ARMII", style='Header.TLabel').pack(pady=10)
         
         # Nacja
-        nation_frame = tk.Frame(parent, bg="#34495e")
+        nation_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         nation_frame.pack(fill=tk.X, padx=20, pady=5)
         
         ttk.Label(nation_frame, text="🏴 Nacja:", style='Header.TLabel').pack(anchor='w')
@@ -151,7 +151,7 @@ class ArmyCreatorStudio:
         nation_combo.bind('<<ComboboxSelected>>', self.on_nation_change)
         
         # Dowódca
-        commander_frame = tk.Frame(parent, bg="#34495e")
+        commander_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         commander_frame.pack(fill=tk.X, padx=20, pady=5)
         
         ttk.Label(commander_frame, text="👨‍✈️ Dowódca:", style='Header.TLabel').pack(anchor='w')
@@ -163,30 +163,30 @@ class ArmyCreatorStudio:
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
         
         # Rozmiar armii
-        size_frame = tk.Frame(parent, bg="#34495e")
+        size_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         size_frame.pack(fill=tk.X, padx=20, pady=5)
         
         ttk.Label(size_frame, text="📊 Ilość żetonów:", style='Header.TLabel').pack(anchor='w')
         self.size_scale = tk.Scale(size_frame, from_=5, to=25, orient=tk.HORIZONTAL,
-                                  variable=self.army_size, bg="#34495e", fg="#ecf0f1",
-                                  highlightbackground="#34495e", command=self.update_preview)
+                                  variable=self.army_size, bg="#6B8E23", fg="white",
+                                  highlightbackground="#6B8E23", command=self.update_preview)
         self.size_scale.pack(fill=tk.X, pady=2)
         
         # Budżet VP
-        budget_frame = tk.Frame(parent, bg="#34495e")
+        budget_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         budget_frame.pack(fill=tk.X, padx=20, pady=5)
         
         ttk.Label(budget_frame, text="💰 Budżet VP:", style='Header.TLabel').pack(anchor='w')
         self.budget_scale = tk.Scale(budget_frame, from_=250, to=1000, orient=tk.HORIZONTAL,
-                                    variable=self.army_budget, bg="#34495e", fg="#ecf0f1",
-                                    highlightbackground="#34495e", command=self.update_preview)
+                                    variable=self.army_budget, bg="#6B8E23", fg="white",
+                                    highlightbackground="#6B8E23", command=self.update_preview)
         self.budget_scale.pack(fill=tk.X, pady=2)
         
         # Separator
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
         
         # Przyciski akcji
-        action_frame = tk.Frame(parent, bg="#34495e")
+        action_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         action_frame.pack(fill=tk.X, padx=20, pady=10)
         
         ttk.Button(action_frame, text="🎲 Losowa Armia", 
@@ -216,7 +216,7 @@ class ArmyCreatorStudio:
         ttk.Label(parent, text="👁️ PODGLĄD ARMII", style='Header.TLabel').pack(pady=10)
         
         # Informacje o armii
-        info_frame = tk.Frame(parent, bg="#34495e")
+        info_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         info_frame.pack(fill=tk.X, padx=20, pady=5)
         
         self.info_label = ttk.Label(info_frame, text="Wybierz parametry aby zobaczyć podgląd",
@@ -224,19 +224,19 @@ class ArmyCreatorStudio:
         self.info_label.pack()
         
         # Lista jednostek
-        list_frame = tk.Frame(parent, bg="#34495e")
+        list_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         list_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
         
         ttk.Label(list_frame, text="📋 Skład armii:", style='Header.TLabel').pack(anchor='w')
         
         # Scrolled text dla listy jednostek
         self.units_text = scrolledtext.ScrolledText(list_frame, height=15, width=40,
-                                                   bg="#ecf0f1", fg="#2c3e50",
+                                                   bg="white", fg="#556B2F",  # Tekst w kolorze dark olive
                                                    font=('Consolas', 10))
         self.units_text.pack(fill=tk.BOTH, expand=True, pady=5)
         
         # Progress bar
-        self.progress_frame = tk.Frame(parent, bg="#34495e")
+        self.progress_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         self.progress_frame.pack(fill=tk.X, padx=20, pady=5)
         
         ttk.Label(self.progress_frame, text="Postęp tworzenia:", style='Header.TLabel').pack(anchor='w')
@@ -249,12 +249,12 @@ class ArmyCreatorStudio:
     
     def create_status_bar(self):
         """Tworzy pasek statusu."""
-        status_frame = tk.Frame(self.root, bg="#1a252f", height=30)
+        status_frame = tk.Frame(self.root, bg="#556B2F", height=30)  # Dark olive green
         status_frame.pack(fill=tk.X, side=tk.BOTTOM)
         status_frame.pack_propagate(False)
         
         self.status_label = ttk.Label(status_frame, 
-                                     text="⚡ Army Creator Studio - Gotowy",
+                                     text="⚡ Kreator Armii - Gotowy",
                                      style='Header.TLabel')
         self.status_label.pack(side=tk.LEFT, padx=10, pady=5)
         
@@ -435,49 +435,58 @@ class ArmyCreatorStudio:
         self.status_label.config(text="🗑️ Armia wyczyszczona")
     
     def create_army_thread(self):
-        """Uruchamia tworzenie armii w osobnym wątku."""
+        """Uruchamia tworzenie armii w głównym wątku GUI (nieblokujące)."""
         if self.creating_army:
             return
             
-        # Uruchom w osobnym wątku aby nie blokować GUI
-        thread = threading.Thread(target=self.create_army_actual)
-        thread.daemon = True
-        thread.start()
-    
-    def create_army_actual(self):
-        """Faktyczne tworzenie armii."""
         self.creating_army = True
         
         try:
             # Aktualizuj GUI
-            self.root.after(0, lambda: self.create_button.config(state='disabled', text="⏳ TWORZENIE..."))
-            self.root.after(0, lambda: self.status_label.config(text="🏭 Tworzenie armii w toku..."))
+            self.create_button.config(state='disabled', text="⏳ TWORZENIE...")
+            self.status_label.config(text="🏭 Tworzenie armii w toku...")
             
             # Wygeneruj finalną armię
             size = self.army_size.get()
             budget = self.army_budget.get()
-            final_army = self.generate_final_army(size, budget)
+            self.final_army = self.generate_final_army(size, budget)
             
             # Inicjalizuj Token Editor
-            self.root.after(0, lambda: self.progress_label.config(text="Inicjalizacja Token Editor..."))
+            self.progress_label.config(text="Inicjalizacja Token Editor...")
             self.initialize_token_editor()
             
-            # Utwórz żetony
-            total_units = len(final_army)
-            for i, unit in enumerate(final_army):
-                progress = ((i + 1) / total_units) * 100
-                self.root.after(0, lambda p=progress, u=unit: self.update_creation_progress(p, f"Tworzenie: {u['name']}"))
-                
-                self.create_single_token(unit)
-                time.sleep(0.5)  # Krótka pauza między żetonami
-            
-            # Zakończ
-            self.root.after(0, lambda: self.creation_completed(len(final_army)))
+            # Rozpocznij sekwencyjne tworzenie żetonów
+            self.current_unit_index = 0
+            self.total_units = len(self.final_army)
+            self.root.after(100, self.create_next_token)
             
         except Exception as e:
-            self.root.after(0, lambda: self.creation_failed(str(e)))
-        finally:
-            self.creating_army = False
+            self.creation_failed(str(e))
+    
+    def create_next_token(self):
+        """Tworzy kolejny żeton w sekwencji (nieblokujące)."""
+        if self.current_unit_index >= self.total_units:
+            # Wszystkie żetony utworzone
+            self.creation_completed(self.total_units)
+            return
+            
+        unit = self.final_army[self.current_unit_index]
+        progress = ((self.current_unit_index + 1) / self.total_units) * 100
+        
+        # Aktualizuj progress
+        self.update_creation_progress(progress, f"Tworzenie: {unit['name']}")
+        
+        # Utwórz żeton
+        try:
+            self.create_single_token(unit)
+            self.current_unit_index += 1
+            # Zaplanuj następny żeton za 500ms
+            self.root.after(500, self.create_next_token)
+        except Exception as e:
+            print(f"Błąd tworzenia żetonu {unit['name']}: {e}")
+            self.current_unit_index += 1
+            # Kontynuuj mimo błędu
+            self.root.after(500, self.create_next_token)
     
     def generate_final_army(self, size, budget):
         """Generuje finalną armię z dokładnymi nazwami jednostek."""
@@ -589,15 +598,30 @@ class ArmyCreatorStudio:
         return stats
     
     def initialize_token_editor(self):
-        """Inicjalizuje Token Editor bez GUI."""
+        """Inicjalizuje Token Editor w dedykowanym oknie."""
         if self.token_editor is None:
             from token_editor_prototyp import TokenEditor
             
-            # Utwórz ukryty root dla Token Editor
-            hidden_root = tk.Tk()
-            hidden_root.withdraw()  # Ukryj okno
+            # Utwórz dedykowane okno dla Token Editor
+            token_window = tk.Toplevel(self.root)
+            token_window.title("Token Editor - Tryb Automatyczny")
+            token_window.geometry("400x300")  # Mniejsze okno
+            token_window.configure(bg="darkolivegreen")
             
-            self.token_editor = TokenEditor(hidden_root)
+            # Przesuń okno poza główny obszar
+            token_window.geometry("+50+50")
+            
+            # Zminimalizuj okno ale nie ukrywaj go całkowicie
+            token_window.iconify()
+            
+            self.token_editor = TokenEditor(token_window)
+            
+            # Dodaj informację o trybie automatycznym
+            info_label = tk.Label(token_window, 
+                                text="🤖 TRYB AUTOMATYCZNY\nToken Editor pracuje w tle...", 
+                                bg="darkolivegreen", fg="white", 
+                                font=("Arial", 12, "bold"))
+            info_label.pack(expand=True)
     
     def create_single_token(self, unit):
         """Tworzy pojedynczy żeton używając Token Editor."""
@@ -648,6 +672,7 @@ class ArmyCreatorStudio:
     
     def creation_completed(self, units_created):
         """Obsługuje zakończenie tworzenia armii."""
+        self.creating_army = False
         self.progress_bar['value'] = 100
         self.progress_label.config(text=f"✅ Utworzono {units_created} żetonów!")
         self.status_label.config(text=f"🎉 Armia ukończona! Utworzono {units_created} żetonów")
@@ -660,11 +685,11 @@ class ArmyCreatorStudio:
                            f"📊 Utworzono: {units_created} żetonów\n"
                            f"🎖️ Dowódca: {self.selected_commander.get()}\n"
                            f"🏴 Nacja: {self.selected_nation.get()}\n"
-                           f"💰 Budżet: {self.army_budget.get()} VP\n\n"
-                           f"Żetony zapisane w katalogu assets/tokens/")
+                           f"💰 Budżet: {self.army_budget.get()} VP\n\n"                           f"Żetony zapisane w katalogu assets/tokens/")
     
     def creation_failed(self, error_message):
         """Obsługuje błąd podczas tworzenia armii."""
+        self.creating_army = False
         self.progress_label.config(text="❌ Błąd tworzenia armii")
         self.status_label.config(text="❌ Błąd podczas tworzenia armii")
         
