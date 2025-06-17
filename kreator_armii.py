@@ -22,7 +22,7 @@ class ArmyCreatorStudio:
     def __init__(self, root):
         self.root = root
         self.root.title("🎖️ Kreator Armii - Kampania 1939")
-        self.root.geometry("900x650")  # Szersze i niższe okno
+        self.root.geometry("900x600")  # Jeszcze niższe okno
         self.root.configure(bg="#556B2F")  # Dark olive green jak w grze
         self.root.resizable(True, True)
         
@@ -99,10 +99,9 @@ class ArmyCreatorStudio:
     
     def create_gui(self):
         """Tworzy główny interfejs aplikacji."""
-        
-        # Nagłówek
-        header_frame = tk.Frame(self.root, bg="#6B8E23", height=80)  # Olive green jak w grze
-        header_frame.pack(fill=tk.X, padx=10, pady=5)
+          # Nagłówek
+        header_frame = tk.Frame(self.root, bg="#6B8E23", height=60)  # Olive green jak w grze
+        header_frame.pack(fill=tk.X, padx=10, pady=3)
         header_frame.pack_propagate(False)
         
         title_label = ttk.Label(header_frame, 
@@ -118,13 +117,33 @@ class ArmyCreatorStudio:
         # Główny kontener
         main_frame = tk.Frame(self.root, bg="#556B2F")  # Dark olive green
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+          # Lewa kolumna - Parametry ze scrollbarem
+        left_outer_frame = tk.Frame(main_frame, bg="#6B8E23", width=350)
+        left_outer_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 5))
+        left_outer_frame.pack_propagate(False)
         
-        # Lewa kolumna - Parametry
-        left_frame = tk.Frame(main_frame, bg="#6B8E23", width=350)  # Olive green jak w grze
-        left_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 5))
-        left_frame.pack_propagate(False)
+        # Canvas ze scrollbarem dla lewej kolumny
+        canvas = tk.Canvas(left_outer_frame, bg="#6B8E23", highlightthickness=0)
+        scrollbar = ttk.Scrollbar(left_outer_frame, orient="vertical", command=canvas.yview)
+        self.scrollable_frame = tk.Frame(canvas, bg="#6B8E23")
         
-        self.create_parameters_panel(left_frame)
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Bind scroll events
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        canvas.bind("<MouseWheel>", _on_mousewheel)
+        
+        self.create_parameters_panel(self.scrollable_frame)
         
         # Prawa kolumna - Podgląd i kontrola
         right_frame = tk.Frame(main_frame, bg="#6B8E23")  # Olive green jak w grze
@@ -161,7 +180,7 @@ class ArmyCreatorStudio:
         self.commander_combo.pack(fill=tk.X, pady=2)
         
         # Separator
-        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
+        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=8)
         
         # Rozmiar armii
         size_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
@@ -181,10 +200,9 @@ class ArmyCreatorStudio:
         self.budget_scale = tk.Scale(budget_frame, from_=250, to=1000, orient=tk.HORIZONTAL,
                                     variable=self.army_budget, bg="#6B8E23", fg="white",
                                     highlightbackground="#6B8E23", command=self.update_preview)
-        self.budget_scale.pack(fill=tk.X, pady=2)
-        
+        self.budget_scale.pack(fill=tk.X, pady=2)        
         # Separator
-        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
+        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=8)
         
         # Przyciski akcji
         action_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
@@ -201,60 +219,63 @@ class ArmyCreatorStudio:
         ttk.Button(action_frame, text="🗑️ Wyczyść",
                   command=self.clear_army,
                   style='Danger.TButton').pack(fill=tk.X, pady=2)
-        
-        # Główny przycisk tworzenia
+          # Główny przycisk tworzenia
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=10)
         
         self.create_button = ttk.Button(action_frame, text="💾 UTWÓRZ ARMIĘ",
                                        command=self.create_army_thread,
                                        style='Success.TButton')
         self.create_button.pack(fill=tk.X, pady=10)
-          # Panel zarządzania folderami
-        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=5)
+          # Panel zarządzania folderami - kompaktowy
+        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=3)
         
         management_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
-        management_frame.pack(fill=tk.X, padx=20, pady=5)
+        management_frame.pack(fill=tk.X, padx=15, pady=3)
         
-        ttk.Label(management_frame, text="🗂️ ZARZĄDZANIE FOLDERAMI", style='Header.TLabel').pack(pady=2)
+        # Nagłówek mniejszy
+        header_label = tk.Label(management_frame, text="🗂️ ZARZĄDZANIE FOLDERAMI", 
+                               bg="#6B8E23", fg="white", font=("Arial", 10, "bold"))
+        header_label.pack(pady=1)
         
-        # Statystyki żetonów
+        # Statystyki żetonów - kompaktowe
         self.stats_frame = tk.Frame(management_frame, bg="#556B2F", relief=tk.RIDGE, bd=1)
         self.stats_frame.pack(fill=tk.X, pady=2)
         
         self.stats_label = tk.Label(self.stats_frame, 
                                    text="📊 Sprawdzanie folderów...", 
                                    bg="#556B2F", fg="white", 
-                                   font=("Arial", 9))
-        self.stats_label.pack(pady=2)
-          # Przyciski czyszczenia
+                                   font=("Arial", 8), wraplength=300)
+        self.stats_label.pack(pady=1)
+        
+        # Przyciski czyszczenia - mniejsze
         clean_frame = tk.Frame(management_frame, bg="#6B8E23")
-        clean_frame.pack(fill=tk.X, pady=2)
+        clean_frame.pack(fill=tk.X, pady=1)
         
-        ttk.Button(clean_frame, text="🗑️ Wyczyść Polskie Żetony",
+        # Małe przyciski z mniejszymi fontami
+        btn_style = ttk.Style()
+        btn_style.configure('Small.Danger.TButton',
+                           font=('Arial', 9),
+                           foreground='#8B0000')
+        btn_style.configure('Small.Military.TButton',
+                           font=('Arial', 9),
+                           foreground='#556B2F')
+        
+        ttk.Button(clean_frame, text="🗑️ Polskie",
                   command=self.clean_polish_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=1)
+                  style='Small.Danger.TButton').pack(fill=tk.X, pady=1)
         
-        ttk.Button(clean_frame, text="🗑️ Wyczyść Niemieckie Żetony",
+        ttk.Button(clean_frame, text="🗑️ Niemieckie",
                   command=self.clean_german_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=1)
+                  style='Small.Danger.TButton').pack(fill=tk.X, pady=1)
         
-        ttk.Button(clean_frame, text="🗑️ Wyczyść WSZYSTKIE Żetony",
+        ttk.Button(clean_frame, text="🗑️ WSZYSTKIE",
                   command=self.clean_all_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=1)
+                  style='Small.Danger.TButton').pack(fill=tk.X, pady=1)
         
-        ttk.Button(clean_frame, text="📊 Odśwież Statystyki",
+        ttk.Button(clean_frame, text="� Odśwież",
                   command=self.refresh_token_stats,
-                  style='Military.TButton').pack(fill=tk.X, pady=1)
+                  style='Small.Military.TButton').pack(fill=tk.X, pady=1)
         
-        # Główny przycisk tworzenia
-        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=10)
-        
-        self.create_button = ttk.Button(action_frame, text="💾 UTWÓRZ ARMIĘ",
-                                       command=self.create_army_thread,
-                                       style='Success.TButton')
-        self.create_button.pack(fill=tk.X, pady=10)
-        
-        # Panel zarządzania folderami        
         # Załaduj początkowe statystyki
         self.refresh_token_stats()
     
