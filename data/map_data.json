@@ -7,11 +7,6 @@
     "orientation": "pointy"
   },
   "terrain": {
-    "0,0": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
-    },
     "0,1": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
@@ -176,11 +171,6 @@
       "terrain_key": "teren_płaski",
       "move_mod": 0,
       "defense_mod": 0
-    },
-    "1,0": {
-      "terrain_key": "mała rzeka",
-      "move_mod": 2,
-      "defense_mod": 1
     },
     "1,1": {
       "terrain_key": "mała rzeka",
@@ -1193,11 +1183,6 @@
       "defense_mod": 2
     },
     "7,-1": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
-    },
-    "7,0": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
       "defense_mod": 0
@@ -9386,6 +9371,21 @@
       "terrain_key": "mała miejscowość",
       "move_mod": 1,
       "defense_mod": 2
+    },
+    "0,0": {
+      "terrain_key": "teren_płaski",
+      "move_mod": 0,
+      "defense_mod": 0
+    },
+    "1,0": {
+      "terrain_key": "teren_płaski",
+      "move_mod": 0,
+      "defense_mod": 0
+    },
+    "7,0": {
+      "terrain_key": "teren_płaski",
+      "move_mod": 0,
+      "defense_mod": 0
     }
   },
   "key_points": {
@@ -9496,7 +9496,6 @@
   },
   "spawn_points": {
     "Polska": [
-      "0,0",
       "0,1",
       "0,2",
       "0,13",
@@ -9504,7 +9503,8 @@
       "0,33",
       "0,32",
       "0,22",
-      "0,21"
+      "0,21",
+      "0,0"
     ],
     "Niemcy": [
       "54,6",

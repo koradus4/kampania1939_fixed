@@ -122,25 +122,32 @@ class TokenEditor:
         self.variable_text_color = "black"
 
         # Katalog zapisu
-        self.save_directory = str(TOKENS_ROOT)      # start w assets/tokens
-
-        # ─── Domyślne wartości żywotności (strength) dla unitType__unitSize ───
+        self.save_directory = str(TOKENS_ROOT)      # start w assets/tokens        # ─── Domyślne wartości żywotności (strength) dla unitType__unitSize ───
         self.default_strengths = {
-            "P__Pluton": 8,
-            "P__Kompania": 24,
-            "P__Batalion": 48,
-            "AC__Pluton": 6,
-            "AC__Kompania": 18,
-            "AC__Batalion": 36,
-            "TC__Pluton": 10,
-            "TC__Kompania": 30,
-            "TC__Batalion": 60,
-            "AL__Pluton": 7,
-            "AL__Kompania": 21,
-            "AL__Batalion": 42,
-            "AP__Pluton": 5,
-            "AP__Kompania": 15,
-            "AP__Batalion": 30
+            # Piechota - wzmocniona
+            "P__Pluton": 12, "P__Kompania": 36, "P__Batalion": 72,
+            # Kawaleria  
+            "K__Pluton": 6, "K__Kompania": 18, "K__Batalion": 36,
+            # Czołgi ciężkie - osłabione
+            "TC__Pluton": 8, "TC__Kompania": 24, "TC__Batalion": 48,
+            # Czołgi średnie
+            "TŚ__Pluton": 7, "TŚ__Kompania": 21, "TŚ__Batalion": 42,
+            # Czołgi lekkie
+            "TL__Pluton": 6, "TL__Kompania": 18, "TL__Batalion": 36,
+            # Samochody pancerne
+            "TS__Pluton": 5, "TS__Kompania": 15, "TS__Batalion": 30,
+            # Artyleria ciężka - wzmocniona
+            "AC__Pluton": 8, "AC__Kompania": 24, "AC__Batalion": 48,
+            # Artyleria lekka
+            "AL__Pluton": 7, "AL__Kompania": 21, "AL__Batalion": 42,
+            # Artyleria plot
+            "AP__Pluton": 6, "AP__Kompania": 18, "AP__Batalion": 36,
+            # Zaopatrzenie
+            "Z__Pluton": 4, "Z__Kompania": 12, "Z__Batalion": 24,
+            # Dowództwo
+            "D__Pluton": 3, "D__Kompania": 9, "D__Batalion": 18,
+            # Generał
+            "G__Pluton": 2, "G__Kompania": 6, "G__Batalion": 12
         }
 
         # Dodanie modyfikatorów obrony do wsparć
@@ -463,21 +470,20 @@ class TokenEditor:
         unit_frame = tk.LabelFrame(container, text="Rodzaj Jednostki", bg="darkolivegreen", fg="white",
                                    font=("Arial", 9, "bold"))  # zmniejszona czcionka z 10 na 9
         unit_frame.grid(row=0, column=1, padx=5, pady=5, sticky="n")
-        
-        # Lista jednostek z typami czołgów i artylerią
+          # Lista jednostek z typami czołgów i artylerią
         unit_types = [
             ("Piechota (P)", "P", tk.NORMAL),
-            ("Kawaleria (K)", "K", tk.DISABLED),
+            ("Kawaleria (K)", "K", tk.NORMAL),
             ("Czołg ciężki (TC)", "TC", tk.NORMAL),
-            ("Czołg średni (TŚ)", "TŚ", tk.DISABLED),
-            ("Czołg lekki (TL)", "TL", tk.DISABLED),
-            ("Sam. pancerny (TS)", "TS", tk.DISABLED),
+            ("Czołg średni (TŚ)", "TŚ", tk.NORMAL),
+            ("Czołg lekki (TL)", "TL", tk.NORMAL),
+            ("Sam. pancerny (TS)", "TS", tk.NORMAL),
             ("Artyleria ciężka (AC)", "AC", tk.NORMAL),
-            ("Artyleria lekka (AL)", "AL", tk.DISABLED),
+            ("Artyleria lekka (AL)", "AL", tk.NORMAL),
             ("Artyleria plot (AP)", "AP", tk.NORMAL),
-            ("Zaopatrzenie (Z)", "Z", tk.DISABLED),
-            ("Dowództwo (D)", "D", tk.DISABLED),
-            ("Generał (G)", "G", tk.DISABLED)
+            ("Zaopatrzenie (Z)", "Z", tk.NORMAL),
+            ("Dowództwo (D)", "D", tk.NORMAL),
+            ("Generał (G)", "G", tk.NORMAL)
         ]
 
         for text, val, state in unit_types:
@@ -648,34 +654,34 @@ class TokenEditor:
     def update_numeric_fields(self):
         defaults = {
             "ruch": {
-                "P": "5", "K": "16", 
-                "TC": "18", "TŚ": "20", "TL": "22", "TS": "24",
-                "AC": "12", "AL": "14", "AP": "16",
-                "Z": "20", "D": "16", "G": "16"
+                "P": "7", "K": "15", 
+                "TC": "8", "TŚ": "10", "TL": "12", "TS": "14",
+                "AC": "6", "AL": "8", "AP": "10",
+                "Z": "12", "D": "12", "G": "12"
             },
             "range": {
                 "P": "1", "K": "1",
-                "TC": "3", "TŚ": "3", "TL": "2", "TS": "2",
-                "AC": "6", "AL": "4", "AP": "4",
+                "TC": "2", "TŚ": "2", "TL": "1", "TS": "2",
+                "AC": "8", "AL": "6", "AP": "5",
                 "Z": "1", "D": "0", "G": "0"
             },
             "attack": {
                 "Pluton": {
-                    "P": "2", "K": "3",
-                    "TC": "6", "TŚ": "5", "TL": "4", "TS": "3",
-                    "AC": "6", "AL": "4", "AP": "3",
+                    "P": "3", "K": "3",
+                    "TC": "5", "TŚ": "4", "TL": "3", "TS": "2",
+                    "AC": "8", "AL": "6", "AP": "4",
                     "Z": "1", "D": "0", "G": "0"
                 },
                 "Kompania": {
-                    "P": "4", "K": "6",
-                    "TC": "10", "TŚ": "8", "TL": "7", "TS": "6",
-                    "AC": "9", "AL": "7", "AP": "6",
+                    "P": "6", "K": "6",
+                    "TC": "10", "TŚ": "8", "TL": "6", "TS": "4",
+                    "AC": "16", "AL": "12", "AP": "8",
                     "Z": "2", "D": "0", "G": "0"
                 },
                 "Batalion": {
-                    "P": "8", "K": "9",
-                    "TC": "18", "TŚ": "15", "TL": "12", "TS": "10",
-                    "AC": "12", "AL": "10", "AP": "9",
+                    "P": "9", "K": "9",
+                    "TC": "15", "TŚ": "12", "TL": "9", "TS": "6",
+                    "AC": "24", "AL": "18", "AP": "12",
                     "Z": "3", "D": "0", "G": "0"
                 }
             },
@@ -684,49 +690,49 @@ class TokenEditor:
             "unit_maintenance": {
                 "Pluton": {
                     "P": "2", "K": "3",
-                    "TC": "5", "TŚ": "4", "TL": "3", "TS": "2",
-                    "AC": "3", "AL": "3", "AP": "3",
-                    "Z": "2", "D": "0", "G": "0"
+                    "TC": "8", "TŚ": "6", "TL": "4", "TS": "3",
+                    "AC": "4", "AL": "3", "AP": "3",
+                    "Z": "2", "D": "1", "G": "1"
                 },
                 "Kompania": {
                     "P": "4", "K": "6",
-                    "TC": "10", "TŚ": "8", "TL": "6", "TS": "5",
-                    "AC": "6", "AL": "6", "AP": "6",
-                    "Z": "4", "D": "0", "G": "0"
+                    "TC": "16", "TŚ": "12", "TL": "8", "TS": "6",
+                    "AC": "8", "AL": "6", "AP": "6",
+                    "Z": "4", "D": "2", "G": "2"
                 },
                 "Batalion": {
                     "P": "8", "K": "9",
-                    "TC": "15", "TŚ": "12", "TL": "10", "TS": "8",
-                    "AC": "12", "AL": "10", "AP": "9",
-                    "Z": "6", "D": "0", "G": "0"
+                    "TC": "24", "TŚ": "18", "TL": "12", "TS": "9",
+                    "AC": "12", "AL": "9", "AP": "9",
+                    "Z": "6", "D": "3", "G": "3"
                 }
             },
             "purchase": {
                 "Pluton": {
-                    "P": "18", "K": "20",
-                    "TC": "24", "TŚ": "22", "TL": "20", "TS": "18",
-                    "AC": "22", "AL": "20", "AP": "18",
-                    "Z": "16", "D": "60", "G": "60"
+                    "P": "15", "K": "18",
+                    "TC": "40", "TŚ": "32", "TL": "25", "TS": "20",
+                    "AC": "35", "AL": "25", "AP": "20",
+                    "Z": "16", "D": "80", "G": "120"
                 },
                 "Kompania": {
-                    "P": "36", "K": "40",
-                    "TC": "48", "TŚ": "44", "TL": "40", "TS": "36",
-                    "AC": "44", "AL": "40", "AP": "36",
-                    "Z": "32", "D": "60", "G": "60"
+                    "P": "30", "K": "36",
+                    "TC": "80", "TŚ": "64", "TL": "50", "TS": "40",
+                    "AC": "70", "AL": "50", "AP": "40",
+                    "Z": "32", "D": "80", "G": "120"
                 },
                 "Batalion": {
-                    "P": "54", "K": "60",
-                    "TC": "72", "TŚ": "66", "TL": "60", "TS": "54",
-                    "AC": "66", "AL": "60", "AP": "54",
-                    "Z": "48", "D": "60", "G": "60"
+                    "P": "45", "K": "54",
+                    "TC": "120", "TŚ": "96", "TL": "75", "TS": "60",
+                    "AC": "105", "AL": "75", "AP": "60",
+                    "Z": "48", "D": "80", "G": "120"
                 }
             },
             "sight": {
-                "P": "3", "K": "3",
-                "TC": "2", "TŚ": "2", "TL": "2", "TS": "3",
-                "AC": "3", "AL": "3", "AP": "3",
-                "D": "4", "G": "4", "Z": "2"
-            },
+                "P": "2", "K": "4",
+                "TC": "2", "TŚ": "2", "TL": "2", "TS": "4",
+                "AC": "2", "AL": "2", "AP": "3",
+                "D": "5", "G": "6", "Z": "2"
+            }
         }
         ut = self.unit_type.get()
         size = self.unit_size.get()
@@ -748,13 +754,22 @@ class TokenEditor:
         # Domyślne wartości obrony dla typów i wielkości jednostek
         defense_defaults = {
             "Pluton": {
-                "P": "4", "TC": "7", "AC": "2", "AL": "3", "AP": "2"
+                "P": "6", "K": "3", 
+                "TC": "6", "TŚ": "5", "TL": "4", "TS": "3",
+                "AC": "3", "AL": "4", "AP": "3",
+                "Z": "2", "D": "1", "G": "1"
             },
             "Kompania": {
-                "P": "10", "TC": "18", "AC": "6", "AL": "7", "AP": "5"
+                "P": "15", "K": "8",
+                "TC": "15", "TŚ": "12", "TL": "10", "TS": "8",
+                "AC": "8", "AL": "10", "AP": "8",
+                "Z": "5", "D": "2", "G": "2"
             },
             "Batalion": {
-                "P": "20", "TC": "36", "AC": "12", "AL": "14", "AP": "10"
+                "P": "30", "K": "16",
+                "TC": "30", "TŚ": "25", "TL": "20", "TS": "16",
+                "AC": "16", "AL": "20", "AP": "16",
+                "Z": "10", "D": "4", "G": "4"
             }
         }
         self.defense_value.set(defense_defaults.get(size, {}).get(ut, ""))
@@ -1072,9 +1087,7 @@ class TokenEditor:
         bbox_size = draw.textbbox((0, 0), unit_size, font=font_size)
         x_size = (width - (bbox_size[2] - bbox_size[0])) / 2
         draw.text((x_size, y), unit_size, fill=text_color, font=font_size)
-        y += bbox_size[3] - bbox_size[1] + gap_size_to_symbol
-
-        # Symbol wielkości – bezpośrednio pod nazwą wielkości
+        y += bbox_size[3] - bbox_size[1] + gap_size_to_symbol        # Symbol wielkości – bezpośrednio pod nazwą wielkości
         bbox_symbol = draw.textbbox((0, 0), unit_symbol, font=font_symbol)
         x_symbol = (width - (bbox_symbol[2] - bbox_symbol[0])) / 2
         draw.text((x_symbol, y), unit_symbol, fill=text_color, font=font_symbol)
@@ -1083,6 +1096,13 @@ class TokenEditor:
 
     def save_token(self):
         """Zapisuje żeton w nowej strukturze + aktualizuje centralny indeks."""
+        
+        # Dodatkowe potwierdzenie przed rozpoczęciem procesu zapisu
+        if not messagebox.askyesno("Potwierdzenie", 
+                                   "Czy na pewno chcesz zapisać ten żeton?\n\n"
+                                   "Kliknij 'Nie' aby anulować bez zapisywania."):
+            return
+        
         FINAL_SIZE = 240  # px – docelowy rozmiar png
 
         nation     = self.nation.get()
@@ -1096,16 +1116,23 @@ class TokenEditor:
         commander_num = commander_full.split()[0] if commander_full else "?"
 
         nation_short = "PL" if nation == "Polska" else ("N" if nation == "Niemcy" else nation[:2].upper())
-        base_id    = f"{unit_type}_{unit_size}".replace(" ", "_")        # np. P_Pluton
-
-        # ── 1. dodatkowa etykieta użytkownika ───────────────────────────
+        base_id    = f"{unit_type}_{unit_size}".replace(" ", "_")        # np. P_Pluton        # ── 1. dodatkowa etykieta użytkownika ───────────────────────────
         default_label = f"{commander_num}_{nation_short}_{unit_type}_{unit_size}"
         user_label = simpledialog.askstring(
             "Nazwa wyświetlana",
             "Podaj nazwę oddziału (np. '1. Podhalański Pluton Czołgów')\n"
-            "Możesz zostawić domyślną – wtedy grafika będzie miała nazwę domyślną.",
+            "Możesz zostawić domyślną – wtedy grafika będzie miała nazwę domyślną.\n\n"
+            "UWAGA: Kliknij 'Cancel' lub 'X' aby anulować zapisywanie żetonu.",
             initialvalue=default_label
-        ) or default_label
+        )
+        
+        # Jeśli użytkownik anulował dialog, przerwij zapisywanie
+        if user_label is None:
+            return
+        
+        # Jeśli pusty string, użyj domyślnej etykiety
+        if not user_label.strip():
+            user_label = default_label
 
         # ── 2. zrób slug z etykiety, aby nie nadpisywać poprzednich ──
         import re, datetime as _dt
