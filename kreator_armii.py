@@ -11,6 +11,7 @@ import json
 import random
 import threading
 import time
+import shutil
 from unittest.mock import patch
 
 # Dodaj ścieżkę do edytorów (z głównego folderu projektu)
@@ -21,7 +22,7 @@ class ArmyCreatorStudio:
     def __init__(self, root):
         self.root = root
         self.root.title("🎖️ Kreator Armii - Kampania 1939")
-        self.root.geometry("800x700")
+        self.root.geometry("900x650")  # Szersze i niższe okno
         self.root.configure(bg="#556B2F")  # Dark olive green jak w grze
         self.root.resizable(True, True)
         
@@ -208,44 +209,42 @@ class ArmyCreatorStudio:
                                        command=self.create_army_thread,
                                        style='Success.TButton')
         self.create_button.pack(fill=tk.X, pady=10)
-        
-        # Panel zarządzania folderami
-        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
+          # Panel zarządzania folderami
+        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=5)
         
         management_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
-        management_frame.pack(fill=tk.X, padx=20, pady=10)
+        management_frame.pack(fill=tk.X, padx=20, pady=5)
         
-        ttk.Label(management_frame, text="🗂️ ZARZĄDZANIE FOLDERAMI", style='Header.TLabel').pack(pady=5)
+        ttk.Label(management_frame, text="🗂️ ZARZĄDZANIE FOLDERAMI", style='Header.TLabel').pack(pady=2)
         
         # Statystyki żetonów
-        self.stats_frame = tk.Frame(management_frame, bg="#556B2F", relief=tk.RIDGE, bd=2)
-        self.stats_frame.pack(fill=tk.X, pady=5)
+        self.stats_frame = tk.Frame(management_frame, bg="#556B2F", relief=tk.RIDGE, bd=1)
+        self.stats_frame.pack(fill=tk.X, pady=2)
         
         self.stats_label = tk.Label(self.stats_frame, 
                                    text="📊 Sprawdzanie folderów...", 
                                    bg="#556B2F", fg="white", 
-                                   font=("Arial", 10))
-        self.stats_label.pack(pady=5)
-        
-        # Przyciski czyszczenia
+                                   font=("Arial", 9))
+        self.stats_label.pack(pady=2)
+          # Przyciski czyszczenia
         clean_frame = tk.Frame(management_frame, bg="#6B8E23")
-        clean_frame.pack(fill=tk.X, pady=5)
+        clean_frame.pack(fill=tk.X, pady=2)
         
         ttk.Button(clean_frame, text="🗑️ Wyczyść Polskie Żetony",
                   command=self.clean_polish_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+                  style='Danger.TButton').pack(fill=tk.X, pady=1)
         
         ttk.Button(clean_frame, text="🗑️ Wyczyść Niemieckie Żetony",
                   command=self.clean_german_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+                  style='Danger.TButton').pack(fill=tk.X, pady=1)
         
         ttk.Button(clean_frame, text="🗑️ Wyczyść WSZYSTKIE Żetony",
                   command=self.clean_all_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
+                  style='Danger.TButton').pack(fill=tk.X, pady=1)
         
         ttk.Button(clean_frame, text="📊 Odśwież Statystyki",
                   command=self.refresh_token_stats,
-                  style='Military.TButton').pack(fill=tk.X, pady=2)
+                  style='Military.TButton').pack(fill=tk.X, pady=1)
         
         # Główny przycisk tworzenia
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=10)
@@ -255,44 +254,7 @@ class ArmyCreatorStudio:
                                        style='Success.TButton')
         self.create_button.pack(fill=tk.X, pady=10)
         
-        # Panel zarządzania folderami
-        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
-        
-        management_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
-        management_frame.pack(fill=tk.X, padx=20, pady=10)
-        
-        ttk.Label(management_frame, text="🗂️ ZARZĄDZANIE FOLDERAMI", style='Header.TLabel').pack(pady=5)
-        
-        # Statystyki żetonów
-        self.stats_frame = tk.Frame(management_frame, bg="#556B2F", relief=tk.RIDGE, bd=2)
-        self.stats_frame.pack(fill=tk.X, pady=5)
-        
-        self.stats_label = tk.Label(self.stats_frame, 
-                                   text="📊 Sprawdzanie folderów...", 
-                                   bg="#556B2F", fg="white", 
-                                   font=("Arial", 10))
-        self.stats_label.pack(pady=5)
-        
-        # Przyciski czyszczenia
-        clean_frame = tk.Frame(management_frame, bg="#6B8E23")
-        clean_frame.pack(fill=tk.X, pady=5)
-        
-        ttk.Button(clean_frame, text="🗑️ Wyczyść Polskie Żetony",
-                  command=self.clean_polish_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
-        
-        ttk.Button(clean_frame, text="🗑️ Wyczyść Niemieckie Żetony",
-                  command=self.clean_german_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
-        
-        ttk.Button(clean_frame, text="🗑️ Wyczyść WSZYSTKIE Żetony",
-                  command=self.clean_all_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
-        
-        ttk.Button(clean_frame, text="📊 Odśwież Statystyki",
-                  command=self.refresh_token_stats,
-                  style='Military.TButton').pack(fill=tk.X, pady=2)
-        
+        # Panel zarządzania folderami        
         # Załaduj początkowe statystyki
         self.refresh_token_stats()
     
@@ -315,11 +277,10 @@ class ArmyCreatorStudio:
         list_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
         
         ttk.Label(list_frame, text="📋 Skład armii:", style='Header.TLabel').pack(anchor='w')
-        
-        # Scrolled text dla listy jednostek
-        self.units_text = scrolledtext.ScrolledText(list_frame, height=15, width=40,
+          # Scrolled text dla listy jednostek
+        self.units_text = scrolledtext.ScrolledText(list_frame, height=12, width=40,
                                                    bg="white", fg="#556B2F",  # Tekst w kolorze dark olive
-                                                   font=('Consolas', 10))
+                                                   font=('Consolas', 9))
         self.units_text.pack(fill=tk.BOTH, expand=True, pady=5)
         
         # Progress bar
@@ -833,10 +794,14 @@ class ArmyCreatorStudio:
     
     def clean_polish_tokens(self):
         """Czyści polskie żetony z potwierdzeniem."""
+        print("🔍 DEBUG: clean_polish_tokens() - WYWOŁANA!")
+        print(f"🔍 DEBUG: Przekazuję do clean_nation_tokens('Polska', '🇵🇱')")
         self.clean_nation_tokens("Polska", "🇵🇱")
     
     def clean_german_tokens(self):
         """Czyści niemieckie żetony z potwierdzeniem."""
+        print("🔍 DEBUG: clean_german_tokens() - WYWOŁANA!")
+        print(f"🔍 DEBUG: Przekazuję do clean_nation_tokens('Niemcy', '🇩🇪')")
         self.clean_nation_tokens("Niemcy", "🇩🇪")
     
     def clean_all_tokens(self):
@@ -846,11 +811,9 @@ class ArmyCreatorStudio:
                               "Ta operacja nie może być cofnięta!\n\n"
                               "🗑️ Zostaną usunięte:\n"
                               "• Wszystkie polskie żetony\n"
-                              "• Wszystkie niemieckie żetony\n"
-                              "• Plik index.json"):
+                              "• Wszystkie niemieckie żetony\n"                              "• Plik index.json"):
             
             try:
-                import shutil
                 tokens_dir = Path("assets/tokens")
                 
                 if tokens_dir.exists():
@@ -867,41 +830,59 @@ class ArmyCreatorStudio:
                 self.refresh_token_stats()
                 messagebox.showinfo("✅ Sukces!", "Wszystkie żetony zostały usunięte.")
                 
-            except Exception as e:
-                messagebox.showerror("❌ Błąd", f"Błąd podczas usuwania:\n{str(e)}")
+            except Exception as e:                messagebox.showerror("❌ Błąd", f"Błąd podczas usuwania:\n{str(e)}")
     
     def clean_nation_tokens(self, nation, flag):
         """Czyści żetony wybranej nacji z potwierdzeniem."""
-        # Sprawdź ile żetonów do usunięcia
-        count, vp = self.count_nation_tokens(nation)
+        print(f"🔍 DEBUG: clean_nation_tokens() - WYWOŁANA dla {nation} {flag}")
         
+        # Sprawdź ile żetonów do usunięcia
+        print(f"🔍 DEBUG: Sprawdzam żetony dla {nation}...")
+        count, vp = self.count_nation_tokens(nation)
+        print(f"🔍 DEBUG: Znaleziono {count} żetonów, {vp} VP dla {nation}")        
         if count == 0:
+            print(f"🔍 DEBUG: Brak żetonów {nation} - wyświetlam dialog info")
             messagebox.showinfo("ℹ️ Info", f"Brak żetonów {flag} {nation} do usunięcia.")
             return
         
-        if messagebox.askyesno("⚠️ POTWIERDŹ USUNIĘCIE", 
+        print(f"🔍 DEBUG: Wyświetlam dialog potwierdzenia dla {count} żetonów {nation}")
+        if messagebox.askyesno("⚠️ POTWIERDŹ USUNIĘCIE",
                               f"Czy na pewno chcesz usunąć żetony {flag} {nation}?\n\n"
                               f"🗑️ Do usunięcia:\n"
                               f"• {count} żetonów\n"
-                              f"• {vp} VP łącznie\n\n"
-                              f"Ta operacja nie może być cofnięta!"):
+                              f"• {vp} VP łącznie\n\n"                              f"Ta operacja nie może być cofnięta!"):
+            
+            print(f"🔍 DEBUG: Użytkownik potwierdził usunięcie {nation}")
             
             try:
-                import shutil
                 nation_dir = Path(f"assets/tokens/{nation}")
+                print(f"🔍 DEBUG: Próbuję usunąć folder: {nation_dir}")
+                print(f"🔍 DEBUG: Folder istnieje: {nation_dir.exists()}")
                 
                 if nation_dir.exists():
+                    print(f"🔍 DEBUG: Wywołuję shutil.rmtree({nation_dir})")
                     shutil.rmtree(nation_dir)
+                    print(f"🔍 DEBUG: shutil.rmtree() zakończone!")
+                    print(f"🔍 DEBUG: Folder istnieje po usunięciu: {nation_dir.exists()}")
                 
                 # Aktualizuj index.json
+                print(f"🔍 DEBUG: Aktualizuję index.json...")
                 self.update_index_after_deletion(nation)
                 
+                print(f"🔍 DEBUG: Odświeżam statystyki...")
                 self.refresh_token_stats()
+                
+                print(f"🔍 DEBUG: Wyświetlam dialog sukcesu...")
                 messagebox.showinfo("✅ Sukces!", 
                                    f"Usunięto {count} żetonów {flag} {nation} ({vp} VP).")
+                print(f"🔍 DEBUG: Operacja zakończona pomyślnie!")
                 
             except Exception as e:
+                print(f"🔍 DEBUG: BŁĄD podczas usuwania: {e}")
+                print(f"🔍 DEBUG: Typ błędu: {type(e).__name__}")
                 messagebox.showerror("❌ Błąd", f"Błąd podczas usuwania:\n{str(e)}")
+        else:
+            print(f"🔍 DEBUG: Użytkownik anulował usunięcie {nation}")
     
     def update_index_after_deletion(self, deleted_nation):
         """Aktualizuje index.json po usunięciu żetonów nacji."""
