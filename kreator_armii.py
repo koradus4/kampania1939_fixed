@@ -22,7 +22,7 @@ class ArmyCreatorStudio:
     def __init__(self, root):
         self.root = root
         self.root.title("🎖️ Kreator Armii - Kampania 1939")
-        self.root.geometry("900x750")  # Zwiększona wysokość z 600 na 750
+        self.root.geometry("900x850")  # Zwiększona wysokość z 750 na 850 dla lepszej widoczności
         self.root.configure(bg="#556B2F")  # Dark olive green jak w grze
         self.root.resizable(True, True)
         
@@ -112,11 +112,9 @@ class ArmyCreatorStudio:
         subtitle_label = ttk.Label(header_frame,
                                   text="Profesjonalne tworzenie armii dla Kampanii 1939",
                                   style='Header.TLabel')
-        subtitle_label.pack()
-        
-        # Główny kontener
+        subtitle_label.pack()        # Główny kontener - zostawiamy miejsce na pasek statusu (30px + margines)
         main_frame = tk.Frame(self.root, bg="#556B2F")  # Dark olive green
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(5, 40))  # 40px margines na dole dla paska statusu
           # Lewa kolumna - Parametry ze scrollbarem
         left_outer_frame = tk.Frame(main_frame, bg="#6B8E23", width=350)
         left_outer_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 5))
@@ -204,8 +202,7 @@ class ArmyCreatorStudio:
         self.budget_scale.pack(fill=tk.X, pady=2)        
         # Separator
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=8)
-        
-        # Przyciski akcji
+          # Przyciski akcji
         action_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         action_frame.pack(fill=tk.X, padx=20, pady=10)
         
@@ -220,14 +217,23 @@ class ArmyCreatorStudio:
         ttk.Button(action_frame, text="🗑️ Wyczyść",
                   command=self.clear_army,
                   style='Danger.TButton').pack(fill=tk.X, pady=2)
-          # Główny przycisk tworzenia
+        
+        # Główny przycisk tworzenia
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=10)
         
         self.create_button = ttk.Button(action_frame, text="💾 UTWÓRZ ARMIĘ",
                                        command=self.create_army_thread,
                                        style='Success.TButton')
         self.create_button.pack(fill=tk.X, pady=10)
-          # Panel zarządzania folderami - kompaktowy
+        
+        # Przycisk rozstawiania w edytorze mapy
+        self.deploy_in_editor_button = ttk.Button(action_frame, text="🗺️ ROZSTAW W EDYTORZE",
+                                                 command=self.deploy_army_in_map_editor,
+                                                 style='Military.TButton',
+                                                 state='disabled')  # Początkowo nieaktywny
+        self.deploy_in_editor_button.pack(fill=tk.X, pady=5)
+        
+        # Panel zarządzania folderami - kompaktowy
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=3)
         
         management_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
@@ -315,10 +321,19 @@ class ArmyCreatorStudio:
         
         ttk.Button(deploy_buttons, text="🧹 Wyczyść",
                   command=self.clear_army_from_map,
-                  style='Tiny.Danger.TButton').pack(fill=tk.X, pady=1)
-        
-        # Załaduj początkowe statystyki
+                  style='Tiny.Danger.TButton').pack(fill=tk.X, pady=1)        # Załaduj początkowe statystyki
         self.refresh_token_stats()
+        
+        # Dodaj większą przestrzeń na końcu żeby dolne przyciski były widoczne
+        spacer_frame = tk.Frame(parent, bg="#6B8E23", height=80)  # Zwiększona z 50 na 80
+        spacer_frame.pack(fill=tk.X, pady=30)  # Zwiększone pady z 20 na 30
+        
+        # Debug info dla użytkownika
+        debug_label = tk.Label(spacer_frame, 
+                              text="💡 Przewiń w górę/dół aby zobaczyć wszystkie opcje\n✅ Dolne przyciski powinny być teraz widoczne",
+                              bg="#6B8E23", fg="white", font=("Arial", 8),
+                              justify=tk.CENTER)
+        debug_label.pack()
     
     def create_preview_panel(self, parent):
         """Tworzy panel podglądu armii."""
@@ -358,20 +373,23 @@ class ArmyCreatorStudio:
     
     def create_status_bar(self):
         """Tworzy pasek statusu - kompaktowy."""
-        status_frame = tk.Frame(self.root, bg="#556B2F", height=25)  # Zmniejszona wysokość z 30 na 25
+        print("🔍 DEBUG: Tworzę pasek statusu...")
+        status_frame = tk.Frame(self.root, bg="#556B2F", height=30)  # Powrót do normalnego koloru
         status_frame.pack(fill=tk.X, side=tk.BOTTOM)
         status_frame.pack_propagate(False)
         
         self.status_label = ttk.Label(status_frame, 
                                      text="⚡ Kreator Armii - Gotowy",
                                      style='Header.TLabel')
-        self.status_label.pack(side=tk.LEFT, padx=5, pady=2)  # Zmniejszone pady z 5 na 2
+        self.status_label.pack(side=tk.LEFT, padx=5, pady=2)
         
         # Informacja o autorze - mniejsza
         author_label = ttk.Label(status_frame,
                                 text="Kampania 1939 © 2025",
                                 style='Header.TLabel')
-        author_label.pack(side=tk.RIGHT, padx=5, pady=2)  # Zmniejszone pady z 5 na 2
+        author_label.pack(side=tk.RIGHT, padx=5, pady=2)
+        
+        print("✅ DEBUG: Pasek statusu utworzony!")
     
     def on_nation_change(self, event=None):
         """Obsługuje zmianę nacji."""
@@ -915,8 +933,7 @@ class ArmyCreatorStudio:
             if not tokens_dir.exists():
                 self.stats_label.config(text="📂 Folder assets/tokens nie istnieje")
                 return
-            
-            # Sprawdź foldery nacji
+              # Sprawdź foldery nacji
             polish_count, polish_vp = self.count_nation_tokens("Polska")
             german_count, german_vp = self.count_nation_tokens("Niemcy")
             
@@ -926,8 +943,19 @@ class ArmyCreatorStudio:
             
             self.stats_label.config(text=stats_text)
             
+            # Kontroluj aktywność przycisku "ROZSTAW W EDYTORZE"
+            total_tokens = polish_count + german_count
+            if hasattr(self, 'deploy_in_editor_button'):
+                if total_tokens > 0:
+                    self.deploy_in_editor_button.config(state='normal')
+                else:
+                    self.deploy_in_editor_button.config(state='disabled')
+            
         except Exception as e:
             self.stats_label.config(text=f"❌ Błąd: {str(e)}")
+            # W przypadku błędu, wyłącz przycisk
+            if hasattr(self, 'deploy_in_editor_button'):
+                self.deploy_in_editor_button.config(state='disabled')
     
     def count_nation_tokens(self, nation):
         """Zlicza żetony i VP dla danej nacji."""
@@ -1394,8 +1422,7 @@ class ArmyCreatorStudio:
                     print(f"🔍 DEBUG: Rozstawiam żeton {i+1}: {token_name} na {hex_coord}")
             
             print(f"✅ DEBUG: Rozstawiono {deployed_count} żetonów")
-            
-            # Zapisz do start_tokens.json - format to lista, nie słownik!
+              # Zapisz do start_tokens.json - format to lista, nie słownik!
             start_tokens_path = Path("assets/start_tokens.json")
             start_tokens_path.parent.mkdir(exist_ok=True)
             
@@ -1412,6 +1439,399 @@ class ArmyCreatorStudio:
             print(f"❌ DEBUG: BŁĄD w perform_army_deployment: {str(e)}")
             print(f"❌ DEBUG: Typ błędu: {type(e).__name__}")
             raise Exception(f"Błąd podczas rozstawiania: {str(e)}")
+    
+    def deploy_army_in_map_editor(self):
+        """Automatycznie rozstawia armię używając istniejącej logiki rozstawiania."""
+        try:
+            print("🔍 DEBUG: deploy_army_in_map_editor() - WYWOŁANA!")
+            
+            # Sprawdź czy są żetony do rozstawienia
+            polish_count, _ = self.count_nation_tokens("Polska")
+            german_count, _ = self.count_nation_tokens("Niemcy")
+            total_tokens = polish_count + german_count
+            
+            if total_tokens == 0:
+                messagebox.showwarning("⚠️ Brak żetonów", 
+                                     "Nie znaleziono żetonów do rozstawienia!\n"
+                                     "Najpierw utwórz armię.")
+                return
+            
+            print(f"🔍 DEBUG: Znaleziono {total_tokens} żetonów do rozstawienia")
+            print(f"🔍 DEBUG: 🇵🇱 Polska: {polish_count}, 🇩🇪 Niemcy: {german_count}")
+            
+            # Dialog wyboru metody rozstawiania
+            response = self.show_deployment_method_dialog(polish_count, german_count)
+            
+            if response:
+                self.perform_enhanced_deployment(response)
+                
+        except Exception as e:
+            print(f"❌ BŁĄD deploy_army_in_map_editor: {e}")
+            messagebox.showerror("❌ Błąd", f"Błąd podczas przygotowania rozstawiania:\n{str(e)}")
+    
+    def show_deployment_method_dialog(self, polish_count, german_count):
+        """Dialog wyboru metody rozstawiania żetonów."""
+        dialog = tk.Toplevel(self.root)
+        dialog.title("🗺️ Automatyczne rozstawianie żetonów")
+        dialog.geometry("580x550")  # Zwiększone z 550x500 na 580x550 dla lepszej widoczności
+        dialog.transient(self.root)
+        dialog.grab_set()
+        dialog.resizable(True, True)  # Pozwól na zmianę rozmiaru
+        
+        # Ustaw minimalny rozmiar okna
+        dialog.minsize(550, 500)
+        
+        result = {"deploy": False}
+        
+        # Główny kontener z scrollbarem jeśli potrzeba
+        main_frame = tk.Frame(dialog)
+        main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        # Nagłówek
+        tk.Label(main_frame, text="🗺️ AUTOMATYCZNE ROZSTAWIANIE", 
+                font=("Arial", 14, "bold")).pack(pady=(0, 15))
+        
+        # Informacje o żetonach
+        info_text = f"Dostępne żetony:\n🇵🇱 Polska: {polish_count} żetonów\n🇩🇪 Niemcy: {german_count} żetonów"
+        tk.Label(main_frame, text=info_text, font=("Arial", 11), 
+                bg="lightyellow", pady=8).pack(fill="x", pady=(0, 10))
+        
+        # Opcje rozstawiania
+        options_frame = tk.LabelFrame(main_frame, text="Wybierz metodę rozstawiania:", font=("Arial", 12))
+        options_frame.pack(fill="x", pady=(0, 10))
+        
+        method_var = tk.StringVar(value="quarters")
+        
+        tk.Radiobutton(options_frame, text="🗺️ Ćwiartki mapy (rekomendowane)", 
+                      variable=method_var, value="quarters", 
+                      font=("Arial", 10)).pack(anchor="w", padx=10, pady=3)
+        
+        tk.Radiobutton(options_frame, text="🎯 Wszystkie żetony w środku mapy", 
+                      variable=method_var, value="center", 
+                      font=("Arial", 10)).pack(anchor="w", padx=10, pady=3)
+        
+        tk.Radiobutton(options_frame, text="📍 Pozycje strategiczne", 
+                      variable=method_var, value="strategic", 
+                      font=("Arial", 10)).pack(anchor="w", padx=10, pady=3)
+        
+        # Opcje dodatkowe
+        options_frame2 = tk.LabelFrame(main_frame, text="Opcje dodatkowe:", font=("Arial", 12))
+        options_frame2.pack(fill="x", pady=(0, 10))
+        
+        clear_existing_var = tk.BooleanVar(value=True)
+        tk.Checkbutton(options_frame2, text="🧹 Wyczyść istniejące żetony z mapy", 
+                      variable=clear_existing_var, 
+                      font=("Arial", 10)).pack(anchor="w", padx=10, pady=3)
+        
+        show_progress_var = tk.BooleanVar(value=True)
+        tk.Checkbutton(options_frame2, text="📊 Pokaż progress rozstawiania", 
+                      variable=show_progress_var, 
+                      font=("Arial", 10)).pack(anchor="w", padx=10, pady=3)
+        
+        # Separator przed przyciskami
+        ttk.Separator(main_frame, orient='horizontal').pack(fill="x", pady=15)
+        
+        # Przyciski - zawsze na dole z odpowiednimi marginesami
+        button_frame = tk.Frame(main_frame)
+        button_frame.pack(side="bottom", pady=(10, 20))  # Zwiększone marginesy
+        
+        def on_deploy():
+            result["deploy"] = True
+            result["method"] = method_var.get()
+            result["clear_existing"] = clear_existing_var.get()
+            result["show_progress"] = show_progress_var.get()
+            dialog.destroy()
+        
+        def on_cancel():
+            dialog.destroy()
+        
+        # Przyciski z większymi rozmiarami dla lepszej widoczności
+        tk.Button(button_frame, text="🚀 Rozpocznij rozstawianie", 
+                 command=on_deploy, bg="green", fg="white", 
+                 font=("Arial", 12, "bold"), 
+                 width=20, height=2).pack(side="left", padx=(0, 15))
+        tk.Button(button_frame, text="❌ Anuluj", 
+                 command=on_cancel, bg="red", fg="white",
+                 font=("Arial", 11), 
+                 width=12, height=2).pack(side="right")
+        
+        # Wyśrodkuj dialog na ekranie
+        dialog.update_idletasks()
+        x = (dialog.winfo_screenwidth() // 2) - (dialog.winfo_width() // 2)
+        y = (dialog.winfo_screenheight() // 2) - (dialog.winfo_height() // 2)
+        dialog.geometry(f"+{x}+{y}")
+        
+        dialog.wait_window()
+        return result if result.get("deploy") else None
+    
+    def perform_enhanced_deployment(self, options):
+        """Wykonuje rozszerzone rozstawianie żetonów."""
+        try:
+            print(f"🔍 DEBUG: perform_enhanced_deployment() - opcje: {options}")
+            
+            # Wyczyść istniejące żetony jeśli wybrano
+            if options.get("clear_existing", True):
+                self.clear_all_start_tokens()
+                print("🧹 DEBUG: Wyczyszczono istniejące żetony z mapy")
+            
+            # Wczytaj wszystkie dostępne żetony
+            all_tokens = self.load_all_created_tokens()
+            
+            if not all_tokens:
+                messagebox.showwarning("⚠️ Brak żetonów", "Nie znaleziono żetonów do rozstawienia")
+                return
+            
+            print(f"🔍 DEBUG: Wczytano {len(all_tokens)} żetonów do rozstawienia")
+            
+            # Progress dialog jeśli wybrano
+            progress_dialog = None
+            if options.get("show_progress", True):
+                progress_dialog = self.create_simple_progress_dialog(len(all_tokens))
+            
+            # Rozstawiaj zgodnie z wybraną metodą
+            method = options.get("method", "quarters")
+            deployed_count = 0
+            
+            for i, token in enumerate(all_tokens):
+                try:
+                    # Aktualizuj progress
+                    if progress_dialog:
+                        progress_dialog.update_progress(i + 1, f"Rozstawianie: {token.get('name', 'unknown')}")
+                    
+                    # Określ pozycję na podstawie metody
+                    success = self.deploy_single_token_to_map(token, method)
+                    if success:
+                        deployed_count += 1
+                    
+                    # Krótka pauza dla efektu wizualnego
+                    if progress_dialog:
+                        self.root.update()
+                        self.root.after(100)
+                    
+                except Exception as e:
+                    print(f"❌ BŁĄD rozstawiania żetonu {token.get('name', 'unknown')}: {e}")
+            
+            if progress_dialog:
+                progress_dialog.close()
+            
+            # Pokaż wyniki
+            messagebox.showinfo("✅ Rozstawianie zakończone!", 
+                               f"Automatycznie rozstawiono {deployed_count} z {len(all_tokens)} żetonów.\n\n"
+                               f"Żetony zostały zapisane w assets/start_tokens.json\n"
+                               f"Możesz teraz uruchomić grę!")
+            
+            print(f"✅ DEBUG: Rozstawianie zakończone - {deployed_count}/{len(all_tokens)} żetonów")
+            
+        except Exception as e:
+            print(f"❌ BŁĄD perform_enhanced_deployment: {e}")
+            messagebox.showerror("❌ Błąd", f"Błąd podczas rozstawiania:\n{str(e)}")
+    
+    def load_all_created_tokens(self):
+        """Wczytuje wszystkie utworzone żetony z folderów."""
+        try:
+            all_tokens = []
+            tokens_base = Path("assets/tokens")
+            
+            for nation in ["Polska", "Niemcy"]:
+                nation_path = tokens_base / nation
+                if not nation_path.exists():
+                    continue
+                
+                print(f"🔍 DEBUG: Skanowanie nacji: {nation}")
+                
+                for token_folder in nation_path.iterdir():
+                    if not token_folder.is_dir():
+                        continue
+                    
+                    json_file = token_folder / "token.json"
+                    if not json_file.exists():
+                        continue
+                    
+                    try:
+                        with open(json_file, 'r', encoding='utf-8') as f:
+                            token_data = json.load(f)
+                        
+                        # Dodaj ścieżki do obrazów
+                        image_path = token_folder / "token.png"
+                        token_data["image_path"] = str(image_path)
+                        token_data["folder_path"] = str(token_folder)
+                        
+                        all_tokens.append(token_data)
+                        print(f"✅ DEBUG: Wczytano żeton: {token_data.get('id', 'unknown')}")
+                        
+                    except Exception as e:
+                        print(f"❌ BŁĄD wczytywania żetonu {json_file}: {e}")
+            
+            print(f"✅ DEBUG: Łącznie wczytano {len(all_tokens)} żetonów")
+            return all_tokens
+            
+        except Exception as e:
+            print(f"❌ BŁĄD load_all_created_tokens: {e}")
+            return []
+    
+    def deploy_single_token_to_map(self, token_data, method):
+        """Rozstawia pojedynczy żeton na mapie."""
+        try:
+            # Określ ćwiartkę na podstawie właściciela żetonu
+            owner = token_data.get("owner", "")
+            nation = token_data.get("nation", "")
+            
+            if method == "quarters":
+                quarter = self.get_quarter_for_token_owner_enhanced(owner, nation)
+            elif method == "center":
+                quarter = "center"
+            else:  # strategic
+                quarter = self.get_strategic_position(nation)
+            
+            # Użyj istniejącej logiki rozstawiania
+            return self.add_token_to_start_tokens(token_data, quarter)
+            
+        except Exception as e:
+            print(f"❌ BŁĄD deploy_single_token_to_map: {e}")
+            return False
+    
+    def get_quarter_for_token_owner_enhanced(self, owner, nation):
+        """Określa ćwiartkę na podstawie właściciela żetonu i nacji."""
+        try:
+            # Wyciągnij numer dowódcy z owner (np. "1 (Polska)" -> "1")
+            commander_num = owner.split("(")[0].strip() if "(" in owner else owner.strip()
+            
+            if nation == "Polska":
+                if commander_num == "1":
+                    return "polska_gora"  # Północ
+                else:
+                    return "polska_dol"   # Południe
+            elif nation == "Niemcy":
+                if commander_num == "5":
+                    return "niemcy_gora"  # Północ
+                else:
+                    return "niemcy_dol"   # Południe
+            
+            # Domyślnie
+            return f"{nation.lower()}_gora"
+            
+        except Exception as e:
+            print(f"❌ BŁĄD get_quarter_for_token_owner_enhanced: {e}")
+            return "center"
+    
+    def get_strategic_position(self, nation):
+        """Określa pozycję strategiczną dla nacji."""
+        if nation == "Polska":
+            return "polska_strategic"
+        elif nation == "Niemcy":
+            return "niemcy_strategic"
+        else:
+            return "center"
+    
+    def add_token_to_start_tokens(self, token_data, quarter):
+        """Dodaje żeton do start_tokens.json w odpowiedniej ćwiartce."""
+        try:
+            # Użyj istniejącej logiki z perform_army_deployment
+            position = self.calculate_position_for_quarter(quarter)
+            
+            if not position:
+                print(f"❌ BŁĄD: Nie udało się określić pozycji dla ćwiartki {quarter}")
+                return False
+            
+            # Wczytaj lub stwórz start_tokens.json
+            start_tokens_path = Path("assets/start_tokens.json")
+            
+            if start_tokens_path.exists():
+                with open(start_tokens_path, 'r', encoding='utf-8') as f:
+                    start_tokens = json.load(f)
+            else:
+                start_tokens = {"tokens": {}}
+            
+            # Dodaj żeton
+            token_id = token_data.get("id", f"token_{len(start_tokens['tokens'])}")
+            start_tokens["tokens"][token_id] = {
+                "x": position[0],
+                "y": position[1], 
+                "name": token_data.get("label", token_id),
+                "nation": token_data.get("nation", "unknown"),
+                "owner": token_data.get("owner", "unknown")
+            }
+            
+            # Zapisz
+            with open(start_tokens_path, 'w', encoding='utf-8') as f:
+                json.dump(start_tokens, f, indent=2, ensure_ascii=False)
+            
+            print(f"✅ DEBUG: Dodano żeton {token_id} na pozycję {position}")
+            return True
+            
+        except Exception as e:
+            print(f"❌ BŁĄD add_token_to_start_tokens: {e}")
+            return False
+    
+    def calculate_position_for_quarter(self, quarter):
+        """Oblicza pozycję na mapie dla danej ćwiartki."""
+        try:
+            # Definiuj ćwiartki mapy (uproszczone - stałe współrzędne)
+            quarters_map = {
+                "polska_gora": (200, 150),    # Lewy górny
+                "polska_dol": (200, 450),     # Lewy dolny
+                "niemcy_gora": (600, 150),    # Prawy górny
+                "niemcy_dol": (600, 450),     # Prawy dolny
+                "center": (400, 300),         # Środek
+                "polska_strategic": (150, 300),  # Lewa strona
+                "niemcy_strategic": (650, 300),  # Prawa strona
+            }
+            
+            base_position = quarters_map.get(quarter, (400, 300))
+            
+            # Dodaj losowe przesunięcie żeby żetony się nie nakładały
+            import random
+            offset_x = random.randint(-50, 50)
+            offset_y = random.randint(-50, 50)
+            
+            final_position = (base_position[0] + offset_x, base_position[1] + offset_y)
+            
+            print(f"🔍 DEBUG: Ćwiartka {quarter} -> pozycja {final_position}")
+            return final_position
+            
+        except Exception as e:
+            print(f"❌ BŁĄD calculate_position_for_quarter: {e}")
+            return (400, 300)  # Domyślna pozycja środek
+    
+    def create_simple_progress_dialog(self, total_tokens):
+        """Tworzy prosty dialog progress."""
+        class SimpleProgressDialog:
+            def __init__(self, parent, total):
+                self.dialog = tk.Toplevel(parent)
+                self.dialog.title("🚀 Rozstawianie żetonów")
+                self.dialog.geometry("400x150")
+                self.dialog.transient(parent)
+                self.dialog.grab_set()
+                
+                # Blokuj zamknięcie
+                self.dialog.protocol("WM_DELETE_WINDOW", lambda: None)
+                
+                tk.Label(self.dialog, text="🚀 Rozstawianie żetonów na mapie...", 
+                        font=("Arial", 12, "bold")).pack(pady=20)
+                
+                self.progress_var = tk.IntVar()
+                self.progress_bar = ttk.Progressbar(self.dialog, 
+                                                   variable=self.progress_var,
+                                                   maximum=total, 
+                                                   length=300)
+                self.progress_bar.pack(pady=10)
+                
+                self.status_label = tk.Label(self.dialog, text="Przygotowanie...", 
+                                           font=("Arial", 9))
+                self.status_label.pack()
+                
+                self.total = total
+                self.dialog.update()
+            
+            def update_progress(self, current, status_text):
+                self.progress_var.set(current)
+                self.status_label.config(text=f"{status_text} ({current}/{self.total})")
+                self.dialog.update()
+            
+            def close(self):
+                self.dialog.destroy()
+        
+        return SimpleProgressDialog(self.root, total_tokens)
 
 def main():
     """Główna funkcja aplikacji."""

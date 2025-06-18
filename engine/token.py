@@ -164,8 +164,69 @@ def load_tokens(index_path: str, start_path: str):
     # Tworzymy mapę id -> dane żetonu
     index_map = {item['id']: item for item in index_data if 'id' in item}
     tokens = []
-    for pos in start_data:
-        token_id = pos['id']
-        if token_id in index_map:
-            tokens.append(Token.from_json(index_map[token_id], pos))
+    
+    # Funkcja pomocnicza do konwersji pixel -> hex (używa hex_size=30 z map_data.json)
+    def pixel_to_hex(x: float, y: float) -> tuple:
+        """Konwertuje współrzędne pikselowe na hex (q,r) używając hex_size=30."""
+        hex_size = 30
+        # Odwrotność hex_to_pixel z board.py
+        dx = hex_size  # przesunięcie w prawo o promień heksa
+        dy = hex_size * (3**0.5) / 2  # przesunięcie w dół o połowę wysokości heksa
+        
+        # Odwróć przesunięcie
+        adj_x = x - dx
+        adj_y = y - dy
+        
+        q = (2/3 * adj_x) / hex_size
+        r = ((-1/3 * adj_x) + (3**0.5/3 * adj_y)) / hex_size
+        
+        # Zaokrąglenie do najbliższych współrzędnych hex
+        return hex_round(q, r)
+    
+    def hex_round(qf: float, rf: float) -> tuple:
+        """Zaokrągla współrzędne hex do najbliższych całkowitych."""
+        sf = -qf - rf
+        q = round(qf)
+        r = round(rf)
+        s = round(sf)
+        dq = abs(q - qf)
+        dr = abs(r - rf)
+        ds = abs(s - sf)
+        if dq > dr and dq > ds:
+            q = -r - s
+        elif dr > ds:
+            r = -q - s
+        return (q, r)
+    
+    # Obsługa dwóch formatów start_tokens.json:
+    # 1. Nowy format: {"tokens": {"token_id": {...}}} (z kreatora armii)
+    # 2. Stary format: [{"id": "token_id", ...}] (lista)
+    
+    if isinstance(start_data, dict) and "tokens" in start_data:
+        # Nowy format - słownik z kluczem "tokens"
+        token_positions = start_data["tokens"]
+        for token_id, pos_data in token_positions.items():
+            if token_id in index_map:
+                # Konwertuj współrzędne pikselowe na hex jeśli potrzeba
+                if 'x' in pos_data and 'y' in pos_data:
+                    q, r = pixel_to_hex(pos_data['x'], pos_data['y'])
+                else:
+                    q, r = pos_data.get('q', 0), pos_data.get('r', 0)
+                
+                # Konwertuj format pozycji do tego co oczekuje Token.from_json
+                position_info = {
+                    'id': token_id,
+                    'q': q,
+                    'r': r
+                }
+                tokens.append(Token.from_json(index_map[token_id], position_info))
+    elif isinstance(start_data, list):
+        # Stary format - lista pozycji
+        for pos in start_data:
+            token_id = pos['id']
+            if token_id in index_map:
+                tokens.append(Token.from_json(index_map[token_id], pos))
+    else:
+        print(f"⚠️ Nieznany format start_tokens.json: {type(start_data)}")
+    
     return tokens
