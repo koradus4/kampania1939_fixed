@@ -22,7 +22,7 @@ class ArmyCreatorStudio:
     def __init__(self, root):
         self.root = root
         self.root.title("🎖️ Kreator Armii - Kampania 1939")
-        self.root.geometry("900x600")  # Jeszcze niższe okno
+        self.root.geometry("900x750")  # Zwiększona wysokość z 600 na 750
         self.root.configure(bg="#556B2F")  # Dark olive green jak w grze
         self.root.resizable(True, True)
         
@@ -173,11 +173,12 @@ class ArmyCreatorStudio:
         # Dowódca
         commander_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         commander_frame.pack(fill=tk.X, padx=20, pady=5)
-        
         ttk.Label(commander_frame, text="👨‍✈️ Dowódca:", style='Header.TLabel').pack(anchor='w')
+        
         self.commander_combo = ttk.Combobox(commander_frame, textvariable=self.selected_commander,
                                            state='readonly', width=25)
         self.commander_combo.pack(fill=tk.X, pady=2)
+        self.commander_combo.bind('<<ComboboxSelected>>', self.on_commander_change)
         
         # Separator
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=8)
@@ -269,12 +270,52 @@ class ArmyCreatorStudio:
                   style='Small.Danger.TButton').pack(fill=tk.X, pady=1)
         
         ttk.Button(clean_frame, text="🗑️ WSZYSTKIE",
-                  command=self.clean_all_tokens,
-                  style='Small.Danger.TButton').pack(fill=tk.X, pady=1)
+                  command=self.clean_all_tokens,                  style='Small.Danger.TButton').pack(fill=tk.X, pady=1)
         
-        ttk.Button(clean_frame, text="� Odśwież",
+        ttk.Button(clean_frame, text="🔄 Odśwież",
                   command=self.refresh_token_stats,
                   style='Small.Military.TButton').pack(fill=tk.X, pady=1)
+          # Panel rozstawiania armii na mapie - bardzo kompaktowy
+        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=15, pady=2)
+        
+        deploy_frame = tk.Frame(parent, bg="#6B8E23")
+        deploy_frame.pack(fill=tk.X, padx=15, pady=2)
+        
+        # Nagłówek mniejszy
+        deploy_label = tk.Label(deploy_frame, text="🗺️ MAPA", 
+                               bg="#6B8E23", fg="white", font=("Arial", 9, "bold"))
+        deploy_label.pack(pady=1)
+        
+        # Info o ćwiartce - bardzo kompaktowe
+        self.quarter_info = tk.Label(deploy_frame, text="📍 Wybierz dowódcę", 
+                                    bg="#556B2F", fg="white", font=("Arial", 7), 
+                                    wraplength=300, height=2)
+        self.quarter_info.pack(fill=tk.X, pady=1)
+        
+        # Przyciski rozstawiania - małe
+        deploy_buttons = tk.Frame(deploy_frame, bg="#6B8E23")
+        deploy_buttons.pack(fill=tk.X, pady=1)
+        
+        # Dodaj style dla bardzo małych przycisków
+        btn_style = ttk.Style()
+        btn_style.configure('Tiny.Military.TButton',
+                           font=('Arial', 8),
+                           foreground='#556B2F')
+        btn_style.configure('Tiny.Danger.TButton',
+                           font=('Arial', 8),
+                           foreground='#8B0000')
+        
+        ttk.Button(deploy_buttons, text="⚔️ Rozstaw",
+                  command=self.deploy_army_to_map,
+                  style='Tiny.Military.TButton').pack(fill=tk.X, pady=1)
+        
+        ttk.Button(deploy_buttons, text="📋 Info", 
+                  command=self.preview_quarter_info,
+                  style='Tiny.Military.TButton').pack(fill=tk.X, pady=1)
+        
+        ttk.Button(deploy_buttons, text="🧹 Wyczyść",
+                  command=self.clear_army_from_map,
+                  style='Tiny.Danger.TButton').pack(fill=tk.X, pady=1)
         
         # Załaduj początkowe statystyki
         self.refresh_token_stats()
@@ -297,11 +338,10 @@ class ArmyCreatorStudio:
         list_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
         list_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
         
-        ttk.Label(list_frame, text="📋 Skład armii:", style='Header.TLabel').pack(anchor='w')
-          # Scrolled text dla listy jednostek
-        self.units_text = scrolledtext.ScrolledText(list_frame, height=12, width=40,
+        ttk.Label(list_frame, text="📋 Skład armii:", style='Header.TLabel').pack(anchor='w')        # Scrolled text dla listy jednostek - mniejszy
+        self.units_text = scrolledtext.ScrolledText(list_frame, height=8, width=40,
                                                    bg="white", fg="#556B2F",  # Tekst w kolorze dark olive
-                                                   font=('Consolas', 9))
+                                                   font=('Consolas', 8))
         self.units_text.pack(fill=tk.BOTH, expand=True, pady=5)
         
         # Progress bar
@@ -317,27 +357,33 @@ class ArmyCreatorStudio:
         self.progress_label.pack()
     
     def create_status_bar(self):
-        """Tworzy pasek statusu."""
-        status_frame = tk.Frame(self.root, bg="#556B2F", height=30)  # Dark olive green
+        """Tworzy pasek statusu - kompaktowy."""
+        status_frame = tk.Frame(self.root, bg="#556B2F", height=25)  # Zmniejszona wysokość z 30 na 25
         status_frame.pack(fill=tk.X, side=tk.BOTTOM)
         status_frame.pack_propagate(False)
         
         self.status_label = ttk.Label(status_frame, 
                                      text="⚡ Kreator Armii - Gotowy",
                                      style='Header.TLabel')
-        self.status_label.pack(side=tk.LEFT, padx=10, pady=5)
+        self.status_label.pack(side=tk.LEFT, padx=5, pady=2)  # Zmniejszone pady z 5 na 2
         
-        # Informacja o autorze
+        # Informacja o autorze - mniejsza
         author_label = ttk.Label(status_frame,
                                 text="Kampania 1939 © 2025",
                                 style='Header.TLabel')
-        author_label.pack(side=tk.RIGHT, padx=10, pady=5)
+        author_label.pack(side=tk.RIGHT, padx=5, pady=2)  # Zmniejszone pady z 5 na 2
     
     def on_nation_change(self, event=None):
         """Obsługuje zmianę nacji."""
         self.update_commander_options()
         self.update_preview()
+        self.update_quarter_info()
     
+    def on_commander_change(self, event=None):
+        """Obsługuje zmianę dowódcy."""
+        self.update_preview()
+        self.update_quarter_info()
+
     def update_commander_options(self):
         """Aktualizuje opcje dowódców dla wybranej nacji."""
         nation = self.selected_nation.get()
@@ -346,6 +392,25 @@ class ArmyCreatorStudio:
         self.commander_combo['values'] = commanders
         if commanders:
             self.selected_commander.set(commanders[0])
+        
+        # Aktualizuj info o ćwiartce po zmianie dowódcy
+        self.update_quarter_info()
+    
+    def update_quarter_info(self):
+        """Aktualizuje informacje o wybranej ćwiartce."""
+        try:
+            if hasattr(self, 'quarter_info'):
+                nation = self.selected_nation.get()
+                commander = self.selected_commander.get()
+                quarter = self.get_quarter_for_nation_and_commander(nation, commander)
+                
+                info_text = f"📍 {quarter['description']}\n"
+                info_text += f"🗺️ Q: {quarter['q_min']}-{quarter['q_max']}, "
+                info_text += f"R: {quarter['r_min']}-{quarter['r_max']}"
+                
+                self.quarter_info.config(text=info_text)
+        except:
+            pass  # Ignoruj błędy podczas inicjalizacji
     
     def update_preview(self, event=None):
         """Aktualizuje podgląd armii."""
@@ -475,6 +540,80 @@ class ArmyCreatorStudio:
         self.update_preview()
         
         self.status_label.config(text="🎲 Wygenerowano losową armię")
+    def get_map_quarters(self):
+        """Dzieli mapę na 4 ćwiartki dla dowódców."""
+        return {
+            "polska_gora": {    # 🇵🇱 Dowódca 1 - Północ
+                "q_min": 0, "q_max": 27,
+                "r_min": -20, "r_max": 0,
+                "nation": "Polska",
+                "commander": 1,
+                "description": "🇵🇱 Północ (Dowódca 1)"
+            },
+            "polska_dol": {     # 🇵🇱 Dowódca 2 - Południe  
+                "q_min": 0, "q_max": 27,
+                "r_min": 0, "r_max": 20,
+                "nation": "Polska", 
+                "commander": 2,
+                "description": "🇵🇱 Południe (Dowódca 2)"
+            },
+            "niemcy_gora": {    # 🇩🇪 Dowódca 5 - Północ
+                "q_min": 28, "q_max": 55,
+                "r_min": -20, "r_max": 0,
+                "nation": "Niemcy",
+                "commander": 5, 
+                "description": "🇩🇪 Północ (Dowódca 5)"
+            },
+            "niemcy_dol": {     # 🇩🇪 Dowódca 6 - Południe
+                "q_min": 28, "q_max": 55,
+                "r_min": 0, "r_max": 20,
+                "nation": "Niemcy",
+                "commander": 6,
+                "description": "🇩🇪 Południe (Dowódca 6)"
+            }
+        }
+    
+    def get_quarter_for_nation_and_commander(self, nation, commander_id):
+        """Zwraca odpowiednią ćwiartkę dla nacji i dowódcy."""
+        quarters = self.get_map_quarters()
+        
+        # Mapowanie dowódców na ćwiartki
+        if nation == "Polska":
+            if commander_id in [1, "1 (Polska)"]:
+                return quarters["polska_gora"]
+            elif commander_id in [2, "2 (Polska)"]:
+                return quarters["polska_dol"]
+        elif nation == "Niemcy":
+            if commander_id in [5, "5 (Niemcy)"]:
+                return quarters["niemcy_gora"] 
+            elif commander_id in [6, "6 (Niemcy)"]:
+                return quarters["niemcy_dol"]
+        
+        # Domyślnie pierwsza ćwiartka dla nacji
+        if nation == "Polska":
+            return quarters["polska_gora"]
+        else:
+            return quarters["niemcy_gora"]
+    
+    def is_hex_in_quarter(self, hex_coord, quarter):
+        """Sprawdza czy hex należy do danej ćwiartki."""
+        try:
+            q, r = map(int, hex_coord.split(','))
+            return (quarter["q_min"] <= q <= quarter["q_max"] and 
+                   quarter["r_min"] <= r <= quarter["r_max"])
+        except:
+            return False
+    
+    def get_hexes_in_quarter(self, quarter):
+        """Zwraca wszystkie heksy w danej ćwiartce."""
+        hexes = []
+        for q in range(quarter["q_min"], quarter["q_max"] + 1):
+            for r in range(quarter["r_min"], quarter["r_max"] + 1):
+                hex_coord = f"{q},{r}"
+                hexes.append(hex_coord)
+        return hexes
+
+    # ...existing code...
     
     def auto_balance_army(self):
         """Automatycznie balansuje armię według optymalnych proporcji."""
@@ -669,7 +808,7 @@ class ArmyCreatorStudio:
     def initialize_token_editor(self):
         """Inicjalizuje Token Editor w dedykowanym oknie."""
         if self.token_editor is None:
-            from token_editor_prototyp import TokenEditor
+            from edytory.token_editor_prototyp import TokenEditor
             
             # Utwórz dedykowane okno dla Token Editor
             token_window = tk.Toplevel(self.root)
@@ -721,9 +860,9 @@ class ArmyCreatorStudio:
             
             # Wygeneruj podgląd
             self.token_editor.update_preview()
-            
-            # Zapisz żeton z mockami dialogów
+              # Zapisz żeton z mockami dialogów
             with patch('tkinter.messagebox.askyesno', return_value=True), \
+                 patch('tkinter.messagebox.showinfo', return_value=None), \
                  patch('tkinter.simpledialog.askstring', return_value=unit['name']):
                 self.token_editor.save_token()
             
@@ -842,14 +981,17 @@ class ArmyCreatorStudio:
                     for nation_dir in tokens_dir.iterdir():
                         if nation_dir.is_dir() and nation_dir.name in ["Polska", "Niemcy"]:
                             shutil.rmtree(nation_dir)
-                    
-                    # Usuń index.json
+                      # Usuń index.json
                     index_file = tokens_dir / "index.json"
                     if index_file.exists():
                         index_file.unlink()
                 
+                # Wyczyść start_tokens.json
+                print("🔍 DEBUG: Czyszczę start_tokens.json...")
+                self.clear_all_start_tokens()
+                
                 self.refresh_token_stats()
-                messagebox.showinfo("✅ Sukces!", "Wszystkie żetony zostały usunięte.")
+                messagebox.showinfo("✅ Sukces!", "Wszystkie żetony zostały usunięte.\nMapa została wyczyszczona z żetonów.")
                 
             except Exception as e:                messagebox.showerror("❌ Błąd", f"Błąd podczas usuwania:\n{str(e)}")
     
@@ -885,17 +1027,21 @@ class ArmyCreatorStudio:
                     shutil.rmtree(nation_dir)
                     print(f"🔍 DEBUG: shutil.rmtree() zakończone!")
                     print(f"🔍 DEBUG: Folder istnieje po usunięciu: {nation_dir.exists()}")
-                
-                # Aktualizuj index.json
+                  # Aktualizuj index.json
                 print(f"🔍 DEBUG: Aktualizuję index.json...")
                 self.update_index_after_deletion(nation)
+                
+                # Wyczyść start_tokens.json dla usuwanej nacji
+                print(f"🔍 DEBUG: Czyszczę start_tokens.json dla {nation}...")
+                self.clear_nation_from_start_tokens(nation)
                 
                 print(f"🔍 DEBUG: Odświeżam statystyki...")
                 self.refresh_token_stats()
                 
                 print(f"🔍 DEBUG: Wyświetlam dialog sukcesu...")
                 messagebox.showinfo("✅ Sukces!", 
-                                   f"Usunięto {count} żetonów {flag} {nation} ({vp} VP).")
+                                   f"Usunięto {count} żetonów {flag} {nation} ({vp} VP).\n"
+                                   f"Mapa została wyczyszczona z żetonów tej nacji.")
                 print(f"🔍 DEBUG: Operacja zakończona pomyślnie!")
                 
             except Exception as e:
@@ -925,6 +1071,347 @@ class ArmyCreatorStudio:
                 
         except Exception as e:
             print(f"Błąd aktualizacji index.json: {e}")
+    
+    def clear_nation_from_start_tokens(self, nation):
+        """Usuwa żetony wybranej nacji z start_tokens.json."""
+        try:
+            start_tokens_path = Path("assets/start_tokens.json")
+            print(f"🔍 DEBUG: clear_nation_from_start_tokens() - ścieżka: {start_tokens_path}")
+            
+            if not start_tokens_path.exists():
+                print(f"🔍 DEBUG: Plik start_tokens.json nie istnieje - tworzę pusty")
+                empty_data = {"tokens": {}}
+                with open(start_tokens_path, 'w', encoding='utf-8') as f:
+                    json.dump(empty_data, f, indent=2, ensure_ascii=False)
+                return
+            
+            # Wczytaj istniejące dane
+            with open(start_tokens_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            tokens = data.get("tokens", {})
+            print(f"🔍 DEBUG: Wczytano {len(tokens)} żetonów z start_tokens.json")
+            
+            # Znajdź żetony do usunięcia (po prefiksie nazwy)
+            tokens_to_remove = []
+            for token_id, token_data in tokens.items():
+                token_name = token_data.get("name", "")
+                # Sprawdź czy żeton należy do usuwanej nacji (na podstawie nazwy)
+                if (nation == "Polska" and any(prefix in token_name.lower() for prefix in ["pol", "poland", "1939_pol"])) or \
+                   (nation == "Niemcy" and any(prefix in token_name.lower() for prefix in ["ger", "german", "1939_ger"])):
+                    tokens_to_remove.append(token_id)
+            
+            print(f"🔍 DEBUG: Znaleziono {len(tokens_to_remove)} żetonów {nation} do usunięcia z mapy")
+            
+            # Usuń żetony
+            for token_id in tokens_to_remove:
+                del tokens[token_id]
+            
+            # Zapisz zaktualizowane dane
+            data["tokens"] = tokens
+            with open(start_tokens_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+            
+            print(f"✅ DEBUG: Usunięto {len(tokens_to_remove)} żetonów {nation} z start_tokens.json")
+            
+        except Exception as e:
+            print(f"❌ BŁĄD clear_nation_from_start_tokens: {e}")
+    
+    def clear_all_start_tokens(self):
+        """Usuwa wszystkie żetony z start_tokens.json."""
+        try:
+            start_tokens_path = Path("assets/start_tokens.json")
+            print(f"🔍 DEBUG: clear_all_start_tokens() - ścieżka: {start_tokens_path}")
+            
+            empty_data = {"tokens": {}}
+            
+            with open(start_tokens_path, 'w', encoding='utf-8') as f:
+                json.dump(empty_data, f, indent=2, ensure_ascii=False)
+            
+            print(f"✅ DEBUG: Wyczyszczono start_tokens.json - wszystkie żetony usunięte z mapy")
+            
+        except Exception as e:
+            print(f"❌ BŁĄD clear_all_start_tokens: {e}")
+
+    def deploy_army_to_map(self):
+        """Rozstawia utworzoną armię na mapie według wybranej ćwiartki."""
+        try:
+            print("🔍 DEBUG: deploy_army_to_map() - WYWOŁANA!")
+            print(f"🔍 DEBUG: self.created_units = {self.created_units}")
+            print(f"🔍 DEBUG: len(self.created_units) = {len(self.created_units) if self.created_units else None}")
+            
+            # Sprawdź czy armia została utworzona (albo w zmiennej albo w folderach)
+            if not self.created_units:
+                print("❌ DEBUG: Brak self.created_units - sprawdzam foldery żetonów...")
+                
+                # Sprawdź czy są żetony w folderach
+                nation = self.selected_nation.get()
+                print(f"🔍 DEBUG: Sprawdzam żetony dla nacji: {nation}")
+                
+                tokens_folder = Path(f"assets/tokens/{nation}")
+                print(f"🔍 DEBUG: Ścieżka foldera: {tokens_folder}")
+                print(f"🔍 DEBUG: Folder istnieje: {tokens_folder.exists()}")
+                
+                if tokens_folder.exists():
+                    token_folders = [f.name for f in tokens_folder.iterdir() if f.is_dir()]
+                    print(f"🔍 DEBUG: Znalezione foldery żetonów: {token_folders}")
+                    
+                    if token_folders:
+                        print(f"✅ DEBUG: Znaleziono {len(token_folders)} żetonów w folderach")
+                        # Wczytaj żetony z folderów
+                        self.created_units = self.load_tokens_from_folders(nation)
+                        print(f"🔍 DEBUG: Wczytane żetony: {len(self.created_units)} sztuk")
+                        print("✅ DEBUG: Żetony wczytane z folderów do self.created_units")
+                    else:
+                        print("❌ DEBUG: Brak folderów żetonów")
+                        messagebox.showwarning("⚠️ Uwaga", 
+                                             f"Brak żetonów dla nacji {nation}!\n\n"
+                                             f"Najpierw utwórz armię, a potem ją rozstaw!")
+                        return
+                else:
+                    print("❌ DEBUG: Folder żetonów nie istnieje")
+                    messagebox.showwarning("⚠️ Uwaga", 
+                                         "Najpierw utwórz armię, a potem ją rozstaw!")
+                    return
+            
+            print(f"✅ DEBUG: Mamy {len(self.created_units)} żetonów do rozstawienia")
+            
+            # Pobierz parametry
+            nation = self.selected_nation.get()
+            commander = self.selected_commander.get()
+            print(f"🔍 DEBUG: Nacja: {nation}, Dowódca: {commander}")
+            
+            # Znajdź odpowiednią ćwiartkę
+            quarter = self.get_quarter_for_nation_and_commander(nation, commander)
+            print(f"🔍 DEBUG: Wybrana ćwiartka: {quarter['description']}")
+            
+            # Potwierdź rozstawianie
+            if messagebox.askyesno("🗺️ ROZSTAWIANIE ARMII",
+                                  f"Rozstawić armię w ćwiartce:\n\n"
+                                  f"📍 {quarter['description']}\n"
+                                  f"📊 {len(self.created_units)} żetonów\n"
+                                  f"🎖️ Dowódca: {commander}\n\n"
+                                  f"Kontynuować?"):
+                
+                print("✅ DEBUG: Użytkownik potwierdził rozstawianie")
+                deployed_count = self.perform_army_deployment(quarter)
+                messagebox.showinfo("✅ Sukces!", 
+                                   f"Rozstawiono {deployed_count} żetonów\n"
+                                   f"w ćwiartce {quarter['description']}")
+            else:
+                print("❌ DEBUG: Użytkownik anulował rozstawianie")
+                
+        except Exception as e:
+            print(f"❌ DEBUG: BŁĄD w deploy_army_to_map: {str(e)}")
+            print(f"❌ DEBUG: Typ błędu: {type(e).__name__}")
+            messagebox.showerror("❌ Błąd", f"Błąd rozstawiania: {str(e)}")
+    
+    def load_tokens_from_folders(self, nation):
+        """Wczytuje żetony z folderów dla danej nacji."""
+        print(f"🔍 DEBUG: load_tokens_from_folders({nation}) - WYWOŁANA!")
+        tokens = []
+        
+        tokens_folder = Path(f"assets/tokens/{nation}")
+        print(f"🔍 DEBUG: Sprawdzam folder: {tokens_folder}")
+        
+        if tokens_folder.exists():
+            for token_folder in tokens_folder.iterdir():
+                if token_folder.is_dir():
+                    print(f"🔍 DEBUG: Sprawdzam folder żetonu: {token_folder.name}")
+                    token_json = token_folder / "token.json"
+                    if token_json.exists():
+                        try:
+                            with open(token_json, 'r', encoding='utf-8') as f:
+                                token_data = json.load(f)
+                                tokens.append({
+                                    'name': token_folder.name,
+                                    'data': token_data
+                                })
+                                print(f"✅ DEBUG: Wczytano żeton: {token_folder.name}")
+                        except Exception as e:
+                            print(f"❌ DEBUG: Błąd wczytywania {token_folder.name}: {e}")
+        
+        print(f"✅ DEBUG: Łącznie wczytano {len(tokens)} żetonów z folderów")
+        return tokens
+    
+    def preview_quarter_info(self):
+        """Pokazuje informacje o wybranej ćwiartce."""
+        try:
+            nation = self.selected_nation.get()
+            commander = self.selected_commander.get()
+            quarter = self.get_quarter_for_nation_and_commander(nation, commander)
+            
+            # Aktualizuj info label
+            info_text = f"📍 {quarter['description']}\n"
+            info_text += f"🗺️ Q: {quarter['q_min']}-{quarter['q_max']}, "
+            info_text += f"R: {quarter['r_min']}-{quarter['r_max']}"
+            
+            self.quarter_info.config(text=info_text)
+            
+            # Pokaż szczegóły w dialog
+            total_hexes = (quarter['q_max'] - quarter['q_min'] + 1) * (quarter['r_max'] - quarter['r_min'] + 1)
+            
+            messagebox.showinfo("📋 INFORMACJE O ĆWIARTCE",
+                               f"🎖️ {quarter['description']}\n\n"
+                               f"📏 Wymiary:\n"
+                               f"   • Q: {quarter['q_min']} do {quarter['q_max']} ({quarter['q_max'] - quarter['q_min'] + 1} kolumn)\n"
+                               f"   • R: {quarter['r_min']} do {quarter['r_max']} ({quarter['r_max'] - quarter['r_min'] + 1} wierszy)\n\n"
+                               f"📊 Łącznie heksów: {total_hexes}\n"
+                               f"🏴 Nacja: {quarter['nation']}\n"
+                               f"👤 Dowódca: {quarter['commander']}")
+                               
+        except Exception as e:
+            messagebox.showerror("❌ Błąd", f"Błąd podglądu: {str(e)}")
+    
+    def clear_army_from_map(self):
+        """Usuwa armię z mapy (czysci start_tokens.json)."""
+        if messagebox.askyesno("🧹 CZYSZCZENIE MAPY",
+                              "Czy na pewno chcesz usunąć wszystkie żetony z mapy?\n\n"
+                              "Ta operacja wyczyści plik start_tokens.json"):
+            try:
+                # Wyczyść plik start_tokens.json
+                start_tokens_path = Path("assets/start_tokens.json")
+                
+                empty_data = {"tokens": {}}
+                
+                with open(start_tokens_path, 'w', encoding='utf-8') as f:
+                    json.dump(empty_data, f, indent=2, ensure_ascii=False)
+                
+                messagebox.showinfo("✅ Sukces!", "Mapa została wyczyszczona z żetonów.")
+                
+            except Exception as e:
+                messagebox.showerror("❌ Błąd", f"Błąd czyszczenia mapy: {str(e)}")
+
+    def perform_army_deployment(self, quarter):
+        """Wykonuje rzeczywiste rozstawianie armii w ćwiartce."""
+        try:
+            print(f"🔍 DEBUG: perform_army_deployment() - WYWOŁANA!")
+            print(f"🔍 DEBUG: Ćwiartka: {quarter['description']}")
+            print(f"🔍 DEBUG: Żetony do rozstawienia: {len(self.created_units)}")
+            
+            # Wczytaj mapę
+            map_data_path = Path("data/map_data.json")
+            print(f"🔍 DEBUG: Sprawdzam map_data.json: {map_data_path}")
+            print(f"🔍 DEBUG: Plik istnieje: {map_data_path.exists()}")
+            
+            if not map_data_path.exists():
+                raise Exception("Nie znaleziono pliku map_data.json")
+            
+            with open(map_data_path, 'r', encoding='utf-8') as f:
+                map_data = json.load(f)
+            
+            print(f"✅ DEBUG: Wczytano map_data.json - główne sekcje: {list(map_data.keys())}")
+            
+            # Pobierz heksy z sekcji terrain
+            terrain_data = map_data.get('terrain', {})
+            print(f"✅ DEBUG: Sekcja terrain zawiera {len(terrain_data)} heksów")
+            
+            # Debug: pokaż przykładowe heksy
+            example_hexes = list(terrain_data.keys())[:5]
+            print(f"🔍 DEBUG: Przykładowe heksy z terrain: {example_hexes}")
+            
+            # Znajdź dostępne heksy w ćwiartce
+            available_hexes = []
+            all_hexes_in_quarter = []
+            
+            for hex_coord in terrain_data.keys():
+                if self.is_hex_in_quarter(hex_coord, quarter):
+                    available_hexes.append(hex_coord)
+                # Debug: sprawdź wszystkie możliwe heksy w ćwiartce
+                try:
+                    q, r = map(int, hex_coord.split(','))
+                    if (quarter["q_min"] <= q <= quarter["q_max"] and 
+                        quarter["r_min"] <= r <= quarter["r_max"]):
+                        all_hexes_in_quarter.append(hex_coord)
+                except:
+                    pass
+            
+            print(f"🔍 DEBUG: Dostępne heksy w ćwiartce: {len(available_hexes)}")
+            print(f"🔍 DEBUG: Wszystkie teoretyczne heksy w ćwiartce: {len(all_hexes_in_quarter)}")
+            print(f"🔍 DEBUG: Pierwsze 5 heksów: {available_hexes[:5]}")
+            
+            # Debug: sprawdź zakres współrzędnych w mapie
+            q_coords = []
+            r_coords = []
+            for hex_coord in terrain_data.keys():
+                try:
+                    q, r = map(int, hex_coord.split(','))
+                    q_coords.append(q)
+                    r_coords.append(r)
+                except:
+                    pass
+            
+            if q_coords and r_coords:
+                print(f"🔍 DEBUG: Rzeczywisty zakres Q w mapie: {min(q_coords)} do {max(q_coords)}")
+                print(f"🔍 DEBUG: Rzeczywisty zakres R w mapie: {min(r_coords)} do {max(r_coords)}")
+                print(f"🔍 DEBUG: Ćwiartka oczekuje Q: {quarter['q_min']}-{quarter['q_max']}, R: {quarter['r_min']}-{quarter['r_max']}")
+            
+            if not available_hexes:
+                print("❌ DEBUG: Brak dostępnych heksów w ćwiartce!")
+                # Sprawdź czy ćwiartka w ogóle pokrywa się z mapą
+                print(f"🔍 DEBUG: Sprawdzam pokrycie ćwiartki z mapą...")
+                if q_coords and r_coords:
+                    map_q_min, map_q_max = min(q_coords), max(q_coords)
+                    map_r_min, map_r_max = min(r_coords), max(r_coords)
+                    
+                    overlap_q = not (quarter['q_max'] < map_q_min or quarter['q_min'] > map_q_max)
+                    overlap_r = not (quarter['r_max'] < map_r_min or quarter['r_min'] > map_r_max)
+                    
+                    print(f"🔍 DEBUG: Pokrycie Q: {overlap_q}, Pokrycie R: {overlap_r}")
+                    
+                    if not overlap_q or not overlap_r:
+                        raise Exception(f"Ćwiartka {quarter['description']} nie pokrywa się z mapą!\n"
+                                      f"Mapa: Q({map_q_min}-{map_q_max}), R({map_r_min}-{map_r_max})\n"
+                                      f"Ćwiartka: Q({quarter['q_min']}-{quarter['q_max']}), R({quarter['r_min']}-{quarter['r_max']})")
+                
+                raise Exception(f"Brak dostępnych heksów w ćwiartce {quarter['description']}")
+              # Losowo rozstaw żetony
+            random.shuffle(available_hexes)
+            
+            deployed_tokens = []
+            deployed_count = 0
+            
+            for i, unit in enumerate(self.created_units):
+                if i >= len(available_hexes):
+                    print(f"⚠️ DEBUG: Więcej żetonów ({len(self.created_units)}) niż dostępnych heksów ({len(available_hexes)})")
+                    break  # Więcej żetonów niż dostępnych heksów
+                
+                hex_coord = available_hexes[i]
+                token_name = unit.get('name', f'token_{i}')
+                
+                # Parsuj współrzędne
+                q, r = map(int, hex_coord.split(','))
+                
+                # Format zgodny z load_tokens
+                deployed_tokens.append({
+                    "id": token_name,
+                    "q": q,
+                    "r": r
+                })
+                deployed_count += 1
+                
+                if i < 5:  # Debug pierwszych 5
+                    print(f"🔍 DEBUG: Rozstawiam żeton {i+1}: {token_name} na {hex_coord}")
+            
+            print(f"✅ DEBUG: Rozstawiono {deployed_count} żetonów")
+            
+            # Zapisz do start_tokens.json - format to lista, nie słownik!
+            start_tokens_path = Path("assets/start_tokens.json")
+            start_tokens_path.parent.mkdir(exist_ok=True)
+            
+            start_tokens_data = deployed_tokens
+            
+            with open(start_tokens_path, 'w', encoding='utf-8') as f:
+                json.dump(start_tokens_data, f, indent=2, ensure_ascii=False)
+            
+            print(f"✅ DEBUG: Zapisano do {start_tokens_path}")
+            
+            return deployed_count
+            
+        except Exception as e:
+            print(f"❌ DEBUG: BŁĄD w perform_army_deployment: {str(e)}")
+            print(f"❌ DEBUG: Typ błędu: {type(e).__name__}")
+            raise Exception(f"Błąd podczas rozstawiania: {str(e)}")
 
 def main():
     """Główna funkcja aplikacji."""

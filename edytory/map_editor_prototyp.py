@@ -140,10 +140,14 @@ class MapEditor:
         self.available_nations = ["Polska", "Niemcy"]
 
         # Atrybut do przechowywania mapowania hex_id → nazwa/obiekt żetonu
-        self.hex_tokens = {}  # mapuje hex_id → ścieżka do pliku PNG z żetonem
-
-        # Przechowuje referencje do obrazków żetonów
+        self.hex_tokens = {}  # mapuje hex_id → ścieżka do pliku PNG z żetonem        # Przechowuje referencje do obrazków żetonów
         self.token_images = {}  # Przechowuje referencje do obrazków żetonów
+
+        # Nowe atrybuty dla systemu klik→zaznacz→klik
+        self.selected_token_for_deployment = None  # Przechowuje wybrany żeton do umieszczenia
+        self.token_selection_window = None  # Referencja do okna wyboru żetonów
+        self.token_buttons = {}  # Przechowuj referencje do przycisków żetonów
+        self.selected_token_label = None  # Label pokazujący wybrany żeton
 
         # Zbuduj GUI
         self.build_gui()
@@ -312,9 +316,9 @@ class MapEditor:
         self.canvas.configure(xscrollcommand=self.h_scrollbar.set, yscrollcommand=self.v_scrollbar.set)
 
         self.canvas.bind("<Button-1>", self.on_canvas_click)
+        self.canvas.bind("<Button-3>", self.on_canvas_click)  # Prawy klik też obsługuje on_canvas_click
         self.canvas.bind("<B2-Motion>", self.do_pan)
         self.canvas.bind("<ButtonPress-2>", self.start_pan)
-        self.canvas.bind("<ButtonPress-3>", self.start_pan)
         self.canvas.bind("<Motion>", self.on_canvas_hover)
 
     def select_default_map_path(self):
@@ -488,15 +492,30 @@ class MapEditor:
         return None
 
     def on_canvas_click(self, event):
-        'Obsługuje kliknięcie myszką na canvasie - zaznacza heks i wyświetla jego dane.'
+        """Obsługuje kliknięcie myszką na canvasie - zaznacza heks i wyświetla jego dane LUB umieszcza wybrany żeton."""
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
         hex_id = self.get_clicked_hex(x, y)
+        
         if hex_id:
+            # PRAWY KLIK - usuń żeton z heksa i przywróć do listy
+            if event.num == 3:  # Prawy przycisk myszy
+                self.remove_token_from_hex(hex_id)
+                return
+                
+            # SPRAWDŹ CZY MAM WYBRANY ŻETON DO UMIESZCZENIA
+            if self.selected_token_for_deployment:
+                self.place_token_on_hex(self.selected_token_for_deployment, hex_id)
+                self.cancel_token_selection()  # Wyczyść wybór po umieszczeniu
+                return
+            
+            # NORMALNY TRYB - zaznaczanie heksu lub malowanie pędzlem
             if self.current_brush:
                 q, r = map(int, hex_id.split(","))
                 self.paint_hex((q, r), self.current_brush)
                 return
+                
+            # Zaznacz heks i pokaż info
             self.selected_hex = hex_id
             self.highlight_hex(hex_id)
             terrain = self.hex_data.get(hex_id, self.hex_defaults)
@@ -872,74 +891,191 @@ class MapEditor:
         return tokens
 
     def deploy_token_dialog(self):
-        """Wyświetla okno dialogowe z wszystkimi dostępnymi żetonami w folderze tokeny (unikalność: żeton znika po wystawieniu)."""
+        """Wyświetla okno dialogowe z wszystkimi dostępnymi żetonami - KLIK żetonu go zaznacza, potem KLIK na mapie go umieszcza."""
+        if self.token_selection_window and self.token_selection_window.winfo_exists():
+            self.token_selection_window.lift()  # Przenieś na wierzch jeśli już istnieje
+            return
+            
         dialog = tk.Toplevel(self.root)
-        dialog.title("Wybierz żeton")
-        dialog.geometry("300x300")  # Ustawienie rozmiaru okna
+        dialog.title("Wybierz żeton do umieszczenia")
+        dialog.geometry("400x500")
         dialog.transient(self.root)
-        dialog.grab_set()
-
-        # Konfiguracja siatki w oknie dialogowym
-        dialog.rowconfigure(0, weight=1)
-        dialog.columnconfigure(0, weight=1)
-
+        # NIE używamy grab_set() żeby móc klikać na mapę
+        
+        self.token_selection_window = dialog  # Zapisz referencję
+        
+        # Instrukcja użytkowania
+        tk.Label(dialog, text="1. Kliknij żeton żeby go zaznaczyć\n2. Kliknij na mapie żeby go umieścić", 
+                 bg="lightyellow", font=("Arial", 10, "bold")).pack(pady=10, fill=tk.X)
+        
+        # Status wybranego żetonu
+        self.selected_token_label = tk.Label(dialog, text="Wybrany żeton: brak", 
+                                           bg="lightgray", font=("Arial", 10))
+        self.selected_token_label.pack(pady=5, fill=tk.X)
+        
         # Ramka przewijana dla żetonów
         frame_container = tk.Frame(dialog, bg="darkolivegreen")
-        frame_container.grid(row=0, column=0, sticky="nsew")
-
-        frame_container.rowconfigure(0, weight=1)
-        frame_container.columnconfigure(0, weight=1)
-
+        frame_container.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
         canvas = tk.Canvas(frame_container, bg="darkolivegreen")
-        canvas.grid(row=0, column=0, sticky="nsew")
-
+        canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
         scroll_y = tk.Scrollbar(frame_container, orient="vertical", command=canvas.yview)
-        scroll_y.grid(row=0, column=1, sticky="ns")
-
-        scroll_x = tk.Scrollbar(frame_container, orient="horizontal", command=canvas.xview)
-        scroll_x.grid(row=1, column=0, sticky="ew")
-
+        scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
+        
         frame = tk.Frame(canvas, bg="darkolivegreen")
-
-        # Konfiguracja przewijania
         canvas.create_window((0, 0), window=frame, anchor="nw")
-        canvas.configure(yscrollcommand=scroll_y.set, xscrollcommand=scroll_x.set)
-
+        canvas.configure(yscrollcommand=scroll_y.set)
+        
         # Wczytaj żetony z folderów
         token_base = str(ASSET_ROOT / "tokens")
         token_folders = [os.path.join(token_base, d)
                          for d in os.listdir(token_base)
                          if os.path.isdir(os.path.join(token_base, d))]
         tokens = self.load_tokens_from_folders(token_folders)
-
-        # Filtruj żetony, które już są na mapie (unikalność)
-        used_token_ids = set()
-        for terrain in self.hex_data.values():
-            token = terrain.get("token")
-            if token and "unit" in token:
-                used_token_ids.add(token["unit"])
-        available_tokens = [t for t in tokens if self._get_token_id_from_json(t["json_path"]) not in used_token_ids]
-
-        # Wyświetlanie żetonów
+        
+        # POKAŻ wszystkie żetony (nie filtruj już użytych)
+        available_tokens = tokens
+        
+        # Wyświetlanie żetonów w siatce
+        self.token_buttons = {}  # Resetuj referencje do przycisków
+        
+        row = 0
+        col = 0
+        max_cols = 3  # 3 żetony na rząd
+        
         for token in available_tokens:
             if os.path.exists(token["image_path"]):
-                img = Image.open(token["image_path"]).resize((50, 50))
+                img = Image.open(token["image_path"]).resize((80, 80))
                 img = ImageTk.PhotoImage(img)
-                btn = tk.Label(
-                    frame, image=img, text=token["name"], compound="top",
-                    bg="saddlebrown", fg="white"
-                )
-                btn.image = img  # Przechowuj referencję do obrazu
-                btn.pack(pady=5, padx=5, side="left")
-
-                # Dodaj obsługę przeciągania
-                btn.bind("<Button-1>", lambda e, t=token: self.start_drag(e, t))
-                btn.bind("<B1-Motion>", self.do_drag)
-                btn.bind("<ButtonRelease-1>", self.end_drag)
+                
+                # Frame dla każdego żetonu
+                token_frame = tk.Frame(frame, bg="saddlebrown", relief=tk.RAISED, bd=2)
+                token_frame.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
+                
+                # Label z obrazkiem
+                btn = tk.Label(token_frame, image=img, bg="saddlebrown")
+                btn.image = img  # Przechowuj referencję
+                btn.pack(pady=2)
+                
+                # Label z nazwą
+                name_label = tk.Label(token_frame, text=token["name"][:15], bg="saddlebrown", 
+                                    fg="white", font=("Arial", 8))
+                name_label.pack()
+                
+                # Obsługa kliknięcia - ZAZNACZANIE żetonu
+                def on_token_click(selected_token=token):
+                    self.selected_token_for_deployment = selected_token
+                    self.selected_token_label.config(text=f"Wybrany żeton: {selected_token['name']}")
+                    
+                    # Podświetl wybrany żeton
+                    for other_frame in self.token_buttons.values():
+                        other_frame.config(bg="saddlebrown", relief=tk.RAISED)
+                    token_frame.config(bg="gold", relief=tk.SUNKEN)
+                    
+                    print(f"🎯 Zaznaczono żeton: {selected_token['name']}")
+                
+                btn.bind("<Button-1>", lambda e, t=token: on_token_click(t))
+                name_label.bind("<Button-1>", lambda e, t=token: on_token_click(t))
+                token_frame.bind("<Button-1>", lambda e, t=token: on_token_click(t))
+                
+                self.token_buttons[token["name"]] = token_frame
+                
+                col += 1
+                if col >= max_cols:
+                    col = 0
+                    row += 1
+        
+        # Ustawienie scrollregion
+        frame.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox("all"))
+        
+        # Przyciski kontrolne
+        control_frame = tk.Frame(dialog, bg="darkolivegreen")
+        control_frame.pack(fill=tk.X, pady=10)
+        
+        tk.Button(control_frame, text="Anuluj wybór", 
+                 command=self.cancel_token_selection,
+                 bg="orange", fg="white").pack(side=tk.LEFT, padx=10)
+        
+        tk.Button(control_frame, text="Zamknij okno", 
+                 command=self.close_token_selection_window,
+                 bg="red", fg="white").pack(side=tk.RIGHT, padx=10)
+        
+        # Obsługa zamknięcia okna
+        dialog.protocol("WM_DELETE_WINDOW", self.close_token_selection_window)
 
         # Ustawienie scrollregion po dodaniu widgetów
         frame.update_idletasks()
         canvas.configure(scrollregion=canvas.bbox("all"))
+
+    def cancel_token_selection(self):
+        """Anuluje wybór żetonu."""
+        self.selected_token_for_deployment = None
+        if hasattr(self, 'selected_token_label'):
+            self.selected_token_label.config(text="Wybrany żeton: brak")
+        
+        # Usuń podświetlenie
+        if hasattr(self, 'token_buttons'):
+            for frame in self.token_buttons.values():
+                frame.config(bg="saddlebrown", relief=tk.RAISED)
+        
+        print("❌ Anulowano wybór żetonu")
+
+    def close_token_selection_window(self):
+        """Zamyka okno wyboru żetonów."""
+        self.cancel_token_selection()
+        if self.token_selection_window and self.token_selection_window.winfo_exists():
+            self.token_selection_window.destroy()
+        self.token_selection_window = None
+
+    def hide_token_from_list(self, token_name):
+        """Ukrywa żeton z listy dostępnych (symuluje usunięcie)."""
+        if hasattr(self, 'token_buttons') and token_name in self.token_buttons:
+            frame = self.token_buttons[token_name]
+            frame.grid_remove()  # Ukryj ale nie zniszcz
+            print(f"🚫 Ukryto żeton z listy: {token_name}")
+
+    def restore_token_to_list(self, token_id, token_image_path):
+        """Przywraca żeton do listy dostępnych."""
+        if hasattr(self, 'token_buttons'):
+            # Znajdź żeton po ID i przywróć go
+            for token_name, frame in self.token_buttons.items():
+                # Sprawdź czy to ten żeton (porównaj ID)
+                if token_id in token_name:  # Proste dopasowanie
+                    frame.grid()  # Pokaż ponownie
+                    print(f"🔄 Przywrócono żeton do listy: {token_name}")
+                    break
+
+    def remove_token_from_hex(self, hex_id):
+        """Usuwa żeton z heksa i przywraca go do listy dostępnych."""
+        terrain = self.hex_data.get(hex_id, {})
+        token = terrain.get("token")
+        
+        if token:
+            token_id = token.get("unit")
+            token_image = token.get("image", "")
+            
+            # Usuń żeton z heksa
+            del self.hex_data[hex_id]["token"]
+            
+            # Przywróć do listy dostępnych
+            self.restore_token_to_list(token_id, token_image)
+            
+            # Przerysuj mapę
+            self.redraw_map()
+            
+            print(f"🗑️ Usunięto żeton {token_id} z heksa {hex_id}")
+            messagebox.showinfo("Żeton usunięty", f"Żeton przywrócony do listy dostępnych")
+        else:
+            messagebox.showinfo("Brak żetonu", "Na tym heksie nie ma żetonu do usunięcia")
+
+    def redraw_map(self):
+        """Przerysowuje całą mapę - używane po dodaniu/usunięciu żetonów."""
+        self.draw_grid()
+        # Dodatkowe czynności po przerysowaniu mapy, jeśli potrzebne
+
+        print("🖼️ Przerysowano mapę")
 
     def _get_token_id_from_json(self, json_path):
         try:
@@ -949,41 +1085,22 @@ class MapEditor:
         except Exception:
             return None
 
-    def start_drag(self, event, token):
-        """Rozpoczyna przeciąganie żetonu."""
-        self.dragged_token = token
-        self.dragged_image = Image.open(token["image_path"]).resize((50, 50))
-        self.dragged_image = ImageTk.PhotoImage(self.dragged_image)
-        self.dragged_item = self.canvas.create_image(
-            self.canvas.canvasx(event.x), self.canvas.canvasy(event.y), image=self.dragged_image, anchor=tk.CENTER
-        )
-
-    def do_drag(self, event):
-        """Obsługuje przeciąganie żetonu."""
-        if hasattr(self, "dragged_item"):
-            self.canvas.coords(self.dragged_item, self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
-
-    def end_drag(self, event):
-        """Kończy przeciąganie i umieszcza żeton na mapie."""
-        if hasattr(self, "dragged_item"):
-            x, y = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
-            clicked_hex = self.get_clicked_hex(x, y)
-            if clicked_hex:
-                self.place_token_on_hex(self.dragged_token, clicked_hex)
-            else:
-                messagebox.showinfo("Informacja", "Upuść żeton wewnątrz heksagonu.")
-
-            # Usuń przeciągany obraz
-            self.canvas.delete(self.dragged_item)
-            del self.dragged_item
-            del self.dragged_token
-            del self.dragged_image
-
-    def place_token_on_hex(self, token, clicked_hex):
-        # clicked_hex to hex_id jako string "q,r"
-        q, r = map(int, clicked_hex.split(","))
-        hex_id = f"{q},{r}"
-
+    def place_token_on_hex(self, token, hex_id):
+        """Umieszcza żeton na heksie i USUWA go z listy dostępnych żetonów."""
+        print(f"🎯 Umieszczam żeton {token['name']} na heksie {hex_id}")
+        
+        # Sprawdź czy na tym heksie już jest żeton
+        current_terrain = self.hex_data.get(hex_id, {})
+        old_token = current_terrain.get("token")
+        
+        # Jeśli był stary żeton, PRZYWRÓĆ go do listy dostępnych
+        if old_token:
+            old_token_id = old_token.get("unit")
+            if old_token_id:
+                # Znajdź token w available_tokens i przywróć go
+                self.restore_token_to_list(old_token_id, old_token.get("image", ""))
+                print(f"🔄 Przywrócono stary żeton: {old_token_id}")
+        
         # Jeśli wpisu brak – utwórz z domyślnym terenem
         if hex_id not in self.hex_data:
             self.hex_data[hex_id] = {
@@ -1005,8 +1122,12 @@ class MapEditor:
             "unit": token_id,
             "image": rel_path
         }
+        
+        # USUŃ żeton z okna wyboru (ukryj przycisk)
+        self.hide_token_from_list(token["name"])
 
-        self.draw_grid()   # odśwież mapę
+        self.redraw_map()   # odśwież mapę
+        print(f"✅ Żeton {token['name']} umieszczony i usunięty z listy")
 
     def toggle_brush(self, key):
         if self.current_brush == key:           # drugi klik → wyłącz
