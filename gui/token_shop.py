@@ -285,19 +285,19 @@ class TokenShop(tk.Toplevel):
         # Domyślne wartości (pełne, jak w edytorze)
         defaults = {
             "ruch": {
-                "P": 7, "K": 15, "TC": 8, "TŚ": 10, "TL": 12, "TS": 14,
-                "AC": 6, "AL": 8, "AP": 10, "Z": 12, "D": 12, "G": 12
+                "P": 2, "K": 4, "TC": 2, "TŚ": 3, "TL": 4, "TS": 5,
+                "AC": 1, "AL": 2, "AP": 2, "Z": 3, "D": 2, "G": 2
             },
             "range": {
                 "P": 1, "K": 1, "TC": 2, "TŚ": 2, "TL": 1, "TS": 2,
-                "AC": 8, "AL": 6, "AP": 5, "Z": 1, "D": 0, "G": 0
+                "AC": 6, "AL": 4, "AP": 3, "Z": 1, "D": 0, "G": 0
             },
             "attack": {
-                "Pluton": {"P": 3, "K": 3, "TC": 5, "TŚ": 4, "TL": 3, "TS": 2, "AC": 8, "AL": 6, "AP": 4, "Z": 1, "D": 0, "G": 0},
-                "Kompania": {"P": 6, "K": 6, "TC": 10, "TŚ": 8, "TL": 6, "TS": 4, "AC": 16, "AL": 12, "AP": 8, "Z": 2, "D": 0, "G": 0},
-                "Batalion": {"P": 9, "K": 9, "TC": 15, "TŚ": 12, "TL": 9, "TS": 6, "AC": 24, "AL": 18, "AP": 12, "Z": 3, "D": 0, "G": 0}
+                "Pluton": {"P": 2, "K": 2, "TC": 8, "TŚ": 6, "TL": 4, "TS": 3, "AC": 12, "AL": 8, "AP": 6, "Z": 1, "D": 0, "G": 0},
+                "Kompania": {"P": 4, "K": 4, "TC": 15, "TŚ": 12, "TL": 8, "TS": 6, "AC": 24, "AL": 16, "AP": 12, "Z": 2, "D": 0, "G": 0},
+                "Batalion": {"P": 6, "K": 6, "TC": 22, "TŚ": 18, "TL": 12, "TS": 9, "AC": 36, "AL": 24, "AP": 18, "Z": 3, "D": 0, "G": 0}
             },
-            "combat": {"P__Pluton": 12, "P__Kompania": 36, "P__Batalion": 72, "K__Pluton": 6, "K__Kompania": 18, "K__Batalion": 36, "TC__Pluton": 8, "TC__Kompania": 24, "TC__Batalion": 48, "TŚ__Pluton": 7, "TŚ__Kompania": 21, "TŚ__Batalion": 42, "TL__Pluton": 6, "TL__Kompania": 18, "TL__Batalion": 36, "TS__Pluton": 5, "TS__Kompania": 15, "TS__Batalion": 30, "AC__Pluton": 8, "AC__Kompania": 24, "AC__Batalion": 48, "AL__Pluton": 7, "AL__Kompania": 21, "AL__Batalion": 42, "AP__Pluton": 6, "AP__Kompania": 18, "AP__Batalion": 36, "Z__Pluton": 4, "Z__Kompania": 12, "Z__Batalion": 24, "D__Pluton": 3, "D__Kompania": 9, "D__Batalion": 18, "G__Pluton": 2, "G__Kompania": 6, "G__Batalion": 12},
+            "combat": {"P__Pluton": 8, "P__Kompania": 15, "P__Batalion": 30, "K__Pluton": 6, "K__Kompania": 12, "K__Batalion": 24, "TC__Pluton": 12, "TC__Kompania": 24, "TC__Batalion": 48, "TŚ__Pluton": 10, "TŚ__Kompania": 20, "TŚ__Batalion": 42, "TL__Pluton": 8, "TL__Kompania": 16, "TL__Batalion": 36, "TS__Pluton": 6, "TS__Kompania": 12, "TS__Batalion": 30, "AC__Pluton": 8, "AC__Kompania": 16, "AC__Batalion": 48, "AL__Pluton": 6, "AL__Kompania": 12, "AL__Batalion": 42, "AP__Pluton": 6, "AP__Kompania": 12, "AP__Batalion": 36, "Z__Pluton": 4, "Z__Kompania": 12, "Z__Batalion": 24, "D__Pluton": 3, "D__Kompania": 9, "D__Batalion": 18, "G__Pluton": 2, "G__Kompania": 6, "G__Batalion": 12},
             "unit_maintenance": {
                 "Pluton": {"P": 2, "K": 3, "TC": 8, "TŚ": 6, "TL": 4, "TS": 3, "AC": 4, "AL": 3, "AP": 3, "Z": 2, "D": 1, "G": 1},
                 "Kompania": {"P": 4, "K": 6, "TC": 16, "TŚ": 12, "TL": 8, "TS": 6, "AC": 8, "AL": 6, "AP": 6, "Z": 4, "D": 2, "G": 2},
@@ -308,7 +308,7 @@ class TokenShop(tk.Toplevel):
                 "Kompania": {"P": 30, "K": 36, "TC": 80, "TŚ": 64, "TL": 50, "TS": 40, "AC": 70, "AL": 50, "AP": 40, "Z": 32, "D": 80, "G": 120},
                 "Batalion": {"P": 45, "K": 54, "TC": 120, "TŚ": 96, "TL": 75, "TS": 60, "AC": 105, "AL": 75, "AP": 60, "Z": 48, "D": 80, "G": 120}
             },
-            "sight": {"P": 2, "K": 4, "TC": 2, "TŚ": 2, "TL": 2, "TS": 4, "AC": 2, "AL": 2, "AP": 3, "D": 5, "G": 6, "Z": 2}
+            "sight": {"P": 1, "K": 3, "TC": 2, "TŚ": 2, "TL": 2, "TS": 3, "AC": 2, "AL": 2, "AP": 2, "D": 4, "G": 6, "Z": 2}
         }
         # Domyślne wartości
         ruch = int(defaults["ruch"].get(ut, 0))
@@ -316,9 +316,9 @@ class TokenShop(tk.Toplevel):
         atak = int(defaults["attack"][size].get(ut, 0))
         combat = int(defaults["combat"].get(f"{ut}__{size}", 0))        # Obrona
         defense_defaults = {
-            "Pluton": {"P": 6, "K": 3, "TC": 6, "TŚ": 5, "TL": 4, "TS": 3, "AC": 3, "AL": 4, "AP": 3, "Z": 2, "D": 1, "G": 1},
-            "Kompania": {"P": 15, "K": 8, "TC": 15, "TŚ": 12, "TL": 10, "TS": 8, "AC": 8, "AL": 10, "AP": 8, "Z": 5, "D": 2, "G": 2},
-            "Batalion": {"P": 30, "K": 16, "TC": 30, "TŚ": 25, "TL": 20, "TS": 16, "AC": 16, "AL": 20, "AP": 16, "Z": 10, "D": 4, "G": 4}
+            "Pluton": {"P": 4, "K": 2, "TC": 8, "TŚ": 6, "TL": 4, "TS": 3, "AC": 2, "AL": 3, "AP": 3, "Z": 2, "D": 1, "G": 1},
+            "Kompania": {"P": 8, "K": 4, "TC": 15, "TŚ": 12, "TL": 8, "TS": 6, "AC": 4, "AL": 6, "AP": 6, "Z": 4, "D": 2, "G": 2},
+            "Batalion": {"P": 15, "K": 6, "TC": 22, "TŚ": 18, "TL": 12, "TS": 9, "AC": 6, "AL": 9, "AP": 9, "Z": 6, "D": 3, "G": 3}
         }
         obrona = int(defense_defaults.get(size, {}).get(ut, 0))
         # Maintenance i cena
