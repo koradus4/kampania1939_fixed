@@ -26,11 +26,10 @@ class ArmyCreatorStudio:
         
         # Ikona i style
         self.setup_styles()
-        
-        # Dane aplikacji (POPRAWIONE - po 2 dowódców na nację)
+          # Dane aplikacji (POPRAWIONE - po 2 dowódców na nację)
         self.nations = ["Polska", "Niemcy"]
         self.commanders = {
-            "Polska": ["1 (Polska)", "2 (Polska)"],
+            "Polska": ["2 (Polska)", "3 (Polska)"],
             "Niemcy": ["5 (Niemcy)", "6 (Niemcy)"]
         }
         
@@ -50,10 +49,9 @@ class ArmyCreatorStudio:
         }
         
         self.unit_sizes = ["Pluton", "Kompania", "Batalion"]
-        
-        # Zmienne GUI
+          # Zmienne GUI
         self.selected_nation = tk.StringVar(value="Polska")
-        self.selected_commander = tk.StringVar(value="1 (Polska)")
+        self.selected_commander = tk.StringVar(value="2 (Polska)")
         self.army_size = tk.IntVar(value=10)
         self.army_budget = tk.IntVar(value=500)
         self.creating_army = False
