@@ -11,7 +11,6 @@ import json
 import random
 import threading
 import time
-from unittest.mock import patch
 
 # Dodaj ścieżkę do edytorów (z głównego folderu projektu)
 project_root = Path(__file__).parent
@@ -181,8 +180,7 @@ class ArmyCreatorStudio:
                                     variable=self.army_budget, bg="#6B8E23", fg="white",
                                     highlightbackground="#6B8E23", command=self.update_preview)
         self.budget_scale.pack(fill=tk.X, pady=2)
-        
-        # Separator
+          # Separator
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
         
         # Przyciski akcji
@@ -200,52 +198,6 @@ class ArmyCreatorStudio:
         ttk.Button(action_frame, text="🗑️ Wyczyść",
                   command=self.clear_army,
                   style='Danger.TButton').pack(fill=tk.X, pady=2)
-        
-        # Główny przycisk tworzenia
-        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=10)
-        
-        self.create_button = ttk.Button(action_frame, text="💾 UTWÓRZ ARMIĘ",
-                                       command=self.create_army_thread,
-                                       style='Success.TButton')
-        self.create_button.pack(fill=tk.X, pady=10)
-        
-        # Panel zarządzania folderami
-        ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=15)
-        
-        management_frame = tk.Frame(parent, bg="#6B8E23")  # Olive green
-        management_frame.pack(fill=tk.X, padx=20, pady=10)
-        
-        ttk.Label(management_frame, text="🗂️ ZARZĄDZANIE FOLDERAMI", style='Header.TLabel').pack(pady=5)
-        
-        # Statystyki żetonów
-        self.stats_frame = tk.Frame(management_frame, bg="#556B2F", relief=tk.RIDGE, bd=2)
-        self.stats_frame.pack(fill=tk.X, pady=5)
-        
-        self.stats_label = tk.Label(self.stats_frame, 
-                                   text="📊 Sprawdzanie folderów...", 
-                                   bg="#556B2F", fg="white", 
-                                   font=("Arial", 10))
-        self.stats_label.pack(pady=5)
-        
-        # Przyciski czyszczenia
-        clean_frame = tk.Frame(management_frame, bg="#6B8E23")
-        clean_frame.pack(fill=tk.X, pady=5)
-        
-        ttk.Button(clean_frame, text="🗑️ Wyczyść Polskie Żetony",
-                  command=self.clean_polish_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
-        
-        ttk.Button(clean_frame, text="🗑️ Wyczyść Niemieckie Żetony",
-                  command=self.clean_german_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
-        
-        ttk.Button(clean_frame, text="🗑️ Wyczyść WSZYSTKIE Żetony",
-                  command=self.clean_all_tokens,
-                  style='Danger.TButton').pack(fill=tk.X, pady=2)
-        
-        ttk.Button(clean_frame, text="📊 Odśwież Statystyki",
-                  command=self.refresh_token_stats,
-                  style='Military.TButton').pack(fill=tk.X, pady=2)
         
         # Główny przycisk tworzenia
         ttk.Separator(parent, orient='horizontal').pack(fill=tk.X, padx=20, pady=10)
@@ -525,6 +477,15 @@ class ArmyCreatorStudio:
         """Uruchamia tworzenie armii w głównym wątku GUI (nieblokujące)."""
         if self.creating_army:
             return
+        
+        # Walidacja parametrów
+        if self.army_size.get() < 5 or self.army_size.get() > 25:
+            messagebox.showerror("❌ Błąd", "Rozmiar armii musi być między 5 a 25 żetonów!")
+            return
+            
+        if self.army_budget.get() < 250 or self.army_budget.get() > 1000:
+            messagebox.showerror("❌ Błąd", "Budżet musi być między 250 a 1000 VP!")
+            return
             
         self.creating_army = True
         
@@ -540,7 +501,8 @@ class ArmyCreatorStudio:
             
             # Inicjalizuj Token Editor
             self.progress_label.config(text="Inicjalizacja Token Editor...")
-            self.initialize_token_editor()
+            if not self.initialize_token_editor():
+                return
             
             # Rozpocznij sekwencyjne tworzenie żetonów
             self.current_unit_index = 0
@@ -668,8 +630,7 @@ class ArmyCreatorStudio:
         }
         
         multiplier = size_multipliers.get(unit_size, 1.0)
-        
-        # Skaluj statystyki bojowe
+          # Skaluj statystyki bojowe
         stats["attack_value"] = int(stats["attack_value"] * multiplier)
         stats["combat_value"] = int(stats["combat_value"] * multiplier)
         stats["defense_value"] = int(stats["defense_value"] * multiplier)
@@ -687,28 +648,36 @@ class ArmyCreatorStudio:
     def initialize_token_editor(self):
         """Inicjalizuje Token Editor w dedykowanym oknie."""
         if self.token_editor is None:
-            from token_editor_prototyp import TokenEditor
-            
-            # Utwórz dedykowane okno dla Token Editor
-            token_window = tk.Toplevel(self.root)
-            token_window.title("Token Editor - Tryb Automatyczny")
-            token_window.geometry("400x300")  # Mniejsze okno
-            token_window.configure(bg="darkolivegreen")
-            
-            # Przesuń okno poza główny obszar
-            token_window.geometry("+50+50")
-            
-            # Zminimalizuj okno ale nie ukrywaj go całkowicie
-            token_window.iconify()
-            
-            self.token_editor = TokenEditor(token_window)
-            
-            # Dodaj informację o trybie automatycznym
-            info_label = tk.Label(token_window, 
-                                text="🤖 TRYB AUTOMATYCZNY\nToken Editor pracuje w tle...", 
-                                bg="darkolivegreen", fg="white", 
-                                font=("Arial", 12, "bold"))
-            info_label.pack(expand=True)
+            try:
+                from token_editor_prototyp import TokenEditor
+                
+                # Utwórz dedykowane okno dla Token Editor
+                token_window = tk.Toplevel(self.root)
+                token_window.title("Token Editor - Tryb Automatyczny")
+                token_window.geometry("400x300")  # Mniejsze okno
+                token_window.configure(bg="darkolivegreen")
+                
+                # Przesuń okno poza główny obszar
+                token_window.geometry("+50+50")
+                
+                # Zminimalizuj okno ale nie ukrywaj go całkowicie
+                token_window.iconify()
+                
+                self.token_editor = TokenEditor(token_window)
+                
+                # Dodaj informację o trybie automatycznym
+                info_label = tk.Label(token_window, 
+                                    text="🤖 TRYB AUTOMATYCZNY\nToken Editor pracuje w tle...", 
+                                    bg="darkolivegreen", fg="white", 
+                                    font=("Arial", 12, "bold"))
+                info_label.pack(expand=True)
+                
+                return True
+                
+            except ImportError as e:
+                self.creation_failed(f"Nie można załadować Token Editor: {e}")
+                return False
+        return True
     
     def create_single_token(self, unit):
         """Tworzy pojedynczy żeton używając Token Editor."""
@@ -736,14 +705,11 @@ class ArmyCreatorStudio:
             # Wsparcie
             if unit["support"] and hasattr(self.token_editor, 'selected_support'):
                 self.token_editor.selected_support.set(unit["support"])
-            
-            # Wygeneruj podgląd
+              # Wygeneruj podgląd
             self.token_editor.update_preview()
             
-            # Zapisz żeton z mockami dialogów
-            with patch('tkinter.messagebox.askyesno', return_value=True), \
-                 patch('tkinter.simpledialog.askstring', return_value=unit['name']):
-                self.token_editor.save_token()
+            # Zapisz żeton w trybie automatycznym (omija dialogi)
+            self.token_editor.save_token(auto_mode=True, auto_name=unit['name'])
             
             return True
             
@@ -768,11 +734,11 @@ class ArmyCreatorStudio:
         
         # Wyświetl podsumowanie
         messagebox.showinfo("🎉 Sukces!", 
-                           f"Armia została pomyślnie utworzona!\n\n"
-                           f"📊 Utworzono: {units_created} żetonów\n"
+                           f"Armia została pomyślnie utworzona!\n\n"                           f"📊 Utworzono: {units_created} żetonów\n"
                            f"🎖️ Dowódca: {self.selected_commander.get()}\n"
                            f"🏴 Nacja: {self.selected_nation.get()}\n"
-                           f"💰 Budżet: {self.army_budget.get()} VP\n\n"                           f"Żetony zapisane w katalogu assets/tokens/")
+                           f"💰 Budżet: {self.army_budget.get()} VP\n\n" +
+                           f"Żetony zapisane w katalogu assets/tokens/")
     
     def creation_failed(self, error_message):
         """Obsługuje błąd podczas tworzenia armii."""

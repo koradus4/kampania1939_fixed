@@ -1082,18 +1082,25 @@ class TokenEditor:
         bbox_size = draw.textbbox((0, 0), unit_size, font=font_size)
         x_size = (width - (bbox_size[2] - bbox_size[0])) / 2
         draw.text((x_size, y), unit_size, fill=text_color, font=font_size)
-        y += bbox_size[3] - bbox_size[1] + gap_size_to_symbol        # Symbol wielkości – bezpośrednio pod nazwą wielkości
+        y += bbox_size[3] - bbox_size[1] + gap_size_to_symbol
+        
+        # Symbol wielkości – bezpośrednio pod nazwą wielkości
         bbox_symbol = draw.textbbox((0, 0), unit_symbol, font=font_symbol)
         x_symbol = (width - (bbox_symbol[2] - bbox_symbol[0])) / 2
         draw.text((x_symbol, y), unit_symbol, fill=text_color, font=font_symbol)
 
         return token_img
-
-    def save_token(self):
-        """Zapisuje żeton w nowej strukturze + aktualizuje centralny indeks."""
+    
+    def save_token(self, auto_mode=False, auto_name=None):
+        """Zapisuje żeton w nowej strukturze + aktualizuje centralny indeks.
         
-        # Dodatkowe potwierdzenie przed rozpoczęciem procesu zapisu
-        if not messagebox.askyesno("Potwierdzenie", 
+        Args:
+            auto_mode (bool): Jeśli True, pomija dialogi potwierdzenia
+            auto_name (str): Automatyczna nazwa żetonu (używana gdy auto_mode=True)
+        """
+        
+        # Dodatkowe potwierdzenie przed rozpoczęciem procesu zapisu (pominięte w trybie auto)
+        if not auto_mode and not messagebox.askyesno("Potwierdzenie", 
                                    "Czy na pewno chcesz zapisać ten żeton?\n\n"
                                    "Kliknij 'Nie' aby anulować bez zapisywania."):
             return
@@ -1111,15 +1118,23 @@ class TokenEditor:
         commander_num = commander_full.split()[0] if commander_full else "?"
 
         nation_short = "PL" if nation == "Polska" else ("N" if nation == "Niemcy" else nation[:2].upper())
-        base_id    = f"{unit_type}_{unit_size}".replace(" ", "_")        # np. P_Pluton        # ── 1. dodatkowa etykieta użytkownika ───────────────────────────
+        base_id = f"{unit_type}_{unit_size}".replace(" ", "_")  # np. P_Pluton
+        
+        # ── 1. dodatkowa etykieta użytkownika ───────────────────────────
         default_label = f"{commander_num}_{nation_short}_{unit_type}_{unit_size}"
-        user_label = simpledialog.askstring(
-            "Nazwa wyświetlana",
-            "Podaj nazwę oddziału (np. '1. Podhalański Pluton Czołgów')\n"
-            "Możesz zostawić domyślną – wtedy grafika będzie miała nazwę domyślną.\n\n"
-            "UWAGA: Kliknij 'Cancel' lub 'X' aby anulować zapisywanie żetonu.",
-            initialvalue=default_label
-        )
+        
+        if auto_mode and auto_name:
+            user_label = auto_name
+        elif auto_mode:
+            user_label = default_label
+        else:
+            user_label = simpledialog.askstring(
+                "Nazwa wyświetlana",
+                "Podaj nazwę oddziału (np. '1. Podhalański Pluton Czołgów')\n"
+                "Możesz zostawić domyślną – wtedy grafika będzie miała nazwę domyślną.\n\n"
+                "UWAGA: Kliknij 'Cancel' lub 'X' aby anulować zapisywanie żetonu.",
+                initialvalue=default_label
+            )
         
         # Jeśli użytkownik anulował dialog, przerwij zapisywanie
         if user_label is None:
@@ -1189,14 +1204,15 @@ class TokenEditor:
             "owner":       owner,
             # względna ścieżka do stałej nazwy pliku
             "image": str((Path('assets') / 'tokens' / nation / token_id / 'token.png')
-                         .as_posix()),
-            "w": FINAL_SIZE, "h": FINAL_SIZE
+                         .as_posix()),            "w": FINAL_SIZE, "h": FINAL_SIZE
         }
+        
         with open(token_dir / "token.json", "w", encoding="utf-8") as fh:
             json.dump(meta, fh, indent=2, ensure_ascii=False)
 
         self.build_index()
-        messagebox.showinfo("✔", f"Zapisano żeton w  {token_dir}")
+        # Komunikat usunięty dla automatycznego tworzenia żetonów
+        # messagebox.showinfo("✔", f"Zapisano żeton w  {token_dir}")
 
     def build_index(self):
         """Generuje assets/tokens/index.json zawierający wszystkie definicje."""

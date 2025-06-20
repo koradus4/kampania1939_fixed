@@ -4182,11 +4182,6 @@
       "move_mod": 0,
       "defense_mod": 0
     },
-    "25,-12": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
-    },
     "25,-11": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
@@ -8725,12 +8720,26 @@
     "52,-21": {
       "terrain_key": "most",
       "move_mod": 0,
-      "defense_mod": -1
+      "defense_mod": -1,
+      "token": {
+        "name": "Nieznany",
+        "image": "tokens/Niemcy/AL_Pluton__5_Artillerie_Abteilung/token.png",
+        "nation": "Niemcy",
+        "unit_type": "",
+        "json_path": "tokens\\Niemcy\\AL_Pluton__5_Artillerie_Abteilung\\token.json"
+      }
     },
     "52,-20": {
       "terrain_key": "duża rzeka",
       "move_mod": 5,
-      "defense_mod": -1
+      "defense_mod": -1,
+      "token": {
+        "name": "Nieznany",
+        "image": "tokens/Niemcy/AL_Pluton__6_Artillerie_Batterie/token.png",
+        "nation": "Niemcy",
+        "unit_type": "",
+        "json_path": "tokens\\Niemcy\\AL_Pluton__6_Artillerie_Batterie\\token.json"
+      }
     },
     "52,-19": {
       "terrain_key": "las",
@@ -9217,11 +9226,6 @@
       "move_mod": 0,
       "defense_mod": 0
     },
-    "55,-24": {
-      "terrain_key": "teren_płaski",
-      "move_mod": 0,
-      "defense_mod": 0
-    },
     "55,-23": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
@@ -9383,6 +9387,16 @@
       "defense_mod": 0
     },
     "7,0": {
+      "terrain_key": "teren_płaski",
+      "move_mod": 0,
+      "defense_mod": 0
+    },
+    "25,-12": {
+      "terrain_key": "teren_płaski",
+      "move_mod": 0,
+      "defense_mod": 0
+    },
+    "55,-24": {
       "terrain_key": "teren_płaski",
       "move_mod": 0,
       "defense_mod": 0
